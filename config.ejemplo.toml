@@ -1,0 +1,16 @@
+# Copiar a config.toml (no se versiona) y ajustar a la máquina de cada uno.
+# También se puede sobrescribir cada ruta con una variable de entorno
+# (DMEYF_DATOS, DMEYF_HISTORICO_2019, DMEYF_CRUDO, DMEYF_INSUMOS, DMEYF_ENTORNOS,
+#  DMEYF_AUDITORIA_2019) o apuntar a otro archivo con DMEYF_CONFIG.
+# Rutas relativas: respecto de la raíz del repo. Usar "/" también en Windows.
+
+[rutas]
+# Carpeta base de datos (fuera del repo o en ./datos, que está ignorada).
+datos = "datos"
+
+# Opcionales; si se omiten se derivan de `datos`:
+# historico_2019 = "datos/competencia_02/competencia_02_2019.parquet"
+# crudo          = "datos/competencia_02/competencia_02_crudo.csv.gz"
+# insumos        = "datos/pipeline_competencia02/insumos"     # un <mes>_crudo.csv por mes
+# entornos       = "ejecuciones/entornos"                     # salidas de cada corrida
+# auditoria_2019 = "referencia/01_filas_por_mes.csv"

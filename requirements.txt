@@ -1,0 +1,8 @@
+# Versiones con las que se verificó el pipeline (Python 3.12.0, Windows x64, 24-nov-2026).
+duckdb==1.5.5
+lightgbm==4.7.0
+numpy==2.5.2
+pandas==3.0.5
+psutil==7.2.2
+scikit-learn==1.9.0   # AUC en experimentos/
+# Solo para el entrenamiento legado y pruebas de robustez: scipy

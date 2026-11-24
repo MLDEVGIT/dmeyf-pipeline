@@ -1,0 +1,51 @@
+# Datos: nunca en el repo
+datos/
+data/
+*.csv
+*.csv.gz
+*.gz
+*.zip
+*.parquet
+*.feather
+*.duckdb
+*.duckdb.wal
+*.db
+*.sqlite*
+!referencia/*.csv
+
+# Ejecuciones y artefactos pesados
+ejecuciones/
+entornos/
+output/
+modelos/
+*.model
+*.lgb
+*.npy
+*.memmap
+.duckdb_tmp*/
+*.tmp-*
+
+# Configuración local y credenciales
+config.toml
+.env
+.env.*
+!.env.ejemplo
+*.pem
+*.key
+credentials*.json
+service-account*.json
+.zuliprc
+zuliprc
+.claude/settings.local.json
+
+# Entornos de Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Sistema
+.DS_Store
+Thumbs.db

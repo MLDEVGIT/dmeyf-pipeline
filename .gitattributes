@@ -1,0 +1,4 @@
+# Fin de línea LF en el repo y en los checkouts (Windows y macOS).
+* text=auto eol=lf
+*.parquet binary
+*.npz binary
