@@ -1,0 +1,553 @@
+{
+  "experimento": "E02 peso de BAJA+1 en multiclase",
+  "marca": "20261124T161122_13560",
+  "inicio": "2026-11-24T16:11:22",
+  "fin": "2026-11-24T17:07:53",
+  "regla_adopcion": "Se adopta multiclase con peso de BAJA+1 = 0,5 frente a peso 1 (E01) sólo si se cumplen las tres: (1) mayor ganancia del ensamble de probabilidades en su propia fracción, en 201908 y en 201909; (2) diferencia pareada por semilla positiva en al menos 4 de 5 semillas en cada mes; (3) peor caso de transferencia del corte no mayor que el de peso 1. Si no, queda peso 1. Después, el multiclase que quede se compara con el binario de E01 con la misma regla; si la cumple, pasa a ser la referencia del proyecto; si no, el binario sigue de referencia.",
+  "plan_pruebas_sha256_al_inicio": "03ee1d46e616f164b28eb41ffa2e008ff1e2fa18b8c5bee40c9662bef41bfeb1",
+  "peso_baja1": 0.5,
+  "semillas": [
+    20261124,
+    20261125,
+    20261126,
+    20261127,
+    20261128
+  ],
+  "rondas": 300,
+  "params": {
+    "learning_rate": 0.05,
+    "num_leaves": 63,
+    "min_data_in_leaf": 200,
+    "feature_fraction": 0.5,
+    "bagging_fraction": 1.0,
+    "bagging_freq": 0,
+    "lambda_l2": 0.0,
+    "max_bin": 255,
+    "data_random_seed": 1,
+    "deterministic": true,
+    "force_col_wise": true,
+    "verbosity": -1
+  },
+  "hilos_entrenamiento": 8,
+  "hilos_prediccion": 4,
+  "e01": "ejecuciones/e01/20261124T092205_3832",
+  "particiones": {
+    "train": [
+      201903,
+      201904,
+      201905,
+      201906
+    ],
+    "desarrollo": [
+      201908,
+      201909
+    ],
+    "no_leido": [
+      201910
+    ]
+  },
+  "ganancia": {
+    "premio_bruto": 1100000,
+    "costo_envio": 27500,
+    "neta_por_acierto": 1072500,
+    "ventana_suavizado": 501
+  },
+  "maquina": {
+    "cpu_logicos": 8,
+    "ram_gb": 15.7,
+    "plataforma": "Windows-11-10.0.26300-SP0",
+    "python": "3.12.0",
+    "lightgbm": "4.7.0",
+    "duckdb": "1.5.5"
+  },
+  "clases_train": {
+    "CONTINUA": 501558,
+    "BAJA+1": 2717,
+    "BAJA+2": 2596
+  },
+  "suma_pesos_train": 505512.5,
+  "compatibilidad_e01": {
+    "meta_identica": {
+      "201908": true,
+      "201909": true
+    },
+    "predicciones_identicas": {
+      "binario": true,
+      "multiclase": true
+    },
+    "metricas_identicas": {
+      "binario": true,
+      "multiclase": true
+    },
+    "tiempos_reprediccion_s": {
+      "binario": [
+        6.4,
+        5.84,
+        4.53,
+        5.84,
+        5.82,
+        5.21,
+        4.13,
+        4.4,
+        6.36,
+        5.99
+      ],
+      "multiclase": [
+        19.68,
+        22.24,
+        19.53,
+        20.61,
+        20.5,
+        22.05,
+        20.85,
+        22.38,
+        18.94,
+        20.22
+      ]
+    },
+    "compatible": true
+  },
+  "tiempos_s": {
+    "carga": 78.5,
+    "comprobacion_e01": 268.5,
+    "binado": 24.0,
+    "multiclase_p05": {
+      "entrenar_s": [
+        571.9,
+        540.7,
+        601.4,
+        543.6,
+        527.5
+      ],
+      "predecir_s_por_mes": [
+        20.82,
+        20.19,
+        22.07,
+        22.75,
+        23.5,
+        23.42,
+        23.23,
+        23.3,
+        23.17,
+        23.15
+      ]
+    },
+    "e01": {
+      "binario": {
+        "entrenar_s": [
+          130.1,
+          137.7,
+          114.3,
+          166.1,
+          104.4
+        ],
+        "predecir_s_por_mes": [
+          4.72,
+          3.0,
+          4.81,
+          5.21,
+          2.9,
+          2.83,
+          3.58,
+          3.21,
+          2.85,
+          4.04
+        ]
+      },
+      "multiclase": {
+        "entrenar_s": [
+          375.5,
+          396.1,
+          329.6,
+          357.2,
+          383.2
+        ],
+        "predecir_s_por_mes": [
+          16.02,
+          13.9,
+          10.6,
+          10.78,
+          14.59,
+          13.04,
+          10.13,
+          10.41,
+          14.9,
+          14.76
+        ]
+      }
+    },
+    "total": 3391.5
+  },
+  "memoria": {
+    "tras_carga": {
+      "rss_mb": 4361,
+      "pico_working_set_mb": 5032
+    },
+    "tras_binado": {
+      "rss_mb": 2132,
+      "pico_working_set_mb": 5125
+    },
+    "tras_entrenar": {
+      "rss_mb": 1826,
+      "pico_working_set_mb": 5125
+    },
+    "final": {
+      "rss_mb": 1884,
+      "pico_working_set_mb": 5125
+    }
+  },
+  "decision": {
+    "p05_vs_p1": {
+      "1_ensamble_mayor_en_todos_los_meses": false,
+      "2_semillas_a_favor_en_cada_mes": false,
+      "3_transferencia_no_empeora": false,
+      "adopta": false,
+      "pareadas": {
+        "201908": {
+          "diferencias": [
+            3685000.0,
+            385000.0,
+            -13915000.0,
+            -7315000.0,
+            -5115000.0
+          ],
+          "positivas": 2,
+          "negativas": 3,
+          "media": -4455000.0,
+          "desvio": 6851861.061054872,
+          "ensamble": -6215000
+        },
+        "201909": {
+          "diferencias": [
+            2557500.0,
+            -5142500.0,
+            1457500.0,
+            10257500.0,
+            2557500.0
+          ],
+          "positivas": 4,
+          "negativas": 1,
+          "media": 2337500.0,
+          "desvio": 5466900.401507238,
+          "ensamble": 5857500
+        }
+      }
+    },
+    "multiclase_elegido": "multiclase_p1",
+    "multiclase_p1_vs_binario": {
+      "1_ensamble_mayor_en_todos_los_meses": true,
+      "2_semillas_a_favor_en_cada_mes": false,
+      "3_transferencia_no_empeora": true,
+      "adopta": false,
+      "pareadas": {
+        "201908": {
+          "diferencias": [
+            6930000.0,
+            4730000.0,
+            5830000.0,
+            8030000.0,
+            -770000.0
+          ],
+          "positivas": 4,
+          "negativas": 1,
+          "media": 4950000.0,
+          "desvio": 3425930.530527436,
+          "ensamble": 5830000
+        },
+        "201909": {
+          "diferencias": [
+            -1815000.0,
+            385000.0,
+            5885000.0,
+            -5115000.0,
+            -9515000.0
+          ],
+          "positivas": 2,
+          "negativas": 3,
+          "media": -2035000.0,
+          "desvio": 5789386.841453938,
+          "ensamble": 385000
+        }
+      }
+    },
+    "referencia_del_proyecto": "binario",
+    "diagnostico_multiclase_p05_vs_binario": {
+      "1_ensamble_mayor_en_todos_los_meses": false,
+      "2_semillas_a_favor_en_cada_mes": false,
+      "3_transferencia_no_empeora": true,
+      "adopta": false,
+      "pareadas": {
+        "201908": {
+          "diferencias": [
+            10615000.0,
+            5115000.0,
+            -8085000.0,
+            715000.0,
+            -5885000.0
+          ],
+          "positivas": 3,
+          "negativas": 2,
+          "media": 495000.0,
+          "desvio": 7715698.28337008,
+          "ensamble": -385000
+        },
+        "201909": {
+          "diferencias": [
+            742500.0,
+            -4757500.0,
+            7342500.0,
+            5142500.0,
+            -6957500.0
+          ],
+          "positivas": 3,
+          "negativas": 2,
+          "media": 302500.0,
+          "desvio": 6154104.32150772,
+          "ensamble": 6242500
+        }
+      }
+    }
+  },
+  "resultados": {
+    "binario": {
+      "corte": {
+        "fraccion": 0.029,
+        "arrepentimiento_max": 0.008657063172619606,
+        "201908": {
+          "envios": 3822,
+          "ganancia": 202895000,
+          "ganancia_suav": 201184620.75848302,
+          "ganancia_max_suav": 202718308.38323355,
+          "k_max_suav": 3581,
+          "por_semilla": [
+            188595000,
+            192995000,
+            192995000,
+            191895000,
+            192995000
+          ],
+          "semillas_media": 191895000.0,
+          "semillas_desvio": 1905255.888325765
+        },
+        "201909": {
+          "envios": 3870,
+          "ganancia": 249975000,
+          "ganancia_suav": 248646656.68662673,
+          "ganancia_max_suav": 250818003.99201596,
+          "k_max_suav": 2912,
+          "por_semilla": [
+            244475000,
+            247775000,
+            233475000,
+            245575000,
+            246675000
+          ],
+          "semillas_media": 243595000.0,
+          "semillas_desvio": 5789386.841453938
+        },
+        "fraccion_por_semilla": [
+          0.03875,
+          0.02975,
+          0.025,
+          0.02275,
+          0.028
+        ],
+        "fraccion_por_semilla_rango": [
+          0.02275,
+          0.03875
+        ]
+      },
+      "ensamble": {
+        "201908": {
+          "k_max_suav": 3581,
+          "g_max_suav": 202718308.38323355,
+          "auc_baja2": 0.9104560666153834,
+          "n": 131775,
+          "baja2": 543
+        },
+        "201909": {
+          "k_max_suav": 2912,
+          "g_max_suav": 250818003.99201596,
+          "auc_baja2": 0.9091823808813672,
+          "n": 133419,
+          "baja2": 615
+        }
+      },
+      "transferencia": {
+        "201908->201909": {
+          "fraccion": 0.02725,
+          "envios": 3636,
+          "ganancia": 248710000,
+          "arrepentimiento": 0.00970007755860225
+        },
+        "201909->201908": {
+          "fraccion": 0.02175,
+          "envios": 2867,
+          "ganancia": 196157500,
+          "arrepentimiento": 0.038093675360308166
+        }
+      },
+      "transferencia_peor_caso": 0.038093675360308166
+    },
+    "multiclase_p1": {
+      "corte": {
+        "fraccion": 0.028,
+        "arrepentimiento_max": 0.0040779376691616465,
+        "201908": {
+          "envios": 3690,
+          "ganancia": 208725000,
+          "ganancia_suav": 207368113.7724551,
+          "ganancia_max_suav": 208217210.5788423,
+          "k_max_suav": 3521,
+          "por_semilla": [
+            195525000,
+            197725000,
+            198825000,
+            199925000,
+            192225000
+          ],
+          "semillas_media": 196845000.0,
+          "semillas_desvio": 3052376.123612554
+        },
+        "201909": {
+          "envios": 3736,
+          "ganancia": 250360000,
+          "ganancia_suav": 250142634.73053893,
+          "ganancia_max_suav": 250757514.97005987,
+          "k_max_suav": 3814,
+          "por_semilla": [
+            242660000,
+            248160000,
+            239360000,
+            240460000,
+            237160000
+          ],
+          "semillas_media": 241560000.0,
+          "semillas_desvio": 4188675.2082251497
+        },
+        "fraccion_por_semilla": [
+          0.03375,
+          0.025,
+          0.031,
+          0.025,
+          0.0305
+        ],
+        "fraccion_por_semilla_rango": [
+          0.025,
+          0.03375
+        ]
+      },
+      "ensamble": {
+        "201908": {
+          "k_max_suav": 3521,
+          "g_max_suav": 208217210.5788423,
+          "auc_baja2": 0.9061312079477539,
+          "n": 131775,
+          "baja2": 543
+        },
+        "201909": {
+          "k_max_suav": 3814,
+          "g_max_suav": 250757514.97005987,
+          "auc_baja2": 0.906702413459483,
+          "n": 133419,
+          "baja2": 615
+        }
+      },
+      "transferencia": {
+        "201908->201909": {
+          "fraccion": 0.02675,
+          "envios": 3569,
+          "ganancia": 250552500,
+          "arrepentimiento": 0.010449077193364964
+        },
+        "201909->201908": {
+          "fraccion": 0.0285,
+          "envios": 3756,
+          "ganancia": 206910000,
+          "arrepentimiento": 0.004654210973498496
+        }
+      },
+      "transferencia_peor_caso": 0.010449077193364964
+    },
+    "multiclase_p05": {
+      "corte": {
+        "fraccion": 0.0285,
+        "arrepentimiento_max": 0.0028384783786509216,
+        "201908": {
+          "envios": 3756,
+          "ganancia": 202510000,
+          "ganancia_suav": 201374870.25948104,
+          "ganancia_max_suav": 201924650.6986028,
+          "k_max_suav": 3420,
+          "por_semilla": [
+            199210000,
+            198110000,
+            184910000,
+            192610000,
+            187110000
+          ],
+          "semillas_media": 192390000.0,
+          "semillas_desvio": 6385687.120427997
+        },
+        "201909": {
+          "envios": 3803,
+          "ganancia": 256217500,
+          "ganancia_suav": 255692749.500998,
+          "ganancia_max_suav": 256420593.81237525,
+          "k_max_suav": 3943,
+          "por_semilla": [
+            245217500,
+            243017500,
+            240817500,
+            250717500,
+            239717500
+          ],
+          "semillas_media": 243897500.0,
+          "semillas_desvio": 4358554.806354969
+        },
+        "fraccion_por_semilla": [
+          0.02625,
+          0.0305,
+          0.02525,
+          0.026,
+          0.023
+        ],
+        "fraccion_por_semilla_rango": [
+          0.023,
+          0.0305
+        ]
+      },
+      "ensamble": {
+        "201908": {
+          "k_max_suav": 3420,
+          "g_max_suav": 201924650.6986028,
+          "auc_baja2": 0.9049409999941621,
+          "n": 131775,
+          "baja2": 543
+        },
+        "201909": {
+          "k_max_suav": 3943,
+          "g_max_suav": 256420593.81237525,
+          "auc_baja2": 0.9061219137536998,
+          "n": 133419,
+          "baja2": 615
+        }
+      },
+      "transferencia": {
+        "201908->201909": {
+          "fraccion": 0.026,
+          "envios": 3469,
+          "ganancia": 252202500,
+          "arrepentimiento": 0.014823022157470445
+        },
+        "201909->201908": {
+          "fraccion": 0.0295,
+          "envios": 3888,
+          "ganancia": 199980000,
+          "arrepentimiento": 0.005759643352271193
+        }
+      },
+      "transferencia_peor_caso": 0.014823022157470445
+    }
+  }
+}

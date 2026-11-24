@@ -9,7 +9,8 @@ Recibe el CSV crudo de un mes, sin targets, y produce `churn_<yyyymm>.csv` con
 > 201903–201906) y cortes **diagnósticos**. Falta el modelo definitivo, el corte elegido
 > con 2019 y la segunda estrategia real. Brechas y orden: [docs/TAREAS.md](docs/TAREAS.md).
 > Requisitos y puntos pendientes (target de 201912): [docs/CONSIGNA.md](docs/CONSIGNA.md).
-> Pruebas: E01 (binario contra multiclase) y T01 (tiempos de inferencia) ejecutadas;
+> Pruebas: E01 (binario contra multiclase), E02 (peso de BAJA+1) y T01 (tiempos de inferencia) ejecutadas;
+> referencia vigente: binario;
 > resultados y plan incremental en [docs/PLAN_PRUEBAS.md](docs/PLAN_PRUEBAS.md). Ganancia: [docs/GANANCIA.md](docs/GANANCIA.md).
 
 ## Puesta en marcha
@@ -51,6 +52,7 @@ python -m unittest discover -s pruebas -t . -v
 
 # experimentos (sólo 2019; octubre bloqueado)
 python -m experimentos.e01_binario_vs_multiclase --semillas 5 --rondas 300
+python -m experimentos.e02_peso_baja1 --e01 ejecuciones/e01/<marca>
 python -m experimentos.t01_tiempo_inferencia --e01 ejecuciones/e01/<marca>
 ```
 
@@ -67,7 +69,8 @@ Salidas de cada entorno: `output/churn_AAAAMM.csv` (oficial),
 | `pipeline_competencia02/config.py` | Resolución de rutas desde `config.toml` / variables de entorno. |
 | `scripts/verificar_salida.py` | Chequeo independiente de un `churn_<yyyymm>.csv`. |
 | `evaluacion/` | Ganancia (premio bruto, costo, neta; `docs/GANANCIA.md`), curvas, corte por fracción con arrepentimiento mínimo, y particiones temporales que **bloquean por código** la lectura de etiquetas fuera de lo permitido. |
-| `experimentos/` | Pruebas incrementales del `docs/PLAN_PRUEBAS.md`: `e01_binario_vs_multiclase.py`, `t01_tiempo_inferencia.py`. Salidas en `ejecuciones/` (no versionado). |
+| `experimentos/` | Pruebas incrementales del `docs/PLAN_PRUEBAS.md`: `e01_binario_vs_multiclase.py`, `e02_peso_baja1.py`, `t01_tiempo_inferencia.py`. Salidas completas en `ejecuciones/` (no versionado). |
+| `resultados/` | Resúmenes versionados de cada experimento, sin datos por cliente (p. ej. `e02_peso_baja1.json`). |
 | `pruebas/` | Pruebas unitarias de `evaluacion/` (`python -m unittest discover -s pruebas -t .`). |
 | `entrenamiento/legado/` | Scripts que produjeron el modelo diagnóstico (copiados sin cambios; todavía usan rutas fijas). |
 | `referencia/01_filas_por_mes.csv` | Conteo de filas por mes de 2019 (sin datos de clientes), usado por `preparar_insumos`. |

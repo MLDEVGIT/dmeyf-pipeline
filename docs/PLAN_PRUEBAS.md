@@ -142,7 +142,7 @@ Cada paso cambia **una** cosa respecto del de referencia. Todos comparten:
 | Paso | Pregunta | Cambia respecto de | Estado |
 |---|---|---|---|
 | **E01** | ¿Binario o multiclase, con features e hiperparámetros idénticos? | — | **Ejecutada** (§ 5): no se cumple la regla; binario sigue de referencia |
-| E02 | Peso de BAJA+1 en el multiclase: 0,25, 0,5 y 1 (= E01) | E01 multiclase | Pendiente |
+| E02 | Peso de BAJA+1 en el multiclase: 0,5 contra 1 (= E01). El peso 0,25 queda fuera de esta corrida (§ 7) | E01 multiclase | **Ejecutada** (§ 8): 0,5 no se adopta; queda peso 1; el binario sigue de referencia |
 | E03 | Escalado monetario por mes, antes de lags: crudo (= E01), rank con cero fijo, división por la mediana mensual | Objetivo elegido en E01 | Pendiente; requiere cambiar `features.py` en entrenamiento **y** producción |
 | E04 | Combinación por rangos de binario y multiclase | Predicciones guardadas de E01, sin reentrenar | Pendiente; costo bajo |
 | E05 | Lags por calendario con indicador de disponibilidad contra lags por fila | El mejor de E01–E04 | Pendiente |
@@ -311,3 +311,142 @@ escribió con `write_text`, que en Windows convierte los fines de línea a `\r\n
 leer los árboles (`Model format error`). Se corrigió escribiendo en bytes y verificando que la copia
 prediga igual que el original. Las mediciones de `predict` de esa corrida son válidas y figuran entre
 paréntesis.
+
+## 7. E02 — peso de BAJA+1 en el multiclase (protocolo, escrito antes de correr)
+
+Rama `martin/e02-peso-baja1`. Script: `experimentos/e02_peso_baja1.py`.
+
+**Qué cambia respecto de E01:** sólo el peso de las filas BAJA+1 en el `Dataset` multiclase, que pasa
+de 1 a **0,5**. CONTINUA y BAJA+2 siguen con peso 1. Todo lo demás es idéntico a E01:
+- las 760 features;
+- particiones: train 201903–201906, desarrollo 201908 y 201909, octubre bloqueado;
+- las 5 semillas, los hiperparámetros y las 300 rondas;
+- el binado (`max_bin` 255, `data_random_seed` 1);
+- 8 hilos para entrenar y 4 para predecir.
+
+El score es P(BAJA+2). El script se detiene si la configuración de E01 o la composición del train no
+coinciden.
+
+**Peso 0,25.** Estaba en la lista inicial de E02, pero la tarea pedida compara 1 contra 0,5. Queda como
+extensión: correrlo después y presentarlo como exploratorio no invalida esta decisión.
+
+**Reutilización de E01.** El brazo de peso 1 son exactamente los modelos multiclase de E01 (mismo
+código, datos, semillas y parámetros, sin pesos), y el binario de E01 es la referencia del proyecto.
+No se reentrenan. Se reutilizan sólo si pasan tres comprobaciones; si alguna falla, se reentrenan:
+1. filas, clases y clientes de agosto y septiembre idénticos a los de E01;
+2. los modelos guardados de E01, vueltos a predecir acá, reproducen exactamente las predicciones que
+   E01 guardó;
+3. la evaluación de `evaluacion/comparacion.py` reproduce las cifras de `resultados.json` de E01:
+   fracción, envíos, ganancias del ensamble y por semilla, y transferencias.
+
+**Métricas** (`evaluacion/comparacion.py`, idéntica a E01):
+- ganancia del ensamble de probabilidades en la fracción de cada brazo;
+- ganancia por semilla en esa fracción y diferencias pareadas por semilla y mes;
+- transferencia del corte entre agosto y septiembre;
+- estabilidad del corte: la fracción que elegiría cada semilla sola;
+- AUC de BAJA+2, tiempos y memoria.
+
+**Regla de adopción** (la misma de E01, en dos pasos):
+1. **Peso 0,5 contra peso 1.** Se adopta 0,5 sólo si se cumplen las tres condiciones:
+   - mayor ganancia del ensamble en su fracción, en 201908 **y** en 201909;
+   - diferencia pareada positiva en al menos 4 de 5 semillas en **cada** mes;
+   - peor caso de transferencia del corte no mayor que el de peso 1.
+
+   Si no se cumplen, queda peso 1.
+2. **Multiclase elegido contra binario de E01**, con la misma regla. Si la cumple, el multiclase pasa a
+   ser la referencia del proyecto para E03. Si no, el binario sigue de referencia.
+
+El otro multiclase también se compara con el binario, solo como diagnóstico, sin efecto en la decisión.
+
+**Limitaciones conocidas de antemano:**
+- 5 semillas y 2 meses: la regla de 4 de 5 es exigente y una diferencia chica puede no alcanzarla
+  aunque exista.
+- Hiperparámetros fijos, no optimizados para ningún brazo. Un peso distinto podría requerir otros
+  hiperparámetros.
+- El corte se elige con los mismos dos meses en que se mide; la transferencia es la medida fuera de
+  muestra.
+
+## 8. Resultados de E02
+
+Corrida `ejecuciones/e02/20261124T161122_13560` (24-nov, 16:11–17:07, 3.391 s). Resumen versionado:
+`resultados/e02_peso_baja1.json`, sin datos por cliente.
+- **Regla fijada antes de correr:** el sha256 de `PLAN_PRUEBAS.md` registrado al inicio
+  (`03ee1d46e616…`) es el del archivo con el § 7 y sin este § 8.
+- **Compatibilidad con E01: total.** Coinciden los datos de desarrollo, las 20 predicciones repetidas
+  con los modelos de E01 (binario y multiclase, bit a bit en float32) y las cifras recalculadas
+  (fracción, envíos y ganancias del ensamble, por semilla y de transferencia). El binario y el
+  multiclase de peso 1 no se reentrenaron. Train: 506.871 filas; suma de pesos con BAJA+1 a 0,5:
+  505.512,5.
+
+**Ganancia en el corte de cada brazo** (millones). "Ensamble" = promedio de probabilidades de las 5
+semillas; "semillas" = cada semilla sola en la misma fracción. Ganancia sin suavizar.
+
+| Brazo | *f* | Mes | Envíos | Ensamble | Semillas: media ± desvío | AUC BAJA+2 |
+|---|---|---|---|---|---|---|
+| Binario (E01) | 2,900 % | 201908 | 3.822 | 202,9 | 191,9 ± 1,9 | 0,9105 |
+| | | 201909 | 3.870 | 250,0 | 243,6 ± 5,8 | 0,9092 |
+| Multiclase, peso 1 (E01) | 2,800 % | 201908 | 3.690 | **208,7** | 196,8 ± 3,1 | 0,9061 |
+| | | 201909 | 3.736 | 250,4 | 241,6 ± 4,2 | 0,9067 |
+| Multiclase, peso 0,5 | 2,850 % | 201908 | 3.756 | 202,5 | 192,4 ± 6,4 | 0,9049 |
+| | | 201909 | 3.803 | **256,2** | 243,9 ± 4,4 | 0,9061 |
+
+**Diferencias pareadas por semilla y mes** (millones, cada brazo en su fracción; semillas 20261124 a
+20261128):
+
+| Comparación | Mes | Por semilla | A favor | Media | Ensamble |
+|---|---|---|---|---|---|
+| Peso 0,5 − peso 1 | 201908 | +3,7 · +0,4 · −13,9 · −7,3 · −5,1 | 2 de 5 | −4,5 | −6,2 |
+| | 201909 | +2,6 · −5,1 · +1,5 · +10,3 · +2,6 | 4 de 5 | +2,3 | +5,9 |
+| Peso 1 − binario | 201908 | +6,9 · +4,7 · +5,8 · +8,0 · −0,8 | 4 de 5 | +5,0 | +5,8 |
+| | 201909 | −1,8 · +0,4 · +5,9 · −5,1 · −9,5 | 2 de 5 | −2,0 | +0,4 |
+| Peso 0,5 − binario (diagnóstico) | 201908 | +10,6 · +5,1 · −8,1 · +0,7 · −5,9 | 3 de 5 | +0,5 | −0,4 |
+| | 201909 | +0,7 · −4,8 · +7,3 · +5,1 · −7,0 | 3 de 5 | +0,3 | +6,2 |
+
+**Estabilidad del corte:**
+
+| Brazo | Arrepentimiento máx. (en muestra) | Transferencia ago → sep | Transferencia sep → ago | Peor caso | *f* que elegiría cada semilla sola |
+|---|---|---|---|---|---|
+| Binario | 0,9 % | 2,725 % · 248,7 M · 1,0 % | 2,175 % · 196,2 M · 3,8 % | 3,8 % | 2,275 %–3,875 % |
+| Peso 1 | 0,4 % | 2,675 % · 250,6 M · 1,0 % | 2,850 % · 206,9 M · 0,5 % | **1,0 %** | 2,500 %–3,375 % |
+| Peso 0,5 | 0,3 % | 2,600 % · 252,2 M · 1,5 % | 2,950 % · 200,0 M · 0,6 % | 1,5 % | 2,300 %–3,050 % |
+
+**Decisión según la regla del § 7:**
+
+| Paso | Criterio 1 (ensamble, 2 meses) | Criterio 2 (≥ 4/5 semillas, cada mes) | Criterio 3 (transferencia) | Resultado |
+|---|---|---|---|---|
+| Peso 0,5 contra peso 1 | No (−6,2 M en agosto) | No (2 de 5 en agosto) | No (1,5 % > 1,0 %) | **Queda peso 1** |
+| Peso 1 contra binario | Sí | No (2 de 5 en septiembre) | Sí | **El binario sigue de referencia** |
+
+⇒ **E02: el peso 0,5 de BAJA+1 no se adopta.** Con estos hiperparámetros, el efecto del peso cambia de
+signo entre meses: −6,2 M en agosto y +5,9 M en septiembre en el ensamble. Es del mismo orden que la
+dispersión entre semillas (desvío de 2–6 M según brazo y mes), así que no hay evidencia de que mejore. E03 (escalado
+monetario) parte del binario como referencia y vuelve a incluir al multiclase de peso 1 como
+candidato.
+
+**Tiempos** (8 hilos para entrenar, 4 para predecir):
+
+| | Medido en E01 | Medido en E02 |
+|---|---|---|
+| Entrenar multiclase, 300 rondas | peso 1: 330–396 s | peso 0,5: 528–601 s |
+| Predecir multiclase, un mes (~132 mil filas) | peso 1: 10,1–16,0 s | peso 1 (modelos de E01, vueltos a predecir): 18,9–22,4 s · peso 0,5: 20,2–23,5 s |
+| Predecir binario, un mes | 2,8–5,2 s | 4,1–6,4 s (modelos de E01, vueltos a predecir) |
+| Carga · binado · total | 71 s · 32 s · 2.774 s | 79 s · 24 s · 3.391 s (incluye 268 s de comprobación de E01) |
+| Pico de working set | 5,45 GB | 5,13 GB |
+
+Los mismos modelos de E01 predijeron un 40–50 % más lento en E02: probablemente la máquina tuvo otra carga
+durante esta corrida; la CPU estaba al 100 % y no se identificó otro proceso dominante. Por eso:
+- **predecir**: la única comparación válida es dentro de E02. Peso 0,5 y peso 1 tardan lo mismo, con
+  diferencias menores al 10 %, que es lo esperable con la misma cantidad de árboles;
+- **entrenar**: los 528–601 s del peso 0,5 **no** son comparables con los 330–396 s de E01. No se
+  puede atribuir la diferencia al peso. Para medirlo habría que entrenar los dos brazos en la misma
+  corrida.
+
+**Limitaciones:**
+- 5 semillas y 2 meses: la regla es exigente; un efecto chico y real podría no detectarse.
+- Hiperparámetros fijos y no optimizados para ningún brazo. Con Optuna, el peso podría interactuar
+  con `min_data_in_leaf` o con la cantidad de rondas.
+- Solo se probaron los pesos 1 y 0,5; el 0,25 queda pendiente como exploración.
+- El corte se elige con los mismos meses en que se mide. Las cifras "en muestra" son optimistas; la
+  transferencia es la medida fuera de muestra.
+- Octubre no se leyó: ninguna de estas cifras dice cómo se comporta el modelo a 4 meses del
+  entrenamiento.
