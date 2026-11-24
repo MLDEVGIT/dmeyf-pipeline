@@ -1,89 +1,124 @@
 {
-  "version": 1,
+  "version": 2,
   "nota": "Acciones ante incidentes de la ejecución mensual. 'rechazar' corta la ejecución sin publicar nada (estado fallido). 'advertir' registra el incidente y sigue: no cambia el score, las features ni la selección. Ninguna advertencia se interpreta como error ni como garantía de calidad.",
   "umbrales": {
-    "cambio_tasa_nulos": 0.20
+    "cambio_tasa_nulos": 0.2
   },
   "reglas": {
     "columnas_faltantes": {
-      "tipo": "validacion", "accion": "rechazar",
+      "tipo": "validacion",
+      "accion": "rechazar",
       "criterio": "columnas del esquema crudo del entorno ausentes en la cabecera"
     },
     "columnas_adicionales": {
-      "tipo": "validacion", "accion": "rechazar",
+      "tipo": "validacion",
+      "accion": "rechazar",
       "criterio": "columnas de la cabecera que no están en el esquema crudo (comportamiento vigente)"
     },
     "orden_de_columnas_distinto": {
-      "tipo": "validacion", "accion": "rechazar",
+      "tipo": "validacion",
+      "accion": "rechazar",
       "criterio": "las columnas presentes en ambos lados aparecen en otro orden relativo (comportamiento vigente)"
     },
     "columnas_repetidas": {
-      "tipo": "validacion", "accion": "rechazar",
+      "tipo": "validacion",
+      "accion": "rechazar",
       "criterio": "un nombre de columna aparece más de una vez en la cabecera"
     },
     "columnas_de_target": {
-      "tipo": "validacion", "accion": "rechazar",
+      "tipo": "validacion",
+      "accion": "rechazar",
       "criterio": "la entrada trae clase_ternaria, clase_binaria, horizonte_completo u otra columna con 'clase'"
     },
     "entrada_vacia": {
-      "tipo": "validacion", "accion": "rechazar",
+      "tipo": "validacion",
+      "accion": "rechazar",
       "criterio": "el CSV no tiene filas"
     },
     "valores_no_tipables": {
-      "tipo": "validacion", "accion": "rechazar",
+      "tipo": "validacion",
+      "accion": "rechazar",
       "criterio": "valores que no se pueden tipar con las reglas de 02 sin redondeo"
     },
     "claves_nulas": {
-      "tipo": "validacion", "accion": "rechazar",
+      "tipo": "validacion",
+      "accion": "rechazar",
       "criterio": "numero_de_cliente o foto_mes nulos"
     },
     "claves_duplicadas": {
-      "tipo": "validacion", "accion": "rechazar",
+      "tipo": "validacion",
+      "accion": "rechazar",
       "criterio": "numero_de_cliente repetido en el mes"
     },
     "mes_distinto_del_pedido": {
-      "tipo": "validacion", "accion": "rechazar",
+      "tipo": "validacion",
+      "accion": "rechazar",
       "criterio": "foto_mes no es único o no coincide con --mes"
     },
     "mes_fuera_de_secuencia": {
-      "tipo": "validacion", "accion": "rechazar",
+      "tipo": "validacion",
+      "accion": "rechazar",
       "criterio": "la historia no termina en el mes anterior o contiene meses iguales o posteriores"
     },
     "historia_inconsistente": {
-      "tipo": "validacion", "accion": "rechazar",
+      "tipo": "validacion",
+      "accion": "rechazar",
       "criterio": "los nombres de los archivos de historia no coinciden con su contenido o su esquema difiere del de la entrada"
     },
     "columna_100_nula": {
-      "tipo": "calidad_datos", "accion": "advertir",
+      "tipo": "calidad_datos",
+      "accion": "advertir",
       "criterio": "todas las filas del mes son NULL en la columna"
     },
     "observados_en_cero": {
-      "tipo": "calidad_datos", "accion": "advertir",
+      "tipo": "calidad_datos",
+      "accion": "advertir",
       "criterio": "al menos un valor no nulo y todos los no nulos valen 0"
     },
     "constante_no_nula": {
-      "tipo": "calidad_datos", "accion": "advertir",
+      "tipo": "calidad_datos",
+      "accion": "advertir",
       "criterio": "al menos un valor no nulo y todos los no nulos son iguales y distintos de 0"
     },
     "cambio_tasa_nulos": {
-      "tipo": "calidad_datos", "accion": "advertir",
+      "tipo": "calidad_datos",
+      "accion": "advertir",
       "criterio": "la tasa de nulos cambia más que umbrales.cambio_tasa_nulos respecto del último mes de historia"
     },
     "scores_saturados": {
-      "tipo": "calidad_scores", "accion": "advertir",
+      "tipo": "calidad_scores",
+      "accion": "advertir",
       "criterio": "probabilidades exactamente iguales a 0 o a 1"
     },
     "clientes_sin_historia": {
-      "tipo": "informativo", "accion": "advertir",
+      "tipo": "informativo",
+      "accion": "advertir",
       "criterio": "clientes sin observaciones previas (lags nulos); esperable con altas nuevas"
     },
     "estrategia_provisional": {
-      "tipo": "informativo", "accion": "advertir",
+      "tipo": "informativo",
+      "accion": "advertir",
       "criterio": "la estrategia está marcada como provisional, sin validación comercial"
     },
     "estrategias_insuficientes": {
-      "tipo": "informativo", "accion": "advertir",
+      "tipo": "informativo",
+      "accion": "advertir",
       "criterio": "menos estrategias que las requeridas"
+    },
+    "lag_fila_distinto_calendario": {
+      "tipo": "informativo",
+      "accion": "advertir",
+      "criterio": "clientes cuyo lag por fila (k-ésima observación previa, la definición con que se entrenaron los modelos) no es el mes calendario t-k: les falta algún mes intermedio. No cambia las features: se informa para dimensionar la diferencia con lags por calendario (E05)."
+    },
+    "mes_recuperado": {
+      "tipo": "informativo",
+      "accion": "advertir",
+      "criterio": "el mes ya estaba publicado completo e íntegro (hashes del reporte) pero sin estado completado: se marca completado sin recalcular"
+    },
+    "publicacion_parcial_en_cuarentena": {
+      "tipo": "informativo",
+      "accion": "advertir",
+      "criterio": "había piezas publicadas del mes sin estado completado y sin integridad verificable: se mueven a cuarentena y el mes se recalcula"
     }
   }
 }

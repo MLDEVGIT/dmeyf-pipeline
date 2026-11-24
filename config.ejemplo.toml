@@ -14,3 +14,4 @@ datos = "datos"
 # insumos        = "datos/pipeline_competencia02/insumos"     # un <mes>_crudo.csv por mes
 # entornos       = "ejecuciones/entornos"                     # salidas de cada corrida
 # auditoria_2019 = "referencia/01_filas_por_mes.csv"
+# modelos        = "datos/pipeline_competencia02/modelos"     # copias de los modelos del catálogo (catalogo.py)

@@ -40,6 +40,23 @@ los meses de ensayo 202001–202006. **Eso contradice R1** y queda descartado.
 | B12 | Consistencia entre entrenamiento y producción (F2 pregunta 2) | `features.py` compartido. Igualdad bit a bit verificada en 201908. | Mantener una sola implementación para cualquier feature nueva y repetir la prueba de equivalencia. |
 | B13 | R8 criterios de evaluación | Desconocidos en detalle. | Transcribirlos y mapear cada uno a un entregable. |
 
+## Avance de la integración (24-nov, rama `martin/integracion-estrategias`)
+
+Detalle en `INTEGRACION.md`.
+
+| Brecha | Estado |
+|---|---|
+| B1 entrada `input/<yyyymm>.csv` | **Resuelta** en `mensual.py`. Falta adaptar `correr_meses.py` |
+| B2 salida `output/churn_<yyyymm>.csv` | **Resuelta**, en la carpeta de ejecución |
+| B3 reloj de 15 min | **Resuelta**: tiempo desde la entrada hasta el reporte (104 s en 202001). Falta medir en la máquina del vivo (T12) |
+| B5 dos modelos | **Resuelta en forma provisional**: binario y multiclase de E01, sin optimizar |
+| B6 recomendación por cliente | **Provisional**: binario; el multiclase queda como alternativa en el reporte |
+| B7 cortes con 2019 | **Resuelta**: fracción por estrategia, de E01 (201908–201909) |
+| B8 reporte acumulativo | **Resuelta**: una fila por mes, derivada, con métricas con target pendientes. Falta el drift contra 2019 (PSI) |
+| B9 historia para el vivo | **Resuelta**: `preparar_ejecucion` arma la historia desde 2019 y desde los insumos de 2020, con cobertura validada. Falta ensayar la secuencia 202001–202006 |
+| Reintentos consistentes | **Resuelta** y probada (`scripts/probar_reintentos.py`) |
+| B10, B11, B13 | Sin cambios |
+
 ## Orden de implementación propuesto
 
 1. **Contrato de entrada/salida y reloj (B1, B2, B3).** Es barato y lo necesitan todos los ensayos. Se puede probar con el modelo diagnóstico.

@@ -357,6 +357,8 @@ def adquirir(reg: Path, mes: int, ejecucion: str, proc) -> tuple[bool, str, dict
                 est = json.loads(estado_path.read_text(encoding="utf-8"))
                 if est.get("estado") == "en_curso":
                     est.update({"estado": "fallido", "motivo": f"interrumpida (candado huérfano de {otro['ejecucion']})"})
+                    if est.get("intentos") and est["intentos"][-1].get("estado") == "en_curso":
+                        est["intentos"][-1]["estado"] = "fallido"  # el intento interrumpido también queda fallido
                     escribir_atomico(estado_path, est)
             candado.unlink()
     else:
