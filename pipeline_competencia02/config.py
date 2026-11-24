@@ -27,6 +27,7 @@ _CLAVES = {
     "auditoria_2019": ("DMEYF_AUDITORIA_2019", None),
     "features_2019": ("DMEYF_FEATURES_2019", "competencia_02/competencia_02_2019_features"),
     "target_2019": ("DMEYF_TARGET_2019", "competencia_02/competencia_02_2019_target.parquet"),
+    "modelos": ("DMEYF_MODELOS", "pipeline_competencia02/modelos"),
 }
 
 
@@ -40,6 +41,7 @@ class Rutas:
     auditoria_2019: Path
     features_2019: Path
     target_2019: Path
+    modelos: Path
     archivo: Path | None
 
 

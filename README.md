@@ -4,14 +4,16 @@ Pipeline mensual de la **competencia 02 de DMEyF 2026** (Martín, Agustina y Jos
 Recibe el CSV crudo de un mes, sin targets, y produce `churn_<yyyymm>.csv` con
 `numero_de_cliente,probabilidad,enviar`, más un reporte acumulativo.
 
-> Estado (24-nov-2026): **base mínima**. El circuito de inferencia mensual funciona
-> de punta a punta con un modelo **diagnóstico** (LightGBM por defecto, entrenado con
-> 201903–201906) y cortes **diagnósticos**. Falta el modelo definitivo, el corte elegido
-> con 2019 y la segunda estrategia real. Brechas y orden: [docs/TAREAS.md](docs/TAREAS.md).
-> Requisitos y puntos pendientes (target de 201912): [docs/CONSIGNA.md](docs/CONSIGNA.md).
-> Pruebas: E01 (binario contra multiclase), E02 (peso de BAJA+1) y T01 (tiempos de inferencia) ejecutadas;
-> referencia vigente: binario;
-> resultados y plan incremental en [docs/PLAN_PRUEBAS.md](docs/PLAN_PRUEBAS.md). Ganancia: [docs/GANANCIA.md](docs/GANANCIA.md).
+> Estado (24-nov-2026): **pipeline mensual con dos estrategias integrado y ensayado en 202001**
+> ([docs/INTEGRACION.md](docs/INTEGRACION.md)).
+> - **Recomendación provisional** (salida oficial): binario de E01, score = **P(BAJA+1 ∪ BAJA+2)**, corte 2,9 % de los clientes.
+> - **Alternativa** (reporte): multiclase de E01 con peso 1 para BAJA+1, score = **P(BAJA+2)**, corte 2,8 %.
+> - Las dos son candidatos de 300 rondas **sin optimización**, con 5 semillas promediadas.
+> - 202001 de punta a punta en 104 s (267 s con la máquina cargada); scores idénticos bit a bit a los modelos originales.
+>
+> Pendientes: secuencia 202001–202006, modelos optimizados, lags por calendario (E05) y anomalías (E06).
+> Brechas y orden: [docs/TAREAS.md](docs/TAREAS.md). Consigna: [docs/CONSIGNA.md](docs/CONSIGNA.md).
+> Pruebas E01, E02 y T01: [docs/PLAN_PRUEBAS.md](docs/PLAN_PRUEBAS.md). Ganancia: [docs/GANANCIA.md](docs/GANANCIA.md).
 
 ## Puesta en marcha
 
@@ -25,7 +27,35 @@ copy config.ejemplo.toml config.toml        # y editar las rutas
 Los datos **no** se versionan. `config.toml` (local) dice dónde están; cada ruta se
 puede pisar con una variable de entorno (`DMEYF_DATOS`, `DMEYF_ENTORNOS`, …).
 
-## Uso
+## Uso: ejecución mensual con dos estrategias
+
+```powershell
+# 0. (una vez) catálogo de estrategias desde los modelos de E01: copia los 10 modelos con nombres de
+#    features a la ruta `modelos` de config.toml y escribe catalogo/estrategias.json (versionado)
+python -m pipeline_competencia02.catalogo --e01 ejecuciones/e01/<marca>
+
+# 1. (fuera del tiempo mensual) carpeta de ejecución nueva: catálogo verificado + historia 201901..hasta
+python -m pipeline_competencia02.preparar_ejecucion --nombre vivo_X --hasta 201912
+
+# 2. cada mes: input/<yyyymm>.csv -> output/churn_<yyyymm>.csv + registro/reporte_acumulado.csv
+python -m pipeline_competencia02.mensual --ejecucion ejecuciones/entornos/vivo_X --mes 202001 `
+    --copiar-desde <ruta>/202001.csv     # o dejar el archivo en input/202001.csv y omitir --copiar-desde
+
+# 3. verificaciones independientes
+python scripts/verificar_salida.py ejecuciones/entornos/vivo_X/output/churn_202001.csv --entrada ejecuciones/entornos/vivo_X/input/202001.csv
+python scripts/verificar_scores.py --ejecucion ejecuciones/entornos/vivo_X --mes 202001
+python scripts/probar_reintentos.py --mes 202001 --entrada <ruta>/202001.csv   # usa su propia carpeta nueva
+```
+
+Códigos de salida de `mensual`: 0 completado (o recuperado), 2 fallido, 4 rechazado (mes completado,
+con otro intento en curso o de la historia inicial). `output/churn_<yyyymm>.csv` tiene
+`numero_de_cliente, probabilidad, enviar`; la probabilidad es la de la recomendación,
+**P(BAJA+1 ∪ BAJA+2)**. Las predicciones y decisiones de las dos estrategias quedan en
+`diagnosticos/<yyyymm>/`. El reporte acumulado tiene una fila por mes completado, con clientes,
+anomalías, distribución de scores, envíos, coincidencia, versiones de modelos y tiempos por etapa;
+las métricas con target figuran como `pendiente`.
+
+## Uso: pipeline de un modelo (legado) y experimentos
 
 ```powershell
 # 1. (fuera del tiempo mensual) cortar el crudo en un CSV por mes
@@ -56,22 +86,22 @@ python -m experimentos.e02_peso_baja1 --e01 ejecuciones/e01/<marca>
 python -m experimentos.t01_tiempo_inferencia --e01 ejecuciones/e01/<marca>
 ```
 
-Salidas de cada entorno: `output/churn_AAAAMM.csv` (oficial),
-`diagnosticos/AAAAMM/` (features, decisiones de todas las estrategias, `reporte.json`) y
-`registro/reporte_acumulado.csv` (una fila por ejecución). Códigos de salida:
-0 completado, 2 fallido, 4 mes ya completado.
+`ejecutar_mes`, `entorno` y `correr_meses` son el pipeline anterior de un solo modelo (diagnóstico):
+se conservan porque `mensual.py` reutiliza su validación, su candado y su publicación. Su
+`reporte_acumulado.csv` tiene una fila por intento.
 
 ## Estructura
 
 | Ruta | Qué es |
 |---|---|
-| `pipeline_competencia02/` | Inferencia mensual: validación, features (lag/delta 1 y 2), inferencia, estrategias, publicación todo-o-nada, incidentes y reporte. |
+| `pipeline_competencia02/` | Inferencia mensual: validación, features (lag/delta 1 y 2), inferencia, estrategias, publicación todo-o-nada, incidentes y reporte. `mensual.py` (dos estrategias), `preparar_ejecucion.py` (carpeta e historia inicial), `catalogo.py` (estrategias desde los modelos de E01). |
+| `catalogo/` | Índice versionado de estrategias: modelos con sha256, corte, significado del score y los 760 predictores con su tipo. |
 | `pipeline_competencia02/config.py` | Resolución de rutas desde `config.toml` / variables de entorno. |
-| `scripts/verificar_salida.py` | Chequeo independiente de un `churn_<yyyymm>.csv`. |
+| `scripts/` | `verificar_salida.py` (chequeo independiente de un `churn_<yyyymm>.csv`), `verificar_scores.py` (scores contra los modelos originales) y `probar_reintentos.py` (fallas y reintentos). |
 | `evaluacion/` | Ganancia (premio bruto, costo, neta; `docs/GANANCIA.md`), curvas, corte por fracción con arrepentimiento mínimo, y particiones temporales que **bloquean por código** la lectura de etiquetas fuera de lo permitido. |
 | `experimentos/` | Pruebas incrementales del `docs/PLAN_PRUEBAS.md`: `e01_binario_vs_multiclase.py`, `e02_peso_baja1.py`, `t01_tiempo_inferencia.py`. Salidas completas en `ejecuciones/` (no versionado). |
-| `resultados/` | Resúmenes versionados de cada experimento, sin datos por cliente (p. ej. `e02_peso_baja1.json`). |
-| `pruebas/` | Pruebas unitarias de `evaluacion/` (`python -m unittest discover -s pruebas -t .`). |
+| `resultados/` | Resúmenes versionados de cada experimento, sin datos por cliente (`e02_peso_baja1.json`, `i01_ensayo_202001.json`). |
+| `pruebas/` | Pruebas unitarias de `evaluacion/` y del pipeline mensual (`python -m unittest discover -s pruebas -t .`). |
 | `entrenamiento/legado/` | Scripts que produjeron el modelo diagnóstico (copiados sin cambios; todavía usan rutas fijas). |
 | `referencia/01_filas_por_mes.csv` | Conteo de filas por mes de 2019 (sin datos de clientes), usado por `preparar_insumos`. |
 | `docs/` | Consigna recuperada, relevamiento, procedencia del código y tareas. |

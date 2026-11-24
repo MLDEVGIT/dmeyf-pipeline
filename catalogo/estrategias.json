@@ -1,0 +1,177 @@
+{
+  "version": 1,
+  "creado": "2026-11-24T17:55:49",
+  "estado": "candidatos de E01: 300 rondas, hiperparámetros fijos, sin optimización; la recomendación es provisional (PLAN_PRUEBAS.md § 5 y § 8)",
+  "origen": {
+    "e01": "ejecuciones/e01/20261124T092205_3832",
+    "resumen": "resultados/e02_peso_baja1.json",
+    "resumen_sha256": "52c8658bb7e7c2e737994b0064ca1e030f03a7f256c34be20dff5fd96b2d5b6e"
+  },
+  "features": {
+    "definicion": "152 variables crudas + lag1, delta1, lag2, delta2 de cada una (760). lag_k = k-ésima observación previa del cliente (por fila, ordenado por foto_mes); delta_k = x − lag_k. Sin imputaciones. Igual a experimento_sampling/04 y pipeline_competencia02/features.py.",
+    "n": 760,
+    "sha256_nombres": "70759f43cfd86cb4cf430716375efcaeb98dc33b41e125c347bc8a7ea43f272f",
+    "archivo": "catalogo/predictores.json",
+    "lags": "por fila (k-ésima observación previa), NO por calendario"
+  },
+  "promedio": "media aritmética de las probabilidades de las semillas, en el orden de 'modelos'",
+  "orden_y_desempate": "probabilidad descendente; a igual probabilidad, numero_de_cliente ascendente",
+  "estrategias": [
+    {
+      "id": "binario_e01_300r",
+      "rol": "recomendacion_provisional",
+      "objetivo": "binary",
+      "columna_score": null,
+      "score": "P(BAJA+1 ∪ BAJA+2): probabilidad del objetivo binario del baseline 208135 (positivo = BAJA+1 o BAJA+2)",
+      "num_class": null,
+      "candidato": "300 rondas, sin optimización (E01)",
+      "params": {
+        "learning_rate": 0.05,
+        "num_leaves": 63,
+        "min_data_in_leaf": 200,
+        "feature_fraction": 0.5,
+        "bagging_fraction": 1.0,
+        "bagging_freq": 0,
+        "lambda_l2": 0.0,
+        "max_bin": 255,
+        "data_random_seed": 1,
+        "deterministic": true,
+        "force_col_wise": true,
+        "verbosity": -1
+      },
+      "rondas": 300,
+      "corte": {
+        "tipo": "fraccion_clientes",
+        "fraccion": 0.029,
+        "redondeo": "techo(fraccion · n) (evaluacion.ganancia.envios)",
+        "fuente": "resultados/e02_peso_baja1.json → resultados.binario.corte.fraccion (= E01, PLAN_PRUEBAS.md § 5)",
+        "elegido_con": "201908 y 201909 (menor arrepentimiento máximo del ensamble)"
+      },
+      "modelos": [
+        {
+          "semilla": 20261124,
+          "archivo": "binario_e01_300r/semilla_20261124.txt",
+          "sha256": "5023a21e49c348220176280af1bbe85cc0a7d054ee5b9b82e598e3700244ce75",
+          "origen": "ejecuciones/e01/20261124T092205_3832/modelos/binario_20261124.txt",
+          "sha256_origen": "c1f37148831428c01f560c5b5b95eb352fb1cab20450e35a02fbad243da450ed",
+          "rondas": 300,
+          "arboles": 300
+        },
+        {
+          "semilla": 20261125,
+          "archivo": "binario_e01_300r/semilla_20261125.txt",
+          "sha256": "7e5cdb0532617e0c7756a33574a649d2f867050f0cc3b526d87ba63ac6c6ca7d",
+          "origen": "ejecuciones/e01/20261124T092205_3832/modelos/binario_20261125.txt",
+          "sha256_origen": "a89deac8f23f948a9e5eb6d2e68a1da4910141fc9d5e239fa3e44dbca41cc797",
+          "rondas": 300,
+          "arboles": 300
+        },
+        {
+          "semilla": 20261126,
+          "archivo": "binario_e01_300r/semilla_20261126.txt",
+          "sha256": "ccd50108bd698b9c78627d10737ea70d2b69d290bbcb31f8266d1d0287f2888d",
+          "origen": "ejecuciones/e01/20261124T092205_3832/modelos/binario_20261126.txt",
+          "sha256_origen": "d154ef5193855da9a6ad5c0373da93b910d4a339561d311a0f8b73f2a8573b7e",
+          "rondas": 300,
+          "arboles": 300
+        },
+        {
+          "semilla": 20261127,
+          "archivo": "binario_e01_300r/semilla_20261127.txt",
+          "sha256": "a84cdca44c494e6bb0559b709eeef78a7190cc5c0c85f2d549aa05bd3c99773b",
+          "origen": "ejecuciones/e01/20261124T092205_3832/modelos/binario_20261127.txt",
+          "sha256_origen": "ebfdae74100cd39dc7d5f6fd0d06d3368f528b61b588d322403619f0fd91b9e4",
+          "rondas": 300,
+          "arboles": 300
+        },
+        {
+          "semilla": 20261128,
+          "archivo": "binario_e01_300r/semilla_20261128.txt",
+          "sha256": "08de37d8edd43c7cf807c40b1fe7c9cd7f4d7349faf228857dc6fa10daa5eea3",
+          "origen": "ejecuciones/e01/20261124T092205_3832/modelos/binario_20261128.txt",
+          "sha256_origen": "035d0ad69b7468d849e9b384b891d12e8d79c5b8caed4c9669b0b45c149264d2",
+          "rondas": 300,
+          "arboles": 300
+        }
+      ]
+    },
+    {
+      "id": "multiclase_p1_e01_300r",
+      "rol": "alternativa",
+      "objetivo": "multiclass",
+      "columna_score": 2,
+      "score": "P(BAJA+2): columna 2 del multiclase CONTINUA/BAJA+1/BAJA+2 (BAJA+1 con peso 1)",
+      "num_class": 3,
+      "candidato": "300 rondas, sin optimización (E01)",
+      "params": {
+        "learning_rate": 0.05,
+        "num_leaves": 63,
+        "min_data_in_leaf": 200,
+        "feature_fraction": 0.5,
+        "bagging_fraction": 1.0,
+        "bagging_freq": 0,
+        "lambda_l2": 0.0,
+        "max_bin": 255,
+        "data_random_seed": 1,
+        "deterministic": true,
+        "force_col_wise": true,
+        "verbosity": -1
+      },
+      "rondas": 300,
+      "corte": {
+        "tipo": "fraccion_clientes",
+        "fraccion": 0.028,
+        "redondeo": "techo(fraccion · n) (evaluacion.ganancia.envios)",
+        "fuente": "resultados/e02_peso_baja1.json → resultados.multiclase_p1.corte.fraccion (= E01, PLAN_PRUEBAS.md § 5)",
+        "elegido_con": "201908 y 201909 (menor arrepentimiento máximo del ensamble)"
+      },
+      "modelos": [
+        {
+          "semilla": 20261124,
+          "archivo": "multiclase_p1_e01_300r/semilla_20261124.txt",
+          "sha256": "f93f171d75e31ddf7e7be6ad6175917bc0d9438629d421c6ed29313462d089cc",
+          "origen": "ejecuciones/e01/20261124T092205_3832/modelos/multiclase_20261124.txt",
+          "sha256_origen": "f7929d63b6c0225cc4232b2fceeb3a20075d05d49ba24a8fac3d53239f31c2e7",
+          "rondas": 300,
+          "arboles": 900
+        },
+        {
+          "semilla": 20261125,
+          "archivo": "multiclase_p1_e01_300r/semilla_20261125.txt",
+          "sha256": "b9df8fb3a30922b577973544d7a97015f0838e26f307b204dd5584062eabb6e7",
+          "origen": "ejecuciones/e01/20261124T092205_3832/modelos/multiclase_20261125.txt",
+          "sha256_origen": "c410142eed03ee9ae67681bdedc468df8f5ab1c7093a3c6076fefcc780eae040",
+          "rondas": 300,
+          "arboles": 900
+        },
+        {
+          "semilla": 20261126,
+          "archivo": "multiclase_p1_e01_300r/semilla_20261126.txt",
+          "sha256": "e141aca85e671b276b11c6a96b3fb4629b65fa512a385a62daf6d6e98ca74cd6",
+          "origen": "ejecuciones/e01/20261124T092205_3832/modelos/multiclase_20261126.txt",
+          "sha256_origen": "8bfa0ee7b2b304987a89831c967fc5017b33f08f200b99f4f2f9ec9e660639ec",
+          "rondas": 300,
+          "arboles": 900
+        },
+        {
+          "semilla": 20261127,
+          "archivo": "multiclase_p1_e01_300r/semilla_20261127.txt",
+          "sha256": "1ce23ddf33bb6db748446c735eeef9e78deee4c4cb3b27772ff46eb34225f203",
+          "origen": "ejecuciones/e01/20261124T092205_3832/modelos/multiclase_20261127.txt",
+          "sha256_origen": "731b8ad2dfffcd052719925fa3f09f9858134916d81921671c50e7f36f6051d1",
+          "rondas": 300,
+          "arboles": 900
+        },
+        {
+          "semilla": 20261128,
+          "archivo": "multiclase_p1_e01_300r/semilla_20261128.txt",
+          "sha256": "f21f79a21634cc7f6401bee98dc54cb3acad76c6992ea25429697280aa8c9b51",
+          "origen": "ejecuciones/e01/20261124T092205_3832/modelos/multiclase_20261128.txt",
+          "sha256_origen": "0fb1b41fe44f199d69d9d75dfb0b9e301a515425b4e8b910dc5d7c4415ea85b2",
+          "rondas": 300,
+          "arboles": 900
+        }
+      ]
+    }
+  ]
+}

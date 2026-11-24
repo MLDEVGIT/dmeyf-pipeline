@@ -1,0 +1,353 @@
+{
+  "experimento": "I01 ensayo del pipeline mensual con dos estrategias sobre 202001",
+  "rama": "martin/integracion-estrategias",
+  "catalogo_sha256": "e0a8f131d6aed65ba502130e502d79a4c04c6ba5bcda6ff8e6aaa9e8bf0aeda8",
+  "ejecuciones": {
+    "ensayo_1": {
+      "carpeta": "ejecuciones/entornos/ensayo_2estrategias_202001_20261124T175946",
+      "preparacion_s": 67.1,
+      "total_desde_entrada_s": 267.7,
+      "tiempos": {
+        "recepcion_s": 0.5,
+        "validacion_s": 24.1,
+        "perfil_s": 5.0,
+        "features_s": 42.2,
+        "verificacion_features_s": 0.1,
+        "carga_modelos_s": 1.2,
+        "inferencia_binario_e01_300r_s": 40.5,
+        "inferencia_multiclase_p1_e01_300r_s": 132.1,
+        "lectura_y_conversion_s": 15.3,
+        "estrategias_s": 0.3,
+        "escritura_s": 3.3,
+        "total_hasta_publicacion_s": 267.5
+      },
+      "memoria": {
+        "rss_mb": 232.1,
+        "pico_working_set_mb": 3232.9,
+        "pico_commit_privado_mb": 4018.2
+      },
+      "nota": "máquina con otra carga: todas las etapas 2,5-3,7 veces más lentas que en el ensayo 2"
+    },
+    "ensayo_2": {
+      "carpeta": "ejecuciones/entornos/ensayo_2estrategias_202001_20261124T181928",
+      "preparacion_s": 22.0,
+      "total_desde_entrada_s": 104.1,
+      "tiempos": {
+        "recepcion_s": 0.1,
+        "validacion_s": 6.7,
+        "perfil_s": 1.4,
+        "features_s": 13.1,
+        "verificacion_features_s": 0.0,
+        "carga_modelos_s": 0.4,
+        "inferencia_binario_e01_300r_s": 16.8,
+        "inferencia_multiclase_p1_e01_300r_s": 58.4,
+        "lectura_y_conversion_s": 5.3,
+        "estrategias_s": 0.1,
+        "escritura_s": 0.9,
+        "total_hasta_publicacion_s": 104.0
+      },
+      "memoria": {
+        "rss_mb": 230.5,
+        "pico_working_set_mb": 3257.8,
+        "pico_commit_privado_mb": 4023.6
+      }
+    }
+  },
+  "salidas_identicas_entre_ensayos": true,
+  "historia_inicial": {
+    "desde": 201901,
+    "hasta": 201912,
+    "meses": 12,
+    "proximo_mes": 202001,
+    "checks": {
+      "empieza_en_201901": true,
+      "termina_en_hasta": true,
+      "meses_consecutivos_sin_huecos": true,
+      "nombre_igual_contenido": true,
+      "un_foto_mes_por_archivo": true,
+      "mismo_esquema_en_todos": true
+    }
+  },
+  "validacion": {
+    "filas": 142929,
+    "clientes": 142929,
+    "checks": {
+      "filas_mayor_a_cero": true,
+      "claves_no_nulas": true,
+      "numero_de_cliente_unico": true,
+      "mes_unico_igual_al_pedido": true,
+      "historia_nombres_igual_contenido": true,
+      "historia_sin_meses_iguales_o_posteriores": true,
+      "historia_termina_en_mes_anterior": true,
+      "esquema_historia_igual_entrada": true
+    }
+  },
+  "verificacion_features": {
+    "checks": {
+      "nombres_y_orden_iguales_al_modelo": true,
+      "tipos_iguales_al_entrenamiento": true,
+      "lags_definidos_por_fila_como_el_entrenamiento": true
+    },
+    "tipos_distintos": {},
+    "definicion": "152 variables crudas + lag1, delta1, lag2, delta2 de cada una (760). lag_k = k-ésima observación previa del cliente (por fila, ordenado por foto_mes); delta_k = x − lag_k. Sin imputaciones. Igual a experimento_sampling/04 y pipeline_competencia02/features.py.",
+    "lags": {
+      "clientes": 142929,
+      "con_lag1": 138764,
+      "con_lag2": 136111,
+      "lag1_no_es_mes_calendario_anterior": 7,
+      "lag2_no_es_dos_meses_calendario_antes": 13,
+      "clientes_con_algun_lag_distinto_del_calendario": 14,
+      "nota": "el lag por fila coincide con el calendario cuando el cliente estuvo en t-1 y t-2"
+    }
+  },
+  "estrategias": [
+    {
+      "id": "binario_e01_300r",
+      "rol": "recomendacion_provisional",
+      "objetivo": "binary",
+      "score": "P(BAJA+1 ∪ BAJA+2): probabilidad del objetivo binario del baseline 208135 (positivo = BAJA+1 o BAJA+2)",
+      "fraccion": 0.029,
+      "envios": 4145,
+      "proporcion": 0.029,
+      "probabilidad_minima_enviada": 0.053008089734823946,
+      "empates_en_el_corte": 1,
+      "distribucion": {
+        "cuantiles": {
+          "0": 4.5696395164111735e-06,
+          "0.01": 4.3688728108260376e-05,
+          "0.1": 0.00013003360405061188,
+          "0.25": 0.00024602235871705707,
+          "0.5": 0.0006101822496217053,
+          "0.75": 0.002185970233131998,
+          "0.9": 0.010220225065011987,
+          "0.99": 0.15368545198690872,
+          "0.999": 0.8497155884367359,
+          "1": 0.984342506099229
+        },
+        "media": 0.008851192894059454,
+        "exactamente_0": 0,
+        "exactamente_1": 0,
+        "mayor_0_5": 527
+      },
+      "modelos_sha256": [
+        "5023a21e49c348220176280af1bbe85cc0a7d054ee5b9b82e598e3700244ce75",
+        "7e5cdb0532617e0c7756a33574a649d2f867050f0cc3b526d87ba63ac6c6ca7d",
+        "ccd50108bd698b9c78627d10737ea70d2b69d290bbcb31f8266d1d0287f2888d",
+        "a84cdca44c494e6bb0559b709eeef78a7190cc5c0c85f2d549aa05bd3c99773b",
+        "08de37d8edd43c7cf807c40b1fe7c9cd7f4d7349faf228857dc6fa10daa5eea3"
+      ],
+      "corte": {
+        "tipo": "fraccion_clientes",
+        "fraccion": 0.029,
+        "redondeo": "techo(fraccion · n) (evaluacion.ganancia.envios)",
+        "fuente": "resultados/e02_peso_baja1.json → resultados.binario.corte.fraccion (= E01, PLAN_PRUEBAS.md § 5)",
+        "elegido_con": "201908 y 201909 (menor arrepentimiento máximo del ensamble)"
+      }
+    },
+    {
+      "id": "multiclase_p1_e01_300r",
+      "rol": "alternativa",
+      "objetivo": "multiclass",
+      "score": "P(BAJA+2): columna 2 del multiclase CONTINUA/BAJA+1/BAJA+2 (BAJA+1 con peso 1)",
+      "fraccion": 0.028,
+      "envios": 4003,
+      "proporcion": 0.028007,
+      "probabilidad_minima_enviada": 0.025407967390956153,
+      "empates_en_el_corte": 1,
+      "distribucion": {
+        "cuantiles": {
+          "0": 1.605938337394961e-06,
+          "0.01": 1.4850141782142792e-05,
+          "0.1": 5.0190729482460656e-05,
+          "0.25": 9.91894385039635e-05,
+          "0.5": 0.00024648646273416774,
+          "0.75": 0.0009127542085412867,
+          "0.9": 0.004691964409948475,
+          "0.99": 0.06924197228485833,
+          "0.999": 0.3750892542757045,
+          "1": 0.8393160318675635
+        },
+        "media": 0.00378531696844657,
+        "exactamente_0": 0,
+        "exactamente_1": 0,
+        "mayor_0_5": 69
+      },
+      "modelos_sha256": [
+        "f93f171d75e31ddf7e7be6ad6175917bc0d9438629d421c6ed29313462d089cc",
+        "b9df8fb3a30922b577973544d7a97015f0838e26f307b204dd5584062eabb6e7",
+        "e141aca85e671b276b11c6a96b3fb4629b65fa512a385a62daf6d6e98ca74cd6",
+        "1ce23ddf33bb6db748446c735eeef9e78deee4c4cb3b27772ff46eb34225f203",
+        "f21f79a21634cc7f6401bee98dc54cb3acad76c6992ea25429697280aa8c9b51"
+      ],
+      "corte": {
+        "tipo": "fraccion_clientes",
+        "fraccion": 0.028,
+        "redondeo": "techo(fraccion · n) (evaluacion.ganancia.envios)",
+        "fuente": "resultados/e02_peso_baja1.json → resultados.multiclase_p1.corte.fraccion (= E01, PLAN_PRUEBAS.md § 5)",
+        "elegido_con": "201908 y 201909 (menor arrepentimiento máximo del ensamble)"
+      }
+    }
+  ],
+  "coincidencia": {
+    "interseccion": 3474,
+    "solo_recomendacion": 671,
+    "solo_alternativa": 529,
+    "jaccard": 0.743261,
+    "correlacion_de_rangos": 0.957452
+  },
+  "estado_calidad": "sin_alertas",
+  "incidentes": [
+    {
+      "regla": "lag_fila_distinto_calendario",
+      "tipo": "informativo",
+      "accion": "advertir",
+      "variables": [],
+      "detalle": {
+        "clientes": 14,
+        "lag1": 7,
+        "lag2": 13
+      }
+    },
+    {
+      "regla": "clientes_sin_historia",
+      "tipo": "informativo",
+      "accion": "advertir",
+      "variables": [],
+      "detalle": 4165
+    },
+    {
+      "regla": "estrategia_provisional",
+      "tipo": "informativo",
+      "accion": "advertir",
+      "variables": [
+        "binario_e01_300r"
+      ],
+      "detalle": "300 rondas, sin optimización (E01); corte de resultados/e02_peso_baja1.json → resultados.binario.corte.fraccion (= E01, PLAN_PRUEBAS.md § 5)"
+    },
+    {
+      "regla": "estrategia_provisional",
+      "tipo": "informativo",
+      "accion": "advertir",
+      "variables": [
+        "multiclase_p1_e01_300r"
+      ],
+      "detalle": "300 rondas, sin optimización (E01); corte de resultados/e02_peso_baja1.json → resultados.multiclase_p1.corte.fraccion (= E01, PLAN_PRUEBAS.md § 5)"
+    }
+  ],
+  "metricas_con_target": {
+    "estado": "pendiente",
+    "requiere_listas_de": "202002 y 202003",
+    "metricas": [
+      "ganancia por estrategia",
+      "AUC de BAJA+2",
+      "aciertos en el corte"
+    ],
+    "motivo": "la etiqueta de este mes depende de la presencia de cada cliente en los dos meses siguientes; se calcula cuando lleguen y si su uso es válido (CONSIGNA R1, PLAN_PRUEBAS § 1)"
+  },
+  "verificaciones": {
+    "scores_vs_modelos_originales": {
+      "clientes_iguales": true,
+      "estrategias": {
+        "binario_e01_300r": {
+          "semillas_identicas": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "sha256_original_ok": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "ensamble_identico": true,
+          "probabilidad_en_decisiones_identica": true,
+          "envios_esperados": 4145,
+          "decisiones_identicas": true,
+          "salida_oficial_probabilidad_identica": true,
+          "salida_oficial_enviar_identico": true,
+          "ok": true
+        },
+        "multiclase_p1_e01_300r": {
+          "semillas_identicas": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "sha256_original_ok": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "ensamble_identico": true,
+          "probabilidad_en_decisiones_identica": true,
+          "envios_esperados": 4003,
+          "decisiones_identicas": true,
+          "ok": true
+        }
+      },
+      "ok": true
+    },
+    "salida_ensayo_1": {
+      "nombre_churn_yyyymm": true,
+      "cabecera_exacta": true,
+      "clientes_no_nulos": true,
+      "clientes_sin_duplicados": true,
+      "probabilidad_finita_en_0_1": true,
+      "enviar_binario": true,
+      "al_menos_un_envio": true,
+      "envios_son_los_de_mayor_probabilidad": true,
+      "cobertura_igual_a_la_entrada": true,
+      "foto_mes_de_la_entrada_igual_al_nombre": true
+    },
+    "salida_ensayo_2": {
+      "nombre_churn_yyyymm": true,
+      "cabecera_exacta": true,
+      "clientes_no_nulos": true,
+      "clientes_sin_duplicados": true,
+      "probabilidad_finita_en_0_1": true,
+      "enviar_binario": true,
+      "al_menos_un_envio": true,
+      "envios_son_los_de_mayor_probabilidad": true,
+      "cobertura_igual_a_la_entrada": true,
+      "foto_mes_de_la_entrada_igual_al_nombre": true
+    }
+  },
+  "prueba_reintentos": {
+    "carpeta": "ejecuciones/entornos/reintentos_202001_20261124T181502",
+    "ok": true,
+    "pasos": [
+      {
+        "paso": "1 falla durante la publicación",
+        "codigo": 2,
+        "segundos": 104.4,
+        "ok": true
+      },
+      {
+        "paso": "2 el proceso muere después de publicar",
+        "codigo": 3,
+        "segundos": 108.6,
+        "ok": true
+      },
+      {
+        "paso": "3 reintento: reconcilia sin recalcular",
+        "codigo": 0,
+        "segundos": 3.5,
+        "ok": true
+      },
+      {
+        "paso": "4 mes completado: rechazado sin cambios",
+        "codigo": 4,
+        "segundos": 2.9,
+        "ok": true
+      }
+    ]
+  }
+}

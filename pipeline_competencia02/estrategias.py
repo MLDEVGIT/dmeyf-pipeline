@@ -92,7 +92,34 @@ class PorcentajeClientes(Estrategia):
         return enviar
 
 
+class FraccionClientes(Estrategia):
+    """Envía a los ⌈fraccion · n⌉ clientes de mayor probabilidad (n = clientes del mes).
+
+    La fracción sale del protocolo de evaluación (corte con menor arrepentimiento máximo entre
+    201908 y 201909, evaluacion/ganancia.py) y se usa con el mismo redondeo: evaluacion.ganancia.envios.
+    """
+
+    def __init__(self, fraccion: float, nombre: str = "fraccion", provisional: bool = True,
+                 nota: str = "fracción elegida en desarrollo (201908–201909); modelo candidato sin optimizar"):
+        if not 0 < fraccion <= 1:
+            raise ValueError("la fracción debe estar en (0, 1]")
+        self.fraccion, self.nombre, self.provisional, self.nota = float(fraccion), nombre, provisional, nota
+
+    def parametros(self) -> dict:
+        return {"fraccion": self.fraccion}
+
+    def cantidad(self, n_clientes: int) -> int:
+        from evaluacion.ganancia import envios
+        return envios(self.fraccion, n_clientes)
+
+    def seleccionar(self, clientes: np.ndarray, probabilidad: np.ndarray) -> np.ndarray:
+        enviar = np.zeros(len(clientes), bool)
+        enviar[orden_por_score(clientes, probabilidad)[:self.cantidad(len(clientes))]] = True
+        return enviar
+
+
 REGISTRO = {
+    "fraccion": lambda arg: FraccionClientes(float(arg)),
     "cupo_fijo": lambda arg: CupoFijo(int(arg)),
     "porcentaje": lambda arg: PorcentajeClientes(int(arg)),
 }
