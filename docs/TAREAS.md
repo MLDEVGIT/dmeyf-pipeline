@@ -69,6 +69,6 @@ Entre 1 y 3 hay que resolver en Zulip: el target de 201912, el alcance de la obs
 | T8 | Reporte acumulativo y mapeo a criterios | B8, B13 | José | reporte con 6 meses de ensayo |
 | T9 | Reconciliar el relevamiento de C01 (46 repos hallados en GitHub, `RELEVAMIENTO.md` § 2) con los enlaces de Zulip; relevar los que falten | — | quien tenga Zulip | inventario con id de mensaje |
 | T10 | Simulacro cronometrado de 3 meses seguidos, desde un clon limpio, en la máquina del vivo | todas | los tres, antes del 3-dic | checklist del día |
-| T11 | Pruebas incrementales E02–E06 (`PLAN_PRUEBAS.md` § 4), desarrollo en 201908–201909; congelar protocolo y correr F01 en 201910 una vez | B4–B7, B10 | Agustina + José | resultados en `PLAN_PRUEBAS.md` y tag `protocolo-final` |
+| T11 | Pruebas incrementales E03–E06 (`PLAN_PRUEBAS.md` § 4; E01 y E02 ejecutadas, referencia: binario), desarrollo en 201908–201909; congelar protocolo y correr F01 en 201910 una vez | B4–B7, B10 | Agustina + José | resultados en `PLAN_PRUEBAS.md` y tag `protocolo-final` |
 | T12 | Repetir T01 en la máquina del vivo y fijar el tope de árboles × semillas (`PLAN_PRUEBAS.md` § 6) | B3 | Martín | tope por estrategia |
 | T13 | Confirmar con la cátedra los importes de ganancia de C02 (`GANANCIA.md`) | — | quien tenga Zulip | fuente registrada |
