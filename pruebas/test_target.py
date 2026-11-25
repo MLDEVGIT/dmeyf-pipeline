@@ -52,7 +52,7 @@ class TestRegla(unittest.TestCase):
 
 class TestCatalogos(unittest.TestCase):
     def test_registro(self):
-        self.assertEqual(set(K.CATALOGOS), {"e01", "tc01"})
+        self.assertEqual(set(K.CATALOGOS), {"e01", "tc01", "ce02", "ce02_b20m10"})
         self.assertIn(K.ACTIVO, K.CATALOGOS)
         self.assertEqual(K.archivo("e01"), K.CATALOGO)
         self.assertEqual({K.CATALOGOS[k]["target_version"] for k in K.CATALOGOS}, {1, 2})

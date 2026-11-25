@@ -1,0 +1,524 @@
+{
+  "version": 1,
+  "nombre": "ce02_b20m10",
+  "creado": "2026-11-25T14:39:06",
+  "estado": "RESPALDO DE TIEMPO, no activo: binario de 20 semillas y multiclase de 10 (semillas 0–9), cortes de CE02; se mide sólo si el de 20 + 20 no entra en el tiempo del vivo (PLAN_PRUEBAS.md § 15)",
+  "target_version": 2,
+  "origen": {
+    "modelos_de": "ejecuciones/ce02/20261125T094345_13976",
+    "resumen": "resultados/ce02_ensambles_20.json",
+    "resumen_sha256": "9f7a5d3fcb5f973b149940c86f0491f6b522de29dca8b92a51632d51b1ce6a64"
+  },
+  "features": {
+    "definicion": "152 variables crudas + lag1, delta1, lag2, delta2 de cada una (760). lag_k = k-ésima observación previa del cliente (por fila, ordenado por foto_mes); delta_k = x − lag_k. Sin imputaciones. Igual a experimento_sampling/04 y pipeline_competencia02/features.py.",
+    "n": 760,
+    "sha256_nombres": "70759f43cfd86cb4cf430716375efcaeb98dc33b41e125c347bc8a7ea43f272f",
+    "archivo": "catalogo/predictores.json",
+    "lags": "por fila (k-ésima observación previa), NO por calendario"
+  },
+  "promedio": "media aritmética de las probabilidades de las semillas, en el orden de 'modelos'",
+  "orden_y_desempate": "probabilidad descendente; a igual probabilidad, numero_de_cliente ascendente",
+  "estrategias": [
+    {
+      "id": "binario_ce02_20s",
+      "rol": "recomendacion_provisional",
+      "objetivo": "binary",
+      "columna_score": null,
+      "score": "P(BAJA+1 ∪ BAJA+2): probabilidad del objetivo binario del baseline 208135 (positivo = BAJA+1 o BAJA+2)",
+      "num_class": null,
+      "candidato": "300 rondas, sin optimización (CE02: binario 20 semillas, multiclase 10)",
+      "target_version": 2,
+      "params": {
+        "learning_rate": 0.05,
+        "num_leaves": 63,
+        "min_data_in_leaf": 200,
+        "feature_fraction": 0.5,
+        "bagging_fraction": 1.0,
+        "bagging_freq": 0,
+        "lambda_l2": 0.0,
+        "max_bin": 255,
+        "data_random_seed": 1,
+        "deterministic": true,
+        "force_col_wise": true,
+        "verbosity": -1
+      },
+      "rondas": 300,
+      "corte": {
+        "tipo": "fraccion_clientes",
+        "fraccion": 0.0235,
+        "redondeo": "techo(fraccion · n) (evaluacion.ganancia.envios)",
+        "procedimiento": "mínimo volumen equivalente (MVE) del ensamble de 20: la menor fracción cuyo peor arrepentimiento entre 201908 y 201909 queda a τ₂₀ del mínimo; elegido por el criterio de robustez ante una reducción simulada de BAJA+2 (PLAN_PRUEBAS.md § 11, § 13 y § 14)",
+        "minimax_ensamble_20": 0.03675,
+        "minimax_ensamble_5": 0.04475,
+        "nota_minimax": "el minimax original del ensamble de 20 da la fracción minimax_ensamble_20; no es la usada",
+        "tau_20": 0.0038156166006943224,
+        "tramos_equivalentes_20": [
+          [
+            0.0235,
+            0.02525
+          ],
+          [
+            0.0355,
+            0.0395
+          ]
+        ],
+        "arrepentimiento_rho_0_33": {
+          "minimax": {
+            "201908": 0.15085,
+            "201909": 0.14675
+          },
+          "mve": {
+            "201908": 0.00735,
+            "201909": 0.03794
+          }
+        },
+        "fuente": "resultados/ce02_ensambles_20.json → recomendacion.binario.corte_recomendado",
+        "elegido_con": "201908 y 201909 (desarrollo; octubre bloqueado; nada de 2020)"
+      },
+      "modelos": [
+        {
+          "semilla": 20261124,
+          "archivo": "binario_ce02_20s/semilla_20261124.txt",
+          "sha256": "6777957fd7d16c87b98f39f8b3ae05bbb6dcd1d2943df2e61b6a8d6a4c082112",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261124.txt",
+          "sha256_origen": "c44aba4003f91f47ee84c8ab0bf17b11b9fd0389d01c5e2876f7cf5730d3e0c5",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "TC01 (copiado byte a byte por CE02)"
+        },
+        {
+          "semilla": 20261125,
+          "archivo": "binario_ce02_20s/semilla_20261125.txt",
+          "sha256": "5031c5d9794f657caf5da112a1471cd232feaf9f9ad13b9cbc3b4026148c5cb6",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261125.txt",
+          "sha256_origen": "196bf1334043dbc321e04f40a8dee7f97ccaffcd86bab518e178cb782a50b4d1",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "TC01 (copiado byte a byte por CE02)"
+        },
+        {
+          "semilla": 20261126,
+          "archivo": "binario_ce02_20s/semilla_20261126.txt",
+          "sha256": "ffd06f4af53dd99deb2d5e549f143527230fce6c38b5ec93edefde8588a05bbd",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261126.txt",
+          "sha256_origen": "5ea1fb9e4a4722a69b9dcb9dceddfa55f0028ad927c7ffef4449ae5a0b8b47ea",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "TC01 (copiado byte a byte por CE02)"
+        },
+        {
+          "semilla": 20261127,
+          "archivo": "binario_ce02_20s/semilla_20261127.txt",
+          "sha256": "b3cc4e6b4f66c8690e1b8425e4eca2973499c53919b30949fdb84b9e13c250a2",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261127.txt",
+          "sha256_origen": "76e686a0a9b869604dbffb31ebefcca942a4273ece9d199f96a4189a6fc9eb90",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "TC01 (copiado byte a byte por CE02)"
+        },
+        {
+          "semilla": 20261128,
+          "archivo": "binario_ce02_20s/semilla_20261128.txt",
+          "sha256": "9f7a17ec4b8f1a1d7dfb25b76bf90bd9b84d7a1d38385576ddf0e4e2d6588c15",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261128.txt",
+          "sha256_origen": "935da0612c610a386303bbd29e959e658e9d0222b564801b5d0be0fd2513c149",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "TC01 (copiado byte a byte por CE02)"
+        },
+        {
+          "semilla": 20261129,
+          "archivo": "binario_ce02_20s/semilla_20261129.txt",
+          "sha256": "01f9cbce690ad1ed39ec592f3d75dc939c5794d86ba7bdbe160f539ce4126439",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261129.txt",
+          "sha256_origen": "30c29ef9cc88a8fab426ecadd7bf6c983c624be267e5d63f5650cfd8b9b4b885",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261130,
+          "archivo": "binario_ce02_20s/semilla_20261130.txt",
+          "sha256": "1b2e56748c42081798ee54ebb230d7a504b2936f5e639d6e2e84d87ec1b9e828",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261130.txt",
+          "sha256_origen": "544e78c0d7927dce1d1b3898ab0ca6ec556ac6003a5db214862f3a3f26b7b47d",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261131,
+          "archivo": "binario_ce02_20s/semilla_20261131.txt",
+          "sha256": "b37455a55536bcb4e8db371eac37df46abf38517615f7e97e45074b245c58c3b",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261131.txt",
+          "sha256_origen": "6bb0693377ac2bbac0921e7cd0859161470d5dbb7ca5ab18bd7a65952153f0ef",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261132,
+          "archivo": "binario_ce02_20s/semilla_20261132.txt",
+          "sha256": "5ada41f782b4169b327fc7da0511634af533120a026c684f804a32917a065538",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261132.txt",
+          "sha256_origen": "f0499acd7ff1cf0a9a51be634be40970b4a446b6fe42373531548a78e3393207",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261133,
+          "archivo": "binario_ce02_20s/semilla_20261133.txt",
+          "sha256": "262245e90e411b61c1628607301cac30a8945bff44034b5b074b38ca6a82221e",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261133.txt",
+          "sha256_origen": "fce0ceba562ee37d31691114c89b626ba79b2a27e0c9830afe853260c690b92c",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261134,
+          "archivo": "binario_ce02_20s/semilla_20261134.txt",
+          "sha256": "b61c1989c3289c74da4e48b16ae9843cf60e1e44ad47c6171b01a522be1b0eee",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261134.txt",
+          "sha256_origen": "8208d82cd00cdda0a795b3f1b176bb7510851ab1323d2f13a6513b903a690947",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261135,
+          "archivo": "binario_ce02_20s/semilla_20261135.txt",
+          "sha256": "acc727e53f994e13dd8faba75cf72a337ecdcf4e58b552665accd4edff9278f9",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261135.txt",
+          "sha256_origen": "cf3e67279c9ab131af780eb20bc5245d4a4e6d7aa492ec8d9cf49a694d512e5f",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261136,
+          "archivo": "binario_ce02_20s/semilla_20261136.txt",
+          "sha256": "bb2a71cdc6d1ab5418166ccafdee703f20303c8221af20621f85999213a07338",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261136.txt",
+          "sha256_origen": "0f1d61d5d2bb4475698ede04a0583346c59908436ba63a07730383b4925e9154",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261137,
+          "archivo": "binario_ce02_20s/semilla_20261137.txt",
+          "sha256": "99815ff21d9531d961d0ae83e8705adbd7fbf9ce7f0668ee39f2fa77f2bc7e86",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261137.txt",
+          "sha256_origen": "0a983472c0fded06202f7504cea442d25e705edb701bbb68cc5c9aae3ef391d3",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261138,
+          "archivo": "binario_ce02_20s/semilla_20261138.txt",
+          "sha256": "c88c005a0a4657994bce776f99b19221229e8a8a15c89d61261b18eb94d9b141",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261138.txt",
+          "sha256_origen": "e6e2d6fe29c52111949689a7b80d32285bb659678f975314efe36ce022a6cac7",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261139,
+          "archivo": "binario_ce02_20s/semilla_20261139.txt",
+          "sha256": "e4c136005c641d00438fda310a26f43f5715047932f758e46809f42aabdf1524",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261139.txt",
+          "sha256_origen": "d500d0438336f36fb1e9af075497adb418b17b39cc11c0940910d41f3a1173f1",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261140,
+          "archivo": "binario_ce02_20s/semilla_20261140.txt",
+          "sha256": "10af3822cb1208525b89cd602b7fbe7fa3df4839d37cf371c30a3f9c9c270a3c",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261140.txt",
+          "sha256_origen": "93130220447766f4c890d44007e862c7bf901aa726ba927a843e5f4563a793e7",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261141,
+          "archivo": "binario_ce02_20s/semilla_20261141.txt",
+          "sha256": "12d7d52581d946aaefb2972b1b001e3b6a43c1be0e8d780dcc62a0d03b467171",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261141.txt",
+          "sha256_origen": "5ab97ca3d88fde032d69282ec536ddeae526aa2fb005d7068fedc458b18943d3",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261142,
+          "archivo": "binario_ce02_20s/semilla_20261142.txt",
+          "sha256": "8305836e95c3908464fa35b805dd76534ceecd5bc74e8778a9683a8bace7bae8",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261142.txt",
+          "sha256_origen": "be1a7c2d247f306ae90965b61e723d9186b169a0c5a1a349bae3a83d832accae",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261143,
+          "archivo": "binario_ce02_20s/semilla_20261143.txt",
+          "sha256": "48b3998d00ddb7fdcd27f7984ff7988efd14ec03774885ce8596ac6992ec0452",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/binario_20261143.txt",
+          "sha256_origen": "45bc1a62ef9dec5c0bddf0b494b42582f874019df7844e0e6ba4a807085a265b",
+          "rondas": 300,
+          "arboles": 300,
+          "entrenado_en": "CE02"
+        }
+      ]
+    },
+    {
+      "id": "multiclase_p1_ce02_10s",
+      "rol": "alternativa",
+      "objetivo": "multiclass",
+      "columna_score": 2,
+      "score": "P(BAJA+2): columna 2 del multiclase CONTINUA/BAJA+1/BAJA+2 (BAJA+1 con peso 1)",
+      "num_class": 3,
+      "candidato": "300 rondas, sin optimización (CE02: binario 20 semillas, multiclase 10)",
+      "target_version": 2,
+      "params": {
+        "learning_rate": 0.05,
+        "num_leaves": 63,
+        "min_data_in_leaf": 200,
+        "feature_fraction": 0.5,
+        "bagging_fraction": 1.0,
+        "bagging_freq": 0,
+        "lambda_l2": 0.0,
+        "max_bin": 255,
+        "data_random_seed": 1,
+        "deterministic": true,
+        "force_col_wise": true,
+        "verbosity": -1
+      },
+      "rondas": 300,
+      "corte": {
+        "tipo": "fraccion_clientes",
+        "fraccion": 0.02725,
+        "redondeo": "techo(fraccion · n) (evaluacion.ganancia.envios)",
+        "nota_tamano": "corte elegido sobre el ensamble de 20 y aplicado al de 10: en CE02 el corte del multiclase es estable con cualquier tamaño (2,7–3,0 %); configuración sólo para medir tiempo",
+        "procedimiento": "mínimo volumen equivalente (MVE) del ensamble de 20: la menor fracción cuyo peor arrepentimiento entre 201908 y 201909 queda a τ₂₀ del mínimo; elegido por el criterio de robustez ante una reducción simulada de BAJA+2 (PLAN_PRUEBAS.md § 11, § 13 y § 14)",
+        "minimax_ensamble_20": 0.02775,
+        "minimax_ensamble_5": 0.028,
+        "nota_minimax": "el minimax original del ensamble de 20 da la fracción minimax_ensamble_20; no es la usada",
+        "tau_20": 0.004847338446281426,
+        "tramos_equivalentes_20": [
+          [
+            0.02725,
+            0.02925
+          ]
+        ],
+        "arrepentimiento_rho_0_33": {
+          "minimax": {
+            "201908": 0.04219,
+            "201909": 0.03978
+          },
+          "mve": {
+            "201908": 0.03343,
+            "201909": 0.04037
+          }
+        },
+        "fuente": "resultados/ce02_ensambles_20.json → recomendacion.multiclase_p1.corte_recomendado",
+        "elegido_con": "201908 y 201909 (desarrollo; octubre bloqueado; nada de 2020)"
+      },
+      "modelos": [
+        {
+          "semilla": 20261124,
+          "archivo": "multiclase_p1_ce02_10s/semilla_20261124.txt",
+          "sha256": "e45e0a5f32b2becabd3df05086059bbc3a494b1828dfd4fb5a0862dacf1484f2",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/multiclase_20261124.txt",
+          "sha256_origen": "e8b9a6540378893728996584c9832c5e159fdc5c5b122afc0ce8133a47baedf2",
+          "rondas": 300,
+          "arboles": 900,
+          "entrenado_en": "TC01 (copiado byte a byte por CE02)"
+        },
+        {
+          "semilla": 20261125,
+          "archivo": "multiclase_p1_ce02_10s/semilla_20261125.txt",
+          "sha256": "6059362ca4ebf83e18e09318529577b29ba6610a7f16da2aafa5a2b8c82de500",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/multiclase_20261125.txt",
+          "sha256_origen": "8437a859882760787ef23558f626815e3e6d61a3ffc78dfd65a987d179b319fb",
+          "rondas": 300,
+          "arboles": 900,
+          "entrenado_en": "TC01 (copiado byte a byte por CE02)"
+        },
+        {
+          "semilla": 20261126,
+          "archivo": "multiclase_p1_ce02_10s/semilla_20261126.txt",
+          "sha256": "234c5d4b6daf576a92ec70107eae15e4f1b941d7680a6f9acefdd365568665d1",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/multiclase_20261126.txt",
+          "sha256_origen": "17681ce4881cd6fc3b37b8bf40cb0e2cdac21bfb9e2b852b5a318eadfeb1a41e",
+          "rondas": 300,
+          "arboles": 900,
+          "entrenado_en": "TC01 (copiado byte a byte por CE02)"
+        },
+        {
+          "semilla": 20261127,
+          "archivo": "multiclase_p1_ce02_10s/semilla_20261127.txt",
+          "sha256": "651353c359ae4c93593fdd055091da9f05d7c1133156ddf0c108085f72d4b234",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/multiclase_20261127.txt",
+          "sha256_origen": "2528e9e355e3a831801c5e0b69d8afff4debbf522e9a4d0b1348bbe519aea9c0",
+          "rondas": 300,
+          "arboles": 900,
+          "entrenado_en": "TC01 (copiado byte a byte por CE02)"
+        },
+        {
+          "semilla": 20261128,
+          "archivo": "multiclase_p1_ce02_10s/semilla_20261128.txt",
+          "sha256": "515f0a31931b29207800379c3979b3bd37905d0cb9e26fa8282d7067e898ece2",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/multiclase_20261128.txt",
+          "sha256_origen": "144a79558e7c52f2b3004579edf9ccc766f4d02f188bac57e5d072ba26a43f20",
+          "rondas": 300,
+          "arboles": 900,
+          "entrenado_en": "TC01 (copiado byte a byte por CE02)"
+        },
+        {
+          "semilla": 20261129,
+          "archivo": "multiclase_p1_ce02_10s/semilla_20261129.txt",
+          "sha256": "226271ac846261d14b0dc7f3fe9107796a964a5781c33683067ba40225ed76ee",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/multiclase_20261129.txt",
+          "sha256_origen": "d5eb188409abb8675cac5338431d4c53ef87dce35e8c9d55272f2cf06b9402c5",
+          "rondas": 300,
+          "arboles": 900,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261130,
+          "archivo": "multiclase_p1_ce02_10s/semilla_20261130.txt",
+          "sha256": "83834e0f01b5cbd837bbc58b03fd5ca5fca2d4f87f2e5716f539eb02f8c5a85c",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/multiclase_20261130.txt",
+          "sha256_origen": "ede911b86f107cf3545962a1d1b242ce72450ee1810c6a1e8f493b7e8d794871",
+          "rondas": 300,
+          "arboles": 900,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261131,
+          "archivo": "multiclase_p1_ce02_10s/semilla_20261131.txt",
+          "sha256": "cb7bb9fe263541baa1bd22054118920581b617cd413a01a72926b380fed830e5",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/multiclase_20261131.txt",
+          "sha256_origen": "ed263b6cc0fca020b1ec6dfb4b5b05f33345c03212012ab4895cd27a2f41ff37",
+          "rondas": 300,
+          "arboles": 900,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261132,
+          "archivo": "multiclase_p1_ce02_10s/semilla_20261132.txt",
+          "sha256": "6431b88ec4968d36c43d0585e64216295888ea52131474b08d1331c2e4d00ce1",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/multiclase_20261132.txt",
+          "sha256_origen": "0d54653cfd726d1f3ac5749560070bad11c33ccef3e5e492f14366c004a4229f",
+          "rondas": 300,
+          "arboles": 900,
+          "entrenado_en": "CE02"
+        },
+        {
+          "semilla": 20261133,
+          "archivo": "multiclase_p1_ce02_10s/semilla_20261133.txt",
+          "sha256": "c31bd5b63dee0067eeaded8677b4d79ab5c9f464822e1c7ba762f3fdaf5b97df",
+          "origen": "ejecuciones/ce02/20261125T094345_13976/modelos/multiclase_20261133.txt",
+          "sha256_origen": "0ba5b5106efdbbbe2f161b09e48a6bc67c1601fcc65b730e5d1e549cc686a46a",
+          "rondas": 300,
+          "arboles": 900,
+          "entrenado_en": "CE02"
+        }
+      ]
+    }
+  ],
+  "target": {
+    "archivo": "pipeline_competencia02/target_2019_v2.parquet",
+    "sha256": "f533e499940b9bf1c144d616a63235a36e907ff1dd462b7628634c6b21836da0",
+    "version": 2
+  },
+  "composicion": {
+    "registro": "resultados/ce02_composicion.json",
+    "sha256": "5f430c8f5e6ce9498e444c9ffd0019b3cb77047b047cd54b101c0b5203c1fc72",
+    "tipo": "anidado: prefijo de la lista de semillas registrada antes de entrenar",
+    "por_estrategia": {
+      "binario_ce02_20s": {
+        "tamano": 20,
+        "indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "semillas": [
+          20261124,
+          20261125,
+          20261126,
+          20261127,
+          20261128,
+          20261129,
+          20261130,
+          20261131,
+          20261132,
+          20261133,
+          20261134,
+          20261135,
+          20261136,
+          20261137,
+          20261138,
+          20261139,
+          20261140,
+          20261141,
+          20261142,
+          20261143
+        ]
+      },
+      "multiclase_p1_ce02_10s": {
+        "tamano": 10,
+        "indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "semillas": [
+          20261124,
+          20261125,
+          20261126,
+          20261127,
+          20261128,
+          20261129,
+          20261130,
+          20261131,
+          20261132,
+          20261133
+        ]
+      }
+    }
+  }
+}

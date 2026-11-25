@@ -3,7 +3,7 @@
 Estrategias (catálogo copiado en <ejecución>/modelos/estrategias.json; ver catalogo.py):
   recomendacion_provisional  binario_e01_300r        score = P(BAJA+1 ∪ BAJA+2) (objetivo binario)
   alternativa                multiclase_p1_e01_300r  score = P(BAJA+2) (multiclase, BAJA+1 con peso 1)
-Cada una promedia las probabilidades de sus 5 semillas y corta en su propia fracción de clientes.
+Cada una promedia las probabilidades de sus semillas (5 en tc01, 20 en ce02) y corta en su propia fracción de clientes.
 La salida oficial lleva la recomendación (binario). Las predicciones y decisiones de las dos quedan en
 diagnosticos/<mes>/ y se comparan en el reporte. Al publicar, las métricas con target del mes son pendientes; se
 completan después en el reporte acumulado (retrospectiva.py) cuando llegan los dos meses siguientes, con la etiqueta
@@ -11,7 +11,7 @@ reconstruida por presencia. Son monitoreo: no cambian modelos, cortes ni salidas
 
 Etapas: recepción -> validación (ejecutar_mes.validar_entrada) -> perfil de columnas -> features del mes (features.py,
 la misma definición del entrenamiento) -> verificación de features (nombres, orden, tipos, lags) -> inferencia de las
-10 semillas -> estrategias -> escritura -> publicación todo o nada (diagnóstico, historia y, al final, la salida
+semillas de las dos estrategias -> estrategias -> escritura -> publicación todo o nada (diagnóstico, historia y, al final, la salida
 oficial) -> estado completado -> reporte acumulado regenerado.
 
 Reintentos y consistencia:
