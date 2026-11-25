@@ -595,7 +595,9 @@ coinciden el 88–89 % de los enviados con la misma *k*.
 | | corregido | 2,800 % | 0,18 % | 3,5 % | 2,450 %–3,475 % |
 
 **El corte del binario cambia de 2,9 % a 4,475 %.** No es un cambio del modelo, sino de dónde cae el
-mínimo en una curva plana. El peor arrepentimiento del binario corregido, con la ganancia suavizada,
+mínimo en una curva plana. *(Corregido en § 12: la zona no es contigua. Son dos zonas casi equivalentes,
+cerca de 2,2 % y de 3,7 % a 4,65 %, y el 2,9 % cae en el valle entre ambas. Además, el reentrenamiento sí
+corrió los máximos de la curva del ensamble.)* El peor arrepentimiento del binario corregido, con la ganancia suavizada,
 en cada fracción:
 
 | *f* | 2,5 % | 2,9 % | 3,5 % | 4,0 % | 4,475 % | 5,0 % |
@@ -638,3 +640,257 @@ porque el entrenamiento es determinista, pero ese tiempo no es comparable. Total
 - **El corte es sensible a la meseta.** Las alternativas, como una fracción central de la meseta, la
   mediana de las fracciones por semilla o un umbral de probabilidad, se evalúan con 2019 antes del
   vivo.
+
+## 11. CE01 — estabilidad del corte (protocolo, escrito antes de calcular un corte nuevo)
+
+Rama `martin/estabilidad-corte`. Script: `experimentos/ce01_estabilidad_corte.py`. No reentrena: usa
+los modelos guardados de E01 (anteriores) y de TC01 (corregidos), vueltos a predecir.
+
+**Motivación.**
+- **Origen.** La revisión la motivó el ensayo **exploratorio** de 2020 (`INTEGRACION.md`, secuencia
+  con `tc01`). El corte del binario corregido, 4,475 %, envió en 2020 entre 6.400 y 6.800 clientes
+  por mes y perdió entre 7 y 38 M por mes frente al 2,9 % anterior.
+- **Qué no se usa.** Esos números de 2020 **no se usan** en este análisis ni para elegir nada.
+- **Datos.** Todo se calcula con 201908 y 201909, con el target versión 2. Octubre sigue bloqueado
+  (`evaluacion/particiones.py`).
+
+**1. Descomposición reentrenamiento contra corte.**
+- **Celdas:** modelos {anterior, corregido} × cortes {2,9 %, 4,475 %} y, para el multiclase, también
+  2,8 %.
+- **Métricas por celda y mes:**
+  - envíos;
+  - ganancia del ensamble, sin suavizar y suavizada;
+  - ganancia por semilla, con media y desvío.
+- **Efectos:**
+  - del reentrenamiento: corregido − anterior, con el corte fijo;
+  - del corte: 4,475 % − 2,9 %, con el modelo fijo;
+  - interacción.
+
+**2. Revisión del minimax vigente** (`evaluacion/ganancia.corte_minimax`, sin cambios):
+- **Curva:** Gs_m(k), la ganancia del ensamble suavizada con una media móvil centrada de 501
+  posiciones.
+- **Grilla:** *f* de 0,25 % a 8 % en pasos de 0,025 %, con k_m(f) = ⌈f · n_m⌉.
+- **Arrepentimiento por mes:** r_m(f) = 1 − Gs_m(k_m(f)) / max Gs_m.
+- **Objetivo:** peor(f) = max_m r_m(f); se elige f* = argmin peor(f).
+- **Desempate:** `np.nanargmin` toma el **primer** mínimo, que es la fracción **menor**.
+- **Se informa:**
+  - el máximo de cada mes (ganancia suavizada y sin suavizar, *k* y fracción);
+  - peor(f) en toda la grilla;
+  - las 10 mejores fracciones;
+  - por qué gana f*.
+- **Meseta.** Para cada tolerancia τ, el conjunto {f : peor(f) ≤ peor(f*) + τ}. Se informa si es
+  **contiguo** (cantidad de tramos), el rango de *f* y de envíos, y cuánto varía Gs_m al recorrerlo.
+
+**3. Procedimiento nuevo: mínimo volumen equivalente (MVE).**
+- **Regla:** f_τ = **min** { f : peor(f) ≤ peor(f*) + τ }. Entre las fracciones prácticamente
+  equivalentes a la del minimax, se queda con la de **menos envíos**. Con τ = 0 reproduce el minimax.
+- **Por qué favorecer el menor volumen.**
+  - **El margen en la meseta ya es casi cero.** Dentro de la meseta, la ganancia marginal de un envío
+    es G(k+1) − G(k) = 1.100.000 · 1[BAJA+2] − 27.500. Su valor esperado es casi cero: la precisión
+    marginal ronda el umbral de 2,5 %.
+  - **Una caída de prevalencia vuelve negativos esos envíos.** Si en un mes hay menos BAJA+2, la
+    precisión marginal cae debajo del umbral. Cada envío extra de la meseta pasa a restar, y la
+    pérdida crece con la cantidad de envíos extra.
+  - **Con ganancias equivalentes, menos envíos significa menos exposición** a ese riesgo. Es un
+    argumento de la fórmula de ganancia, no de los datos de 2020.
+- **Tolerancia τ**, fijada con 2019 por modelo y objetivo. Es el **error estándar entre semillas** de
+  la ganancia del ensamble en f*, relativo al máximo:
+
+  τ = media_m [ desvío_s( Gs_{m,s}(k_m(f*)) ) / ( √S · max Gs_m ) ]
+
+  con Gs_{m,s} la curva suavizada de la semilla *s* sola y S = 5.
+  - **Lectura:** dos fracciones cuya ganancia difiere menos que el ruido del ensamble entre semillas no
+    se pueden distinguir con estos datos.
+  - **Sensibilidad:** tabla con τ ∈ {0; 0,25; 0,5; 1; 1,5; 2; 3; 5} %. Para cada τ: *f*, envíos,
+    ganancia de cada mes, peor arrepentimiento y traslados.
+
+**4. Estabilidad y traslado** (para minimax y para MVE con el τ calculado):
+- **Entre semillas.** Fracción que elegiría cada semilla sola, con sus propias curvas y la misma τ:
+  rango y desvío.
+- **Traslado agosto → septiembre y septiembre → agosto.** Se elige con un solo mes (r_m(f) ≤ τ y la
+  menor *f*; con τ = 0, el máximo del mes) y se mide en el otro: ganancia y arrepentimiento.
+- **Selección contra evaluación.** Se informan por separado:
+  - **selección:** las cifras en los mismos meses con que se eligió el corte (peor(f) en muestra,
+    optimista);
+  - **evaluación:** el traslado al otro mes y la ganancia de cada semilla en el corte elegido.
+
+**5. Criterio de recomendación, fijado de antemano.** Para el binario corregido se recomienda MVE con
+el τ calculado en lugar del minimax si se cumplen las tres condiciones:
+- el rango de *f* entre semillas no es mayor que el del minimax;
+- el peor arrepentimiento de traslado no supera al del minimax en más de τ;
+- envía menos que el minimax.
+
+Si no se cumplen, se recomienda conservar el minimax o, si las condiciones se contradicen, discutirlo.
+La recomendación **no activa** ningún corte. El catálogo `tc01` y las corridas existentes no cambian:
+activar otro corte requiere un catálogo nuevo y acuerdo del grupo.
+
+**Verificaciones del script:**
+- las predicciones vueltas a predecir, en float32, son iguales a las guardadas por E01 y TC01;
+- el minimax recalculado reproduce las fracciones registradas: 2,9 % y 2,8 % para E01, 4,475 % y
+  2,8 % para TC01;
+- las ganancias en esas fracciones coinciden con `resultados.json`.
+
+## 12. Resultados de CE01
+
+- **Resumen versionado:** `resultados/ce01_estabilidad_corte.json`, sin datos por cliente.
+- **Figuras:** `docs/figuras/ce01_curvas_ganancia.png`, `ce01_peor_arrepentimiento.png` y
+  `ce01_sensibilidad_tau.png`.
+- **Protocolo fijado antes de calcular:** el sha256 de `PLAN_PRUEBAS.md` registrado al inicio
+  (`af3c670606c3…`) es el del archivo con el § 11 y sin este § 12.
+- **Motivación:** el ensayo exploratorio de 2020. Ningún dato de 2020 se usó: todo con 201908 y
+  201909, target versión 2. Octubre bloqueado.
+- **Verificaciones, todas OK:**
+  - las 20 predicciones, vueltas a predecir, son iguales a las guardadas por E01 y TC01;
+  - el minimax reproduce 2,9 %, 2,8 %, 4,475 % y 2,8 %;
+  - las ganancias en esas fracciones coinciden con `resultados.json`.
+
+![Curvas de ganancia](figuras/ce01_curvas_ganancia.png)
+
+### 1. Reentrenamiento contra corte (binario)
+
+Ganancia del ensamble sin suavizar, 201908 / 201909, en millones. Entre paréntesis, la media ±
+desvío de las semillas solas.
+
+| Modelos | 2,9 % (3.822 / 3.870 envíos) | 4,475 % (5.897 / 5.971 envíos) |
+|---|---|---|
+| Anteriores (E01) | 202,9 / 250,0 (191,9 ± 1,9 / 243,6 ± 5,8) | 195,3 / 245,0 (186,3 ± 4,0 / 239,9 ± 5,3) |
+| Corregidos (TC01) | 197,4 / 243,4 (195,0 ± 3,0 / 243,8 ± 6,7) | 200,8 / 253,8 (190,5 ± 4,2 / 243,2 ± 4,2) |
+
+| Efecto (ensamble, M) | 201908 | 201909 |
+|---|---|---|
+| Reentrenamiento con corte 2,9 % | −5,5 | −6,6 |
+| Reentrenamiento con corte 4,475 % | +5,5 | +8,8 |
+| Corte (4,475 − 2,9) con los anteriores | −7,6 | −5,0 |
+| Corte (4,475 − 2,9) con los corregidos | +3,4 | +10,4 |
+| Interacción | +11,0 | +15,4 |
+
+**Lectura.**
+- **No hay un efecto del reentrenamiento independiente del corte.** El reentrenamiento cambió la
+  forma de la curva del ensamble. Los máximos suavizados de los anteriores están en 2,72 % y 2,18 %;
+  los de los corregidos, en 4,27 % y 4,42 %. Por eso cada modelo gana en su propio corte y pierde en
+  el del otro.
+- **Por semilla (evaluación) la preferencia no se mantiene.** Las semillas corregidas solas rinden
+  igual o mejor en 2,9 % que en 4,475 %: 195,0 contra 190,5 M en agosto y 243,8 contra 243,2 M en
+  septiembre. La preferencia por 4,475 % es del ensamble de 5 semillas, no de cada modelo.
+- **Multiclase.** Con su corte de 2,8 %, reentrenar da 0,0 M en agosto y +3,3 M en septiembre. Con
+  4,475 % los dos modelos pierden entre 9 y 23 M por mes, así que su curva no tiene el
+  desplazamiento del binario.
+
+### 2. Revisión del minimax vigente
+
+![Peor arrepentimiento](figuras/ce01_peor_arrepentimiento.png)
+
+- **Función objetivo y desempate:** los del § 11. En el óptimo no hay empates: el binario corregido
+  da 4,475 % con 0,236 %, 4,5 % con 0,246 % y 4,35 % con 0,273 %. El desempate por la menor
+  fracción no interviene.
+- **Por qué elige 4,475 %.** Los dos meses tienen su máximo en la misma zona:
+
+  | Mes | Máximo suavizado | Fracción | Máximo sin suavizar | Fracción |
+  |---|---|---|---|---|
+  | 201908 | 201,5 M (k = 5.624) | 4,27 % | 203,5 M (k = 5.440) | 4,13 % |
+  | 201909 | 252,4 M (k = 5.891) | 4,42 % | 254,4 M (k = 5.989) | 4,49 % |
+
+  En 4,475 % el arrepentimiento es de 0,24 % en agosto, que es el que manda, y de 0,14 % en
+  septiembre.
+- **El 2,9 % cae en un valle de la curva corregida.** Ahí el peor arrepentimiento es 2,95 %, con
+  septiembre en 2,95 % y agosto en 1,41 %.
+- **Binario anterior.** Su minimax, 2,9 % con 0,866 %, casi empata con 2,45 % (0,872 %): también
+  estaba sobre una zona plana.
+- **¿La meseta es contigua?** No. Para el binario corregido, el conjunto {f : peor(f) ≤ peor* + τ}
+  es así:
+
+| τ | Tramos | Envíos 201908 | Ganancia suavizada en el conjunto, 201908 / 201909 (M) |
+|---|---|---|---|
+| 0,25 % | [4,30 – 4,525] | 5.667–5.963 | 200,6–201,3 / 251,3–252,4 |
+| 0,5 % | [3,925 – 3,95] · [4,20 – 4,575] | 5.173–6.029 | 200,1–201,5 / 250,6–252,4 |
+| 1 % | [3,70 – 4,65] | 4.876–6.128 | 199,0–201,5 / 249,4–252,4 |
+| 1,5 % | [2,25 – 2,375] · [3,125 – 3,30] · [3,625 – 4,70] | 2.965–6.194 | 198,3–201,5 / 248,0–252,4 |
+| 2 % | [2,15 – 2,45] · [3,025 – 4,725] | 2.834–6.227 | 197,1–201,5 / 246,7–252,4 |
+| 3 % | [2,025 – 2,625] · [2,875 – 4,825] | 2.669–6.359 | 195,0–201,5 / 244,3–252,4 |
+| 5 % | [1,85 – 5,025] | 2.438–6.622 | 191,2–201,5 / 239,7–252,4 |
+
+- **Dos zonas.** Hay dos zonas casi equivalentes, una cerca de 2,2 % y otra de 3,7 % a 4,65 %,
+  separadas por un valle de 2,5 % a 3,0 %. La zona baja vuelve a entrar con τ ≥ 1,5 %.
+- **Dentro de la zona alta,** recorrerla (τ = 1 %) cambia la ganancia suavizada hasta 2,5 M en agosto
+  y 3,0 M en septiembre, alrededor de 1,2 %.
+- **Corrección de lo dicho antes.** El § 10 y `INTEGRACION.md` decían "meseta entre 2,5 % y 4,475 %".
+  No es contigua y el 2,9 % está en el valle.
+
+### 3. Mínimo volumen equivalente (MVE) y sensibilidad
+
+![Sensibilidad a τ](figuras/ce01_sensibilidad_tau.png)
+
+**τ calculado con el error estándar entre semillas.**
+
+| Objetivo | Modelos | τ | Minimax | MVE |
+|---|---|---|---|---|
+| Binario | anteriores | 0,78 % | 2,9 % | 2,375 % |
+| Binario | corregidos | **0,82 %** | 4,475 % | **3,85 %** (5.074 / 5.137 envíos, −14 %) |
+| Multiclase | anteriores | 0,92 % | 2,8 % | 2,6 % |
+| Multiclase | corregidos | 0,88 % | 2,8 % | 2,525 % |
+
+**Sensibilidad del binario corregido.** "Selección" son las cifras en los meses con que se elige, en
+muestra. "Evaluación" es el traslado al otro mes y la fracción que elige cada semilla sola.
+
+| τ | *f* | Envíos 201908 | Selección: ganancia 201908 / 201909 (M) | Selección: peor arrepentimiento | Evaluación: peor traslado | Evaluación: *f* por semilla |
+|---|---|---|---|---|---|---|
+| 0 (minimax) | 4,475 % | 5.897 | 200,8 / 253,8 | 0,24 % | **0,55 %** | 2,475–4,075 % |
+| 0,25 % | 4,30 % | 5.667 | 200,6 / 253,6 | 0,44 % | 0,80 % | 2,325–4,05 % |
+| 0,5 % | 3,925 % | 5.173 | 200,9 / 252,0 | 0,68 % | 0,69 % | 2,30–4,025 % |
+| **0,82 % (calculado)** | **3,85 %** | 5.074 | 199,3 / 252,5 | 0,99 % | 2,29 % | 2,275–3,975 % |
+| 1 % | 3,70 % | 4.876 | 199,2 / 248,1 | 1,23 % | 1,76 % | 2,25–3,20 % |
+| 1,5 % | 2,25 % | 2.965 | 199,0 / 250,8 | 1,71 % | 1,58 % | 2,175–2,65 % |
+| 2 % | 2,15 % | 2.834 | 197,1 / 248,9 | 2,23 % | 2,10 % | 2,075–2,575 % |
+| 3 % | 2,025 % | 2.669 | 195,0 / 242,5 | 3,20 % | 7,07 % | 1,875–2,275 % |
+| 5 % | 1,85 % | 2.438 | 191,5 / 243,4 | 5,10 % | 8,46 % | 1,75–2,075 % |
+
+**Traslados del binario corregido.**
+- **Minimax:** elegido en agosto (4,275 %) da 252,3 M en septiembre, con 0,55 % de arrepentimiento;
+  elegido en septiembre (4,40 %) da 202,4 M en agosto, con 0,43 %.
+- **MVE con τ calculado:** elegido en agosto (2,475 %) da 245,8 M en septiembre, con 2,29 %; elegido
+  en septiembre (3,825 %) da 198,0 M en agosto, con 1,08 %. Con un solo mes, agosto tiene su propia
+  zona baja dentro de τ, por eso el traslado empeora.
+
+**Estabilidad entre semillas (evaluación).**
+
+| Modelos | Minimax | MVE con τ calculado |
+|---|---|---|
+| Binario corregido | 2,475 · 4,075 · 2,65 · 2,825 · 3,425 % (rango 1,60 pp) | 2,275 · 3,975 · 2,40 · 2,60 · 3,25 % (rango 1,70 pp) |
+| Binario anterior | 3,875 · 2,975 · 2,50 · 2,275 · 2,80 % (rango 1,60 pp) | 2,375 · 2,65 · 2,35 · 2,20 · 2,575 % (rango 0,45 pp) |
+| Multiclase corregido | 2,70 · 3,275 · 2,45 · 3,375 · 3,475 % (rango 1,03 pp) | rango 0,78 pp |
+
+La fracción del ensamble del binario corregido, 4,475 %, queda **fuera** del rango de las semillas
+solas. Tres de las cinco eligen menos de 2,9 %.
+
+### 4. Criterio del § 11 y recomendación
+
+| Condición (binario corregido, MVE con τ = 0,82 % contra minimax) | Resultado |
+|---|---|
+| 1. Rango de *f* entre semillas no mayor | **No** (1,70 contra 1,60 pp) |
+| 2. Peor traslado no mayor que el del minimax + τ | **No** (2,29 % contra 0,55 % + 0,82 %) |
+| 3. Envía menos | Sí (3,85 % contra 4,475 %) |
+
+⇒ **Según el criterio fijado, MVE no se recomienda en lugar del minimax.** No se activa ningún corte:
+`tc01` y las corridas existentes no cambian.
+
+**Recomendación (para discutir antes de activar otro corte).**
+1. **No reemplazar el corte por MVE con τ = 0,82 %.** Manda menos, pero es menos estable y traslada
+   peor.
+2. **El corte del binario corregido está mal determinado con 2 meses y 5 semillas.**
+   - Las semillas solas eligen entre 2,5 % y 4,1 %, y el ensamble queda fuera de ese rango.
+   - Hay dos zonas casi equivalentes. La baja, cerca de 2,2 %, queda a unos 1,5 puntos de
+     arrepentimiento del óptimo.
+   - Con τ = 1,5 % aparece una solución de 2,25 % con mejor estabilidad: rango de semillas 0,48 pp y
+     traslado 1,58 %. Pero esa τ no surge de la regla fijada, y elegirla ahora sería ajustar mirando
+     el resultado.
+3. **Próximo paso propuesto (CE02, offline, sólo con 2019).** Bajar el ruido del ensamble antes de
+   volver a elegir: por ejemplo, 20 semillas en lugar de 5. Después, aplicar sin cambios el minimax y
+   el MVE de este protocolo, y además, como variante fijada de antemano, evaluar el corte bajo una
+   caída simulada de la prevalencia de BAJA+2 en 201908–201909. Requiere reentrenar y queda para
+   acordar.
+4. **Hasta entonces.** La decisión de qué catálogo usar en vivo es del grupo:
+   - `tc01` (4,475 %), según el protocolo § 9;
+   - `e01` (2,9 %), disponible con `--catalogo e01`.
+
+   El multiclase tiene un corte más estable (2,8 %, zona contigua), pero traslada peor (3,5 %) y la
+   regla de E02 no lo adopta como recomendación.

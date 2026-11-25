@@ -12,7 +12,9 @@ Recibe el CSV crudo de un mes, sin targets, y produce `churn_<yyyymm>.csv` con
 >   - **recomendación provisional** (salida oficial): binario corregido, score = **P(BAJA+1 ∪ BAJA+2)**, corte **4,475 %**;
 >   - **alternativa** (reporte): multiclase corregido de peso 1, score = **P(BAJA+2)**, corte 2,8 %.
 >
->   **El corte del binario está en revisión**: cayó en el borde de una meseta y en 2020 envía de más (pendiente 0 de `INTEGRACION.md`).
+>   **El corte del binario está en revisión.** CE01 (`docs/PLAN_PRUEBAS.md` § 11–12, sólo 2019) mostró que está mal
+>   determinado con 5 semillas: las semillas solas eligen entre 2,5 % y 4,1 %. El mínimo volumen equivalente no
+>   cumplió el criterio fijado, así que no se activa otro corte. Pendiente 0 de `INTEGRACION.md`.
 >   El catálogo anterior, `e01` (corte del binario 2,9 %), se conserva.
 > - Las dos son candidatos de 300 rondas **sin optimización**, con 5 semillas promediadas.
 > - **Ensayo secuencial** (un archivo por vez, reintento provocado en 202003), con `e01` y con `tc01`:
@@ -104,6 +106,7 @@ python -m experimentos.t01_tiempo_inferencia --e01 ejecuciones/e01/<marca>
 python -m experimentos.tc01_target_2019                                       # target 2019 versión 2 (no sobrescribe)
 python -m experimentos.tc01_target_corregido --e01 ejecuciones/e01/<marca>    # reentrena con target v2 y compara
 python scripts/comparar_secuencias.py --anterior <carpeta> --nueva <carpeta> --salida <json>
+python -m experimentos.ce01_estabilidad_corte --e01 ejecuciones/e01/<marca> --tc01 ejecuciones/tc01/<marca>   # estabilidad del corte
 ```
 
 `ejecutar_mes` y `entorno` son el pipeline anterior de un solo modelo (diagnóstico):
@@ -119,8 +122,8 @@ se conservan porque `mensual.py` reutiliza su validación, su candado y su publi
 | `pipeline_competencia02/config.py` | Resolución de rutas desde `config.toml` / variables de entorno. |
 | `scripts/` | `verificar_salida.py` (chequeo independiente de un `churn_<yyyymm>.csv`), `verificar_scores.py` (scores contra los modelos originales) `probar_reintentos.py` (fallas y reintentos) y `analizar_columnas_en_cero.py` (diagnóstico de 202006). |
 | `evaluacion/` | Ganancia (premio bruto, costo, neta; `docs/GANANCIA.md`), curvas, corte por fracción con arrepentimiento mínimo, **definición única del target** (`target.py`), y particiones temporales que **bloquean por código** la lectura de etiquetas fuera de lo permitido. |
-| `experimentos/` | Pruebas incrementales del `docs/PLAN_PRUEBAS.md`: `e01_binario_vs_multiclase.py`, `e02_peso_baja1.py`, `t01_tiempo_inferencia.py`, `tc01_target_2019.py`, `tc01_target_corregido.py`. Salidas completas en `ejecuciones/` (no versionado). |
-| `resultados/` | Resúmenes versionados de cada experimento, sin datos por cliente (`e02_peso_baja1.json`, `i01_ensayo_202001.json`, `i02_secuencia_202001_202006.json`, `i02_columnas_en_cero_202006.json`, `i03_correccion_target_retrospectivo.json`, `tc01_target_2019_v2.json`, `tc01_target_corregido.json`, `i04_secuencia_tc01_202001_202006.json`, `i05_comparacion_secuencias_e01_tc01.json`). |
+| `experimentos/` | Pruebas incrementales del `docs/PLAN_PRUEBAS.md`: `e01_binario_vs_multiclase.py`, `e02_peso_baja1.py`, `t01_tiempo_inferencia.py`, `tc01_target_2019.py`, `tc01_target_corregido.py`, `ce01_estabilidad_corte.py`. Salidas completas en `ejecuciones/` (no versionado). |
+| `resultados/` | Resúmenes versionados de cada experimento, sin datos por cliente (`e02_peso_baja1.json`, `i01_ensayo_202001.json`, `i02_secuencia_202001_202006.json`, `i02_columnas_en_cero_202006.json`, `i03_correccion_target_retrospectivo.json`, `tc01_target_2019_v2.json`, `tc01_target_corregido.json`, `i04_secuencia_tc01_202001_202006.json`, `i05_comparacion_secuencias_e01_tc01.json`, `ce01_estabilidad_corte.json`). Figuras en `docs/figuras/`. |
 | `pruebas/` | Pruebas unitarias de `evaluacion/` y del pipeline mensual (`python -m unittest discover -s pruebas -t .`). |
 | `entrenamiento/legado/` | Scripts que produjeron el modelo diagnóstico (copiados sin cambios; todavía usan rutas fijas). |
 | `referencia/01_filas_por_mes.csv` | Conteo de filas por mes de 2019 (sin datos de clientes), usado por `preparar_insumos`. |
