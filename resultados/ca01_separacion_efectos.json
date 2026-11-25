@@ -1,0 +1,991 @@
+{
+  "experimento": "CA01 separación de efectos ensamble × corte",
+  "exploratorio": true,
+  "nota": "EXPLORATORIO: resultados de 2020; no cambian tamaño, cortes ni roles, elegidos sólo con 201908–201909 (R1, PLAN_PRUEBAS.md § 15)",
+  "tc01": "ejecuciones/entornos/secuencia_tc01_202001_202006_20261125T082349",
+  "candidato": "ejecuciones/entornos/secuencia_ce02_202001_202006_20261125T143926",
+  "cortes": {
+    "binario": {
+      "tc01": 0.04475,
+      "candidato": 0.0235,
+      "minimax_20": 0.03675
+    },
+    "multiclase_p1": {
+      "tc01": 0.028,
+      "candidato": 0.02725
+    }
+  },
+  "ensambles": {
+    "binario": [
+      5,
+      20
+    ],
+    "multiclase_p1": [
+      5,
+      10,
+      20
+    ]
+  },
+  "meses": {
+    "202001": {
+      "clientes": 142929,
+      "target": "completa",
+      "identidad": {
+        "binario": {
+          "semillas_tc01_iguales_a_las_primeras_5": true,
+          "promedio_semillas_0_4_igual_a_tc01_publicado": true,
+          "ensamble_candidato_igual_a_promedio_de_20": true
+        },
+        "multiclase_p1": {
+          "semillas_tc01_iguales_a_las_primeras_5": true,
+          "promedio_semillas_0_4_igual_a_tc01_publicado": true,
+          "ensamble_candidato_igual_a_promedio_de_20": true
+        }
+      },
+      "brazos": {
+        "binario": {
+          "celdas": {
+            "e5_tc01": {
+              "ensamble": 5,
+              "corte": "tc01",
+              "fraccion": 0.04475,
+              "envios": 6397,
+              "jaccard_con_tc01_publicado": 1.0,
+              "baja2_enviados": 372,
+              "ganancia": 233282500
+            },
+            "e5_candidato": {
+              "ensamble": 5,
+              "corte": "candidato",
+              "fraccion": 0.0235,
+              "envios": 3359,
+              "jaccard_con_tc01_publicado": 0.5251,
+              "baja2_enviados": 320,
+              "ganancia": 259627500
+            },
+            "e5_minimax_20": {
+              "ensamble": 5,
+              "corte": "minimax_20",
+              "fraccion": 0.03675,
+              "envios": 5253,
+              "jaccard_con_tc01_publicado": 0.8212,
+              "baja2_enviados": 359,
+              "ganancia": 250442500
+            },
+            "e20_tc01": {
+              "ensamble": 20,
+              "corte": "tc01",
+              "fraccion": 0.04475,
+              "envios": 6397,
+              "jaccard_con_tc01_publicado": 0.905,
+              "baja2_enviados": 374,
+              "ganancia": 235482500
+            },
+            "e20_candidato": {
+              "ensamble": 20,
+              "corte": "candidato",
+              "fraccion": 0.0235,
+              "envios": 3359,
+              "jaccard_con_tc01_publicado": 0.5251,
+              "baja2_enviados": 320,
+              "ganancia": 259627500
+            },
+            "e20_minimax_20": {
+              "ensamble": 20,
+              "corte": "minimax_20",
+              "fraccion": 0.03675,
+              "envios": 5253,
+              "jaccard_con_tc01_publicado": 0.8118,
+              "baja2_enviados": 366,
+              "ganancia": 258142500
+            }
+          },
+          "baja2_mes": 521,
+          "auc_baja2": {
+            "5": 0.936591,
+            "20": 0.938076
+          },
+          "ganancia_maxima_ex_post": {
+            "5": 264825000,
+            "20": 267327500
+          },
+          "efectos": {
+            "total_candidato_menos_tc01": 26345000,
+            "ensamble_con_corte_tc01": 2200000,
+            "ensamble_con_corte_candidato": 0,
+            "corte_con_ensamble_5": 26345000,
+            "corte_con_ensamble_20": 24145000,
+            "interaccion": -2200000
+          },
+          "contraste_con_retrospectiva": {
+            "tc01": true,
+            "candidato": true
+          }
+        },
+        "multiclase_p1": {
+          "celdas": {
+            "e5_tc01": {
+              "ensamble": 5,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4003,
+              "jaccard_con_tc01_publicado": 1.0,
+              "baja2_enviados": 333,
+              "ganancia": 256217500
+            },
+            "e5_candidato": {
+              "ensamble": 5,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 3895,
+              "jaccard_con_tc01_publicado": 0.973,
+              "baja2_enviados": 331,
+              "ganancia": 256987500
+            },
+            "e10_tc01": {
+              "ensamble": 10,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4003,
+              "jaccard_con_tc01_publicado": 0.9162,
+              "baja2_enviados": 336,
+              "ganancia": 259517500
+            },
+            "e10_candidato": {
+              "ensamble": 10,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 3895,
+              "jaccard_con_tc01_publicado": 0.91,
+              "baja2_enviados": 332,
+              "ganancia": 258087500
+            },
+            "e20_tc01": {
+              "ensamble": 20,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4003,
+              "jaccard_con_tc01_publicado": 0.8985,
+              "baja2_enviados": 333,
+              "ganancia": 256217500
+            },
+            "e20_candidato": {
+              "ensamble": 20,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 3895,
+              "jaccard_con_tc01_publicado": 0.8886,
+              "baja2_enviados": 330,
+              "ganancia": 255887500
+            }
+          },
+          "baja2_mes": 521,
+          "auc_baja2": {
+            "5": 0.935723,
+            "10": 0.936861,
+            "20": 0.936778
+          },
+          "ganancia_maxima_ex_post": {
+            "5": 262322500,
+            "10": 262845000,
+            "20": 263422500
+          },
+          "efectos": {
+            "total_candidato_menos_tc01": -330000,
+            "ensamble_con_corte_tc01": 0,
+            "ensamble_con_corte_candidato": -1100000,
+            "corte_con_ensamble_5": 770000,
+            "corte_con_ensamble_20": -330000,
+            "interaccion": -1100000
+          },
+          "contraste_con_retrospectiva": {
+            "tc01": true,
+            "candidato": true
+          }
+        }
+      }
+    },
+    "202002": {
+      "clientes": 146184,
+      "target": "completa",
+      "identidad": {
+        "binario": {
+          "semillas_tc01_iguales_a_las_primeras_5": true,
+          "promedio_semillas_0_4_igual_a_tc01_publicado": true,
+          "ensamble_candidato_igual_a_promedio_de_20": true
+        },
+        "multiclase_p1": {
+          "semillas_tc01_iguales_a_las_primeras_5": true,
+          "promedio_semillas_0_4_igual_a_tc01_publicado": true,
+          "ensamble_candidato_igual_a_promedio_de_20": true
+        }
+      },
+      "brazos": {
+        "binario": {
+          "celdas": {
+            "e5_tc01": {
+              "ensamble": 5,
+              "corte": "tc01",
+              "fraccion": 0.04475,
+              "envios": 6542,
+              "jaccard_con_tc01_publicado": 1.0,
+              "baja2_enviados": 153,
+              "ganancia": -11605000
+            },
+            "e5_candidato": {
+              "ensamble": 5,
+              "corte": "candidato",
+              "fraccion": 0.0235,
+              "envios": 3436,
+              "jaccard_con_tc01_publicado": 0.5252,
+              "baja2_enviados": 121,
+              "ganancia": 38610000
+            },
+            "e5_minimax_20": {
+              "ensamble": 5,
+              "corte": "minimax_20",
+              "fraccion": 0.03675,
+              "envios": 5373,
+              "jaccard_con_tc01_publicado": 0.8213,
+              "baja2_enviados": 143,
+              "ganancia": 9542500
+            },
+            "e20_tc01": {
+              "ensamble": 20,
+              "corte": "tc01",
+              "fraccion": 0.04475,
+              "envios": 6542,
+              "jaccard_con_tc01_publicado": 0.904,
+              "baja2_enviados": 152,
+              "ganancia": -12705000
+            },
+            "e20_candidato": {
+              "ensamble": 20,
+              "corte": "candidato",
+              "fraccion": 0.0235,
+              "envios": 3436,
+              "jaccard_con_tc01_publicado": 0.5252,
+              "baja2_enviados": 120,
+              "ganancia": 37510000
+            },
+            "e20_minimax_20": {
+              "ensamble": 20,
+              "corte": "minimax_20",
+              "fraccion": 0.03675,
+              "envios": 5373,
+              "jaccard_con_tc01_publicado": 0.8111,
+              "baja2_enviados": 143,
+              "ganancia": 9542500
+            }
+          },
+          "baja2_mes": 213,
+          "auc_baja2": {
+            "5": 0.949537,
+            "20": 0.949809
+          },
+          "ganancia_maxima_ex_post": {
+            "5": 54367500,
+            "20": 56072500
+          },
+          "efectos": {
+            "total_candidato_menos_tc01": 49115000,
+            "ensamble_con_corte_tc01": -1100000,
+            "ensamble_con_corte_candidato": -1100000,
+            "corte_con_ensamble_5": 50215000,
+            "corte_con_ensamble_20": 50215000,
+            "interaccion": 0
+          },
+          "contraste_con_retrospectiva": {
+            "tc01": true,
+            "candidato": true
+          }
+        },
+        "multiclase_p1": {
+          "celdas": {
+            "e5_tc01": {
+              "ensamble": 5,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4094,
+              "jaccard_con_tc01_publicado": 1.0,
+              "baja2_enviados": 129,
+              "ganancia": 29315000
+            },
+            "e5_candidato": {
+              "ensamble": 5,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 3984,
+              "jaccard_con_tc01_publicado": 0.9731,
+              "baja2_enviados": 128,
+              "ganancia": 31240000
+            },
+            "e10_tc01": {
+              "ensamble": 10,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4094,
+              "jaccard_con_tc01_publicado": 0.9077,
+              "baja2_enviados": 130,
+              "ganancia": 30415000
+            },
+            "e10_candidato": {
+              "ensamble": 10,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 3984,
+              "jaccard_con_tc01_publicado": 0.9043,
+              "baja2_enviados": 129,
+              "ganancia": 32340000
+            },
+            "e20_tc01": {
+              "ensamble": 20,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4094,
+              "jaccard_con_tc01_publicado": 0.8819,
+              "baja2_enviados": 129,
+              "ganancia": 29315000
+            },
+            "e20_candidato": {
+              "ensamble": 20,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 3984,
+              "jaccard_con_tc01_publicado": 0.8808,
+              "baja2_enviados": 128,
+              "ganancia": 31240000
+            }
+          },
+          "baja2_mes": 213,
+          "auc_baja2": {
+            "5": 0.947288,
+            "10": 0.94777,
+            "20": 0.947374
+          },
+          "ganancia_maxima_ex_post": {
+            "5": 51837500,
+            "10": 54147500,
+            "20": 53350000
+          },
+          "efectos": {
+            "total_candidato_menos_tc01": 1925000,
+            "ensamble_con_corte_tc01": 0,
+            "ensamble_con_corte_candidato": 0,
+            "corte_con_ensamble_5": 1925000,
+            "corte_con_ensamble_20": 1925000,
+            "interaccion": 0
+          },
+          "contraste_con_retrospectiva": {
+            "tc01": true,
+            "candidato": true
+          }
+        }
+      }
+    },
+    "202003": {
+      "clientes": 148313,
+      "target": "completa",
+      "identidad": {
+        "binario": {
+          "semillas_tc01_iguales_a_las_primeras_5": true,
+          "promedio_semillas_0_4_igual_a_tc01_publicado": true,
+          "ensamble_candidato_igual_a_promedio_de_20": true
+        },
+        "multiclase_p1": {
+          "semillas_tc01_iguales_a_las_primeras_5": true,
+          "promedio_semillas_0_4_igual_a_tc01_publicado": true,
+          "ensamble_candidato_igual_a_promedio_de_20": true
+        }
+      },
+      "brazos": {
+        "binario": {
+          "celdas": {
+            "e5_tc01": {
+              "ensamble": 5,
+              "corte": "tc01",
+              "fraccion": 0.04475,
+              "envios": 6638,
+              "jaccard_con_tc01_publicado": 1.0,
+              "baja2_enviados": 285,
+              "ganancia": 130955000
+            },
+            "e5_candidato": {
+              "ensamble": 5,
+              "corte": "candidato",
+              "fraccion": 0.0235,
+              "envios": 3486,
+              "jaccard_con_tc01_publicado": 0.5252,
+              "baja2_enviados": 240,
+              "ganancia": 168135000
+            },
+            "e5_minimax_20": {
+              "ensamble": 5,
+              "corte": "minimax_20",
+              "fraccion": 0.03675,
+              "envios": 5451,
+              "jaccard_con_tc01_publicado": 0.8212,
+              "baja2_enviados": 273,
+              "ganancia": 150397500
+            },
+            "e20_tc01": {
+              "ensamble": 20,
+              "corte": "tc01",
+              "fraccion": 0.04475,
+              "envios": 6638,
+              "jaccard_con_tc01_publicado": 0.9047,
+              "baja2_enviados": 287,
+              "ganancia": 133155000
+            },
+            "e20_candidato": {
+              "ensamble": 20,
+              "corte": "candidato",
+              "fraccion": 0.0235,
+              "envios": 3486,
+              "jaccard_con_tc01_publicado": 0.5249,
+              "baja2_enviados": 242,
+              "ganancia": 170335000
+            },
+            "e20_minimax_20": {
+              "ensamble": 20,
+              "corte": "minimax_20",
+              "fraccion": 0.03675,
+              "envios": 5451,
+              "jaccard_con_tc01_publicado": 0.8119,
+              "baja2_enviados": 273,
+              "ganancia": 150397500
+            }
+          },
+          "baja2_mes": 398,
+          "auc_baja2": {
+            "5": 0.943192,
+            "20": 0.942799
+          },
+          "ganancia_maxima_ex_post": {
+            "5": 171682500,
+            "20": 170610000
+          },
+          "efectos": {
+            "total_candidato_menos_tc01": 39380000,
+            "ensamble_con_corte_tc01": 2200000,
+            "ensamble_con_corte_candidato": 2200000,
+            "corte_con_ensamble_5": 37180000,
+            "corte_con_ensamble_20": 37180000,
+            "interaccion": 0
+          },
+          "contraste_con_retrospectiva": {
+            "tc01": true,
+            "candidato": true
+          }
+        },
+        "multiclase_p1": {
+          "celdas": {
+            "e5_tc01": {
+              "ensamble": 5,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4153,
+              "jaccard_con_tc01_publicado": 1.0,
+              "baja2_enviados": 243,
+              "ganancia": 153092500
+            },
+            "e5_candidato": {
+              "ensamble": 5,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 4042,
+              "jaccard_con_tc01_publicado": 0.9733,
+              "baja2_enviados": 241,
+              "ganancia": 153945000
+            },
+            "e10_tc01": {
+              "ensamble": 10,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4153,
+              "jaccard_con_tc01_publicado": 0.9081,
+              "baja2_enviados": 245,
+              "ganancia": 155292500
+            },
+            "e10_candidato": {
+              "ensamble": 10,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 4042,
+              "jaccard_con_tc01_publicado": 0.9036,
+              "baja2_enviados": 244,
+              "ganancia": 157245000
+            },
+            "e20_tc01": {
+              "ensamble": 20,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4153,
+              "jaccard_con_tc01_publicado": 0.8907,
+              "baja2_enviados": 243,
+              "ganancia": 153092500
+            },
+            "e20_candidato": {
+              "ensamble": 20,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 4042,
+              "jaccard_con_tc01_publicado": 0.8882,
+              "baja2_enviados": 240,
+              "ganancia": 152845000
+            }
+          },
+          "baja2_mes": 398,
+          "auc_baja2": {
+            "5": 0.940121,
+            "10": 0.9402,
+            "20": 0.939668
+          },
+          "ganancia_maxima_ex_post": {
+            "5": 157740000,
+            "10": 157520000,
+            "20": 155210000
+          },
+          "efectos": {
+            "total_candidato_menos_tc01": -247500,
+            "ensamble_con_corte_tc01": 0,
+            "ensamble_con_corte_candidato": -1100000,
+            "corte_con_ensamble_5": 852500,
+            "corte_con_ensamble_20": -247500,
+            "interaccion": -1100000
+          },
+          "contraste_con_retrospectiva": {
+            "tc01": true,
+            "candidato": true
+          }
+        }
+      }
+    },
+    "202004": {
+      "clientes": 148831,
+      "target": "completa",
+      "identidad": {
+        "binario": {
+          "semillas_tc01_iguales_a_las_primeras_5": true,
+          "promedio_semillas_0_4_igual_a_tc01_publicado": true,
+          "ensamble_candidato_igual_a_promedio_de_20": true
+        },
+        "multiclase_p1": {
+          "semillas_tc01_iguales_a_las_primeras_5": true,
+          "promedio_semillas_0_4_igual_a_tc01_publicado": true,
+          "ensamble_candidato_igual_a_promedio_de_20": true
+        }
+      },
+      "brazos": {
+        "binario": {
+          "celdas": {
+            "e5_tc01": {
+              "ensamble": 5,
+              "corte": "tc01",
+              "fraccion": 0.04475,
+              "envios": 6661,
+              "jaccard_con_tc01_publicado": 1.0,
+              "baja2_enviados": 328,
+              "ganancia": 177622500
+            },
+            "e5_candidato": {
+              "ensamble": 5,
+              "corte": "candidato",
+              "fraccion": 0.0235,
+              "envios": 3498,
+              "jaccard_con_tc01_publicado": 0.5251,
+              "baja2_enviados": 247,
+              "ganancia": 175505000
+            },
+            "e5_minimax_20": {
+              "ensamble": 5,
+              "corte": "minimax_20",
+              "fraccion": 0.03675,
+              "envios": 5470,
+              "jaccard_con_tc01_publicado": 0.8212,
+              "baja2_enviados": 303,
+              "ganancia": 182875000
+            },
+            "e20_tc01": {
+              "ensamble": 20,
+              "corte": "tc01",
+              "fraccion": 0.04475,
+              "envios": 6661,
+              "jaccard_con_tc01_publicado": 0.9045,
+              "baja2_enviados": 327,
+              "ganancia": 176522500
+            },
+            "e20_candidato": {
+              "ensamble": 20,
+              "corte": "candidato",
+              "fraccion": 0.0235,
+              "envios": 3498,
+              "jaccard_con_tc01_publicado": 0.5247,
+              "baja2_enviados": 248,
+              "ganancia": 176605000
+            },
+            "e20_minimax_20": {
+              "ensamble": 20,
+              "corte": "minimax_20",
+              "fraccion": 0.03675,
+              "envios": 5470,
+              "jaccard_con_tc01_publicado": 0.8076,
+              "baja2_enviados": 306,
+              "ganancia": 186175000
+            }
+          },
+          "baja2_mes": 524,
+          "auc_baja2": {
+            "5": 0.928326,
+            "20": 0.929246
+          },
+          "ganancia_maxima_ex_post": {
+            "5": 187000000,
+            "20": 191950000
+          },
+          "efectos": {
+            "total_candidato_menos_tc01": -1017500,
+            "ensamble_con_corte_tc01": -1100000,
+            "ensamble_con_corte_candidato": 1100000,
+            "corte_con_ensamble_5": -2117500,
+            "corte_con_ensamble_20": 82500,
+            "interaccion": 2200000
+          },
+          "contraste_con_retrospectiva": {
+            "tc01": true,
+            "candidato": true
+          }
+        },
+        "multiclase_p1": {
+          "celdas": {
+            "e5_tc01": {
+              "ensamble": 5,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4168,
+              "jaccard_con_tc01_publicado": 1.0,
+              "baja2_enviados": 268,
+              "ganancia": 180180000
+            },
+            "e5_candidato": {
+              "ensamble": 5,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 4056,
+              "jaccard_con_tc01_publicado": 0.9731,
+              "baja2_enviados": 265,
+              "ganancia": 179960000
+            },
+            "e10_tc01": {
+              "ensamble": 10,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4168,
+              "jaccard_con_tc01_publicado": 0.9067,
+              "baja2_enviados": 267,
+              "ganancia": 179080000
+            },
+            "e10_candidato": {
+              "ensamble": 10,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 4056,
+              "jaccard_con_tc01_publicado": 0.9046,
+              "baja2_enviados": 265,
+              "ganancia": 179960000
+            },
+            "e20_tc01": {
+              "ensamble": 20,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4168,
+              "jaccard_con_tc01_publicado": 0.889,
+              "baja2_enviados": 271,
+              "ganancia": 183480000
+            },
+            "e20_candidato": {
+              "ensamble": 20,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 4056,
+              "jaccard_con_tc01_publicado": 0.8819,
+              "baja2_enviados": 267,
+              "ganancia": 182160000
+            }
+          },
+          "baja2_mes": 524,
+          "auc_baja2": {
+            "5": 0.928,
+            "10": 0.927938,
+            "20": 0.927892
+          },
+          "ganancia_maxima_ex_post": {
+            "5": 185845000,
+            "10": 185075000,
+            "20": 186202500
+          },
+          "efectos": {
+            "total_candidato_menos_tc01": 1980000,
+            "ensamble_con_corte_tc01": 3300000,
+            "ensamble_con_corte_candidato": 2200000,
+            "corte_con_ensamble_5": -220000,
+            "corte_con_ensamble_20": -1320000,
+            "interaccion": -1100000
+          },
+          "contraste_con_retrospectiva": {
+            "tc01": true,
+            "candidato": true
+          }
+        }
+      }
+    },
+    "202005": {
+      "clientes": 150267,
+      "target": "parcial",
+      "identidad": {
+        "binario": {
+          "semillas_tc01_iguales_a_las_primeras_5": true,
+          "promedio_semillas_0_4_igual_a_tc01_publicado": true,
+          "ensamble_candidato_igual_a_promedio_de_20": true
+        },
+        "multiclase_p1": {
+          "semillas_tc01_iguales_a_las_primeras_5": true,
+          "promedio_semillas_0_4_igual_a_tc01_publicado": true,
+          "ensamble_candidato_igual_a_promedio_de_20": true
+        }
+      },
+      "brazos": {
+        "binario": {
+          "celdas": {
+            "e5_tc01": {
+              "ensamble": 5,
+              "corte": "tc01",
+              "fraccion": 0.04475,
+              "envios": 6725,
+              "jaccard_con_tc01_publicado": 1.0
+            },
+            "e5_candidato": {
+              "ensamble": 5,
+              "corte": "candidato",
+              "fraccion": 0.0235,
+              "envios": 3532,
+              "jaccard_con_tc01_publicado": 0.5252
+            },
+            "e5_minimax_20": {
+              "ensamble": 5,
+              "corte": "minimax_20",
+              "fraccion": 0.03675,
+              "envios": 5523,
+              "jaccard_con_tc01_publicado": 0.8213
+            },
+            "e20_tc01": {
+              "ensamble": 20,
+              "corte": "tc01",
+              "fraccion": 0.04475,
+              "envios": 6725,
+              "jaccard_con_tc01_publicado": 0.8973
+            },
+            "e20_candidato": {
+              "ensamble": 20,
+              "corte": "candidato",
+              "fraccion": 0.0235,
+              "envios": 3532,
+              "jaccard_con_tc01_publicado": 0.5245
+            },
+            "e20_minimax_20": {
+              "ensamble": 20,
+              "corte": "minimax_20",
+              "fraccion": 0.03675,
+              "envios": 5523,
+              "jaccard_con_tc01_publicado": 0.8052
+            }
+          }
+        },
+        "multiclase_p1": {
+          "celdas": {
+            "e5_tc01": {
+              "ensamble": 5,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4208,
+              "jaccard_con_tc01_publicado": 1.0
+            },
+            "e5_candidato": {
+              "ensamble": 5,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 4095,
+              "jaccard_con_tc01_publicado": 0.9731
+            },
+            "e10_tc01": {
+              "ensamble": 10,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4208,
+              "jaccard_con_tc01_publicado": 0.908
+            },
+            "e10_candidato": {
+              "ensamble": 10,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 4095,
+              "jaccard_con_tc01_publicado": 0.9065
+            },
+            "e20_tc01": {
+              "ensamble": 20,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4208,
+              "jaccard_con_tc01_publicado": 0.8845
+            },
+            "e20_candidato": {
+              "ensamble": 20,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 4095,
+              "jaccard_con_tc01_publicado": 0.884
+            }
+          }
+        }
+      }
+    },
+    "202006": {
+      "clientes": 152712,
+      "target": "pendiente",
+      "identidad": {
+        "binario": {
+          "semillas_tc01_iguales_a_las_primeras_5": true,
+          "promedio_semillas_0_4_igual_a_tc01_publicado": true,
+          "ensamble_candidato_igual_a_promedio_de_20": true
+        },
+        "multiclase_p1": {
+          "semillas_tc01_iguales_a_las_primeras_5": true,
+          "promedio_semillas_0_4_igual_a_tc01_publicado": true,
+          "ensamble_candidato_igual_a_promedio_de_20": true
+        }
+      },
+      "brazos": {
+        "binario": {
+          "celdas": {
+            "e5_tc01": {
+              "ensamble": 5,
+              "corte": "tc01",
+              "fraccion": 0.04475,
+              "envios": 6834,
+              "jaccard_con_tc01_publicado": 1.0
+            },
+            "e5_candidato": {
+              "ensamble": 5,
+              "corte": "candidato",
+              "fraccion": 0.0235,
+              "envios": 3589,
+              "jaccard_con_tc01_publicado": 0.5252
+            },
+            "e5_minimax_20": {
+              "ensamble": 5,
+              "corte": "minimax_20",
+              "fraccion": 0.03675,
+              "envios": 5613,
+              "jaccard_con_tc01_publicado": 0.8213
+            },
+            "e20_tc01": {
+              "ensamble": 20,
+              "corte": "tc01",
+              "fraccion": 0.04475,
+              "envios": 6834,
+              "jaccard_con_tc01_publicado": 0.7679
+            },
+            "e20_candidato": {
+              "ensamble": 20,
+              "corte": "candidato",
+              "fraccion": 0.0235,
+              "envios": 3589,
+              "jaccard_con_tc01_publicado": 0.5207
+            },
+            "e20_minimax_20": {
+              "ensamble": 20,
+              "corte": "minimax_20",
+              "fraccion": 0.03675,
+              "envios": 5613,
+              "jaccard_con_tc01_publicado": 0.7328
+            }
+          }
+        },
+        "multiclase_p1": {
+          "celdas": {
+            "e5_tc01": {
+              "ensamble": 5,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4276,
+              "jaccard_con_tc01_publicado": 1.0
+            },
+            "e5_candidato": {
+              "ensamble": 5,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 4162,
+              "jaccard_con_tc01_publicado": 0.9733
+            },
+            "e10_tc01": {
+              "ensamble": 10,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4276,
+              "jaccard_con_tc01_publicado": 0.8169
+            },
+            "e10_candidato": {
+              "ensamble": 10,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 4162,
+              "jaccard_con_tc01_publicado": 0.8158
+            },
+            "e20_tc01": {
+              "ensamble": 20,
+              "corte": "tc01",
+              "fraccion": 0.028,
+              "envios": 4276,
+              "jaccard_con_tc01_publicado": 0.7651
+            },
+            "e20_candidato": {
+              "ensamble": 20,
+              "corte": "candidato",
+              "fraccion": 0.02725,
+              "envios": 4162,
+              "jaccard_con_tc01_publicado": 0.762
+            }
+          }
+        }
+      }
+    }
+  },
+  "acumulado_target_completo": {
+    "meses": [
+      "202001",
+      "202002",
+      "202003",
+      "202004"
+    ],
+    "binario": {
+      "e5_tc01": 530255000,
+      "e5_candidato": 641877500,
+      "e5_minimax_20": 593257500,
+      "e20_tc01": 532455000,
+      "e20_candidato": 644077500,
+      "e20_minimax_20": 604257500
+    },
+    "multiclase_p1": {
+      "e5_tc01": 618805000,
+      "e5_candidato": 622132500,
+      "e10_tc01": 624305000,
+      "e10_candidato": 627632500,
+      "e20_tc01": 622105000,
+      "e20_candidato": 622132500
+    }
+  },
+  "verificaciones": {
+    "identidad": true,
+    "contraste_con_retrospectiva": true
+  }
+}

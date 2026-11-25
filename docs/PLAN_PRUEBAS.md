@@ -1203,3 +1203,313 @@ El análisis corrió dos veces y las dos mediciones difieren por la carga de la 
 - La simulación supone pérdida uniforme de BAJA+2 con scores fijos. Si la pérdida se concentrara
   arriba del ranking, el beneficio del corte bajo sería menor.
 - Los tiempos son de la máquina de Martín, con carga variable.
+
+## 15. CA01 — catálogo candidato de 20 semillas (protocolo, escrito antes de correr)
+
+Rama `martin/catalogo-20-semillas`.
+- **Scripts:**
+  - `pipeline_competencia02/catalogo.py`: catálogos `ce02` y `ce02_b20m10`;
+  - `pipeline_competencia02/correr_meses.py`: la secuencia, sin cambios de lógica;
+  - `scripts/verificar_scores.py`: los scores contra los modelos originales;
+  - `scripts/comparar_secuencias.py`: la comparación con `tc01`;
+  - `experimentos/ca01_separar_efectos.py`: el efecto del ensamble y del corte.
+- **Qué es:** un ensayo operativo del candidato que recomendó CE02 (§ 14). **No cambia el catálogo
+  activo:** `catalogo.ACTIVO` sigue en `tc01` hasta terminar esta evaluación y que el grupo decida.
+  `tc01`, `e01` y todas las corridas existentes se conservan.
+
+**Catálogo candidato `ce02`** (`catalogo/estrategias_ce02.json`, con los modelos copiados en
+`RUTAS.modelos/<id>/`):
+
+| Estrategia | Rol | Modelos | Corte | Procedimiento del corte |
+|---|---|---|---|---|
+| `binario_ce02_20s` | recomendación provisional | 20 semillas, 20261124–20261143 | **2,35 %** | MVE del ensamble de 20 (criterio de robustez, § 11 y § 13) |
+| `multiclase_p1_ce02_20s` | alternativa | 20 semillas, 20261124–20261143 | **2,725 %** | MVE del ensamble de 20 |
+
+- **Los roles no cambian respecto de `tc01`.** El binario sigue siendo la recomendación provisional,
+  con score P(BAJA+1 ∪ BAJA+2); el multiclase de peso 1 sigue siendo la alternativa, con score
+  P(BAJA+2). CE02 no reevaluó los roles.
+- **El 2,35 % no es el minimax.**
+  - Sale del **mínimo volumen equivalente**: la menor fracción cuyo peor arrepentimiento entre
+    201908 y 201909 queda a τ₂₀ = 0,38 % del mínimo (§ 11, § 13 y § 14).
+  - Lo eligió la regla fijada en el § 13, porque ante una reducción simulada de BAJA+2 (ρ = 0,33)
+    la diferencia con el minimax supera τ.
+  - **El minimax original del ensamble de 20 da 3,675 %**, y el de 5 semillas (`tc01`), 4,475 %.
+  - Ambos quedan registrados en el catálogo.
+- **Del multiclase:** el minimax de 20 da 2,775 % y el MVE, 2,725 %.
+- **Qué registra el catálogo:**
+  - **Modelos:** archivo, semilla y sha256 de la copia y del original.
+    - Los 5 de TC01 tienen su origen en `ejecuciones/ce02/<marca>/modelos/`, copias byte a byte de
+      `ejecuciones/tc01/<marca>/modelos/` (comprobado en CE02).
+    - Las 15 restantes son nuevas de CE02.
+  - **Features:** las 760, con sha256 de los nombres (`catalogo/predictores.json`).
+  - **Target:** versión 2, con el sha256 del archivo de entrenamiento.
+  - **Composición:** anidada, índices 0–19 sobre `resultados/ce02_composicion.json`, con sha256 del
+    registro.
+  - **Corte:** fracción, procedimiento (MVE), minimax, τ₂₀ y tramos equivalentes, con su fuente en
+    `resultados/ce02_ensambles_20.json`.
+- **Copia de los modelos:** se reemplaza sólo la línea `feature_names`, porque los modelos de CE02 se
+  entrenaron sin nombres. Cada copia se verifica: mismos árboles y predicciones idénticas, como en
+  `e01` y `tc01`.
+
+**Configuración de respaldo `ce02_b20m10`** (`catalogo/estrategias_ce02_b20m10.json`):
+- binario de 20 semillas en 2,35 %, y multiclase con las **10 primeras semillas** (0–9) en 2,725 %;
+- el corte del multiclase es el MVE de 20: CE02 mostró que el corte del multiclase es estable con
+  cualquier tamaño, entre 2,7 % y 3,0 %;
+- **sólo se prepara**: se arma el catálogo y se verifica la copia de los modelos. Se mide si en la
+  máquina del vivo el de 20 no entra en el tiempo.
+
+**Secuencia.**
+- **Carpeta nueva:** `ejecuciones/entornos/secuencia_ce02_202001_202006_<marca>`, preparada con
+  `--catalogo ce02`.
+- **Igual a la de `tc01` (§ 10):**
+  - un proceso por mes, cada archivo copiado de a uno;
+  - historia inicial 201901–201912, más sólo los meses ya recibidos;
+  - las mismas comprobaciones de `correr_meses.comprobar`.
+- **Reintento provocado en 202003**, como en `tc01`:
+  1. el proceso muere después de publicar;
+  2. el mes siguiente se rechaza;
+  3. el reintento reconcilia sin recalcular;
+  4. un nuevo intento se rechaza sin cambios.
+- **Tiempo mensual:** pared del proceso, desde antes de lanzarlo (arranque del intérprete, imports y
+  copia de la entrada a `input/`) hasta la salida publicada y el reporte acumulado regenerado.
+  - En 202003 se suman los dos intentos que hacen trabajo.
+  - La preparación se mide aparte.
+- **Memoria:** pico de working set y de commit privado del proceso, del `reporte.json` del mes.
+- **Mientras corre,** la máquina se mantiene despierta.
+
+**Verificaciones, en los seis meses:**
+1. **Scores contra los modelos originales** (`scripts/verificar_scores.py`): cada semilla, el
+   ensamble, las decisiones y la salida oficial, bit a bit.
+2. **Secuencia:** decisiones de las dos estrategias, historia, reporte acumulado y retrospectiva según
+   los meses recibidos (`correr_meses.comprobar`).
+3. **Recuperación ante el fallo intermedio:** los pasos 1 a 4 del reintento.
+4. **Identidad con `tc01`:** el promedio de las 5 primeras semillas del candidato debe ser **idéntico**
+   a la probabilidad publicada por `tc01` en cada mes. Es la base para separar efectos.
+
+**Comparación con `tc01`, por mes** (`secuencia_tc01_202001_202006_20261125T082349`):
+- **Ganancia retrospectiva:** sólo cuando el target está completo, es decir 202001–202004. 202005 queda
+  parcial y 202006 pendiente.
+- **Envíos y clientes:** cantidad de envíos, Jaccard de los enviados y correlación de rangos del score.
+- **Scores y anomalías:** distribución del score (cuantiles, media y probabilidad mínima enviada) y
+  alertas y anomalías del reporte, que deben ser iguales: dependen de la entrada, no del catálogo.
+- **Tiempo total y memoria pico.**
+
+**Separación de efectos**, con las predicciones guardadas (`diagnosticos/<mes>/predicciones_<mes>.parquet`
+del candidato, que tiene cada semilla). No se reentrena ni se vuelve a predecir.
+- **Binario,** grilla de 2 × 2 más una referencia:
+
+  | | corte 4,475 % (`tc01`) | corte 2,35 % (candidato) | referencia: minimax de 20, 3,675 % |
+  |---|---|---|---|
+  | **Ensamble de 5** (semillas 0–4 = `tc01`) | `tc01` publicado | efecto del corte solo | |
+  | **Ensamble de 20** | efecto del ensamble solo | candidato publicado | ✓ |
+
+- **Efectos que se informan:**
+  - el del **ensamble**, con el corte fijo en cada uno de los dos cortes;
+  - el del **corte**, con el ensamble fijo en cada uno de los dos ensambles;
+  - la **interacción**: total − ensamble − corte.
+- **Multiclase:** lo mismo, con el 2,8 % de `tc01` y el 2,725 % del candidato. También el ensamble de
+  10 (semillas 0–9), el de la configuración de respaldo.
+- **Por mes:** envíos, Jaccard contra `tc01` y, con target completo, la ganancia y los BAJA+2 enviados.
+
+**Uso de los resultados de 2020 (R1).**
+- **Todo lo de 2020 es exploratorio** y queda identificado como tal en cada archivo.
+- **Las ganancias retrospectivas no son un criterio:** no cambian el tamaño, los cortes ni los roles,
+  que se eligieron sólo con 201908–201909. Se informan para monitoreo.
+
+**Criterio de activación, fijado antes de correr.** Se recomienda activar `ce02` si se cumple todo lo
+siguiente:
+1. **Verificaciones:** todas pasan, en los seis meses.
+2. **Tiempo en esta máquina:** cada mes tarda ≤ 450 s de pared, la mitad del límite de 900 s, como
+   margen para una máquina más lenta. En 202003 se mide cada intento.
+3. **Memoria:** el pico de commit privado es ≤ 8 GB, la mitad de la RAM de esta máquina (15,7 GB).
+
+Además:
+- **El tiempo en la máquina del vivo (T12) es condición para usarlo en vivo.** Si esta no es esa
+  máquina, la recomendación queda condicionada a esa medición.
+- **Si el criterio 2 o 3 falla,** se mide `ce02_b20m10` antes de recomendar.
+- **La activación** (`catalogo.ACTIVO = "ce02"`) la decide el grupo y no se hace en esta rama.
+
+## 16. Resultados de CA01
+
+**Corridas:**
+- **Candidato:** `ejecuciones/entornos/secuencia_ce02_202001_202006_20261125T143926`. Resumen en
+  `resultados/i06_secuencia_ce02_202001_202006.json`.
+- **Comparación con `tc01`:** `resultados/i07_comparacion_secuencias_tc01_ce02.json`.
+- **Separación de efectos:** `resultados/ca01_separacion_efectos.json`.
+- **Medición alternada de tiempos:** `resultados/ca01_tiempos_catalogos_202001.json`.
+- **Catálogos:** `catalogo/estrategias_ce02.json` y `catalogo/estrategias_ce02_b20m10.json`.
+  `catalogo.ACTIVO` sigue en `tc01`.
+
+> **Todo lo de 2020 es exploratorio (R1).** Las ganancias retrospectivas no cambian el tamaño, los
+> cortes ni los roles, que se eligieron sólo con 201908–201909.
+
+### 1. Verificaciones
+
+| Verificación | Resultado |
+|---|---|
+| Copia de los 40 modelos (árboles y predicciones idénticas; sha256 en el catálogo) | ✓ |
+| Las 5 primeras semillas de cada objetivo son byte a byte los modelos de `tc01` | ✓ |
+| Secuencia, en los 6 meses: estado, integridad, salida oficial, decisiones de las dos estrategias, historia sin huecos, lecturas permitidas, reporte acumulado y retrospectiva según los meses recibidos | ✓ |
+| Reintento en 202003: (a) muere tras publicar, código 3 · (b) 202004 rechazado, código 4, sin cambios · (c) reconcilia sin recalcular, código 0 · (d) nuevo intento rechazado, sin cambios | ✓ |
+| Scores contra los modelos originales (`verificar_scores.py`), en los 6 meses: 40 semillas, ensambles, decisiones y salida oficial bit a bit | ✓ (`resultados/ca01_verificacion_scores.json`) |
+| Identidad con `tc01`: el promedio de las semillas 0–4 del candidato es **idéntico** a la probabilidad publicada por `tc01`, en los 6 meses y en los dos objetivos | ✓ |
+| Las celdas `tc01` y candidato de la separación de efectos reproducen la ganancia retrospectiva de cada corrida | ✓ |
+
+### 2. Comparación con `tc01` por mes
+
+**Recomendación (binario).** Las columnas de envíos y de score van `tc01` → candidato.
+
+| Mes | Envíos | Jaccard de enviados | Correlación de rangos del score | Probabilidad mínima enviada | Ganancia retrospectiva (M) |
+|---|---|---|---|---|---|
+| 202001 | 6.397 → 3.359 | 0,525 | 0,9927 | 0,032 → 0,066 | 233,3 → **259,6** |
+| 202002 | 6.542 → 3.436 | 0,525 | 0,9925 | 0,039 → 0,078 | −11,6 → **37,5** |
+| 202003 | 6.638 → 3.486 | 0,525 | 0,9929 | 0,036 → 0,071 | 131,0 → **170,3** |
+| 202004 | 6.661 → 3.498 | 0,525 | 0,9925 | 0,041 → 0,080 | 177,6 → **176,6** |
+| 202005 | 6.725 → 3.532 | 0,525 | 0,9928 | 0,042 → 0,080 | parcial |
+| 202006 | 6.834 → 3.589 | 0,521 | 0,9883 | 0,140 → 0,197 | pendiente |
+
+**Alternativa (multiclase).**
+
+| Mes | Envíos | Jaccard de enviados | Ganancia retrospectiva (M) |
+|---|---|---|---|
+| 202001 | 4.003 → 3.895 | 0,889 | 256,2 → 255,9 |
+| 202002 | 4.094 → 3.984 | 0,881 | 29,3 → 31,2 |
+| 202003 | 4.153 → 4.042 | 0,888 | 153,1 → 152,8 |
+| 202004 | 4.168 → 4.056 | 0,882 | 180,2 → 182,2 |
+| 202005 | 4.208 → 4.095 | 0,884 | parcial |
+| 202006 | 4.276 → 4.162 | 0,762 | pendiente |
+
+**Acumulado 202001–202004, con target completo (exploratorio):**
+- binario: 530,2 M → **644,1 M**;
+- multiclase: 618,8 M → 622,1 M.
+
+**Distribución de scores y anomalías:**
+- **Score:** la distribución casi no cambia entre `tc01` y el candidato.
+  - Binario: media de 0,0088 → 0,0088 en 202001 y de 0,0318 → 0,0315 en 202006.
+  - Percentil 99: 0,154 → 0,154 y 0,335 → 0,322.
+  - El ensamble de 20 tiene algo menos de scores extremos: más de 0,5 hay 518 → 510 en 202001.
+- **Anomalías:** el estado de calidad y las reglas de incidentes son **iguales** en las dos corridas
+  todos los meses, porque dependen de la entrada y no del catálogo.
+  - Columnas observadas en cero: 6 en 202002 y 47 en 202006.
+  - Todos los meses hay clientes sin historia y lags por fila distintos del calendario.
+- **202006 vuelve a ser el mes anómalo** (§ 3 y E06):
+  - la probabilidad mínima enviada se triplica;
+  - la coincidencia entre estrategias del candidato baja de 0,70–0,73 a 0,50;
+  - el ensamble de 20 se separa más del de 5: Jaccard de 0,77 en el corte de `tc01`, contra 0,90 en
+    los otros meses.
+
+  Las columnas en cero afectan distinto a las semillas nuevas.
+
+**Tiempo y memoria** (pared del proceso, con arranque; en 202003, suma de los dos intentos):
+
+| Mes | `tc01` (s) | Candidato (s) | Inferencia del candidato, binario + multiclase (s) | Commit privado pico, `tc01` → candidato (MB) |
+|---|---|---|---|---|
+| 202001 | 161,1 | **431,9** | 83 + 283 | 4.023 → 4.019 |
+| 202002 | 135,3 | **524,2** | 111 + 352 | 4.076 → 4.079 |
+| 202003 | 261,7 | **698,2** | 127 + 466 | 4.115 → 4.123 |
+| 202004 | 170,5 | **729,7** | 144 + 487 | 4.132 → 4.130 |
+| 202005 | 181,8 | **695,5** | 148 + 456 | 4.168 → 4.170 |
+| 202006 | 143,2 | **706,3** | 148 + 478 | 4.196 → 4.205 |
+
+- **La memoria no cambia:** los modelos pesan poco frente a las features.
+- **El tiempo creció de mes a mes** porque la inferencia por modelo se frenó: el binario pasó de 4,2 a
+  7,4 s por modelo.
+- **La máquina es una laptop** (i7-1165G7, 4 núcleos y 8 hilos, 15,7 GB), que corrió a 1,2 GHz con
+  otras aplicaciones abiertas. No es la máquina del vivo.
+- **Las dos secuencias no se corrieron en las mismas condiciones.** Por eso se midió aparte en forma
+  alternada.
+
+**Medición alternada en 202001** (142.929 clientes), en el orden `tc01`, `ce02`, `ce02_b20m10`,
+`ce02_b20m10`, `ce02`, `tc01`, cada corrida en una carpeta nueva:
+
+| Catálogo | Modelos | Pared, repetición 1 · 2 (s) | Inferencia, repetición 1 · 2 (s) |
+|---|---|---|---|
+| `tc01` | 5 + 5 | 231,2 · 125,4 | 154 · 83 |
+| `ce02` | 20 + 20 | 636,2 · 448,9 | 559 · 404 |
+| `ce02_b20m10` | 20 + 10 | 294,6 · 346,8 | 245 · 283 |
+
+- **Variabilidad:** el mismo catálogo varía hasta 1,8 veces entre repeticiones, así que las
+  comparaciones valen como cociente aproximado.
+- **Cociente de inferencia contra el `tc01` contiguo:** `ce02` necesita 3,6–4,9 veces la de `tc01`;
+  `ce02_b20m10`, 1,6–3,4 veces.
+
+### 3. Separación de efectos (predicciones guardadas, exploratorio)
+
+**Binario.** Ganancia en millones; la diferencia total es candidato − `tc01`:
+
+| Mes | Total | Ensamble, con corte 4,475 % | Ensamble, con corte 2,35 % | Corte, con ensamble de 5 | Corte, con ensamble de 20 | Interacción |
+|---|---|---|---|---|---|---|
+| 202001 | +26,3 | +2,2 | 0,0 | +26,3 | +24,1 | −2,2 |
+| 202002 | +49,1 | −1,1 | −1,1 | +50,2 | +50,2 | 0,0 |
+| 202003 | +39,4 | +2,2 | +2,2 | +37,2 | +37,2 | 0,0 |
+| 202004 | −1,0 | −1,1 | +1,1 | −2,1 | +0,1 | +2,2 |
+| **Suma** | **+113,8** | **+2,2** | **+2,2** | **+111,6** | **+111,6** | 0,0 |
+
+- **Casi toda la diferencia es efecto del corte.**
+  - El ensamble de 20 mueve la ganancia en ±1–2 BAJA+2 por mes, es decir ±2,2 M.
+  - Su AUC de BAJA+2 es prácticamente igual: 0,9381 contra 0,9366 en 202001.
+- **Referencia, minimax de 20 (3,675 %):** acumulado de 604,3 M, entre `tc01` (530,2 M) y el candidato
+  (644,1 M).
+- **Coincidencia con `tc01`:** con el mismo corte de 4,475 %, el ensamble de 20 coincide con `tc01` en
+  el 90 % de los enviados (77 % en 202006). Con el corte del candidato coincide en el 52 %, porque
+  manda la mitad.
+
+**Multiclase.**
+- **Diferencias:** todas las celdas quedan dentro de ±3,3 M por mes, es decir ±3 BAJA+2.
+- **Acumulado:**
+  - ensamble de 5: 618,8 M con el 2,8 % y 622,1 M con el 2,725 %;
+  - ensamble de 10: 624,3 M y 627,6 M;
+  - ensamble de 20: 622,1 M y 622,1 M.
+- **Ni el tamaño ni el corte cambian el multiclase** de forma distinguible del ruido.
+
+**Lectura** (exploratoria; no cambia la elección hecha con 2019):
+- **Ensamble de 20:** en 2020 no aporta ganancia por sí mismo. Su valor, según CE02, es que **estabiliza
+  la elección del corte**: con 5 semillas el minimax eligió 4,475 %, que en 2019 depende de la
+  composición del ensamble.
+- **Corte de 2,35 %:** su ventaja en 202001–202003 es consistente con la caída de BAJA+2 que CE02
+  simuló. 202002 tiene 213 BAJA+2 contra 521 en 202001, y con el corte de `tc01` la ganancia es
+  negativa.
+
+### 4. Criterio del § 15 y recomendación
+
+| Criterio | `ce02` (20 + 20) | `ce02_b20m10` (20 + 10) |
+|---|---|---|
+| 1. Verificaciones | sí: todas | mismos modelos y código; la copia de los modelos está verificada y la medición alternada terminó con código 0 |
+| 2. ≤ 450 s por mes en esta máquina | **no**: 432–730 s en la secuencia y 449–636 s en la medición alternada | **sí** en la medición alternada: 295–347 s. **Estimación:** ~290 s en las condiciones de 202001 de la secuencia y ~485 s en las más lentas, las de 202004 (binario ~145 s + multiclase ~240 s + ~100 s de lo demás) |
+| 3. Pico de commit ≤ 8 GB | sí: 4,0–4,2 GB | sí: 4,0 GB |
+
+- **El límite de 900 s** nunca se superó: el máximo fue 730 s. Pero el candidato completo no cumple
+  el margen fijado.
+
+**Recomendación de activación** (la decide el grupo; esta rama no cambia `ACTIVO`):
+1. **No activar `ce02` (20 + 20) con esta máquina como referencia.** No cumple el criterio de tiempo.
+   Sólo sería viable si la máquina del vivo lo corre en ≤ 450 s por mes.
+2. **Activar `ce02_b20m10`, sujeto a medir el tiempo en la máquina del vivo (T12).** Es lo que el § 15
+   previó como respaldo:
+   - binario de 20 semillas en 2,35 %, la recomendación provisional y la salida oficial;
+   - multiclase de 10 semillas en 2,725 %, la alternativa.
+
+   Por qué:
+   - conserva lo que motivó CE02: el corte del binario elegido con el ensamble de 20;
+   - el multiclase de 10 tiene su corte estable desde 5 semillas (§ 14);
+   - según la separación exploratoria, no pierde nada frente al de 20 en 2020;
+   - entra en el criterio en la medición controlada. Si la máquina se frena como en la segunda mitad
+     de la secuencia, se estima que lo excede (~485 s), aunque queda lejos de los 900 s.
+3. **Medición pendiente (T12).** Esta no es la máquina del vivo. Hay que repetir en ella:
+
+   ```
+   python scripts/medir_tiempos_catalogos.py --mes 202001 --catalogos tc01 ce02 ce02_b20m10 --repeticiones 2
+   ```
+
+   Con las ventanas cerradas y la laptop enchufada, en modo de máximo rendimiento.
+   - Si `ce02` da ≤ 450 s, se puede preferir `ce02` según la regla de CE02.
+   - Si `ce02_b20m10` pasa de 450 s, hay que volver a `tc01` o reducir semillas del binario. Esto
+     último necesitaría un análisis nuevo con 2019.
+4. **Antes del vivo:** activar el catálogo elegido (`catalogo.ACTIVO`) y repetir la secuencia
+   202001–202006 con él. Para `ce02_b20m10` falta la secuencia completa, porque sólo se midió 202001.
+
+**Limitaciones:**
+- 2020 es exploratorio.
+- Las ganancias retrospectivas son de 4 meses con target completo.
+- Los tiempos son de una laptop con carga y frecuencia variables.
+- La estimación de `ce02_b20m10` en las condiciones de la secuencia es una extrapolación.

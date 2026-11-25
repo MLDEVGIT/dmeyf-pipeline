@@ -1,0 +1,271 @@
+{
+  "mes": 202001,
+  "marca": "20261125T154556",
+  "orden": [
+    "tc01",
+    "ce02",
+    "ce02_b20m10",
+    "ce02_b20m10",
+    "ce02",
+    "tc01"
+  ],
+  "reloj": "pared del proceso mensual, con arranque, imports, copia de la entrada, salida y reporte",
+  "maquina": {
+    "cpu": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+    "cpu_logicos": 8,
+    "cpu_fisicos": 4,
+    "ram_gb": 15.7,
+    "plataforma": "Windows-11-10.0.26300-SP0"
+  },
+  "corridas": [
+    {
+      "repeticion": 0,
+      "catalogo": "tc01",
+      "codigo": 0,
+      "pared_s": 231.2,
+      "cpu_antes": {
+        "frecuencia_mhz": 1201,
+        "carga_pct": 36.4
+      },
+      "cpu_despues": {
+        "frecuencia_mhz": 1201,
+        "carga_pct": 47.3
+      },
+      "tiempos_internos": {
+        "recepcion_s": 0.5,
+        "validacion_s": 16.4,
+        "perfil_s": 3.1,
+        "features_s": 28.8,
+        "verificacion_features_s": 0.1,
+        "carga_modelos_s": 1.2,
+        "inferencia_binario_tc01_300r_s": 36.4,
+        "inferencia_multiclase_p1_tc01_300r_s": 117.2,
+        "lectura_y_conversion_s": 12.4,
+        "estrategias_s": 0.2,
+        "escritura_s": 3.3,
+        "total_hasta_publicacion_s": 221.8
+      },
+      "memoria": {
+        "rss_mb": 232.7,
+        "pico_working_set_mb": 3257.9,
+        "pico_commit_privado_mb": 4021.4
+      },
+      "modelos": {
+        "binario_tc01_300r": 5,
+        "multiclase_p1_tc01_300r": 5
+      },
+      "ejecucion": "ejecuciones/entornos/tiempos_tc01_202001_20261125T154556_r0"
+    },
+    {
+      "repeticion": 0,
+      "catalogo": "ce02",
+      "codigo": 0,
+      "pared_s": 636.2,
+      "cpu_antes": {
+        "frecuencia_mhz": 1201,
+        "carga_pct": 41.7
+      },
+      "cpu_despues": {
+        "frecuencia_mhz": 1201,
+        "carga_pct": 11.0
+      },
+      "tiempos_internos": {
+        "recepcion_s": 0.3,
+        "validacion_s": 17.0,
+        "perfil_s": 3.5,
+        "features_s": 32.1,
+        "verificacion_features_s": 0.1,
+        "carga_modelos_s": 3.4,
+        "inferencia_binario_ce02_20s_s": 131.8,
+        "inferencia_multiclase_p1_ce02_20s_s": 427.1,
+        "lectura_y_conversion_s": 11.2,
+        "estrategias_s": 0.1,
+        "escritura_s": 1.7,
+        "total_hasta_publicacion_s": 630.3
+      },
+      "memoria": {
+        "rss_mb": 361.1,
+        "pico_working_set_mb": 3042.0,
+        "pico_commit_privado_mb": 4026.0
+      },
+      "modelos": {
+        "binario_ce02_20s": 20,
+        "multiclase_p1_ce02_20s": 20
+      },
+      "ejecucion": "ejecuciones/entornos/tiempos_ce02_202001_20261125T154556_r0"
+    },
+    {
+      "repeticion": 0,
+      "catalogo": "ce02_b20m10",
+      "codigo": 0,
+      "pared_s": 294.6,
+      "cpu_antes": {
+        "frecuencia_mhz": 1201,
+        "carga_pct": 13.4
+      },
+      "cpu_despues": {
+        "frecuencia_mhz": 1201,
+        "carga_pct": 86.8
+      },
+      "tiempos_internos": {
+        "recepcion_s": 0.1,
+        "validacion_s": 12.3,
+        "perfil_s": 2.0,
+        "features_s": 14.8,
+        "verificacion_features_s": 0.1,
+        "carga_modelos_s": 1.9,
+        "inferencia_binario_ce02_20s_s": 94.4,
+        "inferencia_multiclase_p1_ce02_10s_s": 150.8,
+        "lectura_y_conversion_s": 7.7,
+        "estrategias_s": 0.2,
+        "escritura_s": 5.0,
+        "total_hasta_publicacion_s": 290.9
+      },
+      "memoria": {
+        "rss_mb": 320.4,
+        "pico_working_set_mb": 3233.0,
+        "pico_commit_privado_mb": 4017.6
+      },
+      "modelos": {
+        "binario_ce02_20s": 20,
+        "multiclase_p1_ce02_10s": 10
+      },
+      "ejecucion": "ejecuciones/entornos/tiempos_ce02_b20m10_202001_20261125T154556_r0"
+    },
+    {
+      "repeticion": 1,
+      "catalogo": "ce02_b20m10",
+      "codigo": 0,
+      "pared_s": 346.8,
+      "cpu_antes": {
+        "frecuencia_mhz": 1201,
+        "carga_pct": 36.1
+      },
+      "cpu_despues": {
+        "frecuencia_mhz": 1201,
+        "carga_pct": 23.2
+      },
+      "tiempos_internos": {
+        "recepcion_s": 0.2,
+        "validacion_s": 13.3,
+        "perfil_s": 2.8,
+        "features_s": 27.0,
+        "verificacion_features_s": 0.1,
+        "carga_modelos_s": 2.1,
+        "inferencia_binario_ce02_20s_s": 110.0,
+        "inferencia_multiclase_p1_ce02_10s_s": 173.4,
+        "lectura_y_conversion_s": 10.4,
+        "estrategias_s": 0.1,
+        "escritura_s": 1.9,
+        "total_hasta_publicacion_s": 343.2
+      },
+      "memoria": {
+        "rss_mb": 306.9,
+        "pico_working_set_mb": 3129.6,
+        "pico_commit_privado_mb": 4019.7
+      },
+      "modelos": {
+        "binario_ce02_20s": 20,
+        "multiclase_p1_ce02_10s": 10
+      },
+      "ejecucion": "ejecuciones/entornos/tiempos_ce02_b20m10_202001_20261125T154556_r1"
+    },
+    {
+      "repeticion": 1,
+      "catalogo": "ce02",
+      "codigo": 0,
+      "pared_s": 448.9,
+      "cpu_antes": {
+        "frecuencia_mhz": 1201,
+        "carga_pct": 9.8
+      },
+      "cpu_despues": {
+        "frecuencia_mhz": 1201,
+        "carga_pct": 84.8
+      },
+      "tiempos_internos": {
+        "recepcion_s": 0.1,
+        "validacion_s": 9.9,
+        "perfil_s": 1.8,
+        "features_s": 16.9,
+        "verificacion_features_s": 0.0,
+        "carga_modelos_s": 1.9,
+        "inferencia_binario_ce02_20s_s": 100.2,
+        "inferencia_multiclase_p1_ce02_20s_s": 303.8,
+        "lectura_y_conversion_s": 8.3,
+        "estrategias_s": 0.1,
+        "escritura_s": 1.8,
+        "total_hasta_publicacion_s": 446.0
+      },
+      "memoria": {
+        "rss_mb": 380.3,
+        "pico_working_set_mb": 3255.3,
+        "pico_commit_privado_mb": 4022.2
+      },
+      "modelos": {
+        "binario_ce02_20s": 20,
+        "multiclase_p1_ce02_20s": 20
+      },
+      "ejecucion": "ejecuciones/entornos/tiempos_ce02_202001_20261125T154556_r1"
+    },
+    {
+      "repeticion": 1,
+      "catalogo": "tc01",
+      "codigo": 0,
+      "pared_s": 125.4,
+      "cpu_antes": {
+        "frecuencia_mhz": 1201,
+        "carga_pct": 57.9
+      },
+      "cpu_despues": {
+        "frecuencia_mhz": 1201,
+        "carga_pct": 15.8
+      },
+      "tiempos_internos": {
+        "recepcion_s": 0.2,
+        "validacion_s": 9.1,
+        "perfil_s": 1.8,
+        "features_s": 13.4,
+        "verificacion_features_s": 0.0,
+        "carga_modelos_s": 0.5,
+        "inferencia_binario_tc01_300r_s": 19.0,
+        "inferencia_multiclase_p1_tc01_300r_s": 64.4,
+        "lectura_y_conversion_s": 5.3,
+        "estrategias_s": 0.1,
+        "escritura_s": 0.9,
+        "total_hasta_publicacion_s": 115.7
+      },
+      "memoria": {
+        "rss_mb": 232.6,
+        "pico_working_set_mb": 3236.3,
+        "pico_commit_privado_mb": 4025.1
+      },
+      "modelos": {
+        "binario_tc01_300r": 5,
+        "multiclase_p1_tc01_300r": 5
+      },
+      "ejecucion": "ejecuciones/entornos/tiempos_tc01_202001_20261125T154556_r1"
+    }
+  ],
+  "resumen": {
+    "tc01": {
+      "pared_s": [
+        231.2,
+        125.4
+      ]
+    },
+    "ce02": {
+      "pared_s": [
+        636.2,
+        448.9
+      ]
+    },
+    "ce02_b20m10": {
+      "pared_s": [
+        294.6,
+        346.8
+      ]
+    }
+  },
+  "ok": true
+}

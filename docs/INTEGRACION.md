@@ -534,8 +534,19 @@ guardadas:
        el minimax de 20 (3,675 %) pierde 15 % y el 4,475 % de `tc01`, 24–26 %.
      - **Tiempo:** la inferencia estimada de las dos estrategias con 20 semillas es de 305–333 s, y
        el mes completo, de 368–396 s.
-   - **Pendiente de decisión:** activar un catálogo de 20 semillas con esos cortes, repetir la
-     secuencia y medir el tiempo en la máquina del vivo.
+   - **CA01**, ya corrido (`PLAN_PRUEBAS.md` § 15–16): catálogo candidato `ce02` con los 40 modelos,
+     secuencia 202001–202006 con reintento en 202003.
+     - **Verificaciones:** todas pasan. Las 5 primeras semillas reproducen bit a bit lo publicado por
+       `tc01`.
+     - **Tiempo:** 432–730 s por mes en esta laptop, con 4,0–4,2 GB de pico. No cumple el margen de
+       450 s fijado.
+     - **Respaldo `ce02_b20m10`:** binario de 20 semillas y multiclase de 10. Tardó 295–347 s en la
+       medición alternada.
+     - **Separación exploratoria (2020):** la diferencia de ganancia con `tc01` es casi toda efecto del
+       corte: +111,6 M en 202001–202004. El ensamble aporta +2,2 M.
+   - **Recomendación:** activar `ce02_b20m10`, sujeto a medir el tiempo en la máquina del vivo (T12),
+     con `scripts/medir_tiempos_catalogos.py`, y repetir la secuencia con el catálogo elegido. Lo
+     decide el grupo; `ACTIVO` sigue en `tc01`.
    - **Mientras tanto,** `tc01` (4,475 %) es el catálogo activo, según el protocolo, y `e01` (2,9 %)
      sigue disponible con `--catalogo e01`. Qué usar en vivo lo decide el grupo.
 1. **E06, tratamiento de columnas en cero.** Con 202006 se dimensiona: el 16–17 % de la importancia
@@ -544,8 +555,9 @@ guardadas:
    aparecen 201905 y 201910 y, en el ensayo, 202002.
 2. **Corte y prevalencia.** 202002 mostró que la fracción fija puede enviar cuatro veces más que el
    máximo ex post. Cualquier alternativa, como un umbral de probabilidad calibrada, se evalúa con 2019.
-3. **Tiempo en la máquina del vivo (T12).** En la máquina de Martín, 172–194 s por mes con carga
-   variable. El multiclase es más de la mitad.
+3. **Tiempo en la máquina del vivo (T12).** En la máquina de Martín, 172–194 s por mes con `tc01` y
+   432–730 s con `ce02`, con carga variable. El multiclase es más de la mitad. Para medir:
+   `python scripts/medir_tiempos_catalogos.py --mes 202001 --catalogos tc01 ce02 ce02_b20m10`.
 4. **Consigna**:
    - confirmar las columnas de la salida y **la interpretación de la probabilidad**: hoy es
      P(BAJA+1 ∪ BAJA+2), supuesto 5;

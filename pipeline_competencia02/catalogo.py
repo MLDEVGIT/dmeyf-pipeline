@@ -1,14 +1,22 @@
 """Catálogo de estrategias del pipeline mensual, armado a partir de modelos ya entrenados.
 
-Catálogos (CATALOGOS), cada uno con un binario y un multiclase de peso 1, 5 semillas, 300 rondas, sin optimización:
-  e01   catalogo/estrategias.json       modelos de E01, target versión 1 (experimento_sampling/03). Se conserva.
-  tc01  catalogo/estrategias_tc01.json  modelos de TC01, target versión 2 (evaluacion/target.py). ACTIVO.
+Catálogos (CATALOGOS), cada uno con un binario y un multiclase de peso 1, 300 rondas, sin optimización:
+  e01          catalogo/estrategias.json             E01, 5 semillas, target versión 1 (experimento_sampling/03). Se conserva.
+  tc01         catalogo/estrategias_tc01.json        TC01, 5 semillas, target versión 2 (evaluacion/target.py). ACTIVO.
+  ce02         catalogo/estrategias_ce02.json        CE02, 20 + 20 semillas, cortes MVE 2,35 % / 2,725 %. CANDIDATO.
+  ce02_b20m10  catalogo/estrategias_ce02_b20m10.json CE02, binario 20 + multiclase 10 (semillas 0–9). Respaldo de tiempo.
 Roles: binario = RECOMENDACIÓN PROVISIONAL, score P(BAJA+1 ∪ BAJA+2); multiclase = ALTERNATIVA, score P(BAJA+2).
-En tc01 los roles salen de la decisión registrada en su resumen (regla de E02 aplicada a los modelos corregidos).
+En tc01 los roles salen de la decisión registrada en su resumen (regla de E02 aplicada a los modelos corregidos);
+CE02 no los reevaluó y los conserva.
 
-Cada estrategia = 5 modelos (una semilla cada uno) + promedio de probabilidades + corte por fracción
-de clientes. La fracción se lee del resumen versionado del experimento: resultados.<brazo>.corte.fraccion
-(e01: resultados/e02_peso_baja1.json, que reproduce E01 exactamente; tc01: resultados/tc01_target_corregido.json).
+Cada estrategia = N modelos (una semilla cada uno) + promedio de probabilidades + corte por fracción de clientes.
+La fracción se lee del resumen versionado del experimento:
+  e01, tc01: resultados.<brazo>.corte.fraccion (minimax; e01: resultados/e02_peso_baja1.json, que reproduce E01;
+             tc01: resultados/tc01_target_corregido.json);
+  ce02*:     recomendacion.<brazo>.corte_recomendado de resultados/ce02_ensambles_20.json (mínimo volumen equivalente
+             del ensamble de 20, PLAN_PRUEBAS.md § 13–14). El minimax queda registrado al lado (binario 3,675 %).
+Las semillas de ce02* son un prefijo de la lista registrada antes de entrenar (resultados/ce02_composicion.json,
+ensambles anidados): 20 = índices 0–19, 10 = índices 0–9.
 
 Los modelos de E01 se guardaron sin nombres de features. Acá se copian con la línea `feature_names`
 reemplazada (en bytes, sin tocar los árboles) y se verifica que la copia prediga exactamente igual.
@@ -46,6 +54,19 @@ CATALOGOS = {
              "candidato": "300 rondas, sin optimización (TC01 = E01 con target versión 2)",
              "estado": ("candidatos de TC01: misma configuración que E01 reentrenada con el target versión 2 "
                         "(evaluacion/target.py); la recomendación es provisional (PLAN_PRUEBAS.md § 9 y § 10)")},
+    "ce02": {"archivo": RAIZ / "catalogo" / "estrategias_ce02.json",
+             "resumen": RAIZ / "resultados" / "ce02_ensambles_20.json", "sufijo": "ce02", "target_version": 2,
+             "semillas": {"binario": 20, "multiclase_p1": 20},
+             "candidato": "300 rondas, sin optimización (CE02: ensamble de 20 semillas, target versión 2)",
+             "estado": ("CANDIDATO, no activo: 20 semillas por objetivo y cortes por mínimo volumen equivalente "
+                        "(CE02, PLAN_PRUEBAS.md § 13–15); la recomendación es provisional")},
+    "ce02_b20m10": {"archivo": RAIZ / "catalogo" / "estrategias_ce02_b20m10.json",
+                    "resumen": RAIZ / "resultados" / "ce02_ensambles_20.json", "sufijo": "ce02", "target_version": 2,
+                    "semillas": {"binario": 20, "multiclase_p1": 10},
+                    "candidato": "300 rondas, sin optimización (CE02: binario 20 semillas, multiclase 10)",
+                    "estado": ("RESPALDO DE TIEMPO, no activo: binario de 20 semillas y multiclase de 10 (semillas "
+                               "0–9), cortes de CE02; se mide sólo si el de 20 + 20 no entra en el tiempo del vivo "
+                               "(PLAN_PRUEBAS.md § 15)")},
 }
 ACTIVO = "tc01"
 DEFINICION_FEATURES = ("152 variables crudas + lag1, delta1, lag2, delta2 de cada una (760). lag_k = k-ésima observación "
@@ -87,20 +108,60 @@ def copiar_con_nombres(origen: Path, destino: Path, pred: list[str]) -> None:
         raise RuntimeError(f"la copia de {origen.name} no conserva árboles, nombres o predicciones")
 
 
+def corte_minimax(resumen: dict, brazo: str, spec: dict) -> dict:
+    return {"fraccion": resumen["resultados"][brazo]["corte"]["fraccion"],
+            "fuente": f"{spec['resumen'].relative_to(RAIZ).as_posix()} → resultados.{brazo}.corte.fraccion",
+            "elegido_con": "201908 y 201909 (menor arrepentimiento máximo del ensamble)"}
+
+
+def corte_ce02(resumen: dict, brazo: str, spec: dict) -> dict:
+    r = resumen["recomendacion"][brazo]
+    if r["tamano_recomendado"] != "20" or r["procedimiento"] != "MVE":
+        raise ValueError(f"CE02 no recomendó 20 semillas con MVE para {brazo}: {r}")
+    g = resumen["ganancia_y_corte"][brazo]
+    extra = {} if spec["semillas"][brazo] == 20 else {
+        "nota_tamano": (f"corte elegido sobre el ensamble de 20 y aplicado al de {spec['semillas'][brazo]}: en CE02 "
+                        "el corte del multiclase es estable con cualquier tamaño (2,7–3,0 %); configuración sólo "
+                        "para medir tiempo")}
+    return {"fraccion": r["corte_recomendado"], **extra,
+            "procedimiento": ("mínimo volumen equivalente (MVE) del ensamble de 20: la menor fracción cuyo peor "
+                              "arrepentimiento entre 201908 y 201909 queda a τ₂₀ del mínimo; elegido por el criterio "
+                              "de robustez ante una reducción simulada de BAJA+2 (PLAN_PRUEBAS.md § 11, § 13 y § 14)"),
+            "minimax_ensamble_20": r["corte_minimax"], "minimax_ensamble_5": g["minimax"]["5"],
+            "nota_minimax": "el minimax original del ensamble de 20 da la fracción minimax_ensamble_20; no es la usada",
+            "tau_20": r["tau"], "tramos_equivalentes_20": g["conjunto_equivalente_20"]["tramos"],
+            "arrepentimiento_rho_0_33": r["arrepentimiento_rho_0_33"],
+            "fuente": f"{spec['resumen'].relative_to(RAIZ).as_posix()} → recomendacion.{brazo}.corte_recomendado",
+            "elegido_con": "201908 y 201909 (desarrollo; octubre bloqueado; nada de 2020)"}
+
+
 def archivo(nombre: str | None = None) -> Path:
     return CATALOGOS[nombre or ACTIVO]["archivo"]
 
 
 def construir(e01: Path, nombre: str = "e01") -> dict:
-    """e01 = carpeta del experimento con modelos/<objetivo>_<semilla>.txt y resultados.json (E01 o TC01)."""
+    """e01 = carpeta del experimento con modelos/<objetivo>_<semilla>.txt y resultados.json (E01, TC01 o CE02)."""
     spec = CATALOGOS[nombre]
     cfg01 = json.loads((e01 / "resultados.json").read_text(encoding="utf-8"))
     resumen = json.loads(spec["resumen"].read_text(encoding="utf-8"))
-    origen = resumen.get("origen_modelos", resumen.get("e01"))
+    es_ce02 = "semillas" in spec
+    origen = resumen["modelos"] if es_ce02 else resumen.get("origen_modelos", resumen.get("e01"))
     if Path(origen).name != e01.name:
         raise ValueError(f"el resumen {spec['resumen'].name} corresponde a {origen}, no a {e01}")
-    if not resumen["compatibilidad_e01"]["compatible"] or not all(resumen.get("checks", {}).values()):
+    if es_ce02:
+        if not (resumen["verificaciones"]["todas"] and all(cfg01["checks"].values())):
+            raise ValueError("CE02 tiene verificaciones o comprobaciones de entrenamiento fallidas")
+    elif not resumen["compatibilidad_e01"]["compatible"] or not all(resumen.get("checks", {}).values()):
         raise ValueError("el resumen no verificó la compatibilidad con E01 o tiene comprobaciones fallidas")
+    composicion = None
+    if es_ce02:
+        from experimentos import ce02_composicion as C
+        reg = json.loads(C.REGISTRO.read_text(encoding="utf-8"))
+        if sha256(C.REGISTRO) != resumen["composicion_sha256"] or reg["semillas"] != cfg01["semillas"]:
+            raise ValueError("la composición registrada no coincide con la de CE02")
+        composicion = {"registro": C.REGISTRO.relative_to(RAIZ).as_posix(), "sha256": sha256(C.REGISTRO),
+                       "tipo": "anidado: prefijo de la lista de semillas registrada antes de entrenar",
+                       "por_estrategia": {}}
     recomendado = resumen.get("decision", {}).get("recomendacion", "binario")
     pred = json.loads((RUTAS.features_2019 / "manifiesto.json").read_text(encoding="utf-8"))["predictores"]
     con = duckdb.connect()
@@ -122,14 +183,24 @@ def construir(e01: Path, nombre: str = "e01") -> dict:
            "promedio": "media aritmética de las probabilidades de las semillas, en el orden de 'modelos'",
            "orden_y_desempate": "probabilidad descendente; a igual probabilidad, numero_de_cliente ascendente",
            "estrategias": []}
+    if es_ce02:
+        cat["target"] = {**cfg01["target"], "version": spec["target_version"]}
+        cat["composicion"] = composicion
     for e0 in ESTRATEGIAS:
-        e = {**e0, "id": e0["id"].replace("_e01_", f"_{spec['sufijo']}_"),
+        n_sem = spec["semillas"][e0["brazo_e02"]] if es_ce02 else len(cfg01["semillas"])
+        semillas = cfg01["semillas"][:n_sem]
+        e = {**e0, "id": (f"{e0['id'].split('_e01_')[0]}_{spec['sufijo']}_{n_sem}s" if es_ce02
+                          else e0["id"].replace("_e01_", f"_{spec['sufijo']}_")),
              "rol": "recomendacion_provisional" if e0["brazo_e02"] == recomendado else "alternativa"}
-        brazo = resumen["resultados"][e["brazo_e02"]]
+        if es_ce02:
+            if reg["composiciones"]["anidados"][str(n_sem)] != list(range(n_sem)):
+                raise ValueError(f"el ensamble anidado de {n_sem} no es el prefijo registrado")
+            composicion["por_estrategia"][e["id"]] = {"tamano": n_sem, "indices": list(range(n_sem)),
+                                                     "semillas": semillas}
         destino = RUTAS.modelos / e["id"]
         destino.mkdir(parents=True, exist_ok=True)
         modelos = []
-        for s in cfg01["semillas"]:
+        for s in semillas:
             origen = e01 / "modelos" / f"{e['archivo_e01']}_{s}.txt"
             copia = destino / f"semilla_{s}.txt"
             copiar_con_nombres(origen, copia, pred)
@@ -137,15 +208,18 @@ def construir(e01: Path, nombre: str = "e01") -> dict:
             modelos.append({"semilla": s, "archivo": f"{e['id']}/{copia.name}", "sha256": sha256(copia),
                             "origen": mostrar(origen), "sha256_origen": sha256(origen),
                             "rondas": b.current_iteration(), "arboles": b.num_trees()})
+            if es_ce02:
+                modelos[-1]["entrenado_en"] = ("TC01 (copiado byte a byte por CE02)"
+                                               if s in cfg01["reutilizadas_de_tc01"] else "CE02")
+        corte = (corte_ce02 if es_ce02 else corte_minimax)(resumen, e["brazo_e02"], spec)
         cat["estrategias"].append({
             **{k: e[k] for k in ("id", "rol", "objetivo", "columna_score", "score")},
             "num_class": 3 if e["objetivo"] == "multiclass" else None,
             "candidato": spec["candidato"], "target_version": spec["target_version"],
             "params": cfg01["params"], "rondas": cfg01["rondas"],
-            "corte": {"tipo": "fraccion_clientes", "fraccion": brazo["corte"]["fraccion"],
+            "corte": {"tipo": "fraccion_clientes", "fraccion": corte["fraccion"],
                       "redondeo": "techo(fraccion · n) (evaluacion.ganancia.envios)",
-                      "fuente": f"{spec['resumen'].relative_to(RAIZ).as_posix()} → resultados.{e['brazo_e02']}.corte.fraccion",
-                      "elegido_con": "201908 y 201909 (menor arrepentimiento máximo del ensamble)"},
+                      **{k: v for k, v in corte.items() if k != "fraccion"}},
             "modelos": modelos})
     if sorted(x["rol"] for x in cat["estrategias"]) != ["alternativa", "recomendacion_provisional"]:
         raise ValueError("el catálogo debe tener una recomendación y una alternativa")

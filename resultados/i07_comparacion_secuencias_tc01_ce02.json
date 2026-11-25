@@ -1,0 +1,1184 @@
+{
+  "anterior": "secuencia_tc01_202001_202006_20261125T082349",
+  "nueva": "secuencia_ce02_202001_202006_20261125T143926",
+  "meses": {
+    "202001": {
+      "clientes": 142929,
+      "catalogos": [
+        "tc01",
+        "ce02"
+      ],
+      "por_rol": {
+        "recomendacion_provisional": {
+          "ids": [
+            "binario_tc01_300r",
+            "binario_ce02_20s"
+          ],
+          "envios": [
+            6397,
+            3359
+          ],
+          "jaccard_enviados_entre_corridas": 0.5251,
+          "solo_anterior": 3038,
+          "solo_nueva": 0,
+          "correlacion_de_rangos_score": 0.992684,
+          "probabilidad_minima_enviada": [
+            0.0322961090013651,
+            0.06640232196694648
+          ]
+        },
+        "alternativa": {
+          "ids": [
+            "multiclase_p1_tc01_300r",
+            "multiclase_p1_ce02_20s"
+          ],
+          "envios": [
+            4003,
+            3895
+          ],
+          "jaccard_enviados_entre_corridas": 0.8886,
+          "solo_anterior": 287,
+          "solo_nueva": 179,
+          "correlacion_de_rangos_score": 0.993865,
+          "probabilidad_minima_enviada": [
+            0.02544554824694395,
+            0.0263576951151449
+          ]
+        }
+      },
+      "coincidencia_entre_estrategias": [
+        0.609409,
+        0.718143
+      ],
+      "salida_oficial": {
+        "jaccard_enviar": 0.5251,
+        "correlacion_de_rangos_probabilidad": 0.992684
+      },
+      "tiempo_total_desde_entrada_s": [
+        152.6,
+        426.9
+      ],
+      "tiempo_pared_con_arranque_s": [
+        161.1,
+        431.9
+      ],
+      "tiempos_internos": [
+        {
+          "recepcion_s": 0.5,
+          "validacion_s": 22.8,
+          "perfil_s": 4.7,
+          "features_s": 33.1,
+          "verificacion_features_s": 0.0,
+          "carga_modelos_s": 0.4,
+          "inferencia_binario_tc01_300r_s": 18.3,
+          "inferencia_multiclase_p1_tc01_300r_s": 62.6,
+          "lectura_y_conversion_s": 6.7,
+          "estrategias_s": 0.1,
+          "escritura_s": 1.9,
+          "total_hasta_publicacion_s": 152.5
+        },
+        {
+          "recepcion_s": 0.3,
+          "validacion_s": 15.1,
+          "perfil_s": 3.6,
+          "features_s": 25.5,
+          "verificacion_features_s": 0.1,
+          "carga_modelos_s": 3.0,
+          "inferencia_binario_ce02_20s_s": 83.3,
+          "inferencia_multiclase_p1_ce02_20s_s": 283.2,
+          "lectura_y_conversion_s": 7.4,
+          "estrategias_s": 0.1,
+          "escritura_s": 2.9,
+          "total_hasta_publicacion_s": 426.7
+        }
+      ],
+      "memoria": [
+        {
+          "rss_mb": 232.5,
+          "pico_working_set_mb": 3256.9,
+          "pico_commit_privado_mb": 4022.9
+        },
+        {
+          "rss_mb": 358.1,
+          "pico_working_set_mb": 2980.9,
+          "pico_commit_privado_mb": 4018.8
+        }
+      ],
+      "distribucion": {
+        "recomendacion_provisional": [
+          {
+            "media": 0.008830776105284967,
+            "mayor_0_5": 518,
+            "q0.5": 0.0005922496141520575,
+            "q0.9": 0.010164755891752185,
+            "q0.99": 0.15412898067878014,
+            "q0.999": 0.8510874108757226
+          },
+          {
+            "media": 0.008799909564199274,
+            "mayor_0_5": 510,
+            "q0.5": 0.0006015986660887513,
+            "q0.9": 0.010232060028418094,
+            "q0.99": 0.153512888493832,
+            "q0.999": 0.8329932730174974
+          }
+        ],
+        "alternativa": [
+          {
+            "media": 0.003792503653650009,
+            "mayor_0_5": 72,
+            "q0.5": 0.0002436657241883509,
+            "q0.9": 0.004671670315891722,
+            "q0.99": 0.06900759887044064,
+            "q0.999": 0.3676776882879919
+          },
+          {
+            "media": 0.003756512801299569,
+            "mayor_0_5": 54,
+            "q0.5": 0.00024495909203965026,
+            "q0.9": 0.004697578555995037,
+            "q0.99": 0.06961373511921909,
+            "q0.999": 0.3446631989031814
+          }
+        ]
+      },
+      "anomalias": {
+        "estado_calidad": [
+          "sin_alertas",
+          "sin_alertas"
+        ],
+        "reglas": [
+          [
+            "clientes_sin_historia",
+            "estrategia_provisional",
+            "lag_fila_distinto_calendario"
+          ],
+          [
+            "clientes_sin_historia",
+            "estrategia_provisional",
+            "lag_fila_distinto_calendario"
+          ]
+        ],
+        "iguales": true
+      },
+      "retrospectiva": [
+        {
+          "estado": "completa",
+          "version_regla": 2,
+          "clases": {
+            "BAJA+1": 606,
+            "BAJA+2": 521,
+            "CONTINUA": 141802
+          },
+          "recomendacion_provisional": {
+            "envios": 6397,
+            "baja2_enviados": 372,
+            "ganancia": 233282500,
+            "auc_baja2": 0.936591,
+            "ganancia_maxima_ex_post": 264825000
+          },
+          "alternativa": {
+            "envios": 4003,
+            "baja2_enviados": 333,
+            "ganancia": 256217500,
+            "auc_baja2": 0.935723,
+            "ganancia_maxima_ex_post": 262322500
+          }
+        },
+        {
+          "estado": "completa",
+          "version_regla": 2,
+          "clases": {
+            "BAJA+1": 606,
+            "BAJA+2": 521,
+            "CONTINUA": 141802
+          },
+          "recomendacion_provisional": {
+            "envios": 3359,
+            "baja2_enviados": 320,
+            "ganancia": 259627500,
+            "auc_baja2": 0.938076,
+            "ganancia_maxima_ex_post": 267327500
+          },
+          "alternativa": {
+            "envios": 3895,
+            "baja2_enviados": 330,
+            "ganancia": 255887500,
+            "auc_baja2": 0.936778,
+            "ganancia_maxima_ex_post": 263422500
+          }
+        }
+      ]
+    },
+    "202002": {
+      "clientes": 146184,
+      "catalogos": [
+        "tc01",
+        "ce02"
+      ],
+      "por_rol": {
+        "recomendacion_provisional": {
+          "ids": [
+            "binario_tc01_300r",
+            "binario_ce02_20s"
+          ],
+          "envios": [
+            6542,
+            3436
+          ],
+          "jaccard_enviados_entre_corridas": 0.5252,
+          "solo_anterior": 3106,
+          "solo_nueva": 0,
+          "correlacion_de_rangos_score": 0.992541,
+          "probabilidad_minima_enviada": [
+            0.038869880843531754,
+            0.07833867823592394
+          ]
+        },
+        "alternativa": {
+          "ids": [
+            "multiclase_p1_tc01_300r",
+            "multiclase_p1_ce02_20s"
+          ],
+          "envios": [
+            4094,
+            3984
+          ],
+          "jaccard_enviados_entre_corridas": 0.8808,
+          "solo_anterior": 311,
+          "solo_nueva": 201,
+          "correlacion_de_rangos_score": 0.993824,
+          "probabilidad_minima_enviada": [
+            0.02826689980867373,
+            0.028647790504348365
+          ]
+        }
+      },
+      "coincidencia_entre_estrategias": [
+        0.609077,
+        0.701835
+      ],
+      "salida_oficial": {
+        "jaccard_enviar": 0.5252,
+        "correlacion_de_rangos_probabilidad": 0.992541
+      },
+      "tiempo_total_desde_entrada_s": [
+        129.8,
+        520.2
+      ],
+      "tiempo_pared_con_arranque_s": [
+        135.3,
+        524.2
+      ],
+      "tiempos_internos": [
+        {
+          "recepcion_s": 0.2,
+          "validacion_s": 9.7,
+          "perfil_s": 1.8,
+          "features_s": 19.0,
+          "verificacion_features_s": 0.0,
+          "carga_modelos_s": 0.4,
+          "inferencia_binario_tc01_300r_s": 20.6,
+          "inferencia_multiclase_p1_tc01_300r_s": 68.0,
+          "lectura_y_conversion_s": 6.7,
+          "estrategias_s": 0.2,
+          "escritura_s": 1.3,
+          "total_hasta_publicacion_s": 129.2
+        },
+        {
+          "recepcion_s": 0.2,
+          "validacion_s": 12.2,
+          "perfil_s": 1.9,
+          "features_s": 22.8,
+          "verificacion_features_s": 0.1,
+          "carga_modelos_s": 3.3,
+          "inferencia_binario_ce02_20s_s": 111.1,
+          "inferencia_multiclase_p1_ce02_20s_s": 352.2,
+          "lectura_y_conversion_s": 9.3,
+          "estrategias_s": 0.2,
+          "escritura_s": 3.1,
+          "total_hasta_publicacion_s": 519.3
+        }
+      ],
+      "memoria": [
+        {
+          "rss_mb": 238.9,
+          "pico_working_set_mb": 3303.9,
+          "pico_commit_privado_mb": 4076.0
+        },
+        {
+          "rss_mb": 370.8,
+          "pico_working_set_mb": 3300.2,
+          "pico_commit_privado_mb": 4078.6
+        }
+      ],
+      "distribucion": {
+        "recomendacion_provisional": [
+          {
+            "media": 0.009898196231827763,
+            "mayor_0_5": 572,
+            "q0.5": 0.0007627245106063224,
+            "q0.9": 0.012526750530724884,
+            "q0.99": 0.1729433301570616,
+            "q0.999": 0.8661083573093079
+          },
+          {
+            "media": 0.009971937717223493,
+            "mayor_0_5": 559,
+            "q0.5": 0.0007751523959936747,
+            "q0.9": 0.012766364150416987,
+            "q0.99": 0.17257053543757364,
+            "q0.999": 0.8638924821231676
+          }
+        ],
+        "alternativa": [
+          {
+            "media": 0.0039954112623308054,
+            "mayor_0_5": 58,
+            "q0.5": 0.0002811126257920136,
+            "q0.9": 0.0052564348094863095,
+            "q0.99": 0.07218142933908617,
+            "q0.999": 0.3458557739991189
+          },
+          {
+            "media": 0.003941259558560627,
+            "mayor_0_5": 52,
+            "q0.5": 0.00027518064430970474,
+            "q0.9": 0.005172407193184207,
+            "q0.99": 0.07275368072541509,
+            "q0.999": 0.3390922709219878
+          }
+        ]
+      },
+      "anomalias": {
+        "estado_calidad": [
+          "con_alertas",
+          "con_alertas"
+        ],
+        "reglas": [
+          [
+            "clientes_sin_historia",
+            "estrategia_provisional",
+            "lag_fila_distinto_calendario",
+            "observados_en_cero"
+          ],
+          [
+            "clientes_sin_historia",
+            "estrategia_provisional",
+            "lag_fila_distinto_calendario",
+            "observados_en_cero"
+          ]
+        ],
+        "iguales": true
+      },
+      "retrospectiva": [
+        {
+          "estado": "completa",
+          "version_regla": 2,
+          "clases": {
+            "BAJA+1": 524,
+            "BAJA+2": 213,
+            "CONTINUA": 145447
+          },
+          "recomendacion_provisional": {
+            "envios": 6542,
+            "baja2_enviados": 153,
+            "ganancia": -11605000,
+            "auc_baja2": 0.949537,
+            "ganancia_maxima_ex_post": 54367500
+          },
+          "alternativa": {
+            "envios": 4094,
+            "baja2_enviados": 129,
+            "ganancia": 29315000,
+            "auc_baja2": 0.947288,
+            "ganancia_maxima_ex_post": 51837500
+          }
+        },
+        {
+          "estado": "completa",
+          "version_regla": 2,
+          "clases": {
+            "BAJA+1": 524,
+            "BAJA+2": 213,
+            "CONTINUA": 145447
+          },
+          "recomendacion_provisional": {
+            "envios": 3436,
+            "baja2_enviados": 120,
+            "ganancia": 37510000,
+            "auc_baja2": 0.949809,
+            "ganancia_maxima_ex_post": 56072500
+          },
+          "alternativa": {
+            "envios": 3984,
+            "baja2_enviados": 128,
+            "ganancia": 31240000,
+            "auc_baja2": 0.947374,
+            "ganancia_maxima_ex_post": 53350000
+          }
+        }
+      ]
+    },
+    "202003": {
+      "clientes": 148313,
+      "catalogos": [
+        "tc01",
+        "ce02"
+      ],
+      "por_rol": {
+        "recomendacion_provisional": {
+          "ids": [
+            "binario_tc01_300r",
+            "binario_ce02_20s"
+          ],
+          "envios": [
+            6638,
+            3486
+          ],
+          "jaccard_enviados_entre_corridas": 0.5249,
+          "solo_anterior": 3153,
+          "solo_nueva": 1,
+          "correlacion_de_rangos_score": 0.992916,
+          "probabilidad_minima_enviada": [
+            0.036291671471296784,
+            0.07137041940220676
+          ]
+        },
+        "alternativa": {
+          "ids": [
+            "multiclase_p1_tc01_300r",
+            "multiclase_p1_ce02_20s"
+          ],
+          "envios": [
+            4153,
+            4042
+          ],
+          "jaccard_enviados_entre_corridas": 0.8882,
+          "solo_anterior": 298,
+          "solo_nueva": 187,
+          "correlacion_de_rangos_score": 0.993954,
+          "probabilidad_minima_enviada": [
+            0.02918713455008114,
+            0.03033873404307045
+          ]
+        }
+      },
+      "coincidencia_entre_estrategias": [
+        0.609156,
+        0.710132
+      ],
+      "salida_oficial": {
+        "jaccard_enviar": 0.5249,
+        "correlacion_de_rangos_probabilidad": 0.992916
+      },
+      "tiempo_total_desde_entrada_s": [
+        null,
+        null
+      ],
+      "tiempo_pared_con_arranque_s": [
+        261.7,
+        698.2
+      ],
+      "tiempos_internos": [
+        {
+          "recepcion_s": 0.2,
+          "validacion_s": 9.9,
+          "perfil_s": 4.4,
+          "features_s": 40.8,
+          "verificacion_features_s": 0.1,
+          "carga_modelos_s": 1.0,
+          "inferencia_binario_tc01_300r_s": 41.9,
+          "inferencia_multiclase_p1_tc01_300r_s": 132.1,
+          "lectura_y_conversion_s": 16.1,
+          "estrategias_s": 0.3,
+          "escritura_s": 3.9,
+          "total_hasta_publicacion_s": 253.4
+        },
+        {
+          "recepcion_s": 0.4,
+          "validacion_s": 21.9,
+          "perfil_s": 4.0,
+          "features_s": 35.4,
+          "verificacion_features_s": 0.1,
+          "carga_modelos_s": 4.2,
+          "inferencia_binario_ce02_20s_s": 126.6,
+          "inferencia_multiclase_p1_ce02_20s_s": 465.8,
+          "lectura_y_conversion_s": 10.8,
+          "estrategias_s": 0.2,
+          "escritura_s": 3.6,
+          "total_hasta_publicacion_s": 675.0
+        }
+      ],
+      "memoria": [
+        {
+          "rss_mb": 238.4,
+          "pico_working_set_mb": 3318.2,
+          "pico_commit_privado_mb": 4114.8
+        },
+        {
+          "rss_mb": 377.4,
+          "pico_working_set_mb": 3347.5,
+          "pico_commit_privado_mb": 4123.1
+        }
+      ],
+      "distribucion": {
+        "recomendacion_provisional": [
+          {
+            "media": 0.009433687457124484,
+            "mayor_0_5": 572,
+            "q0.5": 0.0007080662189264863,
+            "q0.9": 0.011836492722136585,
+            "q0.99": 0.16261372463384588,
+            "q0.999": 0.852228040669191
+          },
+          {
+            "media": 0.009433865029725806,
+            "mayor_0_5": 566,
+            "q0.5": 0.0007114680033627372,
+            "q0.9": 0.012008052816249311,
+            "q0.99": 0.16408548985660418,
+            "q0.999": 0.8427488529445312
+          }
+        ],
+        "alternativa": [
+          {
+            "media": 0.004361102829200778,
+            "mayor_0_5": 106,
+            "q0.5": 0.00028376981247363233,
+            "q0.9": 0.005398866394509034,
+            "q0.99": 0.07703064110770841,
+            "q0.999": 0.4290134823354046
+          },
+          {
+            "media": 0.004335723430900598,
+            "mayor_0_5": 94,
+            "q0.5": 0.00028606992409607436,
+            "q0.9": 0.005555529332935937,
+            "q0.99": 0.07740704081418803,
+            "q0.999": 0.407703766958878
+          }
+        ]
+      },
+      "anomalias": {
+        "estado_calidad": [
+          "sin_alertas",
+          "sin_alertas"
+        ],
+        "reglas": [
+          [
+            "clientes_sin_historia",
+            "estrategia_provisional",
+            "lag_fila_distinto_calendario"
+          ],
+          [
+            "clientes_sin_historia",
+            "estrategia_provisional",
+            "lag_fila_distinto_calendario"
+          ]
+        ],
+        "iguales": true
+      },
+      "retrospectiva": [
+        {
+          "estado": "completa",
+          "version_regla": 2,
+          "clases": {
+            "BAJA+1": 213,
+            "BAJA+2": 398,
+            "CONTINUA": 147702
+          },
+          "recomendacion_provisional": {
+            "envios": 6638,
+            "baja2_enviados": 285,
+            "ganancia": 130955000,
+            "auc_baja2": 0.943192,
+            "ganancia_maxima_ex_post": 171682500
+          },
+          "alternativa": {
+            "envios": 4153,
+            "baja2_enviados": 243,
+            "ganancia": 153092500,
+            "auc_baja2": 0.940121,
+            "ganancia_maxima_ex_post": 157740000
+          }
+        },
+        {
+          "estado": "completa",
+          "version_regla": 2,
+          "clases": {
+            "BAJA+1": 213,
+            "BAJA+2": 398,
+            "CONTINUA": 147702
+          },
+          "recomendacion_provisional": {
+            "envios": 3486,
+            "baja2_enviados": 242,
+            "ganancia": 170335000,
+            "auc_baja2": 0.942799,
+            "ganancia_maxima_ex_post": 170610000
+          },
+          "alternativa": {
+            "envios": 4042,
+            "baja2_enviados": 240,
+            "ganancia": 152845000,
+            "auc_baja2": 0.939668,
+            "ganancia_maxima_ex_post": 155210000
+          }
+        }
+      ]
+    },
+    "202004": {
+      "clientes": 148831,
+      "catalogos": [
+        "tc01",
+        "ce02"
+      ],
+      "por_rol": {
+        "recomendacion_provisional": {
+          "ids": [
+            "binario_tc01_300r",
+            "binario_ce02_20s"
+          ],
+          "envios": [
+            6661,
+            3498
+          ],
+          "jaccard_enviados_entre_corridas": 0.5247,
+          "solo_anterior": 3165,
+          "solo_nueva": 2,
+          "correlacion_de_rangos_score": 0.992477,
+          "probabilidad_minima_enviada": [
+            0.040516647446077324,
+            0.07946600543447266
+          ]
+        },
+        "alternativa": {
+          "ids": [
+            "multiclase_p1_tc01_300r",
+            "multiclase_p1_ce02_20s"
+          ],
+          "envios": [
+            4168,
+            4056
+          ],
+          "jaccard_enviados_entre_corridas": 0.8819,
+          "solo_anterior": 314,
+          "solo_nueva": 202,
+          "correlacion_de_rangos_score": 0.993544,
+          "probabilidad_minima_enviada": [
+            0.028000280944002438,
+            0.029417054347502063
+          ]
+        }
+      },
+      "coincidencia_entre_estrategias": [
+        0.602397,
+        0.731377
+      ],
+      "salida_oficial": {
+        "jaccard_enviar": 0.5247,
+        "correlacion_de_rangos_probabilidad": 0.992477
+      },
+      "tiempo_total_desde_entrada_s": [
+        165.5,
+        721.5
+      ],
+      "tiempo_pared_con_arranque_s": [
+        170.5,
+        729.7
+      ],
+      "tiempos_internos": [
+        {
+          "recepcion_s": 0.2,
+          "validacion_s": 14.9,
+          "perfil_s": 3.5,
+          "features_s": 28.0,
+          "verificacion_features_s": 0.1,
+          "carga_modelos_s": 0.6,
+          "inferencia_binario_tc01_300r_s": 23.0,
+          "inferencia_multiclase_p1_tc01_300r_s": 80.3,
+          "lectura_y_conversion_s": 8.8,
+          "estrategias_s": 0.1,
+          "escritura_s": 2.0,
+          "total_hasta_publicacion_s": 163.5
+        },
+        {
+          "recepcion_s": 0.3,
+          "validacion_s": 18.3,
+          "perfil_s": 4.6,
+          "features_s": 39.8,
+          "verificacion_features_s": 0.2,
+          "carga_modelos_s": 5.1,
+          "inferencia_binario_ce02_20s_s": 143.9,
+          "inferencia_multiclase_p1_ce02_20s_s": 486.8,
+          "lectura_y_conversion_s": 13.1,
+          "estrategias_s": 0.2,
+          "escritura_s": 3.9,
+          "total_hasta_publicacion_s": 718.7
+        }
+      ],
+      "memoria": [
+        {
+          "rss_mb": 236.4,
+          "pico_working_set_mb": 3333.8,
+          "pico_commit_privado_mb": 4132.0
+        },
+        {
+          "rss_mb": 330.0,
+          "pico_working_set_mb": 2561.4,
+          "pico_commit_privado_mb": 4130.0
+        }
+      ],
+      "distribucion": {
+        "recomendacion_provisional": [
+          {
+            "media": 0.01046184391614387,
+            "mayor_0_5": 652,
+            "q0.5": 0.0007863907036761148,
+            "q0.9": 0.013172916420920975,
+            "q0.99": 0.20107183579739318,
+            "q0.999": 0.8508544207876809
+          },
+          {
+            "media": 0.010460979509826223,
+            "mayor_0_5": 660,
+            "q0.5": 0.0007885732223587901,
+            "q0.9": 0.01326963499810364,
+            "q0.99": 0.1994412354962244,
+            "q0.999": 0.8363861209407614
+          }
+        ],
+        "alternativa": [
+          {
+            "media": 0.00427297629947973,
+            "mayor_0_5": 29,
+            "q0.5": 0.00028484854622472884,
+            "q0.9": 0.005446444942034523,
+            "q0.99": 0.08525024507173973,
+            "q0.999": 0.3623561535623357
+          },
+          {
+            "media": 0.004190508315392348,
+            "mayor_0_5": 13,
+            "q0.5": 0.000292162788839366,
+            "q0.9": 0.005595395737592409,
+            "q0.99": 0.08477941117315647,
+            "q0.999": 0.3252760883495029
+          }
+        ]
+      },
+      "anomalias": {
+        "estado_calidad": [
+          "sin_alertas",
+          "sin_alertas"
+        ],
+        "reglas": [
+          [
+            "clientes_sin_historia",
+            "estrategia_provisional",
+            "lag_fila_distinto_calendario"
+          ],
+          [
+            "clientes_sin_historia",
+            "estrategia_provisional",
+            "lag_fila_distinto_calendario"
+          ]
+        ],
+        "iguales": true
+      },
+      "retrospectiva": [
+        {
+          "estado": "completa",
+          "version_regla": 2,
+          "clases": {
+            "BAJA+1": 398,
+            "BAJA+2": 524,
+            "CONTINUA": 147909
+          },
+          "recomendacion_provisional": {
+            "envios": 6661,
+            "baja2_enviados": 328,
+            "ganancia": 177622500,
+            "auc_baja2": 0.928326,
+            "ganancia_maxima_ex_post": 187000000
+          },
+          "alternativa": {
+            "envios": 4168,
+            "baja2_enviados": 268,
+            "ganancia": 180180000,
+            "auc_baja2": 0.928,
+            "ganancia_maxima_ex_post": 185845000
+          }
+        },
+        {
+          "estado": "completa",
+          "version_regla": 2,
+          "clases": {
+            "BAJA+1": 398,
+            "BAJA+2": 524,
+            "CONTINUA": 147909
+          },
+          "recomendacion_provisional": {
+            "envios": 3498,
+            "baja2_enviados": 248,
+            "ganancia": 176605000,
+            "auc_baja2": 0.929246,
+            "ganancia_maxima_ex_post": 191950000
+          },
+          "alternativa": {
+            "envios": 4056,
+            "baja2_enviados": 267,
+            "ganancia": 182160000,
+            "auc_baja2": 0.927892,
+            "ganancia_maxima_ex_post": 186202500
+          }
+        }
+      ]
+    },
+    "202005": {
+      "clientes": 150267,
+      "catalogos": [
+        "tc01",
+        "ce02"
+      ],
+      "por_rol": {
+        "recomendacion_provisional": {
+          "ids": [
+            "binario_tc01_300r",
+            "binario_ce02_20s"
+          ],
+          "envios": [
+            6725,
+            3532
+          ],
+          "jaccard_enviados_entre_corridas": 0.5245,
+          "solo_anterior": 3196,
+          "solo_nueva": 3,
+          "correlacion_de_rangos_score": 0.992816,
+          "probabilidad_minima_enviada": [
+            0.04218103502125888,
+            0.08033953789248759
+          ]
+        },
+        "alternativa": {
+          "ids": [
+            "multiclase_p1_tc01_300r",
+            "multiclase_p1_ce02_20s"
+          ],
+          "envios": [
+            4208,
+            4095
+          ],
+          "jaccard_enviados_entre_corridas": 0.884,
+          "solo_anterior": 312,
+          "solo_nueva": 199,
+          "correlacion_de_rangos_score": 0.994145,
+          "probabilidad_minima_enviada": [
+            0.032157667861554946,
+            0.03302423367420021
+          ]
+        }
+      },
+      "coincidencia_entre_estrategias": [
+        0.60167,
+        0.704358
+      ],
+      "salida_oficial": {
+        "jaccard_enviar": 0.5245,
+        "correlacion_de_rangos_probabilidad": 0.992816
+      },
+      "tiempo_total_desde_entrada_s": [
+        175.7,
+        687.6
+      ],
+      "tiempo_pared_con_arranque_s": [
+        181.8,
+        695.5
+      ],
+      "tiempos_internos": [
+        {
+          "recepcion_s": 0.2,
+          "validacion_s": 15.1,
+          "perfil_s": 2.7,
+          "features_s": 24.0,
+          "verificacion_features_s": 0.1,
+          "carga_modelos_s": 0.6,
+          "inferencia_binario_tc01_300r_s": 27.9,
+          "inferencia_multiclase_p1_tc01_300r_s": 91.0,
+          "lectura_y_conversion_s": 9.1,
+          "estrategias_s": 0.2,
+          "escritura_s": 1.7,
+          "total_hasta_publicacion_s": 174.1
+        },
+        {
+          "recepcion_s": 0.4,
+          "validacion_s": 21.2,
+          "perfil_s": 3.4,
+          "features_s": 33.2,
+          "verificacion_features_s": 0.1,
+          "carga_modelos_s": 3.8,
+          "inferencia_binario_ce02_20s_s": 148.1,
+          "inferencia_multiclase_p1_ce02_20s_s": 455.7,
+          "lectura_y_conversion_s": 14.2,
+          "estrategias_s": 0.2,
+          "escritura_s": 2.9,
+          "total_hasta_publicacion_s": 685.5
+        }
+      ],
+      "memoria": [
+        {
+          "rss_mb": 233.7,
+          "pico_working_set_mb": 3384.3,
+          "pico_commit_privado_mb": 4167.5
+        },
+        {
+          "rss_mb": 379.2,
+          "pico_working_set_mb": 3359.8,
+          "pico_commit_privado_mb": 4169.9
+        }
+      ],
+      "distribucion": {
+        "recomendacion_provisional": [
+          {
+            "media": 0.010101711856169626,
+            "mayor_0_5": 540,
+            "q0.5": 0.0007816281011978194,
+            "q0.9": 0.013834529511682209,
+            "q0.99": 0.18268153440549895,
+            "q0.999": 0.810143079820132
+          },
+          {
+            "media": 0.010150061197840234,
+            "mayor_0_5": 534,
+            "q0.5": 0.0007877404055295564,
+            "q0.9": 0.014125417923685185,
+            "q0.99": 0.18360575184386868,
+            "q0.999": 0.8101161563145557
+          }
+        ],
+        "alternativa": [
+          {
+            "media": 0.004289361264268871,
+            "mayor_0_5": 6,
+            "q0.5": 0.0002987384277667382,
+            "q0.9": 0.0062755193582104225,
+            "q0.99": 0.08394901705522434,
+            "q0.999": 0.2888489531325232
+          },
+          {
+            "media": 0.00427444558908639,
+            "mayor_0_5": 3,
+            "q0.5": 0.0003033600274127461,
+            "q0.9": 0.006361390845096673,
+            "q0.99": 0.08540738561891685,
+            "q0.999": 0.27284913498471824
+          }
+        ]
+      },
+      "anomalias": {
+        "estado_calidad": [
+          "sin_alertas",
+          "sin_alertas"
+        ],
+        "reglas": [
+          [
+            "clientes_sin_historia",
+            "estrategia_provisional",
+            "lag_fila_distinto_calendario"
+          ],
+          [
+            "clientes_sin_historia",
+            "estrategia_provisional",
+            "lag_fila_distinto_calendario"
+          ]
+        ],
+        "iguales": true
+      },
+      "retrospectiva": [
+        {
+          "estado": "parcial",
+          "version_regla": 2,
+          "provisional_ausentes_en_t1": 527
+        },
+        {
+          "estado": "parcial",
+          "version_regla": 2,
+          "provisional_ausentes_en_t1": 527
+        }
+      ]
+    },
+    "202006": {
+      "clientes": 152712,
+      "catalogos": [
+        "tc01",
+        "ce02"
+      ],
+      "por_rol": {
+        "recomendacion_provisional": {
+          "ids": [
+            "binario_tc01_300r",
+            "binario_ce02_20s"
+          ],
+          "envios": [
+            6834,
+            3589
+          ],
+          "jaccard_enviados_entre_corridas": 0.5207,
+          "solo_anterior": 3265,
+          "solo_nueva": 20,
+          "correlacion_de_rangos_score": 0.988303,
+          "probabilidad_minima_enviada": [
+            0.13980713281310989,
+            0.19675659381079352
+          ]
+        },
+        "alternativa": {
+          "ids": [
+            "multiclase_p1_tc01_300r",
+            "multiclase_p1_ce02_20s"
+          ],
+          "envios": [
+            4276,
+            4162
+          ],
+          "jaccard_enviados_entre_corridas": 0.762,
+          "solo_anterior": 627,
+          "solo_nueva": 513,
+          "correlacion_de_rangos_score": 0.989217,
+          "probabilidad_minima_enviada": [
+            0.054746702839048346,
+            0.05809989339328666
+          ]
+        }
+      },
+      "coincidencia_entre_estrategias": [
+        0.41999,
+        0.501259
+      ],
+      "salida_oficial": {
+        "jaccard_enviar": 0.5207,
+        "correlacion_de_rangos_probabilidad": 0.988303
+      },
+      "tiempo_total_desde_entrada_s": [
+        138.7,
+        700.1
+      ],
+      "tiempo_pared_con_arranque_s": [
+        143.2,
+        706.3
+      ],
+      "tiempos_internos": [
+        {
+          "recepcion_s": 0.3,
+          "validacion_s": 10.0,
+          "perfil_s": 1.5,
+          "features_s": 17.7,
+          "verificacion_features_s": 0.0,
+          "carga_modelos_s": 0.3,
+          "inferencia_binario_tc01_300r_s": 21.5,
+          "inferencia_multiclase_p1_tc01_300r_s": 74.6,
+          "lectura_y_conversion_s": 6.9,
+          "estrategias_s": 0.2,
+          "escritura_s": 2.1,
+          "total_hasta_publicacion_s": 136.3
+        },
+        {
+          "recepcion_s": 0.2,
+          "validacion_s": 17.2,
+          "perfil_s": 2.6,
+          "features_s": 30.9,
+          "verificacion_features_s": 0.1,
+          "carga_modelos_s": 3.5,
+          "inferencia_binario_ce02_20s_s": 147.5,
+          "inferencia_multiclase_p1_ce02_20s_s": 478.0,
+          "lectura_y_conversion_s": 12.6,
+          "estrategias_s": 0.2,
+          "escritura_s": 3.0,
+          "total_hasta_publicacion_s": 697.7
+        }
+      ],
+      "memoria": [
+        {
+          "rss_mb": 238.3,
+          "pico_working_set_mb": 3399.3,
+          "pico_commit_privado_mb": 4195.5
+        },
+        {
+          "rss_mb": 377.9,
+          "pico_working_set_mb": 3404.2,
+          "pico_commit_privado_mb": 4205.1
+        }
+      ],
+      "distribucion": {
+        "recomendacion_provisional": [
+          {
+            "media": 0.03175696930479854,
+            "mayor_0_5": 712,
+            "q0.5": 0.007823296619934174,
+            "q0.9": 0.08122925836570073,
+            "q0.99": 0.3347592076834968,
+            "q0.999": 0.8093878069744189
+          },
+          {
+            "media": 0.0314911318862752,
+            "mayor_0_5": 680,
+            "q0.5": 0.008088914188129995,
+            "q0.9": 0.08077261846983039,
+            "q0.99": 0.32201673928201885,
+            "q0.999": 0.8093002523229833
+          }
+        ],
+        "alternativa": [
+          {
+            "media": 0.009605650109080955,
+            "mayor_0_5": 54,
+            "q0.5": 0.002085605345596119,
+            "q0.9": 0.023214393911601277,
+            "q0.99": 0.10950087310149986,
+            "q0.999": 0.37933676755874646
+          },
+          {
+            "media": 0.01003577724641206,
+            "mayor_0_5": 67,
+            "q0.5": 0.002286914728458074,
+            "q0.9": 0.024820437833193147,
+            "q0.99": 0.10691202203188747,
+            "q0.999": 0.37290447169296725
+          }
+        ]
+      },
+      "anomalias": {
+        "estado_calidad": [
+          "con_alertas",
+          "con_alertas"
+        ],
+        "reglas": [
+          [
+            "clientes_sin_historia",
+            "estrategia_provisional",
+            "lag_fila_distinto_calendario",
+            "observados_en_cero"
+          ],
+          [
+            "clientes_sin_historia",
+            "estrategia_provisional",
+            "lag_fila_distinto_calendario",
+            "observados_en_cero"
+          ]
+        ],
+        "iguales": true
+      },
+      "retrospectiva": [
+        {
+          "estado": "pendiente",
+          "version_regla": 2
+        },
+        {
+          "estado": "pendiente",
+          "version_regla": 2
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,1183 @@
+{
+  "inicio": "2026-11-25T14:39:33",
+  "desde": 202001,
+  "hasta": 202006,
+  "reloj": "pared del proceso mensual: desde antes de lanzarlo (incluye arranque e imports y la copia a input/) hasta que termina, con la salida publicada y el reporte acumulado regenerado",
+  "meses": [
+    {
+      "mes": 202001,
+      "ok": true,
+      "checks": {
+        "completado": true,
+        "integridad_sha256": true,
+        "salida_cabecera_exacta": true,
+        "salida_clientes_igual_entrada": true,
+        "features_decisiones_historia_igual_entrada": true,
+        "salida_probabilidades_en_0_1": true,
+        "salida_es_la_recomendacion": true,
+        "decisiones_dos_estrategias": true,
+        "historia_inicial_mas_completados_sin_huecos": true,
+        "lee_solo_entrada_historia_previa_y_modelos": true,
+        "reporte_una_fila_por_completado": true,
+        "retrospectiva_segun_meses_recibidos": true
+      },
+      "clientes": 142929,
+      "envios": {
+        "recomendacion": 3359,
+        "alternativa": 3895
+      },
+      "probabilidad_minima_enviada": {
+        "recomendacion_provisional": 0.06640232196694648,
+        "alternativa": 0.0263576951151449
+      },
+      "distribucion": {
+        "recomendacion_provisional": {
+          "cuantiles": {
+            "0": 4.03092554152538e-06,
+            "0.01": 4.34148031589781e-05,
+            "0.1": 0.0001268175689378074,
+            "0.25": 0.00023979925006963596,
+            "0.5": 0.0006015986660887513,
+            "0.75": 0.0021812439138282594,
+            "0.9": 0.010232060028418094,
+            "0.99": 0.153512888493832,
+            "0.999": 0.8329932730174974,
+            "1": 0.987379205442306
+          },
+          "media": 0.008799909564199274,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 510
+        },
+        "alternativa": {
+          "cuantiles": {
+            "0": 2.1674058015158464e-06,
+            "0.01": 1.559456096344188e-05,
+            "0.1": 5.0373023508054024e-05,
+            "0.25": 9.891297567403636e-05,
+            "0.5": 0.00024495909203965026,
+            "0.75": 0.0009105873211099066,
+            "0.9": 0.004697578555995037,
+            "0.99": 0.06961373511921909,
+            "0.999": 0.3446631989031814,
+            "1": 0.7945058169971323
+          },
+          "media": 0.003756512801299569,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 54
+        }
+      },
+      "coincidencia": {
+        "interseccion": 3032,
+        "solo_recomendacion": 327,
+        "solo_alternativa": 863,
+        "jaccard": 0.718143,
+        "correlacion_de_rangos": 0.970944
+      },
+      "estado_calidad": "sin_alertas",
+      "anomalias": {
+        "clientes_sin_historia": 4165,
+        "lag_fila_distinto_calendario": 14,
+        "columnas_100_nulas": [],
+        "columnas_observados_en_cero": [],
+        "columnas_constantes_no_nulas": [],
+        "cambio_tasa_nulos": [],
+        "reglas": [
+          "clientes_sin_historia",
+          "estrategia_provisional",
+          "lag_fila_distinto_calendario"
+        ]
+      },
+      "historia_leida": "201901-201912 (12 meses)",
+      "tiempos_internos": {
+        "recepcion_s": 0.3,
+        "validacion_s": 15.1,
+        "perfil_s": 3.6,
+        "features_s": 25.5,
+        "verificacion_features_s": 0.1,
+        "carga_modelos_s": 3.0,
+        "inferencia_binario_ce02_20s_s": 83.3,
+        "inferencia_multiclase_p1_ce02_20s_s": 283.2,
+        "lectura_y_conversion_s": 7.4,
+        "estrategias_s": 0.1,
+        "escritura_s": 2.9,
+        "total_hasta_publicacion_s": 426.7
+      },
+      "total_interno_desde_entrada_s": 426.9,
+      "memoria": {
+        "rss_mb": 358.1,
+        "pico_working_set_mb": 2980.9,
+        "pico_commit_privado_mb": 4018.8
+      },
+      "reconciliacion": "nada",
+      "recuperado": false,
+      "intentos": [
+        {
+          "codigo": 0,
+          "pared_s": 431.9,
+          "falla_inyectada": null
+        }
+      ],
+      "tiempo_total_s": 431.9,
+      "arranque_y_cierre_s": 5.0
+    },
+    {
+      "mes": 202002,
+      "ok": true,
+      "checks": {
+        "completado": true,
+        "integridad_sha256": true,
+        "salida_cabecera_exacta": true,
+        "salida_clientes_igual_entrada": true,
+        "features_decisiones_historia_igual_entrada": true,
+        "salida_probabilidades_en_0_1": true,
+        "salida_es_la_recomendacion": true,
+        "decisiones_dos_estrategias": true,
+        "historia_inicial_mas_completados_sin_huecos": true,
+        "lee_solo_entrada_historia_previa_y_modelos": true,
+        "reporte_una_fila_por_completado": true,
+        "retrospectiva_segun_meses_recibidos": true
+      },
+      "clientes": 146184,
+      "envios": {
+        "recomendacion": 3436,
+        "alternativa": 3984
+      },
+      "probabilidad_minima_enviada": {
+        "recomendacion_provisional": 0.07833867823592394,
+        "alternativa": 0.028647790504348365
+      },
+      "distribucion": {
+        "recomendacion_provisional": {
+          "cuantiles": {
+            "0": 9.368327831583866e-06,
+            "0.01": 5.7061994209946596e-05,
+            "0.1": 0.00016990267259587061,
+            "0.25": 0.00031926458446538346,
+            "0.5": 0.0007751523959936747,
+            "0.75": 0.0027425630530659812,
+            "0.9": 0.012766364150416987,
+            "0.99": 0.17257053543757364,
+            "0.999": 0.8638924821231676,
+            "1": 0.9793292252663646
+          },
+          "media": 0.009971937717223493,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 559
+        },
+        "alternativa": {
+          "cuantiles": {
+            "0": 1.7087621829324927e-06,
+            "0.01": 1.6230869889294978e-05,
+            "0.1": 5.718247794064849e-05,
+            "0.25": 0.00011235575939604555,
+            "0.5": 0.00027518064430970474,
+            "0.75": 0.001014993090895809,
+            "0.9": 0.005172407193184207,
+            "0.99": 0.07275368072541509,
+            "0.999": 0.3390922709219878,
+            "1": 0.8600726269516603
+          },
+          "media": 0.003941259558560627,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 52
+        }
+      },
+      "coincidencia": {
+        "interseccion": 3060,
+        "solo_recomendacion": 376,
+        "solo_alternativa": 924,
+        "jaccard": 0.701835,
+        "correlacion_de_rangos": 0.969089
+      },
+      "estado_calidad": "con_alertas",
+      "anomalias": {
+        "clientes_sin_historia": 3849,
+        "lag_fila_distinto_calendario": 21,
+        "columnas_100_nulas": [],
+        "columnas_observados_en_cero": [
+          "ccajeros_propios_descuentos",
+          "ctarjeta_master_descuentos",
+          "ctarjeta_visa_descuentos",
+          "mcajeros_propios_descuentos",
+          "mtarjeta_master_descuentos",
+          "mtarjeta_visa_descuentos"
+        ],
+        "columnas_constantes_no_nulas": [],
+        "cambio_tasa_nulos": [],
+        "reglas": [
+          "clientes_sin_historia",
+          "estrategia_provisional",
+          "lag_fila_distinto_calendario",
+          "observados_en_cero"
+        ]
+      },
+      "historia_leida": "201901-202001 (13 meses)",
+      "tiempos_internos": {
+        "recepcion_s": 0.2,
+        "validacion_s": 12.2,
+        "perfil_s": 1.9,
+        "features_s": 22.8,
+        "verificacion_features_s": 0.1,
+        "carga_modelos_s": 3.3,
+        "inferencia_binario_ce02_20s_s": 111.1,
+        "inferencia_multiclase_p1_ce02_20s_s": 352.2,
+        "lectura_y_conversion_s": 9.3,
+        "estrategias_s": 0.2,
+        "escritura_s": 3.1,
+        "total_hasta_publicacion_s": 519.3
+      },
+      "total_interno_desde_entrada_s": 520.2,
+      "memoria": {
+        "rss_mb": 370.8,
+        "pico_working_set_mb": 3300.2,
+        "pico_commit_privado_mb": 4078.6
+      },
+      "reconciliacion": "nada",
+      "recuperado": false,
+      "intentos": [
+        {
+          "codigo": 0,
+          "pared_s": 524.2,
+          "falla_inyectada": null
+        }
+      ],
+      "tiempo_total_s": 524.2,
+      "arranque_y_cierre_s": 4.0
+    },
+    {
+      "mes": 202003,
+      "ok": true,
+      "checks": {
+        "completado": true,
+        "integridad_sha256": true,
+        "salida_cabecera_exacta": true,
+        "salida_clientes_igual_entrada": true,
+        "features_decisiones_historia_igual_entrada": true,
+        "salida_probabilidades_en_0_1": true,
+        "salida_es_la_recomendacion": true,
+        "decisiones_dos_estrategias": true,
+        "historia_inicial_mas_completados_sin_huecos": true,
+        "lee_solo_entrada_historia_previa_y_modelos": true,
+        "reporte_una_fila_por_completado": true,
+        "retrospectiva_segun_meses_recibidos": true
+      },
+      "clientes": 148313,
+      "envios": {
+        "recomendacion": 3486,
+        "alternativa": 4042
+      },
+      "probabilidad_minima_enviada": {
+        "recomendacion_provisional": 0.07137041940220676,
+        "alternativa": 0.03033873404307045
+      },
+      "distribucion": {
+        "recomendacion_provisional": {
+          "cuantiles": {
+            "0": 5.533121247833056e-06,
+            "0.01": 5.162844658516196e-05,
+            "0.1": 0.0001553175405313777,
+            "0.25": 0.00029043168148054686,
+            "0.5": 0.0007114680033627372,
+            "0.75": 0.0025372216892789205,
+            "0.9": 0.012008052816249311,
+            "0.99": 0.16408548985660418,
+            "0.999": 0.8427488529445312,
+            "1": 0.9770791075052218
+          },
+          "media": 0.009433865029725806,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 566
+        },
+        "alternativa": {
+          "cuantiles": {
+            "0": 1.6552366306660605e-06,
+            "0.01": 1.72916383907498e-05,
+            "0.1": 5.94723519501463e-05,
+            "0.25": 0.00011711125846197564,
+            "0.5": 0.00028606992409607436,
+            "0.75": 0.0010590785302166598,
+            "0.9": 0.005555529332935937,
+            "0.99": 0.07740704081418803,
+            "0.999": 0.407703766958878,
+            "1": 0.8274337531777775
+          },
+          "media": 0.004335723430900598,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 94
+        }
+      },
+      "coincidencia": {
+        "interseccion": 3126,
+        "solo_recomendacion": 360,
+        "solo_alternativa": 916,
+        "jaccard": 0.710132,
+        "correlacion_de_rangos": 0.970401
+      },
+      "estado_calidad": "sin_alertas",
+      "anomalias": {
+        "clientes_sin_historia": 2643,
+        "lag_fila_distinto_calendario": 24,
+        "columnas_100_nulas": [],
+        "columnas_observados_en_cero": [],
+        "columnas_constantes_no_nulas": [],
+        "cambio_tasa_nulos": [],
+        "reglas": [
+          "clientes_sin_historia",
+          "estrategia_provisional",
+          "lag_fila_distinto_calendario"
+        ]
+      },
+      "historia_leida": "201901-202002 (14 meses)",
+      "tiempos_internos": {
+        "recepcion_s": 0.4,
+        "validacion_s": 21.9,
+        "perfil_s": 4.0,
+        "features_s": 35.4,
+        "verificacion_features_s": 0.1,
+        "carga_modelos_s": 4.2,
+        "inferencia_binario_ce02_20s_s": 126.6,
+        "inferencia_multiclase_p1_ce02_20s_s": 465.8,
+        "lectura_y_conversion_s": 10.8,
+        "estrategias_s": 0.2,
+        "escritura_s": 3.6,
+        "total_hasta_publicacion_s": 675.0
+      },
+      "total_interno_desde_entrada_s": null,
+      "memoria": {
+        "rss_mb": 377.4,
+        "pico_working_set_mb": 3347.5,
+        "pico_commit_privado_mb": 4123.1
+      },
+      "reconciliacion": "nada",
+      "recuperado": true,
+      "intentos": [
+        {
+          "codigo": 3,
+          "pared_s": 679.4,
+          "falla_inyectada": "tras_publicacion"
+        },
+        {
+          "codigo": 0,
+          "pared_s": 18.8,
+          "falla_inyectada": null
+        }
+      ],
+      "tiempo_total_s": 698.2,
+      "arranque_y_cierre_s": null
+    },
+    {
+      "mes": 202004,
+      "ok": true,
+      "checks": {
+        "completado": true,
+        "integridad_sha256": true,
+        "salida_cabecera_exacta": true,
+        "salida_clientes_igual_entrada": true,
+        "features_decisiones_historia_igual_entrada": true,
+        "salida_probabilidades_en_0_1": true,
+        "salida_es_la_recomendacion": true,
+        "decisiones_dos_estrategias": true,
+        "historia_inicial_mas_completados_sin_huecos": true,
+        "lee_solo_entrada_historia_previa_y_modelos": true,
+        "reporte_una_fila_por_completado": true,
+        "retrospectiva_segun_meses_recibidos": true
+      },
+      "clientes": 148831,
+      "envios": {
+        "recomendacion": 3498,
+        "alternativa": 4056
+      },
+      "probabilidad_minima_enviada": {
+        "recomendacion_provisional": 0.07946600543447266,
+        "alternativa": 0.029417054347502063
+      },
+      "distribucion": {
+        "recomendacion_provisional": {
+          "cuantiles": {
+            "0": 4.879090083714465e-06,
+            "0.01": 5.336756705828839e-05,
+            "0.1": 0.00016426715437882041,
+            "0.25": 0.0003147802805856435,
+            "0.5": 0.0007885732223587901,
+            "0.75": 0.0028162852505408923,
+            "0.9": 0.01326963499810364,
+            "0.99": 0.1994412354962244,
+            "0.999": 0.8363861209407614,
+            "1": 0.9665516346250891
+          },
+          "media": 0.010460979509826223,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 660
+        },
+        "alternativa": {
+          "cuantiles": {
+            "0": 1.2785166437297035e-06,
+            "0.01": 1.6772673575180012e-05,
+            "0.1": 5.707232038295021e-05,
+            "0.25": 0.00011423185910989184,
+            "0.5": 0.000292162788839366,
+            "0.75": 0.001092448167611801,
+            "0.9": 0.005595395737592409,
+            "0.99": 0.08477941117315647,
+            "0.999": 0.3252760883495029,
+            "1": 0.6115720795292174
+          },
+          "media": 0.004190508315392348,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 13
+        }
+      },
+      "coincidencia": {
+        "interseccion": 3191,
+        "solo_recomendacion": 307,
+        "solo_alternativa": 865,
+        "jaccard": 0.731377,
+        "correlacion_de_rangos": 0.970875
+      },
+      "estado_calidad": "sin_alertas",
+      "anomalias": {
+        "clientes_sin_historia": 727,
+        "lag_fila_distinto_calendario": 14,
+        "columnas_100_nulas": [],
+        "columnas_observados_en_cero": [],
+        "columnas_constantes_no_nulas": [],
+        "cambio_tasa_nulos": [],
+        "reglas": [
+          "clientes_sin_historia",
+          "estrategia_provisional",
+          "lag_fila_distinto_calendario"
+        ]
+      },
+      "historia_leida": "201901-202003 (15 meses)",
+      "tiempos_internos": {
+        "recepcion_s": 0.3,
+        "validacion_s": 18.3,
+        "perfil_s": 4.6,
+        "features_s": 39.8,
+        "verificacion_features_s": 0.2,
+        "carga_modelos_s": 5.1,
+        "inferencia_binario_ce02_20s_s": 143.9,
+        "inferencia_multiclase_p1_ce02_20s_s": 486.8,
+        "lectura_y_conversion_s": 13.1,
+        "estrategias_s": 0.2,
+        "escritura_s": 3.9,
+        "total_hasta_publicacion_s": 718.7
+      },
+      "total_interno_desde_entrada_s": 721.5,
+      "memoria": {
+        "rss_mb": 330.0,
+        "pico_working_set_mb": 2561.4,
+        "pico_commit_privado_mb": 4130.0
+      },
+      "reconciliacion": "nada",
+      "recuperado": false,
+      "intentos": [
+        {
+          "codigo": 0,
+          "pared_s": 729.7,
+          "falla_inyectada": null
+        }
+      ],
+      "tiempo_total_s": 729.7,
+      "arranque_y_cierre_s": 8.2
+    },
+    {
+      "mes": 202005,
+      "ok": true,
+      "checks": {
+        "completado": true,
+        "integridad_sha256": true,
+        "salida_cabecera_exacta": true,
+        "salida_clientes_igual_entrada": true,
+        "features_decisiones_historia_igual_entrada": true,
+        "salida_probabilidades_en_0_1": true,
+        "salida_es_la_recomendacion": true,
+        "decisiones_dos_estrategias": true,
+        "historia_inicial_mas_completados_sin_huecos": true,
+        "lee_solo_entrada_historia_previa_y_modelos": true,
+        "reporte_una_fila_por_completado": true,
+        "retrospectiva_segun_meses_recibidos": true
+      },
+      "clientes": 150267,
+      "envios": {
+        "recomendacion": 3532,
+        "alternativa": 4095
+      },
+      "probabilidad_minima_enviada": {
+        "recomendacion_provisional": 0.08033953789248759,
+        "alternativa": 0.03302423367420021
+      },
+      "distribucion": {
+        "recomendacion_provisional": {
+          "cuantiles": {
+            "0": 7.06975775435353e-06,
+            "0.01": 4.977616416765416e-05,
+            "0.1": 0.00016188650209465538,
+            "0.25": 0.000313676589150935,
+            "0.5": 0.0007877404055295564,
+            "0.75": 0.0028945523497233977,
+            "0.9": 0.014125417923685185,
+            "0.99": 0.18360575184386868,
+            "0.999": 0.8101161563145557,
+            "1": 0.967673707655113
+          },
+          "media": 0.010150061197840234,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 534
+        },
+        "alternativa": {
+          "cuantiles": {
+            "0": 1.8391733010326651e-06,
+            "0.01": 1.5067631673091563e-05,
+            "0.1": 5.741398282140897e-05,
+            "0.25": 0.00011823644085464023,
+            "0.5": 0.0003033600274127461,
+            "0.75": 0.0011784246294176592,
+            "0.9": 0.006361390845096673,
+            "0.99": 0.08540738561891685,
+            "0.999": 0.27284913498471824,
+            "1": 0.7039688815258598
+          },
+          "media": 0.00427444558908639,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 3
+        }
+      },
+      "coincidencia": {
+        "interseccion": 3152,
+        "solo_recomendacion": 380,
+        "solo_alternativa": 943,
+        "jaccard": 0.704358,
+        "correlacion_de_rangos": 0.969547
+      },
+      "estado_calidad": "sin_alertas",
+      "anomalias": {
+        "clientes_sin_historia": 1826,
+        "lag_fila_distinto_calendario": 13,
+        "columnas_100_nulas": [],
+        "columnas_observados_en_cero": [],
+        "columnas_constantes_no_nulas": [],
+        "cambio_tasa_nulos": [],
+        "reglas": [
+          "clientes_sin_historia",
+          "estrategia_provisional",
+          "lag_fila_distinto_calendario"
+        ]
+      },
+      "historia_leida": "201901-202004 (16 meses)",
+      "tiempos_internos": {
+        "recepcion_s": 0.4,
+        "validacion_s": 21.2,
+        "perfil_s": 3.4,
+        "features_s": 33.2,
+        "verificacion_features_s": 0.1,
+        "carga_modelos_s": 3.8,
+        "inferencia_binario_ce02_20s_s": 148.1,
+        "inferencia_multiclase_p1_ce02_20s_s": 455.7,
+        "lectura_y_conversion_s": 14.2,
+        "estrategias_s": 0.2,
+        "escritura_s": 2.9,
+        "total_hasta_publicacion_s": 685.5
+      },
+      "total_interno_desde_entrada_s": 687.6,
+      "memoria": {
+        "rss_mb": 379.2,
+        "pico_working_set_mb": 3359.8,
+        "pico_commit_privado_mb": 4169.9
+      },
+      "reconciliacion": "nada",
+      "recuperado": false,
+      "intentos": [
+        {
+          "codigo": 0,
+          "pared_s": 695.5,
+          "falla_inyectada": null
+        }
+      ],
+      "tiempo_total_s": 695.5,
+      "arranque_y_cierre_s": 7.9
+    },
+    {
+      "mes": 202006,
+      "ok": true,
+      "checks": {
+        "completado": true,
+        "integridad_sha256": true,
+        "salida_cabecera_exacta": true,
+        "salida_clientes_igual_entrada": true,
+        "features_decisiones_historia_igual_entrada": true,
+        "salida_probabilidades_en_0_1": true,
+        "salida_es_la_recomendacion": true,
+        "decisiones_dos_estrategias": true,
+        "historia_inicial_mas_completados_sin_huecos": true,
+        "lee_solo_entrada_historia_previa_y_modelos": true,
+        "reporte_una_fila_por_completado": true,
+        "retrospectiva_segun_meses_recibidos": true
+      },
+      "clientes": 152712,
+      "envios": {
+        "recomendacion": 3589,
+        "alternativa": 4162
+      },
+      "probabilidad_minima_enviada": {
+        "recomendacion_provisional": 0.19675659381079352,
+        "alternativa": 0.05809989339328666
+      },
+      "distribucion": {
+        "recomendacion_provisional": {
+          "cuantiles": {
+            "0": 9.034627030816807e-05,
+            "0.01": 0.000590442562914892,
+            "0.1": 0.001604146941375306,
+            "0.25": 0.0030208222526626593,
+            "0.5": 0.008088914188129995,
+            "0.75": 0.03237674150290175,
+            "0.9": 0.08077261846983039,
+            "0.99": 0.32201673928201885,
+            "0.999": 0.8093002523229833,
+            "1": 0.9808081398345758
+          },
+          "media": 0.0314911318862752,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 680
+        },
+        "alternativa": {
+          "cuantiles": {
+            "0": 1.310271224151965e-05,
+            "0.01": 0.00014496334610647731,
+            "0.1": 0.00046474131677244537,
+            "0.25": 0.0008773696825998535,
+            "0.5": 0.002286914728458074,
+            "0.75": 0.009318932489109338,
+            "0.9": 0.024820437833193147,
+            "0.99": 0.10691202203188747,
+            "0.999": 0.37290447169296725,
+            "1": 0.7794128567850208
+          },
+          "media": 0.01003577724641206,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 67
+        }
+      },
+      "coincidencia": {
+        "interseccion": 2588,
+        "solo_recomendacion": 1001,
+        "solo_alternativa": 1574,
+        "jaccard": 0.501259,
+        "correlacion_de_rangos": 0.948356
+      },
+      "estado_calidad": "con_alertas",
+      "anomalias": {
+        "clientes_sin_historia": 2957,
+        "lag_fila_distinto_calendario": 24,
+        "columnas_100_nulas": [],
+        "columnas_observados_en_cero": [
+          "active_quarter",
+          "catm_trx",
+          "catm_trx_other",
+          "ccajas_consultas",
+          "ccajas_depositos",
+          "ccajas_extracciones",
+          "ccajas_otras",
+          "ccajas_transacciones",
+          "ccajeros_propios_descuentos",
+          "ccallcenter_transacciones",
+          "ccheques_depositados",
+          "ccheques_depositados_rechazados",
+          "ccheques_emitidos",
+          "ccheques_emitidos_rechazados",
+          "ccomisiones_otras",
+          "cextraccion_autoservicio",
+          "chomebanking_transacciones",
+          "cmobile_app_trx",
+          "ctarjeta_debito_transacciones",
+          "ctarjeta_master_descuentos",
+          "ctarjeta_master_transacciones",
+          "ctarjeta_visa_descuentos",
+          "ctarjeta_visa_transacciones",
+          "internet",
+          "mactivos_margen",
+          "matm",
+          "matm_other",
+          "mautoservicio",
+          "mcajeros_propios_descuentos",
+          "mcheques_depositados",
+          "mcheques_depositados_rechazados",
+          "mcheques_emitidos",
+          "mcheques_emitidos_rechazados",
+          "mcomisiones",
+          "mcomisiones_otras",
+          "mcuentas_saldo",
+          "mextraccion_autoservicio",
+          "mpasivos_margen",
+          "mrentabilidad",
+          "mrentabilidad_annual",
+          "mtarjeta_master_consumo",
+          "mtarjeta_master_descuentos",
+          "mtarjeta_visa_consumo",
+          "mtarjeta_visa_descuentos",
+          "tcallcenter",
+          "thomebanking",
+          "tmobile_app"
+        ],
+        "columnas_constantes_no_nulas": [],
+        "cambio_tasa_nulos": [],
+        "reglas": [
+          "clientes_sin_historia",
+          "estrategia_provisional",
+          "lag_fila_distinto_calendario",
+          "observados_en_cero"
+        ]
+      },
+      "historia_leida": "201901-202005 (17 meses)",
+      "tiempos_internos": {
+        "recepcion_s": 0.2,
+        "validacion_s": 17.2,
+        "perfil_s": 2.6,
+        "features_s": 30.9,
+        "verificacion_features_s": 0.1,
+        "carga_modelos_s": 3.5,
+        "inferencia_binario_ce02_20s_s": 147.5,
+        "inferencia_multiclase_p1_ce02_20s_s": 478.0,
+        "lectura_y_conversion_s": 12.6,
+        "estrategias_s": 0.2,
+        "escritura_s": 3.0,
+        "total_hasta_publicacion_s": 697.7
+      },
+      "total_interno_desde_entrada_s": 700.1,
+      "memoria": {
+        "rss_mb": 377.9,
+        "pico_working_set_mb": 3404.2,
+        "pico_commit_privado_mb": 4205.1
+      },
+      "reconciliacion": "nada",
+      "recuperado": false,
+      "intentos": [
+        {
+          "codigo": 0,
+          "pared_s": 706.3,
+          "falla_inyectada": null
+        }
+      ],
+      "tiempo_total_s": 706.3,
+      "arranque_y_cierre_s": 6.2
+    }
+  ],
+  "preparacion": {
+    "pared_s": 44.6,
+    "interno_s": 40.0,
+    "historia": {
+      "desde": 201901,
+      "hasta": 201912,
+      "meses": 12,
+      "proximo_mes": 202001,
+      "checks": {
+        "empieza_en_201901": true,
+        "termina_en_hasta": true,
+        "meses_consecutivos_sin_huecos": true,
+        "nombre_igual_contenido": true,
+        "un_foto_mes_por_archivo": true,
+        "mismo_esquema_en_todos": true
+      }
+    },
+    "catalogo": {
+      "nombre": "ce02",
+      "origen": "catalogo/estrategias_ce02.json",
+      "target_version": 2,
+      "archivo": "modelos/estrategias.json",
+      "sha256": "c48641ac0708175c5701c193e13846b93db54205ead9ebdb2b1cfee5d04ba355",
+      "estrategias": [
+        "binario_ce02_20s",
+        "multiclase_p1_ce02_20s"
+      ]
+    },
+    "incluye": "copia y verificación de modelos y catálogo; historia inicial desde el Parquet de 2019 controlada contra la auditoría de filas; validación de cobertura"
+  },
+  "ejecucion": "ejecuciones/entornos/secuencia_ce02_202001_202006_20261125T143926",
+  "reintento": {
+    "mes": 202003,
+    "a_muere_tras_publicar": {
+      "codigo": 3,
+      "pared_s": 679.4,
+      "falla_inyectada": "tras_publicacion",
+      "esperado": 3,
+      "publicado": {
+        "salida": true,
+        "historia": true,
+        "diagnostico": true
+      },
+      "estado": "en_curso",
+      "candado_huerfano": true,
+      "reporte_sin_el_mes": true,
+      "ok": true
+    },
+    "b_mes_siguiente_rechazado": {
+      "codigo": 4,
+      "pared_s": 13.6,
+      "falla_inyectada": null,
+      "mes": 202004,
+      "esperado": 4,
+      "cambios": [],
+      "motivo": "meses previos procesados sin estado completado: [202003]; reintentá esos meses primero",
+      "ok": true
+    },
+    "c_reintento_recupera": {
+      "codigo": 0,
+      "pared_s": 18.8,
+      "falla_inyectada": null,
+      "esperado": 0,
+      "estado": "completado",
+      "recuperado": true,
+      "sin_recalcular": true,
+      "intentos": [
+        "fallido",
+        "completado"
+      ],
+      "ok": true
+    },
+    "d_repetir_rechazado": {
+      "codigo": 4,
+      "pared_s": 11.9,
+      "falla_inyectada": null,
+      "esperado": 4,
+      "cambios": [],
+      "ok": true
+    },
+    "ok": true
+  },
+  "retrospectiva": {
+    "202001": {
+      "version": 2,
+      "mes": 202001,
+      "regla": {
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
+        "BAJA+2": "presente en t+1 y ausente en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "horizonte": "la clase definitiva necesita t+1 y t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
+        "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
+      },
+      "disponibilidad": {
+        "estado": "completa",
+        "requiere": [
+          202002,
+          202003
+        ],
+        "falta": []
+      },
+      "uso": "monitoreo retrospectivo; no modifica modelos, cortes ni salidas (R1)",
+      "clases": {
+        "clientes": 142929,
+        "BAJA+1": 606,
+        "BAJA+2": 521,
+        "CONTINUA": 141802,
+        "ausentes_en_t1_que_vuelven_en_t2": 2,
+        "definitivas": true
+      },
+      "estrategias": [
+        {
+          "id": "binario_ce02_20s",
+          "rol": "recomendacion_provisional",
+          "score": "P(BAJA+1∪BAJA+2)",
+          "envios": 3359,
+          "baja1_enviados": 434,
+          "baja2_enviados": 320,
+          "precision_baja2": 0.095266,
+          "recall_baja2": 0.614203,
+          "ganancia": 259627500,
+          "auc_baja2": 0.938076,
+          "ganancia_maxima_ex_post": 267327500,
+          "envios_ganancia_maxima_ex_post": 4239,
+          "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"
+        },
+        {
+          "id": "multiclase_p1_ce02_20s",
+          "rol": "alternativa",
+          "score": "P(BAJA+2)",
+          "envios": 3895,
+          "baja1_enviados": 416,
+          "baja2_enviados": 330,
+          "precision_baja2": 0.084724,
+          "recall_baja2": 0.633397,
+          "ganancia": 255887500,
+          "auc_baja2": 0.936778,
+          "ganancia_maxima_ex_post": 263422500,
+          "envios_ganancia_maxima_ex_post": 3381,
+          "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"
+        }
+      ],
+      "diferencia_ganancia_recomendacion_menos_alternativa": 3740000
+    },
+    "202002": {
+      "version": 2,
+      "mes": 202002,
+      "regla": {
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
+        "BAJA+2": "presente en t+1 y ausente en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "horizonte": "la clase definitiva necesita t+1 y t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
+        "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
+      },
+      "disponibilidad": {
+        "estado": "completa",
+        "requiere": [
+          202003,
+          202004
+        ],
+        "falta": []
+      },
+      "uso": "monitoreo retrospectivo; no modifica modelos, cortes ni salidas (R1)",
+      "clases": {
+        "clientes": 146184,
+        "BAJA+1": 524,
+        "BAJA+2": 213,
+        "CONTINUA": 145447,
+        "ausentes_en_t1_que_vuelven_en_t2": 0,
+        "definitivas": true
+      },
+      "estrategias": [
+        {
+          "id": "binario_ce02_20s",
+          "rol": "recomendacion_provisional",
+          "score": "P(BAJA+1∪BAJA+2)",
+          "envios": 3436,
+          "baja1_enviados": 388,
+          "baja2_enviados": 120,
+          "precision_baja2": 0.034924,
+          "recall_baja2": 0.56338,
+          "ganancia": 37510000,
+          "auc_baja2": 0.949809,
+          "ganancia_maxima_ex_post": 56072500,
+          "envios_ganancia_maxima_ex_post": 1401,
+          "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"
+        },
+        {
+          "id": "multiclase_p1_ce02_20s",
+          "rol": "alternativa",
+          "score": "P(BAJA+2)",
+          "envios": 3984,
+          "baja1_enviados": 346,
+          "baja2_enviados": 128,
+          "precision_baja2": 0.032129,
+          "recall_baja2": 0.600939,
+          "ganancia": 31240000,
+          "auc_baja2": 0.947374,
+          "ganancia_maxima_ex_post": 53350000,
+          "envios_ganancia_maxima_ex_post": 1380,
+          "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"
+        }
+      ],
+      "diferencia_ganancia_recomendacion_menos_alternativa": 6270000
+    },
+    "202003": {
+      "version": 2,
+      "mes": 202003,
+      "regla": {
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
+        "BAJA+2": "presente en t+1 y ausente en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "horizonte": "la clase definitiva necesita t+1 y t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
+        "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
+      },
+      "disponibilidad": {
+        "estado": "completa",
+        "requiere": [
+          202004,
+          202005
+        ],
+        "falta": []
+      },
+      "uso": "monitoreo retrospectivo; no modifica modelos, cortes ni salidas (R1)",
+      "clases": {
+        "clientes": 148313,
+        "BAJA+1": 213,
+        "BAJA+2": 398,
+        "CONTINUA": 147702,
+        "ausentes_en_t1_que_vuelven_en_t2": 0,
+        "definitivas": true
+      },
+      "estrategias": [
+        {
+          "id": "binario_ce02_20s",
+          "rol": "recomendacion_provisional",
+          "score": "P(BAJA+1∪BAJA+2)",
+          "envios": 3486,
+          "baja1_enviados": 155,
+          "baja2_enviados": 242,
+          "precision_baja2": 0.069421,
+          "recall_baja2": 0.60804,
+          "ganancia": 170335000,
+          "auc_baja2": 0.942799,
+          "ganancia_maxima_ex_post": 170610000,
+          "envios_ganancia_maxima_ex_post": 3476,
+          "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"
+        },
+        {
+          "id": "multiclase_p1_ce02_20s",
+          "rol": "alternativa",
+          "score": "P(BAJA+2)",
+          "envios": 4042,
+          "baja1_enviados": 147,
+          "baja2_enviados": 240,
+          "precision_baja2": 0.059377,
+          "recall_baja2": 0.603015,
+          "ganancia": 152845000,
+          "auc_baja2": 0.939668,
+          "ganancia_maxima_ex_post": 155210000,
+          "envios_ganancia_maxima_ex_post": 4196,
+          "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"
+        }
+      ],
+      "diferencia_ganancia_recomendacion_menos_alternativa": 17490000
+    },
+    "202004": {
+      "version": 2,
+      "mes": 202004,
+      "regla": {
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
+        "BAJA+2": "presente en t+1 y ausente en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "horizonte": "la clase definitiva necesita t+1 y t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
+        "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
+      },
+      "disponibilidad": {
+        "estado": "completa",
+        "requiere": [
+          202005,
+          202006
+        ],
+        "falta": []
+      },
+      "uso": "monitoreo retrospectivo; no modifica modelos, cortes ni salidas (R1)",
+      "clases": {
+        "clientes": 148831,
+        "BAJA+1": 398,
+        "BAJA+2": 524,
+        "CONTINUA": 147909,
+        "ausentes_en_t1_que_vuelven_en_t2": 1,
+        "definitivas": true
+      },
+      "estrategias": [
+        {
+          "id": "binario_ce02_20s",
+          "rol": "recomendacion_provisional",
+          "score": "P(BAJA+1∪BAJA+2)",
+          "envios": 3498,
+          "baja1_enviados": 251,
+          "baja2_enviados": 248,
+          "precision_baja2": 0.070898,
+          "recall_baja2": 0.473282,
+          "ganancia": 176605000,
+          "auc_baja2": 0.929246,
+          "ganancia_maxima_ex_post": 191950000,
+          "envios_ganancia_maxima_ex_post": 4500,
+          "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"
+        },
+        {
+          "id": "multiclase_p1_ce02_20s",
+          "rol": "alternativa",
+          "score": "P(BAJA+2)",
+          "envios": 4056,
+          "baja1_enviados": 248,
+          "baja2_enviados": 267,
+          "precision_baja2": 0.065828,
+          "recall_baja2": 0.509542,
+          "ganancia": 182160000,
+          "auc_baja2": 0.927892,
+          "ganancia_maxima_ex_post": 186202500,
+          "envios_ganancia_maxima_ex_post": 5349,
+          "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"
+        }
+      ],
+      "diferencia_ganancia_recomendacion_menos_alternativa": -5555000
+    },
+    "202005": {
+      "version": 2,
+      "mes": 202005,
+      "regla": {
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
+        "BAJA+2": "presente en t+1 y ausente en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "horizonte": "la clase definitiva necesita t+1 y t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
+        "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
+      },
+      "disponibilidad": {
+        "estado": "parcial",
+        "requiere": [
+          202006,
+          202007
+        ],
+        "falta": [
+          "202007"
+        ]
+      },
+      "uso": "monitoreo retrospectivo; no modifica modelos, cortes ni salidas (R1)",
+      "clases": {
+        "clientes": 150267,
+        "definitivas": false
+      },
+      "provisional": {
+        "ausentes_en_t1": 527,
+        "nota": "BAJA+1 provisional: pasan a CONTINUA si vuelven en t+2; los presentes en t+1 pueden ser BAJA+2 o CONTINUA. Ninguna clase es definitiva hasta recibir t+2."
+      },
+      "estrategias": [
+        {
+          "id": "binario_ce02_20s",
+          "rol": "recomendacion_provisional",
+          "score": "P(BAJA+1∪BAJA+2)",
+          "envios": 3532,
+          "provisional_ausentes_en_t1_enviados": 295
+        },
+        {
+          "id": "multiclase_p1_ce02_20s",
+          "rol": "alternativa",
+          "score": "P(BAJA+2)",
+          "envios": 4095,
+          "provisional_ausentes_en_t1_enviados": 294
+        }
+      ]
+    },
+    "202006": {
+      "version": 2,
+      "mes": 202006,
+      "regla": {
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
+        "BAJA+2": "presente en t+1 y ausente en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "horizonte": "la clase definitiva necesita t+1 y t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
+        "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
+      },
+      "disponibilidad": {
+        "estado": "pendiente",
+        "requiere": [
+          202007,
+          202008
+        ],
+        "falta": [
+          "202007",
+          "202008"
+        ]
+      },
+      "uso": "monitoreo retrospectivo; no modifica modelos, cortes ni salidas (R1)"
+    }
+  },
+  "fin": "2026-11-25T15:44:11",
+  "ok": true
+}

@@ -3,8 +3,9 @@ nuevas: usa lo publicado (decisiones, salida oficial) y la retrospectiva ya calc
 
 Por mes y por rol (recomendación, alternativa): envíos, Jaccard del conjunto enviado entre corridas, correlación de
 rangos del score, probabilidad mínima enviada; coincidencia entre estrategias dentro de cada corrida; salida oficial
-(Jaccard de enviar=1 y correlación de rangos de la probabilidad); métricas retrospectivas de ambas (misma regla) y
-tiempo del mes.
+(Jaccard de enviar=1 y correlación de rangos de la probabilidad); métricas retrospectivas de ambas (misma regla);
+distribución del score por rol; estado de calidad y reglas de incidentes (anomalías de la entrada); tiempo del mes
+(interno y, si existe pruebas/secuencia_*.json, la pared con arranque) y memoria pico.
 
 Uso: python scripts/comparar_secuencias.py --anterior <carpeta> --nueva <carpeta> --salida <json>
 """
@@ -43,12 +44,15 @@ def cargar(env: Path, mes: int) -> dict:
     est = json.loads((env / "registro" / "meses" / f"{mes}.json").read_text(encoding="utf-8"))
     retro_p = env / "registro" / "retrospectiva" / f"{mes}.json"
     roles = {e["rol"]: e["id"] for e in cat["estrategias"]}
+    pared = {}
+    for s in sorted((env / "pruebas").glob("secuencia_*.json")) if (env / "pruebas").exists() else []:
+        pared.update({x["mes"]: x.get("tiempo_total_s") for x in json.loads(s.read_text(encoding="utf-8"))["meses"]})
     return {"cli": dec["numero_de_cliente"].to_numpy(np.int64),
             "p": {r: dec[f"probabilidad_{i}"].to_numpy(np.float64) for r, i in roles.items()},
             "env": {r: dec[f"enviar_{i}"].to_numpy() == 1 for r, i in roles.items()},
             "ids": roles, "salida_cli": out["numero_de_cliente"].to_numpy(np.int64),
             "salida_p": out["probabilidad"].to_numpy(np.float64), "salida_env": out["enviar"].to_numpy() == 1,
-            "rep": rep, "est": est, "catalogo": cat.get("nombre", "e01"),
+            "rep": rep, "dist": {e["rol"]: e["distribucion"] for e in rep["estrategias"]}, "est": est, "catalogo": cat.get("nombre", "e01"), "pared": pared.get(mes),
             "retro": json.loads(retro_p.read_text(encoding="utf-8")) if retro_p.exists() else None}
 
 
@@ -92,6 +96,16 @@ def main(argv=None) -> int:
         d["salida_oficial"] = {"jaccard_enviar": jaccard(x["salida_env"], y["salida_env"]),
                                "correlacion_de_rangos_probabilidad": corr_rangos(x["salida_p"], y["salida_p"])}
         d["tiempo_total_desde_entrada_s"] = [x["est"].get("total_desde_entrada_s"), y["est"].get("total_desde_entrada_s")]
+        d["tiempo_pared_con_arranque_s"] = [x["pared"], y["pared"]]
+        d["tiempos_internos"] = [x["rep"]["tiempos"], y["rep"]["tiempos"]]
+        d["memoria"] = [x["rep"]["memoria"], y["rep"]["memoria"]]
+        d["distribucion"] = {r: [{"media": z["dist"][r]["media"], "mayor_0_5": z["dist"][r]["mayor_0_5"],
+                                  **{f"q{q}": z["dist"][r]["cuantiles"][q] for q in ("0.5", "0.9", "0.99", "0.999")}}
+                                 for z in (x, y)] for r in ROLES}
+        reglas = [sorted({i["regla"] for i in z["rep"]["incidentes"]}) for z in (x, y)]
+        d["anomalias"] = {"estado_calidad": [x["rep"]["estado_calidad"], y["rep"]["estado_calidad"]],
+                          "reglas": reglas, "iguales": reglas[0] == reglas[1]
+                          and x["rep"].get("categorias_columnas") == y["rep"].get("categorias_columnas")}
         d["retrospectiva"] = [resumen_retro(x["retro"]), resumen_retro(y["retro"])]
         res["meses"][str(m)] = d
         print(m, json.dumps({k: d[k] for k in ("por_rol", "coincidencia_entre_estrategias", "salida_oficial")},
