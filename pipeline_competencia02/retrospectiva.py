@@ -1,14 +1,23 @@
 """Métricas retrospectivas de los meses ya publicados, a medida que llegan los meses que las etiquetan.
 
-Regla de target (la misma de evaluacion/particiones.py y experimento_sampling/03), para un cliente del mes t:
-  ausente en t+1                    -> BAJA+1    (alcanza con la lista de clientes de t+1)
-  presente en t+1 y ausente en t+2  -> BAJA+2    (necesita t+1 y t+2)
-  presente en t+1 y en t+2          -> CONTINUA  (necesita t+1 y t+2)
+Regla de target (versión 2), para un cliente presente en el mes t:
+  presente en t+2                   -> CONTINUA  (aunque falte en t+1: el cliente "vuelve")
+  presente en t+1 y ausente en t+2  -> BAJA+2
+  ausente en t+1 y ausente en t+2   -> BAJA+1
+Es la regla que reproduce SIN discrepancias las etiquetas oficiales de competencia 01
+(experimento_sampling/03b_validar_target_competencia01.py, "regla_alternativa_compatible_con_oficial": 0 diferencias
+en 983.061 filas). La versión 1 de este módulo copiaba experimento_sampling/03 (lead sobre la grilla, igual al código
+docente en R), que etiqueta BAJA+1 al cliente ausente en t+1 que vuelve en t+2; el archivo oficial lo etiqueta CONTINUA
+(15 de 15 casos en competencia 01). El patrón ausente t+1 / presente t+2 / ausente t+3 no aparece en esa verificación:
+se le aplica la misma regla (CONTINUA) sin verificación directa.
 
-Disponibilidad de la etiqueta de un mes completado t, según la historia de la ejecución:
-  completa  t+1 y t+2 en historia/      -> ganancia, aciertos, AUC de BAJA+2 por estrategia
-  parcial   sólo t+1 en historia/       -> sólo BAJA+1 (cantidad y cuántos se enviaron); ganancia pendiente
-  pendiente ni t+1                      -> nada
+La clase depende de t+2 en TODOS los casos (también BAJA+1: un ausente en t+1 puede volver en t+2). Por eso:
+  completa  t+1 y t+2 en historia/  -> clases definitivas; ganancia, aciertos y AUC de BAJA+2 por estrategia
+  parcial   sólo t+1 en historia/   -> NINGUNA clase definitiva. Se informa, marcado como provisional, cuántos
+                                       clientes faltan en t+1 (BAJA+1 provisional: pasan a CONTINUA si vuelven en t+2)
+                                       y cuántos de ellos se enviaron. El archivo oficial de competencia 01 sí etiquetó
+                                       BAJA+1 en su anteúltimo mes sin esperar t+2; acá no se presenta como definitivo.
+  pendiente ni t+1                  -> nada
 
 Fuentes, todas dentro de la carpeta de ejecución:
   - clientes y decisiones de t: diagnosticos/<t>/decisiones_<t>.csv (publicado e íntegro);
@@ -35,10 +44,11 @@ import pandas as pd
 
 from evaluacion.ganancia import COSTO_ENVIO, PREMIO_BRUTO, curva
 
-REGLA = {"BAJA+1": "ausente en t+1", "BAJA+2": "presente en t+1 y ausente en t+2",
-         "CONTINUA": "presente en t+1 y en t+2",
+REGLA = {"CONTINUA": "presente en t+2 (aunque falte en t+1)", "BAJA+2": "presente en t+1 y ausente en t+2",
+         "BAJA+1": "ausente en t+1 y ausente en t+2",
+         "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
          "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"}
-VERSION = 1
+VERSION = 2
 
 
 def siguiente(m: int) -> int:
@@ -52,6 +62,11 @@ def disponibilidad(historia: Path, mes: int) -> dict:
     estado = "completa" if h1 and h2 else "parcial" if h1 else "pendiente"
     falta = [str(m) for m, h in ((m1, h1), (m2, h2)) if not h]
     return {"estado": estado, "requiere": [m1, m2], "falta": falta}
+
+
+def etiquetar(en1: np.ndarray, en2: np.ndarray) -> np.ndarray:
+    """Clase con t+1 y t+2 observados (regla versión 2). La presencia en t+2 manda."""
+    return np.where(en2, "CONTINUA", np.where(en1, "BAJA+2", "BAJA+1"))
 
 
 def auc(score: np.ndarray, positivo: np.ndarray) -> float | None:
@@ -86,26 +101,35 @@ def calcular(raiz: Path, mes: int, estrategias: list[dict]) -> dict:
                if disp["estado"] == "completa" else None)
     finally:
         con.close()
-    baja1 = ~en1
-    clases = {"clientes": len(cli), "BAJA+1": int(baja1.sum())}
     if en2 is not None:
-        baja2 = en1 & ~en2
-        clases.update({"BAJA+2": int(baja2.sum()), "CONTINUA": int((en1 & en2).sum()),
-                       "ausentes_en_t1_que_vuelven_en_t2": int((~en1 & en2).sum())})
-    out["clases"] = clases
+        clase = etiquetar(en1, en2)
+        baja1, baja2 = clase == "BAJA+1", clase == "BAJA+2"
+        out["clases"] = {"clientes": len(cli), "BAJA+1": int(baja1.sum()), "BAJA+2": int(baja2.sum()),
+                         "CONTINUA": int((clase == "CONTINUA").sum()),
+                         "ausentes_en_t1_que_vuelven_en_t2": int((~en1 & en2).sum()),
+                         "definitivas": True}
+    else:
+        baja1 = baja2 = None
+        out["clases"] = {"clientes": len(cli), "definitivas": False}
+        out["provisional"] = {
+            "ausentes_en_t1": int((~en1).sum()),
+            "nota": "BAJA+1 provisional: pasan a CONTINUA si vuelven en t+2; los presentes en t+1 pueden ser "
+                    "BAJA+2 o CONTINUA. Ninguna clase es definitiva hasta recibir t+2."}
     out["estrategias"] = []
     for e in estrategias:
         p = dec[f"probabilidad_{e['id']}"].to_numpy(np.float64)
         env = dec[f"enviar_{e['id']}"].to_numpy() == 1
         k = int(env.sum())
-        r = {"id": e["id"], "rol": e["rol"], "score": e["score_corto"], "envios": k,
-             "baja1_enviados": int((env & baja1).sum())}
-        if en2 is not None:
+        r = {"id": e["id"], "rol": e["rol"], "score": e["score_corto"], "envios": k}
+        if en2 is None:
+            r["provisional_ausentes_en_t1_enviados"] = int((env & ~en1).sum())
+        else:
+            r["baja1_enviados"] = int((env & baja1).sum())
             tp = int((env & baja2).sum())
             g = curva(p, baja2, cli)
             kmax = int(np.argmax(g)) + 1
             r.update({"baja2_enviados": tp, "precision_baja2": round(tp / k, 6) if k else None,
-                      "recall_baja2": round(tp / clases["BAJA+2"], 6) if clases["BAJA+2"] else None,
+                      "recall_baja2": round(tp / out["clases"]["BAJA+2"], 6) if out["clases"]["BAJA+2"] else None,
                       "ganancia": int(PREMIO_BRUTO * tp - COSTO_ENVIO * k),
                       "auc_baja2": round(auc(p, baja2), 6) if auc(p, baja2) is not None else None,
                       "ganancia_maxima_ex_post": int(g[kmax - 1]), "envios_ganancia_maxima_ex_post": kmax,

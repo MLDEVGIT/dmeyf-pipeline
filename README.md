@@ -12,7 +12,8 @@ Recibe el CSV crudo de un mes, sin targets, y produce `churn_<yyyymm>.csv` con
 > - **Ensayo secuencial** (un archivo por vez, reintento provocado en 202003):
 >   - 172–194 s por mes, contando el arranque del proceso;
 >   - los 6 meses verificados, con scores idénticos bit a bit a los modelos originales;
->   - métricas con target retrospectivas completas para 202001–202004, parcial para 202005 y pendiente para 202006.
+>   - métricas con target retrospectivas completas para 202001–202004; 202005 sin clases definitivas (sólo provisionales) y 202006 pendiente.
+>   - **Regla de target**: la que reproduce las etiquetas oficiales de C01. El cliente ausente en *t+1* que vuelve en *t+2* es CONTINUA; se corrigió el 24-nov (3 clientes reclasificados, ninguna ganancia cambia).
 > - **202006** llega con 47 columnas en cero: los scores se corren hacia arriba y la coincidencia entre
 >   estrategias baja a 0,46. Hoy el pipeline advierte y no trata.
 >
@@ -108,7 +109,7 @@ se conservan porque `mensual.py` reutiliza su validación, su candado y su publi
 | `scripts/` | `verificar_salida.py` (chequeo independiente de un `churn_<yyyymm>.csv`), `verificar_scores.py` (scores contra los modelos originales) `probar_reintentos.py` (fallas y reintentos) y `analizar_columnas_en_cero.py` (diagnóstico de 202006). |
 | `evaluacion/` | Ganancia (premio bruto, costo, neta; `docs/GANANCIA.md`), curvas, corte por fracción con arrepentimiento mínimo, y particiones temporales que **bloquean por código** la lectura de etiquetas fuera de lo permitido. |
 | `experimentos/` | Pruebas incrementales del `docs/PLAN_PRUEBAS.md`: `e01_binario_vs_multiclase.py`, `e02_peso_baja1.py`, `t01_tiempo_inferencia.py`. Salidas completas en `ejecuciones/` (no versionado). |
-| `resultados/` | Resúmenes versionados de cada experimento, sin datos por cliente (`e02_peso_baja1.json`, `i01_ensayo_202001.json`, `i02_secuencia_202001_202006.json`, `i02_columnas_en_cero_202006.json`). |
+| `resultados/` | Resúmenes versionados de cada experimento, sin datos por cliente (`e02_peso_baja1.json`, `i01_ensayo_202001.json`, `i02_secuencia_202001_202006.json`, `i02_columnas_en_cero_202006.json`, `i03_correccion_target_retrospectivo.json`). |
 | `pruebas/` | Pruebas unitarias de `evaluacion/` y del pipeline mensual (`python -m unittest discover -s pruebas -t .`). |
 | `entrenamiento/legado/` | Scripts que produjeron el modelo diagnóstico (copiados sin cambios; todavía usan rutas fijas). |
 | `referencia/01_filas_por_mes.csv` | Conteo de filas por mes de 2019 (sin datos de clientes), usado por `preparar_insumos`. |

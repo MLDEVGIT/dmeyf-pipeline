@@ -113,18 +113,60 @@ que en el entrenamiento, pero nunca su clase.
    modelos, features, cortes ni salidas, que se eligen sólo con 2019 (R1). La etiqueta se reconstruye
    con la presencia de cada cliente en los meses recibidos; no se lee ningún archivo de clase.
 
-**Regla de target** (igual a `evaluacion/particiones.py`), para un cliente del mes *t*:
+**Regla de target** (versión 2, `retrospectiva.py`), para un cliente presente en el mes *t*:
 
-| Clase | Condición | Necesita |
+| Presencia en *t+1* | Presencia en *t+2* | Clase |
 |---|---|---|
-| BAJA+1 | ausente en *t+1* | lista de *t+1* |
-| BAJA+2 | presente en *t+1* y ausente en *t+2* | listas de *t+1* y *t+2* |
-| CONTINUA | presente en *t+1* y en *t+2* | listas de *t+1* y *t+2* |
+| sí o no | **sí** | CONTINUA (también si faltó en *t+1*: el cliente "vuelve") |
+| sí | no | BAJA+2 |
+| no | no | BAJA+1 |
 
-Estados en el reporte: `completa` (están *t+1* y *t+2*: ganancia, aciertos, AUC de BAJA+2),
-`parcial` (sólo *t+1*: cantidad de BAJA+1 y cuántos se enviaron) y `pendiente`. Un cliente ausente
-en *t+1* que vuelve en *t+2* sigue siendo BAJA+1 y se cuenta aparte. La ganancia usa los importes de
-C01 (`GANANCIA.md`), porque los de C02 siguen sin fuente.
+- **Fuente.** Es la regla que reproduce **sin diferencias** las etiquetas oficiales de competencia 01:
+  0 discrepancias en 983.061 filas en `experimento_sampling/03b_validar_target_competencia01.py`.
+- **Caso del cliente que vuelve.** Presente en *t*, ausente en *t+1* y presente en *t+2*: el archivo
+  oficial lo etiqueta CONTINUA en los 15 casos.
+- **Patrón sin verificar.** Ausente en *t+1*, presente en *t+2* y ausente en *t+3* no aparece en esa
+  verificación; se le aplica la misma regla.
+
+**Corrección del 24-nov (versión 1 → 2).**
+- **Error.** La versión 1 copiaba `experimento_sampling/03_construir_target.py`, que es idéntico a
+  `entrenamiento/legado/03_construir_target.py` y al código docente en R (`shift` lead). Esa versión
+  etiqueta BAJA+1 al cliente que vuelve.
+- **Recálculo.** Se recalculó con las decisiones ya guardadas, sin volver a predecir. Lo publicado no
+  cambió (sha256 verificados).
+- **Clientes.** Cambian de clase **3 clientes**, de BAJA+1 a CONTINUA: 2 en 202001 y 1 en 202004.
+  Ninguno había recibido envío.
+- **Métricas.** Cambian **4 valores**: BAJA+1 y CONTINUA de 202001 (608 → 606 y 141.800 → 141.802) y
+  de 202004 (399 → 398 y 147.908 → 147.909). Ganancias, aciertos, precisión, recall y AUC de BAJA+2,
+  máximos ex post, BAJA+1 enviados y diferencias entre estrategias **no cambian**, porque BAJA+2 no
+  cambia.
+- **202005.** Deja de presentar 527 BAJA+1 y 315 / 290 enviados como definitivos (abajo).
+- **Detalle.** `resultados/i03_correccion_target_retrospectivo.json`.
+
+**La clase siempre depende de *t+2*.** También BAJA+1, porque un ausente en *t+1* puede volver.
+
+| Estado | Meses recibidos | Qué se informa |
+|---|---|---|
+| `completa` | *t+1* y *t+2* | Clases **definitivas**; ganancia, aciertos y AUC de BAJA+2 por estrategia |
+| `parcial` | sólo *t+1* | **Ninguna clase definitiva.** En columnas aparte (`provisional_ausentes_t1`, `*_provisional_ausentes_t1_enviados`): cuántos faltan en *t+1* y cuántos de ellos se enviaron. Son BAJA+1 *provisionales*, que pasan a CONTINUA si vuelven. Las columnas de clase y de métricas quedan `pendiente` |
+| `pendiente` | ninguno | Nada |
+
+- **Convención del archivo oficial.** El archivo oficial de competencia 01 etiquetó BAJA+1 en su
+  anteúltimo mes sin esperar *t+2*. Acá no se adopta esa convención, para no presentar como
+  definitiva una etiqueta que todavía puede cambiar.
+- **Tamaño del efecto.** Los que vuelven son pocos: 3 de 1.744 ausentes en *t+1* en 202001–202004 y
+  15 de unos 4.000 en competencia 01.
+- **Importes.** La ganancia usa los de C01 (`GANANCIA.md`), porque los de C02 siguen sin fuente.
+
+**Efecto en 2019, sin corregir.**
+- **El target de 2019 usa la versión 1.** E01 y E02 se entrenaron y evaluaron con el target de 2019
+  construido por `03`. Esa regla etiqueta BAJA+1 a clientes que, por la regla oficial, son CONTINUA.
+- **Cuántas filas.** Contadas sólo con la presencia de clientes, sin leer etiquetas: **5 filas de
+  entrenamiento** (201903: 1, 201905: 1, 201906: 3) y **12 de desarrollo** (201908). 201910 no se
+  informa.
+- **Qué cambia.** BAJA+2 no cambia, así que la ganancia y los cortes de desarrollo son los mismos. El
+  target de entrenamiento cambia levemente: positivos del binario y clase BAJA+1 del multiclase.
+- **Decisión.** No se reentrenó: queda pendiente (abajo).
 
 ## Ensayo de 202001
 
@@ -232,7 +274,7 @@ python -m pipeline_competencia02.correr_meses --nueva <nombre> --desde 202001 --
 | 202002 | 173,7 s | 146.184 | 4.240 | 4.094 | 0,721 | **6 columnas en cero** (descuentos de tarjetas y cajeros) · 3.849 · 21 | **completa**: G 26,4 M / 26,0 M · AUC 0,950 / 0,948 |
 | 202003 | 171,7 s (167,3 + 4,4; reintento) | 148.313 | 4.302 | 4.153 | 0,727 | 2.643 · 24 | **completa**: G 163,3 M / 156,4 M · AUC 0,942 / 0,941 |
 | 202004 | 190,9 s | 148.831 | 4.317 | 4.168 | 0,739 | 727 · 14 | **completa**: G 184,9 M / 173,6 M · AUC 0,929 / 0,928 |
-| 202005 | 193,9 s | 150.267 | 4.358 | 4.208 | 0,724 | 1.826 · 13 | **parcial**: 527 BAJA+1; enviados 315 / 290. Falta 202007 |
+| 202005 | 193,9 s | 150.267 | 4.358 | 4.208 | 0,724 | 1.826 · 13 | **parcial, sin clases definitivas**: 527 ausentes en 202006 (BAJA+1 provisional), enviados 315 / 290. Falta 202007 |
 | 202006 | 174,3 s | 152.712 | 4.429 | 4.276 | **0,460** | **47 columnas en cero** · 2.957 · 24 | **pendiente**: faltan 202007 y 202008 |
 
 - G = ganancia recomendación / alternativa, en pesos, con los importes de C01.
@@ -248,14 +290,14 @@ integración, con la misma salida byte a byte. La diferencia de tiempo viene de 
 máquina y no del pipeline. El pico de working set fue de 3,1–3,4 GB. Con la historia, el tiempo
 crece poco: de 12 a 17 meses de historia, el cálculo de features pasó de 19 a 24–29 s.
 
-**Métricas retrospectivas** (sólo monitoreo, R1):
+**Métricas retrospectivas** (sólo monitoreo, R1; regla versión 2):
 
 | Mes | BAJA+2 | BAJA+1 | Recomendación: aciertos / ganancia / máximo ex post (envíos) | Alternativa: aciertos / ganancia / máximo ex post (envíos) |
 |---|---|---|---|---|
-| 202001 | 521 | 608 | 347 / 267,7 M / 274,0 M (3.278) | 336 / 259,5 M / 260,2 M (3.699) |
+| 202001 | 521 | 606 | 347 / 267,7 M / 274,0 M (3.278) | 336 / 259,5 M / 260,2 M (3.699) |
 | 202002 | 213 | 524 | 130 / 26,4 M / 55,1 M (996) | 126 / 26,0 M / 52,3 M (1.060) |
 | 202003 | 398 | 213 | 256 / 163,3 M / 169,9 M (3.743) | 246 / 156,4 M / 162,5 M (3.570) |
-| 202004 | 524 | 399 | 276 / 184,9 M / 188,3 M (4.553) | 262 / 173,6 M / 184,4 M (4.575) |
+| 202004 | 524 | 398 | 276 / 184,9 M / 188,3 M (4.553) | 262 / 173,6 M / 184,4 M (4.575) |
 
 - **Las dos estrategias.** La recomendación supera a la alternativa en los cuatro meses completos:
   por +8,2, +0,4, +6,9 y +11,3 M. Es un registro, no un criterio para cambiar la recomendación
@@ -265,7 +307,7 @@ crece poco: de 12 a 17 meses de historia, el cálculo de features pasó de 19 a 
   supuesto 2: el corte no se adapta a la prevalencia del mes. El máximo ex post usa la etiqueta y sólo
   sirve de referencia.
 - **Clientes que vuelven.** Los ausentes en *t+1* que vuelven en *t+2* son 2 en 202001, 0 en 202002 y
-  202003, y 1 en 202004.
+  202003, y 1 en 202004. Son CONTINUA (regla versión 2).
 
 ### Verificaciones
 
@@ -353,3 +395,8 @@ usa etiquetas.
    - el formato del reporte (R2, R3; T1);
    - si las métricas retrospectivas con la presencia de 2020 se aceptan en el reporte (R1).
 5. **Importes de ganancia de C02**: siguen siendo los de C01.
+6. **Target de 2019 con la regla oficial.** El de E01/E02 usa la versión 1: 5 filas de entrenamiento y
+   12 de desarrollo son CONTINUA por la regla oficial. Hay que decidir con el grupo si se regenera el
+   target (en el repo de sampling) y se reentrenan los candidatos. Los cortes no deberían cambiar,
+   porque BAJA+2 es igual. La discrepancia ya estaba registrada en sampling como pendiente de consultar
+   con el tutor.

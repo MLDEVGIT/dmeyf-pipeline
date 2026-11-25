@@ -848,12 +848,13 @@
   },
   "retrospectiva": {
     "202001": {
-      "version": 1,
+      "version": 2,
       "mes": 202001,
       "regla": {
-        "BAJA+1": "ausente en t+1",
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
         "BAJA+2": "presente en t+1 y ausente en t+2",
-        "CONTINUA": "presente en t+1 y en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
         "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
       },
       "disponibilidad": {
@@ -867,10 +868,11 @@
       "uso": "monitoreo retrospectivo; no modifica modelos, cortes ni salidas (R1)",
       "clases": {
         "clientes": 142929,
-        "BAJA+1": 608,
+        "BAJA+1": 606,
         "BAJA+2": 521,
-        "CONTINUA": 141800,
-        "ausentes_en_t1_que_vuelven_en_t2": 2
+        "CONTINUA": 141802,
+        "ausentes_en_t1_que_vuelven_en_t2": 2,
+        "definitivas": true
       },
       "estrategias": [
         {
@@ -907,12 +909,13 @@
       "diferencia_ganancia_recomendacion_menos_alternativa": 8195000
     },
     "202002": {
-      "version": 1,
+      "version": 2,
       "mes": 202002,
       "regla": {
-        "BAJA+1": "ausente en t+1",
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
         "BAJA+2": "presente en t+1 y ausente en t+2",
-        "CONTINUA": "presente en t+1 y en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
         "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
       },
       "disponibilidad": {
@@ -929,7 +932,8 @@
         "BAJA+1": 524,
         "BAJA+2": 213,
         "CONTINUA": 145447,
-        "ausentes_en_t1_que_vuelven_en_t2": 0
+        "ausentes_en_t1_que_vuelven_en_t2": 0,
+        "definitivas": true
       },
       "estrategias": [
         {
@@ -966,12 +970,13 @@
       "diferencia_ganancia_recomendacion_menos_alternativa": 385000
     },
     "202003": {
-      "version": 1,
+      "version": 2,
       "mes": 202003,
       "regla": {
-        "BAJA+1": "ausente en t+1",
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
         "BAJA+2": "presente en t+1 y ausente en t+2",
-        "CONTINUA": "presente en t+1 y en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
         "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
       },
       "disponibilidad": {
@@ -988,7 +993,8 @@
         "BAJA+1": 213,
         "BAJA+2": 398,
         "CONTINUA": 147702,
-        "ausentes_en_t1_que_vuelven_en_t2": 0
+        "ausentes_en_t1_que_vuelven_en_t2": 0,
+        "definitivas": true
       },
       "estrategias": [
         {
@@ -1025,12 +1031,13 @@
       "diferencia_ganancia_recomendacion_menos_alternativa": 6902500
     },
     "202004": {
-      "version": 1,
+      "version": 2,
       "mes": 202004,
       "regla": {
-        "BAJA+1": "ausente en t+1",
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
         "BAJA+2": "presente en t+1 y ausente en t+2",
-        "CONTINUA": "presente en t+1 y en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
         "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
       },
       "disponibilidad": {
@@ -1044,10 +1051,11 @@
       "uso": "monitoreo retrospectivo; no modifica modelos, cortes ni salidas (R1)",
       "clases": {
         "clientes": 148831,
-        "BAJA+1": 399,
+        "BAJA+1": 398,
         "BAJA+2": 524,
-        "CONTINUA": 147908,
-        "ausentes_en_t1_que_vuelven_en_t2": 1
+        "CONTINUA": 147909,
+        "ausentes_en_t1_que_vuelven_en_t2": 1,
+        "definitivas": true
       },
       "estrategias": [
         {
@@ -1084,12 +1092,13 @@
       "diferencia_ganancia_recomendacion_menos_alternativa": 11302500
     },
     "202005": {
-      "version": 1,
+      "version": 2,
       "mes": 202005,
       "regla": {
-        "BAJA+1": "ausente en t+1",
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
         "BAJA+2": "presente en t+1 y ausente en t+2",
-        "CONTINUA": "presente en t+1 y en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
         "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
       },
       "disponibilidad": {
@@ -1105,7 +1114,11 @@
       "uso": "monitoreo retrospectivo; no modifica modelos, cortes ni salidas (R1)",
       "clases": {
         "clientes": 150267,
-        "BAJA+1": 527
+        "definitivas": false
+      },
+      "provisional": {
+        "ausentes_en_t1": 527,
+        "nota": "BAJA+1 provisional: pasan a CONTINUA si vuelven en t+2; los presentes en t+1 pueden ser BAJA+2 o CONTINUA. Ninguna clase es definitiva hasta recibir t+2."
       },
       "estrategias": [
         {
@@ -1113,24 +1126,25 @@
           "rol": "recomendacion_provisional",
           "score": "P(BAJA+1∪BAJA+2)",
           "envios": 4358,
-          "baja1_enviados": 315
+          "provisional_ausentes_en_t1_enviados": 315
         },
         {
           "id": "multiclase_p1_e01_300r",
           "rol": "alternativa",
           "score": "P(BAJA+2)",
           "envios": 4208,
-          "baja1_enviados": 290
+          "provisional_ausentes_en_t1_enviados": 290
         }
       ]
     },
     "202006": {
-      "version": 1,
+      "version": 2,
       "mes": 202006,
       "regla": {
-        "BAJA+1": "ausente en t+1",
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
         "BAJA+2": "presente en t+1 y ausente en t+2",
-        "CONTINUA": "presente en t+1 y en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
         "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
       },
       "disponibilidad": {
@@ -1148,5 +1162,6 @@
     }
   },
   "fin": "2026-11-24T20:27:37",
-  "ok": true
+  "ok": true,
+  "retrospectiva_nota": "Recalculada con la regla de target versión 2 (cliente que vuelve en t+2 = CONTINUA; con t+1 solo, nada es definitivo), a partir de las decisiones ya guardadas, sin volver a predecir. Comparación con la versión 1: resultados/i03_correccion_target_retrospectivo.json."
 }

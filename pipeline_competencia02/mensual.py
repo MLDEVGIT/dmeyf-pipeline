@@ -261,14 +261,21 @@ def fila_reporte(env: Entorno, mes: int, est: dict, retro: dict | None = None) -
     fila.update({"metricas_con_target": estado_target,
                  "etiqueta_falta_lista_de": "|".join(disp.get("falta", [])) if disp else
                  rep["metricas_con_target"]["requiere_listas_de"]})
+    # Clases sólo si son definitivas (t+1 y t+2 recibidos); con t+1 solo, los ausentes van aparte como provisionales
     cl = (retro or {}).get("clases", {})
-    fila.update({"target_baja1": cl.get("BAJA+1", "pendiente"), "target_baja2": cl.get("BAJA+2", "pendiente")})
+    prov = (retro or {}).get("provisional", {})
+    fila.update({"target_regla_version": (retro or {}).get("version", ""),
+                 "target_baja1": cl.get("BAJA+1", "pendiente"), "target_baja2": cl.get("BAJA+2", "pendiente"),
+                 "target_continua": cl.get("CONTINUA", "pendiente"),
+                 "target_retornos_t1_ausente_t2_presente": cl.get("ausentes_en_t1_que_vuelven_en_t2", "pendiente"),
+                 "provisional_ausentes_t1": prov.get("ausentes_en_t1", "")})
     por_rol = {x["rol"]: x for x in (retro or {}).get("estrategias", [])}
     for pref, rol in (("rec", ROL_OFICIAL), ("alt", ROL_ALTERNATIVA)):
         r = por_rol.get(rol, {})
         for k in ("baja1_enviados", "baja2_enviados", "ganancia", "auc_baja2", "ganancia_maxima_ex_post",
                   "envios_ganancia_maxima_ex_post"):
             fila[f"{pref}_{k}"] = r.get(k, "pendiente")
+        fila[f"{pref}_provisional_ausentes_t1_enviados"] = r.get("provisional_ausentes_en_t1_enviados", "")
     fila["catalogo_sha12"] = rep["catalogo"]["sha256"][:12]
     for k, v in t.items():
         fila[f"t_{k}"] = v
