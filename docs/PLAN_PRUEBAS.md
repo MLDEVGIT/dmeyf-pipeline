@@ -894,3 +894,312 @@ solas. Tres de las cinco eligen menos de 2,9 %.
 
    El multiclase tiene un corte más estable (2,8 %, zona contigua), pero traslada peor (3,5 %) y la
    regla de E02 no lo adopta como recomendación.
+
+## 13. CE02 — ensambles de 20 semillas (protocolo, escrito antes de entrenar)
+
+Rama `martin/estabilidad-20-semillas`.
+- **Scripts:** `experimentos/ce02_composicion.py` (semillas y composiciones), `ce02_entrenar.py`
+  (modelos) y `ce02_analisis.py` (comparación).
+- **Registro previo, versionado:** `resultados/ce02_composicion.json` (sha256 `5f430c8f5e6c…`).
+- **Motivación:** CE01 (§ 12) mostró que, con 5 semillas, el corte del binario corregido está mal
+  determinado.
+- **Datos:** **201908 y 201909, los dos meses de desarrollo.** Son los meses en que se elige el corte
+  y también en que se lo mide; la única medida fuera de muestra es el traslado entre ellos. Octubre
+  sigue bloqueado (`evaluacion/particiones.py`). No se usa nada de 2020.
+
+**Modelos.**
+- **Target:** versión 2 (`RUTAS.target_2019_v2`), el mismo de TC01.
+- **Igual que E01/TC01:**
+  - las 760 features;
+  - entrenamiento 201903–201906;
+  - los hiperparámetros y las 300 rondas;
+  - el binado (`max_bin` 255, `data_random_seed` 1);
+  - 8 hilos para entrenar.
+- **Objetivos:** binario (BAJA+1 ∪ BAJA+2) y multiclase con peso 1 (score P(BAJA+2)).
+- **Semillas:** 20261124 + *i*, con *i* = 0…19.
+  - Las 5 primeras, 20261124–20261128, son las de TC01 y se reutilizan, previa comprobación de
+    compatibilidad.
+  - Las 10 primeras coinciden con `SEMILLAS` de E01.
+  - Se entrenan 15 nuevas por objetivo: 20261129–20261143.
+- **Compatibilidad, antes de entrenar las nuevas:**
+  1. la configuración es igual a TC01;
+  2. el train es igual a TC01 (mismas clases);
+  3. los 10 modelos de TC01 reproducen sus predicciones guardadas;
+  4. **se reentrena el binario de la semilla 20261124 y debe dar predicciones idénticas a las de
+     TC01**. Así queda probado que las semillas nuevas se entrenan en las mismas condiciones.
+- **Durante la corrida** la máquina se mantiene despierta (`SetThreadExecutionState`). Si la corrida
+  se interrumpe, se reanuda con los modelos ya guardados.
+
+**Composición de los ensambles** (índices sobre la lista de 20 semillas):
+- **anidados:** 5 = semillas 0–4 (el ensamble de TC01), 10 = 0–9 y 20 = 0–19;
+- **disjuntos:** cuatro de 5 ({0–4}, {5–9}, {10–14}, {15–19}) y dos de 10 ({0–9}, {10–19});
+- **aleatorios:** 200 subconjuntos de 5 y 200 de 10, sin repetición, con `numpy default_rng(20261125
+  + tamaño)`. Están en el registro.
+
+Ensamble = promedio de probabilidades, como en el pipeline.
+
+**Comparaciones:**
+1. **Ganancia y curvas** de los ensambles anidados de 5, 10 y 20, por objetivo y mes:
+   - ganancia sin suavizar y suavizada en su corte minimax;
+   - máximo suavizado y su fracción;
+   - AUC de BAJA+2;
+   - ganancia de cada semilla sola (20), con media y desvío.
+2. **Corte minimax y sensibilidad a la composición.** El minimax es el de § 4 y § 11, sin cambios.
+   - Para cada composición (anidados, disjuntos y aleatorios) se informa su fracción.
+   - Para los aleatorios, la distribución: mínimo, p10, mediana, p90 y máximo.
+   - El arrepentimiento de cada elección **medido sobre la curva del ensamble de 20**, la mejor
+     estimación disponible.
+   - El MVE de CE01 sobre el ensamble de 20, con su τ (error estándar entre semillas) y la
+     sensibilidad a τ.
+   - El traslado entre agosto y septiembre.
+3. **Estabilidad de rankings y de clientes seleccionados:**
+   - correlación de rangos y Jaccard de los enviados entre ensambles **disjuntos** del mismo tamaño
+     (6 pares de 5 y 1 par de 10);
+   - lo mismo entre anidados contra el de 20;
+   - con la misma *k*: la del 2,9 % y la del minimax del ensamble de 20.
+4. **Reducción simulada de BAJA+2.** Procedimiento y supuestos fijados acá:
+   - **Qué se conserva:** los **scores**, la cantidad de clientes, el costo por envío (27.500) y el
+     premio (1.100.000).
+   - **Qué cambia:** cada BAJA+2 deja de pagar con probabilidad ρ, en forma **uniforme e independiente
+     del score**. Es decir, la caída no se concentra arriba ni abajo del ranking.
+   - **Cálculo exacto, sin muestreo:** la ganancia esperada es
+
+     E[G_ρ(k)] = 1.100.000 · (1 − ρ) · TP(k) − 27.500 · k.
+
+     La curva se suaviza igual que la original.
+   - **Grilla:** ρ ∈ {0; 0,10; 0,20; 0,33; 0,50}.
+     - 0,33 es la caída máxima de prevalencia **observada entre meses permitidos de 2019**: de 0,616 %
+       en 201903 a 0,412 % en 201908 (`resultados/tc01_target_2019_v2.json`).
+     - 0,50 es un estrés más allá de lo observado en 2019.
+     - ρ = 0 es el resultado original y se informa junto a los simulados.
+   - **Qué no representa:**
+     - cambios en los scores, ni drift de features;
+     - que las bajas perdidas sean las de score alto o bajo;
+     - variación en la cantidad de clientes.
+   - **Se informa, por objetivo, mes y ρ:**
+     - la ganancia esperada y el arrepentimiento (contra el máximo de la curva ρ) de los cortes
+       candidatos: 2,9 %, 4,475 %, minimax de 5, 10 y 20, y MVE de 20;
+     - la fracción que elegiría el minimax sobre la curva ρ.
+5. **Tiempo de inferencia.**
+   - **Medido:** cada modelo se predice sobre 201909 (133.419 filas) con 4 hilos, como en el pipeline,
+     ambos objetivos, después de una predicción de calentamiento.
+   - **Ensamble:** su tiempo es la suma de sus modelos, porque el pipeline los predice en secuencia.
+   - **Proyección mensual (estimada):** se escala a 153.000 filas, como en 202006, y se suma la parte
+     no inferencial medida en la secuencia `tc01`.
+
+**Regla de recomendación, fijada de antemano:**
+- **Tamaño del ensamble:** el menor N ∈ {5, 10, 20} que cumpla las dos condiciones.
+  - **(a) Estabilidad del corte.** Al menos el 80 % de los subconjuntos aleatorios de tamaño N eligen
+    una fracción dentro del conjunto equivalente del ensamble de 20: {f : peor₂₀(f) ≤ peor₂₀* + τ₂₀},
+    con τ₂₀ calculado como en CE01. Para N = 20, se cumple por definición.
+  - **(b) Tiempo.** La inferencia estimada de las dos estrategias juntas no supera 450 s por mes, el
+    50 % del límite de 15 minutos.
+
+  Si ningún N < 20 cumple (a) y 20 cumple (b), se recomienda 20. Si 20 no cumple (b), se recomienda el
+  mayor N que la cumpla y se registra la pérdida de estabilidad.
+- **Corte:** el minimax del ensamble recomendado. Se recomienda en cambio su MVE (τ de CE01) sólo si,
+  con ρ = 0,33, el arrepentimiento del minimax supera al del MVE en más de τ en algún mes. Es la
+  protección ante menos BAJA+2 que justificó el MVE en § 11.
+- **Activación:** no se activa ningún catálogo. La activación se decide después de revisar estos
+  resultados.
+
+## 14. Resultados de CE02
+
+- **Modelos:** `ejecuciones/ce02/20261125T094345_13976`, con 20 semillas por objetivo.
+- **Resumen versionado:** `resultados/ce02_ensambles_20.json`, sin datos por cliente.
+- **Figuras:** `docs/figuras/ce02_curvas_ganancia.png`, `ce02_minimax_composicion.png` y
+  `ce02_reduccion_baja2.png`.
+- **Fijado antes de entrenar:**
+  - el sha256 de `PLAN_PRUEBAS.md` registrado al inicio (`b520a607ade4…`) es el del archivo con el
+    § 13 y sin este § 14;
+  - la composición usada es la registrada antes de entrenar (sha256 `5f430c8f5e6c…`).
+- **Compatibilidad, todas OK:**
+  - configuración, target y train iguales a TC01;
+  - los 10 modelos de TC01 reproducen sus predicciones;
+  - **el binario de la semilla 20261124, reentrenado, predice exactamente igual que en TC01**.
+- **Entrenamiento:** las 15 semillas nuevas llevaron 8.272 s en total; el binario tardó 131–200 s
+  por semilla y el multiclase, 291–520 s.
+- **Datos:** 201908 y 201909 son de desarrollo: se elige y se mide en ellos, y el traslado es la única
+  medida fuera del mes. Octubre no se leyó.
+
+### 1. Ganancia y curvas (ensambles anidados, cada uno en su corte minimax)
+
+![Curvas](figuras/ce02_curvas_ganancia.png)
+
+| Objetivo | Semillas | *f* minimax | Envíos ago / sep | Ensamble ago / sep (M) | Máximo suavizado ago / sep (fracción) | AUC BAJA+2 ago / sep | Semillas solas en el corte, ago / sep (M) |
+|---|---|---|---|---|---|---|---|
+| Binario | 5 (TC01) | 4,475 % | 5.897 / 5.971 | 200,8 / 253,8 | 201,5 (4,27 %) / 252,4 (4,42 %) | 0,9094 / 0,9080 | 190,5 ± 4,2 / 243,2 ± 4,2 |
+| | 10 | 4,25 % | 5.601 / 5.671 | 200,2 / 250,0 | 203,8 (4,48 %) / 254,1 (3,85 %) | 0,9103 / 0,9090 | 193,0 ± 3,8 / 242,5 ± 4,3 |
+| | **20** | **3,675 %** | 4.843 / 4.904 | 203,4 / 252,3 | 203,1 (2,55 %) / 253,0 (4,07 %) | 0,9103 / 0,9090 | 193,6 ± 3,0 / 244,4 ± 5,1 |
+| Multiclase | 5 (TC01) | 2,8 % | 3.690 / 3.736 | 208,7 / 253,7 | 209,8 (2,80 %) / 252,5 (2,29 %) | 0,9079 / 0,9059 | 198,6 ± 5,4 / 245,1 ± 4,4 |
+| | 10 | 2,9 % | 3.822 / 3.870 | 209,5 / 255,5 | 209,8 (3,06 %) / 255,0 (2,76 %) | 0,9076 / 0,9062 | 197,2 ± 5,7 / 247,2 ± 4,3 |
+| | **20** | **2,775 %** | 3.657 / 3.703 | 208,5 / 253,5 | 209,6 (2,61 %) / 255,4 (2,96 %) | 0,9071 / 0,9064 | 197,2 ± 5,4 / 243,9 ± 5,1 |
+
+**Lectura.**
+- **El AUC y la ganancia máxima casi no cambian con el tamaño.** Lo que cambia es **dónde** cae el corte.
+- **Con 20 semillas, el máximo suavizado del binario de agosto vuelve a 2,55 %.** Con 5 estaba en
+  4,27 %, así que el corrimiento que vio TC01 era en buena parte ruido del ensamble de 5.
+
+### 2. Corte minimax y sensibilidad a la composición
+
+![Composición](figuras/ce02_minimax_composicion.png)
+
+**Conjunto equivalente del ensamble de 20.** Es {f : peor₂₀(f) ≤ peor₂₀* + τ₂₀}, con τ₂₀ igual al
+error estándar entre semillas.
+- **Binario:** τ₂₀ = 0,38 %. Son **dos tramos, 2,35–2,525 % y 3,55–3,95 %**: las dos zonas persisten
+  con 20 semillas.
+- **Multiclase:** τ₂₀ = 0,48 %. Un solo tramo, 2,725–2,925 %.
+
+| Objetivo | Composición | *f* elegidas | Dentro del equivalente de 20 | Peor arrepentimiento medido sobre la curva de 20 |
+|---|---|---|---|---|
+| Binario | anidados 5 · 10 · 20 | 4,475 · 4,25 · 3,675 % | no · no · sí | 2,40 · 1,81 · 0,63 % |
+| | disjuntos de 5 | 4,475 · 4,05 · 2,475 · 3,875 % | — | — |
+| | disjuntos de 10 | 4,25 · 2,625 % | — | — |
+| | 200 aleatorios de 5 | mediana 3,325 % (p10 2,40 – p90 3,90; 2,15–4,35) | **41,5 %** | mediana 1,22 % (p90 2,02) |
+| | 200 aleatorios de 10 | mediana 3,65 % (p10 2,40 – p90 3,95; 2,20–4,50) | **73,0 %** | mediana 0,81 % (p90 1,51) |
+| Multiclase | anidados 5 · 10 · 20 | 2,8 · 2,9 · 2,775 % | sí · sí · sí | 0,62 · 1,01 · 0,61 % |
+| | disjuntos de 5 | 2,8 · 3,0 · 2,725 · 2,825 % | — | — |
+| | disjuntos de 10 | 2,9 · 2,775 % | — | — |
+| | 200 aleatorios de 5 | mediana 2,875 % (p10 2,70 – p90 3,10; 2,275–3,275) | 52,5 % | mediana 1,09 % (p90 1,90) |
+| | 200 aleatorios de 10 | mediana 2,80 % (p10 2,675 – p90 3,05; 2,30–3,25) | 55,5 % | mediana 1,01 % (p90 1,80) |
+
+- **Binario: el corte se reparte entre las dos zonas.** Con 5 semillas, el 40 % de los ensambles
+  elige menos de 3 % y el 39 % elige 3,5 % o más. Con 10, el 31,5 % y el 63,5 %.
+- **El 4,475 % de TC01 era una elección de un ensamble de 5.** Medido sobre la curva de 20 queda fuera
+  del conjunto equivalente, con 2,4 % de arrepentimiento.
+- **Multiclase: el corte es estable con cualquier tamaño.** El desvío entre subconjuntos es de
+  0,15–0,18 pp. Si "dentro del equivalente" no llega al 80 %, es porque ese conjunto es angosto
+  (0,2 pp), no por dispersión.
+- **Semillas solas.** Cada una de las 20 elegiría entre 2,475 % y 4,075 % en el binario (mediana
+  3,225 %) y entre 2,325 % y 3,775 % en el multiclase.
+
+**MVE sobre el ensamble de 20.**
+
+| | Binario | Multiclase |
+|---|---|---|
+| τ₂₀ | 0,38 % | 0,48 % |
+| MVE con τ₂₀ | **2,35 %** (envíos 3.097 / 3.136) | 2,725 % |
+| Sensibilidad: τ = 0 · 0,25 · 0,5 · 1 · 2 · 5 % | 3,675 · 2,375 · 2,325 · 2,25 · 2,125 · 1,90 % | 2,775 · 2,75 · 2,725 · 2,675 · 2,475 · 1,925 % |
+| Selección, en muestra: ganancia ago / sep (M) del MVE | 200,8 / 251,5 (arrepentimiento 0,9 / 0,7 %) | 208,2 / 252,0 (0,3 / 1,0 %) |
+
+**Traslado** (evaluación fuera del mes; ensamble de 20):
+
+| Objetivo | Procedimiento | ago → sep | sep → ago |
+|---|---|---|---|
+| Binario | minimax | 2,55 % · 249,6 M · 1,05 % | 4,075 % · 199,9 M · 1,31 % |
+| | MVE | 2,45 % · 253,3 M · **0,75 %** | 3,80 % · 202,2 M · **0,66 %** |
+| Multiclase | minimax | 2,60 % · 250,0 M · 2,09 % | 2,95 % · 208,8 M · 1,20 % |
+| | MVE | 2,425 % · 247,6 M · 2,67 % | 2,80 % · 207,6 M · 0,62 % |
+
+### 3. Estabilidad de rankings y clientes seleccionados
+
+Jaccard de los enviados con la misma *k* (la del 2,9 %) y correlación de rangos, 201908 / 201909:
+
+| Comparación | Binario: Jaccard | Binario: rangos | Multiclase: Jaccard | Multiclase: rangos |
+|---|---|---|---|---|
+| Disjuntos de 5 (6 pares) | 0,834–0,848 | 0,982–0,983 | 0,833–0,849 | 0,985–0,986 |
+| Disjuntos de 10 | 0,873 / 0,885 | 0,991 | 0,888 / 0,881 | 0,992 |
+| Anidado 5 contra 20 | 0,901 / 0,901 | 0,993 | 0,902 / 0,900 | 0,994 |
+| Anidado 10 contra 20 | 0,938 / 0,942 | 0,998 | 0,944 / 0,939 | 0,998 |
+
+Con la *k* del minimax de 20 los valores son parecidos: binario 0,844–0,857 para pares de 5 y 0,890
+para el par de 10. Dos ensambles de 5 independientes coinciden en el 84 % de los enviados; dos de 10,
+en el 88 %. El desacuerdo con el ensamble de 20 baja del 10 % (con 5) al 6 % (con 10).
+
+### 4. Reducción simulada de BAJA+2 (resultados originales y simulados)
+
+![Reducción](figuras/ce02_reduccion_baja2.png)
+
+**Supuestos** (§ 13, sin cambios):
+- scores fijos;
+- cada BAJA+2 deja de pagar con probabilidad ρ, uniforme e independiente del score;
+- ganancia esperada exacta;
+- grilla justificada sólo con 2019: ρ = 0,33 es la caída de prevalencia observada entre meses
+  permitidos.
+
+**No representa:** drift de scores ni pérdida concentrada en una parte del ranking.
+
+**Binario, ensamble de 20:** ganancia esperada en M, agosto / septiembre, y entre paréntesis el
+arrepentimiento contra el máximo de la curva ρ.
+
+| ρ | 2,9 % | 4,475 % (`tc01`) | minimax 20 (3,675 %) | MVE 20 (2,35 %) | Minimax sobre la curva ρ |
+|---|---|---|---|---|---|
+| **0 (original)** | 197,4 / 248,9 (2,1 / 1,9 %) | 199,7 / 246,1 (2,1 / 2,4 %) | **203,4 / 252,3 (0,6 / 0,6 %)** | 200,8 / 251,5 (0,9 / 0,7 %) | 3,675 % |
+| 0,10 | 167,2 / 213,3 (3,0 / 2,8 %) | 163,5 / 205,1 (6,2 / 6,0 %) | 169,8 / 213,6 (3,0 / 2,7 %) | **172,2 / 217,7 (0,6 / 0,6 %)** | 2,35 % |
+| 0,20 | 136,9 / 177,8 (4,3 / 5,1 %) | 127,4 / 164,0 (12,2 / 11,8 %) | 136,1 / 174,9 (6,5 / 6,7 %) | **143,6 / 183,9 (0,2 / 1,6 %)** | 2,10 % |
+| **0,33** | 97,6 / 131,6 (8,3 / 9,7 %) | 80,3 / 110,7 (25,8 / 23,5 %) | 92,3 / 124,6 (15,1 / 14,7 %) | **106,5 / 140,0 (0,7 / 3,8 %)** | 1,975 % |
+| 0,50 | 46,2 / 71,2 (28,0 / 23,9 %) | 18,8 / 41,0 (71,8 / 55,6 %) | 35,1 / 58,7 (47,2 / 37,4 %) | **57,8 / 82,6 (10,8 / 11,5 %)** | 1,50 % |
+
+**Multiclase, ensamble de 20:**
+
+| ρ | 2,9 % | 4,475 % | minimax 20 (2,775 %) | MVE 20 (2,725 %) | Minimax sobre la curva ρ |
+|---|---|---|---|---|---|
+| **0 (original)** | 206,2 / 257,7 (1,0 / 0,1 %) | 194,2 / 235,1 (7,5 / 8,4 %) | 208,5 / 253,5 (0,5 / 0,6 %) | 208,2 / 252,0 (0,3 / 1,0 %) | 2,775 % |
+| 0,10 | 175,1 / 221,3 (1,7 / 0,0 %) | 158,6 / 195,2 (11,8 / 11,4 %) | 177,6 / 217,9 (1,0 / 0,3 %) | 177,5 / 216,8 (0,6 / 0,7 %) | 2,725 % |
+| 0,20 | 143,9 / 184,9 (3,0 / 0,1 %) | 123,0 / 155,2 (17,9 / 15,7 %) | 146,7 / 182,4 (1,9 / 0,1 %) | 146,8 / 181,6 (1,3 / 0,4 %) | 2,275 % |
+| **0,33** | 103,5 / 137,5 (6,1 / 4,4 %) | 76,6 / 103,3 (31,3 / 27,9 %) | 106,5 / 136,2 (4,2 / 4,0 %) | 106,9 / 135,9 (3,3 / 4,0 %) | 2,025 % |
+| 0,50 | 50,6 / 75,6 (24,6 / 21,5 %) | 16,0 / 35,5 (76,7 / 63,2 %) | 54,0 / 75,8 (20,5 / 19,8 %) | 54,7 / 76,0 (18,8 / 19,3 %) | 1,30 % |
+
+**Lectura.**
+- **Binario.**
+  - Sin reducción, el minimax de 20 y el MVE de 20 son prácticamente equivalentes (2,6 M de
+    diferencia en agosto y 0,9 M en septiembre).
+  - Con cualquier ρ > 0, el MVE queda cerca del óptimo, entre 0,2 y 3,8 % de arrepentimiento hasta ρ
+    = 0,33, mientras el minimax pierde entre 2,7 y 15,1 %.
+  - El 4,475 % es el que más pierde en todos los escenarios con ρ > 0.
+- **Multiclase.** Sus cortes ya están en la zona baja y casi no se distinguen bajo reducción.
+
+### 5. Tiempo de inferencia
+
+Medido en 201909 (133.419 filas, 4 hilos, como el pipeline), sumando los modelos de cada ensamble.
+El análisis corrió dos veces y las dos mediciones difieren por la carga de la máquina:
+
+| | Por modelo (binario · multiclase) | Ensamble de 5: inferencia de las dos estrategias | de 10 | de 20 |
+|---|---|---|---|---|
+| Medición 1 | 3,04 · 10,28 s | 76,8 s | 153,0 s | 305,5 s |
+| Medición 2 (la del JSON) | 3,01 · 11,52 s | 78,6 s | 157,5 s | 333,4 s |
+
+- **Escala:** los ensambles están escalados linealmente a 153.000 filas, como 202006; es una
+  **estimación**.
+- **Mes completo estimado:** inferencia más la parte no inferencial medida en la secuencia `tc01`
+  (mediana 62,9 s, con arranque):
+  - 5 semillas: 140–142 s;
+  - 10 semillas: 216–220 s;
+  - 20 semillas: **368–396 s**, sobre un límite de 900 s.
+- **Multiclase:** es el 77–79 % de la inferencia. En la máquina del vivo falta medir (T12).
+
+### 6. Recomendación según la regla del § 13
+
+| Objetivo | (a) Estabilidad del corte: 5 · 10 · 20 | (b) Inferencia ≤ 450 s: 5 · 10 · 20 | Tamaño | Arrepentimiento con ρ = 0,33, minimax contra MVE | Corte |
+|---|---|---|---|---|---|
+| Binario | no (41,5 %) · no (73,0 %) · sí | sí · sí · sí | **20** | 15,1 / 14,7 % contra 0,7 / 3,8 %: diferencia mayor que τ₂₀ | **MVE 2,35 %** |
+| Multiclase | no (52,5 %) · no (55,5 %) · sí | sí · sí · sí | **20** | 4,2 / 4,0 % contra 3,3 / 4,0 %: 0,9 pp en agosto, mayor que τ₂₀ | **MVE 2,725 %** |
+
+**Recomendación** (no activa nada; la activación se decide después de revisar estos resultados):
+1. **Tamaño del ensamble: 20 semillas para el binario.**
+   - Con 5 o 10, el corte depende de qué semillas se usen: elige entre dos zonas.
+   - Con 20, la elección ya no depende de la composición. Las dos zonas siguen en el conjunto
+     equivalente (2,35–2,525 % y 3,55–3,95 %), y los enviados coinciden en un 94 % con los del
+     ensamble de 10.
+   - La inferencia estimada de las dos estrategias con 20 es de 305–333 s.
+2. **Multiclase: 20 según la regla.** Su corte es estable desde 5, con desvío de 0,15–0,18 pp y
+   siempre entre 2,7 % y 3,0 %. Si en la máquina del vivo el tiempo no alcanza, el multiclase de 10 es
+   lo primero que conviene recortar: es la alternativa y aporta tres cuartos de la inferencia.
+3. **Corte del binario: 2,35 % (MVE del ensamble de 20).**
+   - En los meses de desarrollo es equivalente al minimax: 0,9 / 0,7 % de arrepentimiento contra
+     0,6 / 0,6 %.
+   - Traslada mejor: 0,75 / 0,66 % contra 1,05 / 1,31 %.
+   - Ante una caída de BAJA+2 como la observada en 2019 pierde mucho menos: 0,7 / 3,8 % contra
+     15,1 / 14,7 %.
+   - Manda un 36 % menos que el minimax de 20 y un 47 % menos que el 4,475 % de `tc01`.
+4. **Corte del multiclase: 2,725 %.** Es una diferencia de 0,05 pp con el minimax, unos 65 envíos, y
+   práctica­mente indistinguible.
+5. **Para activar:** armar un catálogo nuevo con los 40 modelos y esos cortes, repetir la secuencia
+   202001–202006 y medir el tiempo en la máquina del vivo. `tc01` y las corridas existentes no
+   cambian.
+
+**Limitaciones:**
+- Dos meses de desarrollo: se elige y se mide en ellos. El traslado es la única medida fuera del mes.
+- La simulación supone pérdida uniforme de BAJA+2 con scores fijos. Si la pérdida se concentrara
+  arriba del ranking, el beneficio del corte bajo sería menor.
+- Los tiempos son de la máquina de Martín, con carga variable.

@@ -523,9 +523,19 @@ guardadas:
    - **Mínimo volumen equivalente.** Con τ = 0,82 % (error estándar entre semillas) elige 3,85 %, un
      14 % menos de envíos. No cumple el criterio fijado: es menos estable entre semillas y traslada
      peor (2,29 %).
-   - **Decisión.** No se activa otro corte.
-   - **Propuesta, a acordar:** CE02 con más semillas (por ejemplo 20) y, fijada de antemano, una
-     evaluación bajo caída simulada de la prevalencia en 2019.
+   - **Decisión de CE01.** No se activó otro corte.
+   - **CE02**, ya corrido (`PLAN_PRUEBAS.md` § 13–14): 20 semillas por objetivo, sólo 2019, con
+     octubre bloqueado.
+     - **Tamaño:** con 5 o 10 semillas el corte del binario depende de la composición. Sólo el 41,5 %
+       y el 73 % de los ensambles aleatorios eligen un corte equivalente al de 20, así que la regla
+       fijada recomienda **20 semillas** para los dos objetivos.
+     - **Cortes:** binario **2,35 %** (MVE del ensamble de 20) y multiclase **2,725 %**. Ante una
+       caída de BAJA+2 como la observada en 2019 (ρ = 0,33), el binario en 2,35 % pierde 0,7 / 3,8 %;
+       el minimax de 20 (3,675 %) pierde 15 % y el 4,475 % de `tc01`, 24–26 %.
+     - **Tiempo:** la inferencia estimada de las dos estrategias con 20 semillas es de 305–333 s, y
+       el mes completo, de 368–396 s.
+   - **Pendiente de decisión:** activar un catálogo de 20 semillas con esos cortes, repetir la
+     secuencia y medir el tiempo en la máquina del vivo.
    - **Mientras tanto,** `tc01` (4,475 %) es el catálogo activo, según el protocolo, y `e01` (2,9 %)
      sigue disponible con `--catalogo e01`. Qué usar en vivo lo decide el grupo.
 1. **E06, tratamiento de columnas en cero.** Con 202006 se dimensiona: el 16–17 % de la importancia
