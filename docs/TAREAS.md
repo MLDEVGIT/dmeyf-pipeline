@@ -57,7 +57,7 @@ Detalle en `INTEGRACION.md`.
 | Reintentos consistentes | **Resuelta** y probada aislada (`scripts/probar_reintentos.py`) y dentro de la secuencia (202003; el mes siguiente se rechaza hasta reconciliar) |
 | B10 anomalías | 202006 diagnosticado (`resultados/i02_columnas_en_cero_202006.json`); el tratamiento queda para E06 con 2019 |
 | Target consistente | **Resuelta en este repo** (`martin/target-consistente`): regla única `evaluacion/target.py`, target 2019 regenerado, candidatos reentrenados (TC01), catálogo `tc01` activo y secuencia repetida. Falta coordinar el repo de sampling |
-| Corte del binario `tc01` | **Abierta**. CE01 (2019): el corte está mal determinado con 5 semillas (2,5–4,1 % según la semilla); el MVE no cumplió el criterio; no se activa otro corte. Próximo: CE02 con más semillas, a acordar |
+| Corte del binario `tc01` | **Analizada, falta decidir la activación**. CE02 (2019, 20 semillas): la regla fijada recomienda ensambles de 20 y cortes de 2,35 % (binario) y 2,725 % (multiclase). Falta un catálogo de 20 semillas, la secuencia y la medición en la máquina del vivo |
 | B11, B13 | Sin cambios |
 
 ## Orden de implementación propuesto

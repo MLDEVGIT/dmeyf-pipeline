@@ -50,5 +50,40 @@ class TestReglas(unittest.TestCase):
         self.assertEqual(CE.tramos(m), [[float(FRACCIONES[-2]), float(FRACCIONES[-1])]])
 
 
+class TestCE02(unittest.TestCase):
+    def test_reduccion_rho_cero_es_la_curva_original_y_formula_exacta(self):
+        from experimentos.ce02_analisis import curva_rho
+        rng = np.random.default_rng(3)
+        score, cli = rng.random(2000), np.arange(2000)
+        b2 = rng.random(2000) < 0.05
+        g = G.curva(score, b2, cli)
+        np.testing.assert_array_equal(curva_rho(g, 0.0), g)
+        tp = np.cumsum(b2[G.orden(score, cli)])
+        k = np.arange(1, 2001)
+        # tolerancia absoluta de un centavo: cerca de cero la relativa falla por redondeo de (1 − 0,33)
+        np.testing.assert_allclose(curva_rho(g, 0.33), G.PREMIO_BRUTO * 0.67 * tp - G.COSTO_ENVIO * k, rtol=0, atol=0.01)
+
+    def test_reduccion_coincide_con_el_promedio_de_simulaciones(self):
+        """La fórmula exacta es la esperanza de borrar cada BAJA+2 con probabilidad ρ (scores fijos)."""
+        from experimentos.ce02_analisis import curva_rho
+        rng = np.random.default_rng(4)
+        score, cli = rng.random(500), np.arange(500)
+        b2 = rng.random(500) < 0.2
+        sims = [G.curva(score, b2 & (rng.random(500) >= 0.5), cli) for _ in range(4000)]
+        np.testing.assert_allclose(np.mean(sims, axis=0), curva_rho(G.curva(score, b2, cli), 0.5),
+                                   atol=0.04 * G.PREMIO_BRUTO * b2.sum())
+
+    def test_composiciones_registradas(self):
+        from experimentos import ce02_composicion as C
+        comp = C.composiciones()
+        self.assertEqual(C.SEMILLAS[:5], [20261124 + i for i in range(5)])
+        self.assertEqual(sorted(sum(comp["disjuntos"]["5"], [])), list(range(20)))
+        for N in ("5", "10"):
+            subs = comp["aleatorios"][N]
+            self.assertEqual(len({tuple(s) for s in subs}), 200)
+            self.assertTrue(all(len(s) == int(N) and len(set(s)) == int(N) for s in subs))
+        self.assertEqual(comp, C.composiciones())  # determinista
+
+
 if __name__ == "__main__":
     unittest.main()

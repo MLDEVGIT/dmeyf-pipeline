@@ -1,0 +1,4522 @@
+{
+ "experimento": "CE02 ensambles de 5, 10 y 20 semillas",
+ "inicio": "2026-11-25T12:14:53",
+ "plan_pruebas_sha256": "b520a607ade4419d3300fe957cf017da7d321c46a437fc395368a916ab8ff15d",
+ "composicion_sha256": "5f430c8f5e6ce9498e444c9ffd0019b3cb77047b047cd54b101c0b5203c1fc72",
+ "composicion_sha256_al_entrenar": "5f430c8f5e6ce9498e444c9ffd0019b3cb77047b047cd54b101c0b5203c1fc72",
+ "modelos": "ejecuciones/ce02/20261125T094345_13976",
+ "meses": [
+  201908,
+  201909
+ ],
+ "meses_nota": "201908 y 201909 son de desarrollo: se elige y se mide en ellos; el traslado es la única medida fuera del mes. Octubre bloqueado.",
+ "verificaciones": {
+  "composicion_igual_a_la_registrada_antes_de_entrenar": true,
+  "checks_entrenamiento": true,
+  "semillas": true,
+  "todas": true
+ },
+ "ganancia_y_corte": {
+  "binario": {
+   "minimax": {
+    "5": 0.04475,
+    "10": 0.0425,
+    "20": 0.03675
+   },
+   "anidados": {
+    "5": {
+     "fraccion_minimax": 0.04475,
+     "peor": 0.00236,
+     "peor_medido_en_curva_20": 0.02404,
+     "dentro_del_conjunto_equivalente_20": false,
+     "tau": 0.008199861879748012,
+     "mve": 0.0385,
+     "traslado_minimax": {
+      "201908->201909": {
+       "fraccion": 0.04275,
+       "envios": 5704,
+       "ganancia": 252.34,
+       "ganancia_suav": 250.99,
+       "arrepentimiento": 0.00545
+      },
+      "201909->201908": {
+       "fraccion": 0.044,
+       "envios": 5799,
+       "ganancia": 202.43,
+       "ganancia_suav": 200.6,
+       "arrepentimiento": 0.00426
+      }
+     },
+     "traslado_mve": {
+      "201908->201909": {
+       "fraccion": 0.02475,
+       "envios": 3303,
+       "ganancia": 245.77,
+       "ganancia_suav": 246.6,
+       "arrepentimiento": 0.02287
+      },
+      "201909->201908": {
+       "fraccion": 0.03825,
+       "envios": 5041,
+       "ganancia": 197.97,
+       "ganancia_suav": 199.28,
+       "arrepentimiento": 0.01083
+      }
+     },
+     "por_mes": {
+      "201908": {
+       "envios": 5897,
+       "ganancia": 200.83,
+       "ganancia_suav": 200.98,
+       "max_suav": 201.46,
+       "fraccion_max_suav": 0.04268,
+       "auc_baja2": 0.90938,
+       "semillas_en_el_corte_media": 190.49,
+       "semillas_en_el_corte_desvio": 4.23
+      },
+      "201909": {
+       "envios": 5971,
+       "ganancia": 253.8,
+       "ganancia_suav": 252.02,
+       "max_suav": 252.37,
+       "fraccion_max_suav": 0.04415,
+       "auc_baja2": 0.90803,
+       "semillas_en_el_corte_media": 243.24,
+       "semillas_en_el_corte_desvio": 4.16
+      }
+     }
+    },
+    "10": {
+     "fraccion_minimax": 0.0425,
+     "peor": 0.01306,
+     "peor_medido_en_curva_20": 0.01814,
+     "dentro_del_conjunto_equivalente_20": false,
+     "tau": 0.005354593553879621,
+     "mve": 0.0295,
+     "traslado_minimax": {
+      "201908->201909": {
+       "fraccion": 0.04475,
+       "envios": 5971,
+       "ganancia": 248.3,
+       "ganancia_suav": 248.95,
+       "arrepentimiento": 0.02024
+      },
+      "201909->201908": {
+       "fraccion": 0.0385,
+       "envios": 5074,
+       "ganancia": 198.16,
+       "ganancia_suav": 199.31,
+       "arrepentimiento": 0.02199
+      }
+     },
+     "traslado_mve": {
+      "201908->201909": {
+       "fraccion": 0.0435,
+       "envios": 5804,
+       "ganancia": 250.69,
+       "ganancia_suav": 249.74,
+       "arrepentimiento": 0.01713
+      },
+      "201909->201908": {
+       "fraccion": 0.03675,
+       "envios": 4843,
+       "ganancia": 199.02,
+       "ganancia_suav": 199.96,
+       "arrepentimiento": 0.01879
+      }
+     },
+     "por_mes": {
+      "201908": {
+       "envios": 5601,
+       "ganancia": 200.17,
+       "ganancia_suav": 201.13,
+       "max_suav": 203.79,
+       "fraccion_max_suav": 0.0448,
+       "auc_baja2": 0.91025,
+       "semillas_en_el_corte_media": 193.02,
+       "semillas_en_el_corte_desvio": 3.82
+      },
+      "201909": {
+       "envios": 5671,
+       "ganancia": 249.95,
+       "ganancia_suav": 251.0,
+       "max_suav": 254.1,
+       "fraccion_max_suav": 0.03851,
+       "auc_baja2": 0.909,
+       "semillas_en_el_corte_media": 242.47,
+       "semillas_en_el_corte_desvio": 4.27
+      }
+     }
+    },
+    "20": {
+     "fraccion_minimax": 0.03675,
+     "peor": 0.00633,
+     "peor_medido_en_curva_20": 0.00633,
+     "dentro_del_conjunto_equivalente_20": true,
+     "tau": 0.0038156166006943224,
+     "mve": 0.0235,
+     "traslado_minimax": {
+      "201908->201909": {
+       "fraccion": 0.0255,
+       "envios": 3403,
+       "ganancia": 249.62,
+       "ganancia_suav": 250.39,
+       "arrepentimiento": 0.01047
+      },
+      "201909->201908": {
+       "fraccion": 0.04075,
+       "envios": 5370,
+       "ganancia": 199.93,
+       "ganancia_suav": 200.39,
+       "arrepentimiento": 0.01313
+      }
+     },
+     "traslado_mve": {
+      "201908->201909": {
+       "fraccion": 0.0245,
+       "envios": 3269,
+       "ganancia": 253.3,
+       "ganancia_suav": 251.14,
+       "arrepentimiento": 0.00748
+      },
+      "201909->201908": {
+       "fraccion": 0.038,
+       "envios": 5008,
+       "ganancia": 202.18,
+       "ganancia_suav": 201.72,
+       "arrepentimiento": 0.0066
+      }
+     },
+     "por_mes": {
+      "201908": {
+       "envios": 4843,
+       "ganancia": 203.42,
+       "ganancia_suav": 201.77,
+       "max_suav": 203.06,
+       "fraccion_max_suav": 0.02554,
+       "auc_baja2": 0.9103,
+       "semillas_en_el_corte_media": 193.57,
+       "semillas_en_el_corte_desvio": 3.04
+      },
+      "201909": {
+       "envios": 4904,
+       "ganancia": 252.34,
+       "ganancia_suav": 251.61,
+       "max_suav": 253.04,
+       "fraccion_max_suav": 0.04065,
+       "auc_baja2": 0.90901,
+       "semillas_en_el_corte_media": 244.37,
+       "semillas_en_el_corte_desvio": 5.08
+      }
+     }
+    }
+   },
+   "conjunto_equivalente_20": {
+    "tau": 0.0038156166006943224,
+    "tramos": [
+     [
+      0.0235,
+      0.02525
+     ],
+     [
+      0.0355,
+      0.0395
+     ]
+    ]
+   },
+   "semillas_solas_en_corte_20": {
+    "201908": {
+     "media": 193.57,
+     "desvio": 3.04
+    },
+    "201909": {
+     "media": 244.37,
+     "desvio": 5.08
+    }
+   },
+   "fraccion_por_semilla_sola": {
+    "min": 0.02475,
+    "p10": 0.0264,
+    "mediana": 0.03225,
+    "p90": 0.0368,
+    "max": 0.04075,
+    "desvio": 0.00444
+   },
+   "sensibilidad_tau_20": {
+    "0.0": 0.03675,
+    "0.0025": 0.02375,
+    "0.005": 0.02325,
+    "0.01": 0.0225,
+    "0.015": 0.02175,
+    "0.02": 0.02125,
+    "0.03": 0.02025,
+    "0.05": 0.019,
+    "0.0038156166006943224": 0.0235
+   },
+   "disjuntos": {
+    "5": [
+     0.04475,
+     0.0405,
+     0.02475,
+     0.03875
+    ],
+    "10": [
+     0.0425,
+     0.02625
+    ]
+   },
+   "aleatorios": {
+    "5": {
+     "fracciones": [
+      0.038,
+      0.02875,
+      0.02825,
+      0.03525,
+      0.026,
+      0.03275,
+      0.0375,
+      0.038,
+      0.0235,
+      0.032,
+      0.0375,
+      0.03325,
+      0.0315,
+      0.02325,
+      0.03425,
+      0.032,
+      0.04125,
+      0.03875,
+      0.0365,
+      0.0315,
+      0.0305,
+      0.04125,
+      0.03725,
+      0.0355,
+      0.0375,
+      0.03725,
+      0.03175,
+      0.0335,
+      0.03775,
+      0.03675,
+      0.03975,
+      0.0335,
+      0.02775,
+      0.03475,
+      0.0285,
+      0.026,
+      0.03875,
+      0.0245,
+      0.03025,
+      0.03375,
+      0.02475,
+      0.02925,
+      0.03525,
+      0.03325,
+      0.0295,
+      0.0285,
+      0.02775,
+      0.0405,
+      0.03525,
+      0.028,
+      0.035,
+      0.02275,
+      0.0385,
+      0.0345,
+      0.0375,
+      0.03575,
+      0.02775,
+      0.032,
+      0.03475,
+      0.0345,
+      0.04225,
+      0.039,
+      0.03675,
+      0.0255,
+      0.03825,
+      0.03025,
+      0.023,
+      0.0375,
+      0.02675,
+      0.02975,
+      0.029,
+      0.03225,
+      0.041,
+      0.0265,
+      0.02625,
+      0.025,
+      0.03925,
+      0.0215,
+      0.02975,
+      0.04,
+      0.02525,
+      0.038,
+      0.04025,
+      0.0365,
+      0.03575,
+      0.0335,
+      0.02625,
+      0.03325,
+      0.02325,
+      0.036,
+      0.02275,
+      0.0255,
+      0.03675,
+      0.024,
+      0.0285,
+      0.03175,
+      0.0225,
+      0.03675,
+      0.026,
+      0.037,
+      0.023,
+      0.02525,
+      0.03725,
+      0.02425,
+      0.02375,
+      0.02425,
+      0.0355,
+      0.02625,
+      0.027,
+      0.02475,
+      0.03575,
+      0.03075,
+      0.03475,
+      0.03925,
+      0.0285,
+      0.04075,
+      0.0245,
+      0.0385,
+      0.02375,
+      0.024,
+      0.0345,
+      0.02775,
+      0.0395,
+      0.022,
+      0.03025,
+      0.028,
+      0.02525,
+      0.0285,
+      0.03475,
+      0.02875,
+      0.03375,
+      0.02625,
+      0.02275,
+      0.027,
+      0.03175,
+      0.03625,
+      0.0365,
+      0.028,
+      0.03675,
+      0.03575,
+      0.026,
+      0.03025,
+      0.02525,
+      0.03825,
+      0.026,
+      0.024,
+      0.0245,
+      0.0425,
+      0.02475,
+      0.022,
+      0.0435,
+      0.039,
+      0.02625,
+      0.03325,
+      0.023,
+      0.024,
+      0.0235,
+      0.03575,
+      0.0345,
+      0.03425,
+      0.02625,
+      0.037,
+      0.0235,
+      0.0335,
+      0.0245,
+      0.03375,
+      0.03575,
+      0.039,
+      0.03125,
+      0.03775,
+      0.023,
+      0.02475,
+      0.0325,
+      0.026,
+      0.03875,
+      0.03975,
+      0.03325,
+      0.041,
+      0.0255,
+      0.03675,
+      0.0325,
+      0.02675,
+      0.03875,
+      0.0365,
+      0.03775,
+      0.037,
+      0.03575,
+      0.03725,
+      0.02925,
+      0.04025,
+      0.02825,
+      0.0345,
+      0.03825,
+      0.03625,
+      0.0365,
+      0.0385,
+      0.038,
+      0.03725,
+      0.04,
+      0.028
+     ],
+     "distribucion": {
+      "min": 0.0215,
+      "p10": 0.024,
+      "mediana": 0.03325,
+      "p90": 0.039,
+      "max": 0.0435,
+      "desvio": 0.00577
+     },
+     "proporcion_dentro_del_equivalente_20": 0.415,
+     "peor_medido_en_curva_20": {
+      "min": 0.006330092552294886,
+      "p10": 0.006535265727645845,
+      "mediana": 0.012182376195698952,
+      "p90": 0.020166711990385222,
+      "max": 0.0239757965936388,
+      "desvio": 0.00519
+     },
+     "zona_baja_menor_3": 0.4,
+     "zona_alta_mayor_igual_3_5": 0.39
+    },
+    "10": {
+     "fracciones": [
+      0.03225,
+      0.03925,
+      0.04175,
+      0.039,
+      0.0285,
+      0.0335,
+      0.025,
+      0.0385,
+      0.041,
+      0.03825,
+      0.02425,
+      0.0385,
+      0.025,
+      0.0375,
+      0.039,
+      0.0365,
+      0.02375,
+      0.03675,
+      0.03875,
+      0.037,
+      0.03525,
+      0.02625,
+      0.02475,
+      0.02525,
+      0.03875,
+      0.02425,
+      0.036,
+      0.035,
+      0.0245,
+      0.03725,
+      0.02675,
+      0.035,
+      0.03675,
+      0.03675,
+      0.037,
+      0.03925,
+      0.0245,
+      0.02475,
+      0.0405,
+      0.0375,
+      0.03625,
+      0.03625,
+      0.0385,
+      0.0235,
+      0.03675,
+      0.0295,
+      0.03625,
+      0.025,
+      0.0385,
+      0.038,
+      0.024,
+      0.0395,
+      0.0375,
+      0.036,
+      0.036,
+      0.0375,
+      0.0365,
+      0.027,
+      0.038,
+      0.0235,
+      0.03725,
+      0.03925,
+      0.03675,
+      0.038,
+      0.04125,
+      0.0355,
+      0.0375,
+      0.02375,
+      0.037,
+      0.03775,
+      0.03525,
+      0.037,
+      0.02525,
+      0.03825,
+      0.03825,
+      0.0255,
+      0.0375,
+      0.03325,
+      0.029,
+      0.03525,
+      0.0245,
+      0.03775,
+      0.038,
+      0.02525,
+      0.02575,
+      0.0385,
+      0.0245,
+      0.02475,
+      0.02625,
+      0.031,
+      0.04275,
+      0.03875,
+      0.0245,
+      0.03875,
+      0.0395,
+      0.0385,
+      0.039,
+      0.02525,
+      0.02375,
+      0.0375,
+      0.03975,
+      0.0355,
+      0.03725,
+      0.034,
+      0.03725,
+      0.024,
+      0.0405,
+      0.028,
+      0.0365,
+      0.02275,
+      0.0375,
+      0.043,
+      0.038,
+      0.037,
+      0.0345,
+      0.02375,
+      0.0385,
+      0.0385,
+      0.03975,
+      0.03875,
+      0.036,
+      0.0255,
+      0.0255,
+      0.024,
+      0.04075,
+      0.0375,
+      0.036,
+      0.02375,
+      0.02325,
+      0.04025,
+      0.0395,
+      0.036,
+      0.022,
+      0.02475,
+      0.02375,
+      0.0335,
+      0.02325,
+      0.0375,
+      0.038,
+      0.02575,
+      0.04025,
+      0.0355,
+      0.0375,
+      0.0395,
+      0.026,
+      0.037,
+      0.04225,
+      0.02375,
+      0.03925,
+      0.0365,
+      0.02375,
+      0.038,
+      0.0235,
+      0.03675,
+      0.037,
+      0.0225,
+      0.038,
+      0.03925,
+      0.02475,
+      0.0355,
+      0.0245,
+      0.02875,
+      0.036,
+      0.025,
+      0.036,
+      0.03925,
+      0.02375,
+      0.039,
+      0.0245,
+      0.0395,
+      0.0375,
+      0.02625,
+      0.0255,
+      0.036,
+      0.0375,
+      0.0355,
+      0.0225,
+      0.039,
+      0.045,
+      0.0305,
+      0.0385,
+      0.02275,
+      0.03925,
+      0.03825,
+      0.03625,
+      0.03725,
+      0.025,
+      0.03725,
+      0.03875,
+      0.03625,
+      0.03675,
+      0.024,
+      0.0395,
+      0.03975,
+      0.0375,
+      0.0355,
+      0.0305,
+      0.0365,
+      0.03425,
+      0.0385
+     ],
+     "distribucion": {
+      "min": 0.022,
+      "p10": 0.024,
+      "mediana": 0.0365,
+      "p90": 0.0395,
+      "max": 0.045,
+      "desvio": 0.00625
+     },
+     "proporcion_dentro_del_equivalente_20": 0.73,
+     "peor_medido_en_curva_20": {
+      "min": 0.006330092552294886,
+      "p10": 0.006520938747021754,
+      "mediana": 0.008143204473198273,
+      "p90": 0.015133350408319046,
+      "max": 0.025619021505227102,
+      "desvio": 0.004
+     },
+     "zona_baja_menor_3": 0.315,
+     "zona_alta_mayor_igual_3_5": 0.635
+    }
+   }
+  },
+  "multiclase_p1": {
+   "minimax": {
+    "5": 0.028,
+    "10": 0.029,
+    "20": 0.02775
+   },
+   "anidados": {
+    "5": {
+     "fraccion_minimax": 0.028,
+     "peor": 0.00181,
+     "peor_medido_en_curva_20": 0.00621,
+     "dentro_del_conjunto_equivalente_20": true,
+     "tau": 0.008846106046825583,
+     "mve": 0.02525,
+     "traslado_minimax": {
+      "201908->201909": {
+       "fraccion": 0.028,
+       "envios": 3736,
+       "ganancia": 253.66,
+       "ganancia_suav": 252.02,
+       "arrepentimiento": 0.00181
+      },
+      "201909->201908": {
+       "fraccion": 0.02275,
+       "envios": 2998,
+       "ganancia": 200.25,
+       "ganancia_suav": 202.38,
+       "arrepentimiento": 0.03512
+      }
+     },
+     "traslado_mve": {
+      "201908->201909": {
+       "fraccion": 0.0255,
+       "envios": 3403,
+       "ganancia": 248.52,
+       "ganancia_suav": 250.84,
+       "arrepentimiento": 0.00645
+      },
+      "201909->201908": {
+       "fraccion": 0.02025,
+       "envios": 2669,
+       "ganancia": 201.6,
+       "ganancia_suav": 199.96,
+       "arrepentimiento": 0.04667
+      }
+     },
+     "por_mes": {
+      "201908": {
+       "envios": 3690,
+       "ganancia": 208.72,
+       "ganancia_suav": 209.74,
+       "max_suav": 209.75,
+       "fraccion_max_suav": 0.02796,
+       "auc_baja2": 0.9079,
+       "semillas_en_el_corte_media": 198.6,
+       "semillas_en_el_corte_desvio": 5.36
+      },
+      "201909": {
+       "envios": 3736,
+       "ganancia": 253.66,
+       "ganancia_suav": 252.02,
+       "max_suav": 252.47,
+       "fraccion_max_suav": 0.02285,
+       "auc_baja2": 0.9059,
+       "semillas_en_el_corte_media": 245.08,
+       "semillas_en_el_corte_desvio": 4.36
+      }
+     }
+    },
+    "10": {
+     "fraccion_minimax": 0.029,
+     "peor": 0.00176,
+     "peor_medido_en_curva_20": 0.01009,
+     "dentro_del_conjunto_equivalente_20": true,
+     "tau": 0.006691494250230868,
+     "mve": 0.02675,
+     "traslado_minimax": {
+      "201908->201909": {
+       "fraccion": 0.0305,
+       "envios": 4070,
+       "ganancia": 254.38,
+       "ganancia_suav": 253.36,
+       "arrepentimiento": 0.00623
+      },
+      "201909->201908": {
+       "fraccion": 0.0275,
+       "envios": 3624,
+       "ganancia": 209.44,
+       "ganancia_suav": 208.74,
+       "arrepentimiento": 0.00487
+      }
+     },
+     "traslado_mve": {
+      "201908->201909": {
+       "fraccion": 0.02725,
+       "envios": 3636,
+       "ganancia": 254.21,
+       "ganancia_suav": 254.78,
+       "arrepentimiento": 0.00067
+      },
+      "201909->201908": {
+       "fraccion": 0.0255,
+       "envios": 3361,
+       "ganancia": 207.87,
+       "ganancia_suav": 206.88,
+       "arrepentimiento": 0.01373
+      }
+     },
+     "por_mes": {
+      "201908": {
+       "envios": 3822,
+       "ganancia": 209.5,
+       "ganancia_suav": 209.4,
+       "max_suav": 209.77,
+       "fraccion_max_suav": 0.03062,
+       "auc_baja2": 0.90762,
+       "semillas_en_el_corte_media": 197.18,
+       "semillas_en_el_corte_desvio": 5.65
+      },
+      "201909": {
+       "envios": 3870,
+       "ganancia": 255.47,
+       "ganancia_suav": 254.69,
+       "max_suav": 254.95,
+       "fraccion_max_suav": 0.02759,
+       "auc_baja2": 0.90616,
+       "semillas_en_el_corte_media": 247.22,
+       "semillas_en_el_corte_desvio": 4.32
+      }
+     }
+    },
+    "20": {
+     "fraccion_minimax": 0.02775,
+     "peor": 0.00609,
+     "peor_medido_en_curva_20": 0.00609,
+     "dentro_del_conjunto_equivalente_20": true,
+     "tau": 0.004847338446281426,
+     "mve": 0.02725,
+     "traslado_minimax": {
+      "201908->201909": {
+       "fraccion": 0.026,
+       "envios": 3469,
+       "ganancia": 250.0,
+       "ganancia_suav": 250.07,
+       "arrepentimiento": 0.02085
+      },
+      "201909->201908": {
+       "fraccion": 0.0295,
+       "envios": 3888,
+       "ganancia": 208.78,
+       "ganancia_suav": 207.03,
+       "arrepentimiento": 0.01202
+      }
+     },
+     "traslado_mve": {
+      "201908->201909": {
+       "fraccion": 0.02425,
+       "envios": 3236,
+       "ganancia": 247.61,
+       "ganancia_suav": 248.57,
+       "arrepentimiento": 0.02673
+      },
+      "201909->201908": {
+       "fraccion": 0.028,
+       "envios": 3690,
+       "ganancia": 207.62,
+       "ganancia_suav": 208.25,
+       "arrepentimiento": 0.00621
+      }
+     },
+     "por_mes": {
+      "201908": {
+       "envios": 3657,
+       "ganancia": 208.53,
+       "ganancia_suav": 208.41,
+       "max_suav": 209.55,
+       "fraccion_max_suav": 0.02606,
+       "auc_baja2": 0.90713,
+       "semillas_en_el_corte_media": 197.15,
+       "semillas_en_el_corte_desvio": 5.42
+      },
+      "201909": {
+       "envios": 3703,
+       "ganancia": 253.47,
+       "ganancia_suav": 253.83,
+       "max_suav": 255.39,
+       "fraccion_max_suav": 0.0296,
+       "auc_baja2": 0.90635,
+       "semillas_en_el_corte_media": 243.9,
+       "semillas_en_el_corte_desvio": 5.07
+      }
+     }
+    }
+   },
+   "conjunto_equivalente_20": {
+    "tau": 0.004847338446281426,
+    "tramos": [
+     [
+      0.02725,
+      0.02925
+     ]
+    ]
+   },
+   "semillas_solas_en_corte_20": {
+    "201908": {
+     "media": 197.15,
+     "desvio": 5.42
+    },
+    "201909": {
+     "media": 243.9,
+     "desvio": 5.07
+    }
+   },
+   "fraccion_por_semilla_sola": {
+    "min": 0.02325,
+    "p10": 0.024375,
+    "mediana": 0.029625,
+    "p90": 0.034875,
+    "max": 0.03775,
+    "desvio": 0.00404
+   },
+   "sensibilidad_tau_20": {
+    "0.0": 0.02775,
+    "0.0025": 0.0275,
+    "0.005": 0.02725,
+    "0.01": 0.02675,
+    "0.015": 0.026,
+    "0.02": 0.02475,
+    "0.03": 0.02075,
+    "0.05": 0.01925,
+    "0.004847338446281426": 0.02725
+   },
+   "disjuntos": {
+    "5": [
+     0.028,
+     0.03,
+     0.02725,
+     0.02825
+    ],
+    "10": [
+     0.029,
+     0.02775
+    ]
+   },
+   "aleatorios": {
+    "5": {
+     "fracciones": [
+      0.02775,
+      0.03075,
+      0.0275,
+      0.02575,
+      0.02775,
+      0.02325,
+      0.02775,
+      0.027,
+      0.03125,
+      0.0245,
+      0.02525,
+      0.03,
+      0.02775,
+      0.03075,
+      0.02825,
+      0.02575,
+      0.02925,
+      0.02825,
+      0.02925,
+      0.028,
+      0.02875,
+      0.02725,
+      0.0295,
+      0.02575,
+      0.02575,
+      0.02875,
+      0.0295,
+      0.028,
+      0.02825,
+      0.0305,
+      0.0305,
+      0.02875,
+      0.03025,
+      0.0305,
+      0.02725,
+      0.0255,
+      0.03025,
+      0.03225,
+      0.027,
+      0.02825,
+      0.02725,
+      0.02975,
+      0.02975,
+      0.02925,
+      0.0305,
+      0.02725,
+      0.027,
+      0.031,
+      0.028,
+      0.02725,
+      0.0275,
+      0.03075,
+      0.03,
+      0.0305,
+      0.02875,
+      0.02775,
+      0.0265,
+      0.02725,
+      0.02875,
+      0.029,
+      0.02975,
+      0.03,
+      0.0275,
+      0.02975,
+      0.0315,
+      0.0285,
+      0.02875,
+      0.024,
+      0.029,
+      0.0295,
+      0.028,
+      0.02975,
+      0.03025,
+      0.02725,
+      0.03175,
+      0.03175,
+      0.02925,
+      0.02925,
+      0.0315,
+      0.02875,
+      0.032,
+      0.0295,
+      0.02725,
+      0.02775,
+      0.02875,
+      0.0285,
+      0.0285,
+      0.02725,
+      0.032,
+      0.0275,
+      0.029,
+      0.02975,
+      0.0285,
+      0.0315,
+      0.03075,
+      0.028,
+      0.03075,
+      0.027,
+      0.02875,
+      0.02625,
+      0.0275,
+      0.02725,
+      0.02875,
+      0.0275,
+      0.029,
+      0.031,
+      0.0275,
+      0.0295,
+      0.0275,
+      0.0265,
+      0.029,
+      0.02825,
+      0.028,
+      0.0315,
+      0.0305,
+      0.02825,
+      0.02775,
+      0.0275,
+      0.02825,
+      0.02775,
+      0.02575,
+      0.02875,
+      0.02725,
+      0.0295,
+      0.02875,
+      0.027,
+      0.024,
+      0.02875,
+      0.02775,
+      0.0285,
+      0.0305,
+      0.029,
+      0.025,
+      0.02925,
+      0.0305,
+      0.03025,
+      0.027,
+      0.03125,
+      0.03275,
+      0.0295,
+      0.029,
+      0.02625,
+      0.0305,
+      0.03025,
+      0.02925,
+      0.02925,
+      0.02825,
+      0.027,
+      0.028,
+      0.0285,
+      0.02925,
+      0.02975,
+      0.03225,
+      0.03025,
+      0.0295,
+      0.0285,
+      0.02875,
+      0.02725,
+      0.02875,
+      0.0305,
+      0.031,
+      0.02775,
+      0.0315,
+      0.031,
+      0.02775,
+      0.02275,
+      0.031,
+      0.031,
+      0.03025,
+      0.0295,
+      0.02925,
+      0.029,
+      0.029,
+      0.02575,
+      0.02925,
+      0.0265,
+      0.029,
+      0.0275,
+      0.0275,
+      0.0315,
+      0.02725,
+      0.02725,
+      0.026,
+      0.0295,
+      0.02975,
+      0.029,
+      0.02725,
+      0.0285,
+      0.02825,
+      0.0275,
+      0.02775,
+      0.028,
+      0.0285,
+      0.02975,
+      0.03125,
+      0.02875,
+      0.0315,
+      0.0275,
+      0.02875,
+      0.027
+     ],
+     "distribucion": {
+      "min": 0.02275,
+      "p10": 0.02695,
+      "mediana": 0.02875,
+      "p90": 0.031,
+      "max": 0.03275,
+      "desvio": 0.00177
+     },
+     "proporcion_dentro_del_equivalente_20": 0.525,
+     "peor_medido_en_curva_20": {
+      "min": 0.006094029102352572,
+      "p10": 0.006917200628862698,
+      "mediana": 0.010875959940131352,
+      "p90": 0.019001282498102574,
+      "max": 0.02769694746183493,
+      "desvio": 0.00516
+     },
+     "zona_baja_menor_3": 0.76,
+     "zona_alta_mayor_igual_3_5": 0.0
+    },
+    "10": {
+     "fracciones": [
+      0.0285,
+      0.02775,
+      0.02825,
+      0.02825,
+      0.0275,
+      0.02975,
+      0.02775,
+      0.02725,
+      0.0265,
+      0.027,
+      0.0305,
+      0.0295,
+      0.02975,
+      0.028,
+      0.02875,
+      0.02675,
+      0.03,
+      0.03,
+      0.0305,
+      0.0295,
+      0.02775,
+      0.0315,
+      0.03025,
+      0.031,
+      0.02875,
+      0.02775,
+      0.03,
+      0.03075,
+      0.02675,
+      0.028,
+      0.03025,
+      0.031,
+      0.03125,
+      0.0255,
+      0.0275,
+      0.02925,
+      0.0285,
+      0.028,
+      0.02875,
+      0.02675,
+      0.0265,
+      0.0285,
+      0.028,
+      0.02725,
+      0.0265,
+      0.0275,
+      0.0275,
+      0.02975,
+      0.02975,
+      0.026,
+      0.028,
+      0.028,
+      0.028,
+      0.02625,
+      0.02975,
+      0.03025,
+      0.0265,
+      0.031,
+      0.02775,
+      0.0275,
+      0.027,
+      0.028,
+      0.0325,
+      0.02975,
+      0.02775,
+      0.02825,
+      0.0265,
+      0.02775,
+      0.028,
+      0.02625,
+      0.02625,
+      0.0275,
+      0.02675,
+      0.02875,
+      0.028,
+      0.02775,
+      0.02825,
+      0.02725,
+      0.0285,
+      0.02725,
+      0.02725,
+      0.02875,
+      0.0295,
+      0.02675,
+      0.0305,
+      0.02775,
+      0.03025,
+      0.029,
+      0.0305,
+      0.02875,
+      0.03025,
+      0.02775,
+      0.02725,
+      0.02875,
+      0.0275,
+      0.02825,
+      0.029,
+      0.02725,
+      0.02825,
+      0.027,
+      0.0275,
+      0.02725,
+      0.023,
+      0.02825,
+      0.0275,
+      0.03025,
+      0.029,
+      0.02825,
+      0.024,
+      0.0285,
+      0.0295,
+      0.02725,
+      0.02925,
+      0.0325,
+      0.02875,
+      0.03225,
+      0.03,
+      0.02875,
+      0.02775,
+      0.03,
+      0.031,
+      0.0285,
+      0.028,
+      0.0275,
+      0.02775,
+      0.02625,
+      0.0305,
+      0.03,
+      0.02825,
+      0.028,
+      0.02775,
+      0.02925,
+      0.02975,
+      0.02725,
+      0.02925,
+      0.0315,
+      0.0275,
+      0.0305,
+      0.02675,
+      0.03025,
+      0.02825,
+      0.02825,
+      0.027,
+      0.02625,
+      0.02875,
+      0.0295,
+      0.029,
+      0.02625,
+      0.02975,
+      0.0275,
+      0.02775,
+      0.028,
+      0.028,
+      0.028,
+      0.02625,
+      0.03025,
+      0.0285,
+      0.0275,
+      0.02525,
+      0.027,
+      0.0275,
+      0.02775,
+      0.02925,
+      0.027,
+      0.02725,
+      0.02775,
+      0.03,
+      0.02975,
+      0.02675,
+      0.02675,
+      0.0285,
+      0.02875,
+      0.02675,
+      0.0275,
+      0.02725,
+      0.0315,
+      0.02725,
+      0.027,
+      0.02725,
+      0.02575,
+      0.0295,
+      0.0295,
+      0.0275,
+      0.0295,
+      0.02725,
+      0.02775,
+      0.0275,
+      0.03075,
+      0.02825,
+      0.02725,
+      0.031,
+      0.02725,
+      0.02875,
+      0.0275,
+      0.0245,
+      0.0295,
+      0.031,
+      0.02775,
+      0.02725,
+      0.028
+     ],
+     "distribucion": {
+      "min": 0.023,
+      "p10": 0.02675,
+      "mediana": 0.028,
+      "p90": 0.0305,
+      "max": 0.0325,
+      "desvio": 0.00154
+     },
+     "proporcion_dentro_del_equivalente_20": 0.555,
+     "peor_medido_en_curva_20": {
+      "min": 0.006094029102352572,
+      "p10": 0.006206901248557495,
+      "mediana": 0.010141741950084993,
+      "p90": 0.017993098437116162,
+      "max": 0.02744182957566399,
+      "desvio": 0.00479
+     },
+     "zona_baja_menor_3": 0.82,
+     "zona_alta_mayor_igual_3_5": 0.0
+    }
+   }
+  }
+ },
+ "rankings": {
+  "binario": {
+   "201908": {
+    "k_2_9": {
+     "k": 3822,
+     "disjuntos_5_jaccard": [
+      0.8379,
+      0.8468,
+      0.8397,
+      0.8393,
+      0.8335,
+      0.8362
+     ],
+     "disjuntos_10_jaccard": 0.8726,
+     "anidado_5_vs_20": 0.9005,
+     "anidado_10_vs_20": 0.9376
+    },
+    "k_minimax_20": {
+     "k": 4843,
+     "disjuntos_5_jaccard": [
+      0.8573,
+      0.8513,
+      0.8548,
+      0.8534,
+      0.8509,
+      0.8573
+     ],
+     "disjuntos_10_jaccard": 0.8903,
+     "anidado_5_vs_20": 0.9063,
+     "anidado_10_vs_20": 0.9399
+    },
+    "correlacion_de_rangos": {
+     "disjuntos_5": [
+      0.98247,
+      0.98236,
+      0.98226,
+      0.98253,
+      0.98196,
+      0.98201
+     ],
+     "disjuntos_10": 0.99065,
+     "anidado_5_vs_20": 0.9933,
+     "anidado_10_vs_20": 0.99763
+    }
+   },
+   "201909": {
+    "k_2_9": {
+     "k": 3870,
+     "disjuntos_5_jaccard": [
+      0.8446,
+      0.8402,
+      0.8477,
+      0.8376,
+      0.8363,
+      0.8433
+     ],
+     "disjuntos_10_jaccard": 0.885,
+     "anidado_5_vs_20": 0.9013,
+     "anidado_10_vs_20": 0.9418
+    },
+    "k_minimax_20": {
+     "k": 4904,
+     "disjuntos_5_jaccard": [
+      0.8523,
+      0.8492,
+      0.8499,
+      0.8537,
+      0.8485,
+      0.8443
+     ],
+     "disjuntos_10_jaccard": 0.892,
+     "anidado_5_vs_20": 0.9037,
+     "anidado_10_vs_20": 0.9426
+    },
+    "correlacion_de_rangos": {
+     "disjuntos_5": [
+      0.98273,
+      0.98264,
+      0.98262,
+      0.98305,
+      0.98254,
+      0.98242
+     ],
+     "disjuntos_10": 0.99095,
+     "anidado_5_vs_20": 0.99341,
+     "anidado_10_vs_20": 0.99772
+    }
+   }
+  },
+  "multiclase_p1": {
+   "201908": {
+    "k_2_9": {
+     "k": 3822,
+     "disjuntos_5_jaccard": [
+      0.8468,
+      0.8455,
+      0.8362,
+      0.841,
+      0.8371,
+      0.8327
+     ],
+     "disjuntos_10_jaccard": 0.8879,
+     "anidado_5_vs_20": 0.9024,
+     "anidado_10_vs_20": 0.9436
+    },
+    "k_minimax_20": {
+     "k": 3657,
+     "disjuntos_5_jaccard": [
+      0.8502,
+      0.8432,
+      0.8299,
+      0.8414,
+      0.8382,
+      0.8303
+     ],
+     "disjuntos_10_jaccard": 0.8821,
+     "anidado_5_vs_20": 0.8988,
+     "anidado_10_vs_20": 0.9395
+    },
+    "correlacion_de_rangos": {
+     "disjuntos_5": [
+      0.98492,
+      0.98492,
+      0.98465,
+      0.98511,
+      0.98458,
+      0.9846
+     ],
+     "disjuntos_10": 0.99207,
+     "anidado_5_vs_20": 0.99423,
+     "anidado_10_vs_20": 0.99797
+    }
+   },
+   "201909": {
+    "k_2_9": {
+     "k": 3870,
+     "disjuntos_5_jaccard": [
+      0.8415,
+      0.849,
+      0.8354,
+      0.8481,
+      0.8372,
+      0.8385
+     ],
+     "disjuntos_10_jaccard": 0.8805,
+     "anidado_5_vs_20": 0.8999,
+     "anidado_10_vs_20": 0.9389
+    },
+    "k_minimax_20": {
+     "k": 3703,
+     "disjuntos_5_jaccard": [
+      0.8359,
+      0.8377,
+      0.8282,
+      0.8395,
+      0.8232,
+      0.8259
+     ],
+     "disjuntos_10_jaccard": 0.8816,
+     "anidado_5_vs_20": 0.8941,
+     "anidado_10_vs_20": 0.9443
+    },
+    "correlacion_de_rangos": {
+     "disjuntos_5": [
+      0.98523,
+      0.9854,
+      0.98514,
+      0.98554,
+      0.98498,
+      0.98507
+     ],
+     "disjuntos_10": 0.99235,
+     "anidado_5_vs_20": 0.99443,
+     "anidado_10_vs_20": 0.99806
+    }
+   }
+  }
+ },
+ "reduccion_baja2": {
+  "supuestos": [
+   "scores fijos (las predicciones no cambian)",
+   "cada BAJA+2 deja de pagar con probabilidad ρ, uniforme e independiente del score",
+   "misma cantidad de clientes, costo 27.500 y premio 1.100.000",
+   "ganancia esperada exacta E[G_ρ(k)] = 1.100.000·(1−ρ)·TP(k) − 27.500·k; sin muestreo"
+  ],
+  "no_representa": [
+   "cambios en los scores o drift de features",
+   "pérdida concentrada en scores altos o bajos",
+   "cambios en la cantidad de clientes"
+  ],
+  "grilla": [
+   0.0,
+   0.1,
+   0.2,
+   0.33,
+   0.5
+  ],
+  "justificacion_grilla": "0,33 = caída máxima de prevalencia de BAJA+2 entre meses permitidos de 2019 (0,616 % en 201903 a 0,412 % en 201908); 0,50 = estrés más allá",
+  "resultados": {
+   "binario": {
+    "5": {
+     "0.0": {
+      "minimax_sobre_curva_rho": 0.04475,
+      "max_suav": {
+       "201908": 201.46,
+       "201909": 252.37
+      },
+      "fraccion_max_suav": {
+       "201908": 0.04268,
+       "201909": 0.04415
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 197.4,
+         "ganancia_suav": 198.62,
+         "arrepentimiento": 0.01408
+        },
+        "201909": {
+         "ganancia_esperada": 243.38,
+         "ganancia_suav": 244.93,
+         "arrepentimiento": 0.02947
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 200.83,
+         "ganancia_suav": 200.98,
+         "arrepentimiento": 0.00236
+        },
+        "201909": {
+         "ganancia_esperada": 253.8,
+         "ganancia_suav": 252.02,
+         "arrepentimiento": 0.00138
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 200.83,
+         "ganancia_suav": 200.98,
+         "arrepentimiento": 0.00236
+        },
+        "201909": {
+         "ganancia_esperada": 253.8,
+         "ganancia_suav": 252.02,
+         "arrepentimiento": 0.00138
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.0425,
+        "201908": {
+         "ganancia_esperada": 199.07,
+         "ganancia_suav": 201.43,
+         "arrepentimiento": 0.00012
+        },
+        "201909": {
+         "ganancia_esperada": 251.05,
+         "ganancia_suav": 250.81,
+         "arrepentimiento": 0.00616
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.03675,
+        "201908": {
+         "ganancia_esperada": 197.92,
+         "ganancia_suav": 198.97,
+         "arrepentimiento": 0.01235
+        },
+        "201909": {
+         "ganancia_esperada": 249.04,
+         "ganancia_suav": 249.04,
+         "arrepentimiento": 0.01319
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.0235,
+        "201908": {
+         "ganancia_esperada": 199.73,
+         "ganancia_suav": 198.98,
+         "arrepentimiento": 0.01231
+        },
+        "201909": {
+         "ganancia_esperada": 249.26,
+         "ganancia_suav": 248.31,
+         "arrepentimiento": 0.01608
+        }
+       }
+      }
+     },
+     "0.1": {
+      "minimax_sobre_curva_rho": 0.0235,
+      "max_suav": {
+       "201908": 170.94,
+       "201909": 215.22
+      },
+      "fraccion_max_suav": {
+       "201908": 0.02536,
+       "201909": 0.02306
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 167.15,
+         "ganancia_suav": 168.25,
+         "arrepentimiento": 0.01576
+        },
+        "201909": {
+         "ganancia_esperada": 208.4,
+         "ganancia_suav": 209.8,
+         "arrepentimiento": 0.0252
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 164.53,
+         "ganancia_suav": 164.67,
+         "arrepentimiento": 0.0367
+        },
+        "201909": {
+         "ganancia_esperada": 212.0,
+         "ganancia_suav": 210.4,
+         "arrepentimiento": 0.02241
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 164.53,
+         "ganancia_suav": 164.67,
+         "arrepentimiento": 0.0367
+        },
+        "201909": {
+         "ganancia_esperada": 212.0,
+         "ganancia_suav": 210.4,
+         "arrepentimiento": 0.02241
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.0425,
+        "201908": {
+         "ganancia_esperada": 163.76,
+         "ganancia_suav": 165.89,
+         "arrepentimiento": 0.02957
+        },
+        "201909": {
+         "ganancia_esperada": 210.35,
+         "ganancia_suav": 210.14,
+         "arrepentimiento": 0.02362
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.03675,
+        "201908": {
+         "ganancia_esperada": 164.81,
+         "ganancia_suav": 165.76,
+         "arrepentimiento": 0.03034
+        },
+        "201909": {
+         "ganancia_esperada": 210.65,
+         "ganancia_suav": 210.65,
+         "arrepentimiento": 0.02123
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.0235,
+        "201908": {
+         "ganancia_esperada": 171.24,
+         "ganancia_suav": 170.56,
+         "arrepentimiento": 0.00221
+        },
+        "201909": {
+         "ganancia_esperada": 215.71,
+         "ganancia_suav": 214.86,
+         "arrepentimiento": 0.0017
+        }
+       }
+      }
+     },
+     "0.2": {
+      "minimax_sobre_curva_rho": 0.02275,
+      "max_suav": {
+       "201908": 142.35,
+       "201909": 183.72
+      },
+      "fraccion_max_suav": {
+       "201908": 0.02268,
+       "201909": 0.01656
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 136.9,
+         "ganancia_suav": 137.88,
+         "arrepentimiento": 0.0314
+        },
+        "201909": {
+         "ganancia_esperada": 173.41,
+         "ganancia_suav": 174.66,
+         "arrepentimiento": 0.04932
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 128.23,
+         "ganancia_suav": 128.35,
+         "arrepentimiento": 0.0983
+        },
+        "201909": {
+         "ganancia_esperada": 170.2,
+         "ganancia_suav": 168.78,
+         "arrepentimiento": 0.08135
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 128.23,
+         "ganancia_suav": 128.35,
+         "arrepentimiento": 0.0983
+        },
+        "201909": {
+         "ganancia_esperada": 170.2,
+         "ganancia_suav": 168.78,
+         "arrepentimiento": 0.08135
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.0425,
+        "201908": {
+         "ganancia_esperada": 128.45,
+         "ganancia_suav": 130.34,
+         "arrepentimiento": 0.08433
+        },
+        "201909": {
+         "ganancia_esperada": 169.65,
+         "ganancia_suav": 169.46,
+         "arrepentimiento": 0.07762
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.03675,
+        "201908": {
+         "ganancia_esperada": 131.7,
+         "ganancia_suav": 132.54,
+         "arrepentimiento": 0.06889
+        },
+        "201909": {
+         "ganancia_esperada": 172.26,
+         "ganancia_suav": 172.26,
+         "arrepentimiento": 0.06238
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.0235,
+        "201908": {
+         "ganancia_esperada": 142.75,
+         "ganancia_suav": 142.15,
+         "arrepentimiento": 0.00138
+        },
+        "201909": {
+         "ganancia_esperada": 182.16,
+         "ganancia_suav": 181.4,
+         "arrepentimiento": 0.01264
+        }
+       }
+      }
+     },
+     "0.33": {
+      "minimax_sobre_curva_rho": 0.017,
+      "max_suav": {
+       "201908": 106.51,
+       "201909": 144.03
+      },
+      "fraccion_max_suav": {
+       "201908": 0.02072,
+       "201909": 0.01647
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 97.57,
+         "ganancia_suav": 98.39,
+         "arrepentimiento": 0.07622
+        },
+        "201909": {
+         "ganancia_esperada": 127.94,
+         "ganancia_suav": 128.99,
+         "arrepentimiento": 0.10448
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 81.04,
+         "ganancia_suav": 81.14,
+         "arrepentimiento": 0.23816
+        },
+        "201909": {
+         "ganancia_esperada": 115.86,
+         "ganancia_suav": 114.67,
+         "arrepentimiento": 0.20388
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 81.04,
+         "ganancia_suav": 81.14,
+         "arrepentimiento": 0.23816
+        },
+        "201909": {
+         "ganancia_esperada": 115.86,
+         "ganancia_suav": 114.67,
+         "arrepentimiento": 0.20388
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.0425,
+        "201908": {
+         "ganancia_esperada": 82.55,
+         "ganancia_suav": 84.13,
+         "arrepentimiento": 0.21011
+        },
+        "201909": {
+         "ganancia_esperada": 116.74,
+         "ganancia_suav": 116.58,
+         "arrepentimiento": 0.19059
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.03675,
+        "201908": {
+         "ganancia_esperada": 88.65,
+         "ganancia_suav": 89.36,
+         "arrepentimiento": 0.16102
+        },
+        "201909": {
+         "ganancia_esperada": 122.35,
+         "ganancia_suav": 122.35,
+         "arrepentimiento": 0.15051
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.0235,
+        "201908": {
+         "ganancia_esperada": 105.72,
+         "ganancia_suav": 105.21,
+         "arrepentimiento": 0.01221
+        },
+        "201909": {
+         "ganancia_esperada": 138.54,
+         "ganancia_suav": 137.91,
+         "arrepentimiento": 0.04252
+        }
+       }
+      }
+     },
+     "0.5": {
+      "minimax_sobre_curva_rho": 0.01425,
+      "max_suav": {
+       "201908": 65.51,
+       "201909": 92.49
+      },
+      "fraccion_max_suav": {
+       "201908": 0.01412,
+       "201909": 0.01547
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 46.15,
+         "ganancia_suav": 46.76,
+         "arrepentimiento": 0.2862
+        },
+        "201909": {
+         "ganancia_esperada": 68.47,
+         "ganancia_suav": 69.25,
+         "arrepentimiento": 0.25119
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 19.33,
+         "ganancia_suav": 19.41,
+         "arrepentimiento": 0.70372
+        },
+        "201909": {
+         "ganancia_esperada": 44.8,
+         "ganancia_suav": 43.91,
+         "arrepentimiento": 0.52523
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 19.33,
+         "ganancia_suav": 19.41,
+         "arrepentimiento": 0.70372
+        },
+        "201909": {
+         "ganancia_esperada": 44.8,
+         "ganancia_suav": 43.91,
+         "arrepentimiento": 0.52523
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.0425,
+        "201908": {
+         "ganancia_esperada": 22.52,
+         "ganancia_suav": 23.7,
+         "arrepentimiento": 0.63815
+        },
+        "201909": {
+         "ganancia_esperada": 47.55,
+         "ganancia_suav": 47.43,
+         "arrepentimiento": 0.48715
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.03675,
+        "201908": {
+         "ganancia_esperada": 32.37,
+         "ganancia_suav": 32.89,
+         "arrepentimiento": 0.49785
+        },
+        "201909": {
+         "ganancia_esperada": 57.09,
+         "ganancia_suav": 57.09,
+         "arrepentimiento": 0.3827
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.0235,
+        "201908": {
+         "ganancia_esperada": 57.28,
+         "ganancia_suav": 56.91,
+         "arrepentimiento": 0.1313
+        },
+        "201909": {
+         "ganancia_esperada": 81.51,
+         "ganancia_suav": 81.04,
+         "arrepentimiento": 0.1238
+        }
+       }
+      }
+     }
+    },
+    "10": {
+     "0.0": {
+      "minimax_sobre_curva_rho": 0.0425,
+      "max_suav": {
+       "201908": 203.79,
+       "201909": 254.1
+      },
+      "fraccion_max_suav": {
+       "201908": 0.0448,
+       "201909": 0.03851
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 199.59,
+         "ganancia_suav": 200.04,
+         "arrepentimiento": 0.0184
+        },
+        "201909": {
+         "ganancia_esperada": 247.78,
+         "ganancia_suav": 249.22,
+         "arrepentimiento": 0.01921
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 205.23,
+         "ganancia_suav": 203.78,
+         "arrepentimiento": 4e-05
+        },
+        "201909": {
+         "ganancia_esperada": 248.3,
+         "ganancia_suav": 248.95,
+         "arrepentimiento": 0.02024
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 205.23,
+         "ganancia_suav": 203.78,
+         "arrepentimiento": 4e-05
+        },
+        "201909": {
+         "ganancia_esperada": 248.3,
+         "ganancia_suav": 248.95,
+         "arrepentimiento": 0.02024
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.0425,
+        "201908": {
+         "ganancia_esperada": 200.17,
+         "ganancia_suav": 201.13,
+         "arrepentimiento": 0.01306
+        },
+        "201909": {
+         "ganancia_esperada": 249.95,
+         "ganancia_suav": 251.0,
+         "arrepentimiento": 0.01219
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.03675,
+        "201908": {
+         "ganancia_esperada": 199.02,
+         "ganancia_suav": 199.96,
+         "arrepentimiento": 0.01879
+        },
+        "201909": {
+         "ganancia_esperada": 253.44,
+         "ganancia_suav": 252.87,
+         "arrepentimiento": 0.00481
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.0235,
+        "201908": {
+         "ganancia_esperada": 197.53,
+         "ganancia_suav": 196.56,
+         "arrepentimiento": 0.03549
+        },
+        "201909": {
+         "ganancia_esperada": 251.46,
+         "ganancia_suav": 250.11,
+         "arrepentimiento": 0.01571
+        }
+       }
+      }
+     },
+     "0.1": {
+      "minimax_sobre_curva_rho": 0.023,
+      "max_suav": {
+       "201908": 170.11,
+       "201909": 217.63
+      },
+      "fraccion_max_suav": {
+       "201908": 0.03093,
+       "201909": 0.01885
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 169.12,
+         "ganancia_suav": 169.52,
+         "arrepentimiento": 0.00342
+        },
+        "201909": {
+         "ganancia_esperada": 212.35,
+         "ganancia_suav": 213.65,
+         "arrepentimiento": 0.01829
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 168.49,
+         "ganancia_suav": 167.19,
+         "arrepentimiento": 0.01716
+        },
+        "201909": {
+         "ganancia_esperada": 207.05,
+         "ganancia_suav": 207.64,
+         "arrepentimiento": 0.04592
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 168.49,
+         "ganancia_suav": 167.19,
+         "arrepentimiento": 0.01716
+        },
+        "201909": {
+         "ganancia_esperada": 207.05,
+         "ganancia_suav": 207.64,
+         "arrepentimiento": 0.04592
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.0425,
+        "201908": {
+         "ganancia_esperada": 164.75,
+         "ganancia_suav": 165.61,
+         "arrepentimiento": 0.02642
+        },
+        "201909": {
+         "ganancia_esperada": 209.36,
+         "ganancia_suav": 210.3,
+         "arrepentimiento": 0.03367
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.03675,
+        "201908": {
+         "ganancia_esperada": 165.8,
+         "ganancia_suav": 166.65,
+         "arrepentimiento": 0.02034
+        },
+        "201909": {
+         "ganancia_esperada": 214.61,
+         "ganancia_suav": 214.1,
+         "arrepentimiento": 0.01622
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.0235,
+        "201908": {
+         "ganancia_esperada": 169.26,
+         "ganancia_suav": 168.38,
+         "arrepentimiento": 0.01012
+        },
+        "201909": {
+         "ganancia_esperada": 217.69,
+         "ganancia_suav": 216.47,
+         "arrepentimiento": 0.00533
+        }
+       }
+      }
+     },
+     "0.2": {
+      "minimax_sobre_curva_rho": 0.02025,
+      "max_suav": {
+       "201908": 140.61,
+       "201909": 185.85
+      },
+      "fraccion_max_suav": {
+       "201908": 0.02276,
+       "201909": 0.01841
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 138.66,
+         "ganancia_suav": 139.01,
+         "arrepentimiento": 0.01139
+        },
+        "201909": {
+         "ganancia_esperada": 176.94,
+         "ganancia_suav": 178.09,
+         "arrepentimiento": 0.04176
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 131.75,
+         "ganancia_suav": 130.59,
+         "arrepentimiento": 0.07126
+        },
+        "201909": {
+         "ganancia_esperada": 165.8,
+         "ganancia_suav": 166.32,
+         "arrepentimiento": 0.10507
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 131.75,
+         "ganancia_suav": 130.59,
+         "arrepentimiento": 0.07126
+        },
+        "201909": {
+         "ganancia_esperada": 165.8,
+         "ganancia_suav": 166.32,
+         "arrepentimiento": 0.10507
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.0425,
+        "201908": {
+         "ganancia_esperada": 129.33,
+         "ganancia_suav": 130.1,
+         "arrepentimiento": 0.07478
+        },
+        "201909": {
+         "ganancia_esperada": 168.77,
+         "ganancia_suav": 169.61,
+         "arrepentimiento": 0.08738
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.03675,
+        "201908": {
+         "ganancia_esperada": 132.58,
+         "ganancia_suav": 133.33,
+         "arrepentimiento": 0.05178
+        },
+        "201909": {
+         "ganancia_esperada": 175.78,
+         "ganancia_suav": 175.33,
+         "arrepentimiento": 0.05662
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.0235,
+        "201908": {
+         "ganancia_esperada": 140.99,
+         "ganancia_suav": 140.21,
+         "arrepentimiento": 0.00285
+        },
+        "201909": {
+         "ganancia_esperada": 183.92,
+         "ganancia_suav": 182.84,
+         "arrepentimiento": 0.01621
+        }
+       }
+      }
+     },
+     "0.33": {
+      "minimax_sobre_curva_rho": 0.018,
+      "max_suav": {
+       "201908": 105.53,
+       "201909": 144.9
+      },
+      "fraccion_max_suav": {
+       "201908": 0.01832,
+       "201909": 0.01773
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 99.04,
+         "ganancia_suav": 99.34,
+         "arrepentimiento": 0.05865
+        },
+        "201909": {
+         "ganancia_esperada": 130.89,
+         "ganancia_suav": 131.85,
+         "arrepentimiento": 0.09002
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 83.99,
+         "ganancia_suav": 83.02,
+         "arrepentimiento": 0.21332
+        },
+        "201909": {
+         "ganancia_esperada": 112.17,
+         "ganancia_suav": 112.61,
+         "arrepentimiento": 0.22281
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 83.99,
+         "ganancia_suav": 83.02,
+         "arrepentimiento": 0.21332
+        },
+        "201909": {
+         "ganancia_esperada": 112.17,
+         "ganancia_suav": 112.61,
+         "arrepentimiento": 0.22281
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.0425,
+        "201908": {
+         "ganancia_esperada": 83.29,
+         "ganancia_suav": 83.93,
+         "arrepentimiento": 0.20472
+        },
+        "201909": {
+         "ganancia_esperada": 116.0,
+         "ganancia_suav": 116.71,
+         "arrepentimiento": 0.19457
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.03675,
+        "201908": {
+         "ganancia_esperada": 89.39,
+         "ganancia_suav": 90.02,
+         "arrepentimiento": 0.14695
+        },
+        "201909": {
+         "ganancia_esperada": 125.3,
+         "ganancia_suav": 124.92,
+         "arrepentimiento": 0.13786
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.0235,
+        "201908": {
+         "ganancia_esperada": 104.24,
+         "ganancia_suav": 103.59,
+         "arrepentimiento": 0.01841
+        },
+        "201909": {
+         "ganancia_esperada": 140.02,
+         "ganancia_suav": 139.11,
+         "arrepentimiento": 0.03993
+        }
+       }
+      }
+     },
+     "0.5": {
+      "minimax_sobre_curva_rho": 0.0145,
+      "max_suav": {
+       "201908": 64.61,
+       "201909": 93.15
+      },
+      "fraccion_max_suav": {
+       "201908": 0.01381,
+       "201909": 0.01552
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 47.24,
+         "ganancia_suav": 47.47,
+         "arrepentimiento": 0.26539
+        },
+        "201909": {
+         "ganancia_esperada": 70.67,
+         "ganancia_suav": 71.4,
+         "arrepentimiento": 0.23359
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 21.53,
+         "ganancia_suav": 20.81,
+         "arrepentimiento": 0.67799
+        },
+        "201909": {
+         "ganancia_esperada": 42.05,
+         "ganancia_suav": 42.38,
+         "arrepentimiento": 0.5451
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 21.53,
+         "ganancia_suav": 20.81,
+         "arrepentimiento": 0.67799
+        },
+        "201909": {
+         "ganancia_esperada": 42.05,
+         "ganancia_suav": 42.38,
+         "arrepentimiento": 0.5451
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.0425,
+        "201908": {
+         "ganancia_esperada": 23.07,
+         "ganancia_suav": 23.55,
+         "arrepentimiento": 0.63553
+        },
+        "201909": {
+         "ganancia_esperada": 47.0,
+         "ganancia_suav": 47.52,
+         "arrepentimiento": 0.48985
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.03675,
+        "201908": {
+         "ganancia_esperada": 32.92,
+         "ganancia_suav": 33.39,
+         "arrepentimiento": 0.48327
+        },
+        "201909": {
+         "ganancia_esperada": 59.29,
+         "ganancia_suav": 59.01,
+         "arrepentimiento": 0.36657
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.0235,
+        "201908": {
+         "ganancia_esperada": 56.18,
+         "ganancia_suav": 55.69,
+         "arrepentimiento": 0.13806
+        },
+        "201909": {
+         "ganancia_esperada": 82.61,
+         "ganancia_suav": 81.93,
+         "arrepentimiento": 0.12047
+        }
+       }
+      }
+     }
+    },
+    "20": {
+     "0.0": {
+      "minimax_sobre_curva_rho": 0.03675,
+      "max_suav": {
+       "201908": 203.06,
+       "201909": 253.04
+      },
+      "fraccion_max_suav": {
+       "201908": 0.02554,
+       "201909": 0.04065
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 197.4,
+         "ganancia_suav": 198.75,
+         "arrepentimiento": 0.02122
+        },
+        "201909": {
+         "ganancia_esperada": 248.88,
+         "ganancia_suav": 248.32,
+         "arrepentimiento": 0.01866
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 199.73,
+         "ganancia_suav": 198.79,
+         "arrepentimiento": 0.021
+        },
+        "201909": {
+         "ganancia_esperada": 246.1,
+         "ganancia_suav": 246.95,
+         "arrepentimiento": 0.02404
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 199.73,
+         "ganancia_suav": 198.79,
+         "arrepentimiento": 0.021
+        },
+        "201909": {
+         "ganancia_esperada": 246.1,
+         "ganancia_suav": 246.95,
+         "arrepentimiento": 0.02404
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.0425,
+        "201908": {
+         "ganancia_esperada": 200.17,
+         "ganancia_suav": 199.37,
+         "arrepentimiento": 0.01814
+        },
+        "201909": {
+         "ganancia_esperada": 252.15,
+         "ganancia_suav": 251.68,
+         "arrepentimiento": 0.00534
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.03675,
+        "201908": {
+         "ganancia_esperada": 203.42,
+         "ganancia_suav": 201.77,
+         "arrepentimiento": 0.00633
+        },
+        "201909": {
+         "ganancia_esperada": 252.34,
+         "ganancia_suav": 251.61,
+         "arrepentimiento": 0.00562
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.0235,
+        "201908": {
+         "ganancia_esperada": 200.83,
+         "ganancia_suav": 201.13,
+         "arrepentimiento": 0.00947
+        },
+        "201909": {
+         "ganancia_esperada": 251.46,
+         "ganancia_suav": 251.28,
+         "arrepentimiento": 0.00693
+        }
+       }
+      }
+     },
+     "0.1": {
+      "minimax_sobre_curva_rho": 0.0235,
+      "max_suav": {
+       "201908": 173.54,
+       "201909": 218.95
+      },
+      "fraccion_max_suav": {
+       "201908": 0.02536,
+       "201909": 0.01958
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 167.15,
+         "ganancia_suav": 168.36,
+         "arrepentimiento": 0.02982
+        },
+        "201909": {
+         "ganancia_esperada": 213.34,
+         "ganancia_suav": 212.84,
+         "arrepentimiento": 0.0279
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 163.54,
+         "ganancia_suav": 162.7,
+         "arrepentimiento": 0.06247
+        },
+        "201909": {
+         "ganancia_esperada": 205.07,
+         "ganancia_suav": 205.84,
+         "arrepentimiento": 0.05988
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 163.54,
+         "ganancia_suav": 162.7,
+         "arrepentimiento": 0.06247
+        },
+        "201909": {
+         "ganancia_esperada": 205.07,
+         "ganancia_suav": 205.84,
+         "arrepentimiento": 0.05988
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.0425,
+        "201908": {
+         "ganancia_esperada": 164.75,
+         "ganancia_suav": 164.03,
+         "arrepentimiento": 0.05477
+        },
+        "201909": {
+         "ganancia_esperada": 211.34,
+         "ganancia_suav": 210.92,
+         "arrepentimiento": 0.03667
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.03675,
+        "201908": {
+         "ganancia_esperada": 169.76,
+         "ganancia_suav": 168.28,
+         "arrepentimiento": 0.03032
+        },
+        "201909": {
+         "ganancia_esperada": 213.62,
+         "ganancia_suav": 212.97,
+         "arrepentimiento": 0.02733
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.0235,
+        "201908": {
+         "ganancia_esperada": 172.23,
+         "ganancia_suav": 172.5,
+         "arrepentimiento": 0.00596
+        },
+        "201909": {
+         "ganancia_esperada": 217.69,
+         "ganancia_suav": 217.53,
+         "arrepentimiento": 0.00648
+        }
+       }
+      }
+     },
+     "0.2": {
+      "minimax_sobre_curva_rho": 0.021,
+      "max_suav": {
+       "201908": 144.19,
+       "201909": 186.83
+      },
+      "fraccion_max_suav": {
+       "201908": 0.02464,
+       "201909": 0.01902
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 136.9,
+         "ganancia_suav": 137.98,
+         "arrepentimiento": 0.04311
+        },
+        "201909": {
+         "ganancia_esperada": 177.81,
+         "ganancia_suav": 177.37,
+         "arrepentimiento": 0.05067
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 127.35,
+         "ganancia_suav": 126.6,
+         "arrepentimiento": 0.12201
+        },
+        "201909": {
+         "ganancia_esperada": 164.04,
+         "ganancia_suav": 164.72,
+         "arrepentimiento": 0.11835
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 127.35,
+         "ganancia_suav": 126.6,
+         "arrepentimiento": 0.12201
+        },
+        "201909": {
+         "ganancia_esperada": 164.04,
+         "ganancia_suav": 164.72,
+         "arrepentimiento": 0.11835
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.0425,
+        "201908": {
+         "ganancia_esperada": 129.33,
+         "ganancia_suav": 128.69,
+         "arrepentimiento": 0.1075
+        },
+        "201909": {
+         "ganancia_esperada": 170.53,
+         "ganancia_suav": 170.16,
+         "arrepentimiento": 0.08927
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.03675,
+        "201908": {
+         "ganancia_esperada": 136.1,
+         "ganancia_suav": 134.78,
+         "arrepentimiento": 0.06528
+        },
+        "201909": {
+         "ganancia_esperada": 174.9,
+         "ganancia_suav": 174.32,
+         "arrepentimiento": 0.06699
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.0235,
+        "201908": {
+         "ganancia_esperada": 143.63,
+         "ganancia_suav": 143.87,
+         "arrepentimiento": 0.00222
+        },
+        "201909": {
+         "ganancia_esperada": 183.92,
+         "ganancia_suav": 183.78,
+         "arrepentimiento": 0.01636
+        }
+       }
+      }
+     },
+     "0.33": {
+      "minimax_sobre_curva_rho": 0.01975,
+      "max_suav": {
+       "201908": 107.44,
+       "201909": 145.42
+      },
+      "fraccion_max_suav": {
+       "201908": 0.02137,
+       "201909": 0.01777
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 97.57,
+         "ganancia_suav": 98.48,
+         "arrepentimiento": 0.08347
+        },
+        "201909": {
+         "ganancia_esperada": 131.63,
+         "ganancia_suav": 131.25,
+         "arrepentimiento": 0.09742
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 80.31,
+         "ganancia_suav": 79.68,
+         "arrepentimiento": 0.25844
+        },
+        "201909": {
+         "ganancia_esperada": 110.7,
+         "ganancia_suav": 111.27,
+         "arrepentimiento": 0.23481
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 80.31,
+         "ganancia_suav": 79.68,
+         "arrepentimiento": 0.25844
+        },
+        "201909": {
+         "ganancia_esperada": 110.7,
+         "ganancia_suav": 111.27,
+         "arrepentimiento": 0.23481
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.0425,
+        "201908": {
+         "ganancia_esperada": 83.29,
+         "ganancia_suav": 82.75,
+         "arrepentimiento": 0.22982
+        },
+        "201909": {
+         "ganancia_esperada": 117.47,
+         "ganancia_suav": 117.16,
+         "arrepentimiento": 0.19429
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.03675,
+        "201908": {
+         "ganancia_esperada": 92.34,
+         "ganancia_suav": 91.24,
+         "arrepentimiento": 0.15085
+        },
+        "201909": {
+         "ganancia_esperada": 124.56,
+         "ganancia_suav": 124.08,
+         "arrepentimiento": 0.14675
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.0235,
+        "201908": {
+         "ganancia_esperada": 106.45,
+         "ganancia_suav": 106.65,
+         "arrepentimiento": 0.00735
+        },
+        "201909": {
+         "ganancia_esperada": 140.02,
+         "ganancia_suav": 139.9,
+         "arrepentimiento": 0.03794
+        }
+       }
+      }
+     },
+     "0.5": {
+      "minimax_sobre_curva_rho": 0.015,
+      "max_suav": {
+       "201908": 64.99,
+       "201909": 93.22
+      },
+      "fraccion_max_suav": {
+       "201908": 0.01462,
+       "201909": 0.01558
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 46.15,
+         "ganancia_suav": 46.82,
+         "arrepentimiento": 0.27953
+        },
+        "201909": {
+         "ganancia_esperada": 71.22,
+         "ganancia_suav": 70.95,
+         "arrepentimiento": 0.23896
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 18.78,
+         "ganancia_suav": 18.31,
+         "arrepentimiento": 0.71821
+        },
+        "201909": {
+         "ganancia_esperada": 40.95,
+         "ganancia_suav": 41.38,
+         "arrepentimiento": 0.55616
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 18.78,
+         "ganancia_suav": 18.31,
+         "arrepentimiento": 0.71821
+        },
+        "201909": {
+         "ganancia_esperada": 40.95,
+         "ganancia_suav": 41.38,
+         "arrepentimiento": 0.55616
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.0425,
+        "201908": {
+         "ganancia_esperada": 23.07,
+         "ganancia_suav": 22.67,
+         "arrepentimiento": 0.65112
+        },
+        "201909": {
+         "ganancia_esperada": 48.1,
+         "ganancia_suav": 47.87,
+         "arrepentimiento": 0.48653
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.03675,
+        "201908": {
+         "ganancia_esperada": 35.12,
+         "ganancia_suav": 34.29,
+         "arrepentimiento": 0.4723
+        },
+        "201909": {
+         "ganancia_esperada": 58.74,
+         "ganancia_suav": 58.38,
+         "arrepentimiento": 0.37378
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.0235,
+        "201908": {
+         "ganancia_esperada": 57.83,
+         "ganancia_suav": 57.98,
+         "arrepentimiento": 0.10778
+        },
+        "201909": {
+         "ganancia_esperada": 82.61,
+         "ganancia_suav": 82.52,
+         "arrepentimiento": 0.11478
+        }
+       }
+      }
+     }
+    }
+   },
+   "multiclase_p1": {
+    "5": {
+     "0.0": {
+      "minimax_sobre_curva_rho": 0.028,
+      "max_suav": {
+       "201908": 209.75,
+       "201909": 252.47
+      },
+      "fraccion_max_suav": {
+       "201908": 0.02796,
+       "201909": 0.02285
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 210.59,
+         "ganancia_suav": 209.31,
+         "arrepentimiento": 0.00205
+        },
+        "201909": {
+         "ganancia_esperada": 251.07,
+         "ganancia_suav": 251.28,
+         "arrepentimiento": 0.00473
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 187.63,
+         "ganancia_suav": 188.44,
+         "arrepentimiento": 0.10155
+        },
+        "201909": {
+         "ganancia_esperada": 239.5,
+         "ganancia_suav": 239.2,
+         "arrepentimiento": 0.05257
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.028,
+        "201908": {
+         "ganancia_esperada": 208.72,
+         "ganancia_suav": 209.74,
+         "arrepentimiento": 3e-05
+        },
+        "201909": {
+         "ganancia_esperada": 253.66,
+         "ganancia_suav": 252.02,
+         "arrepentimiento": 0.00181
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 210.59,
+         "ganancia_suav": 209.31,
+         "arrepentimiento": 0.00205
+        },
+        "201909": {
+         "ganancia_esperada": 251.07,
+         "ganancia_suav": 251.28,
+         "arrepentimiento": 0.00473
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.02775,
+        "201908": {
+         "ganancia_esperada": 208.53,
+         "ganancia_suav": 209.72,
+         "arrepentimiento": 0.00014
+        },
+        "201909": {
+         "ganancia_esperada": 254.57,
+         "ganancia_suav": 251.99,
+         "arrepentimiento": 0.00192
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.02725,
+        "201908": {
+         "ganancia_esperada": 209.25,
+         "ganancia_suav": 209.48,
+         "arrepentimiento": 0.00125
+        },
+        "201909": {
+         "ganancia_esperada": 254.21,
+         "ganancia_suav": 251.73,
+         "arrepentimiento": 0.00293
+        }
+       }
+      }
+     },
+     "0.1": {
+      "minimax_sobre_curva_rho": 0.0275,
+      "max_suav": {
+       "201908": 178.71,
+       "201909": 218.96
+      },
+      "fraccion_max_suav": {
+       "201908": 0.02768,
+       "201909": 0.02203
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 179.03,
+         "ganancia_suav": 177.87,
+         "arrepentimiento": 0.00466
+        },
+        "201909": {
+         "ganancia_esperada": 215.32,
+         "ganancia_suav": 215.51,
+         "arrepentimiento": 0.01575
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 152.65,
+         "ganancia_suav": 153.38,
+         "arrepentimiento": 0.1417
+        },
+        "201909": {
+         "ganancia_esperada": 199.13,
+         "ganancia_suav": 198.86,
+         "arrepentimiento": 0.09179
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.028,
+        "201908": {
+         "ganancia_esperada": 177.71,
+         "ganancia_suav": 178.62,
+         "arrepentimiento": 0.00049
+        },
+        "201909": {
+         "ganancia_esperada": 218.02,
+         "ganancia_suav": 216.54,
+         "arrepentimiento": 0.01104
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 179.03,
+         "ganancia_suav": 177.87,
+         "arrepentimiento": 0.00466
+        },
+        "201909": {
+         "ganancia_esperada": 215.32,
+         "ganancia_suav": 215.51,
+         "arrepentimiento": 0.01575
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.02775,
+        "201908": {
+         "ganancia_esperada": 177.62,
+         "ganancia_suav": 178.69,
+         "arrepentimiento": 0.0001
+        },
+        "201909": {
+         "ganancia_esperada": 218.93,
+         "ganancia_suav": 216.61,
+         "arrepentimiento": 0.01073
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.02725,
+        "201908": {
+         "ganancia_esperada": 178.45,
+         "ganancia_suav": 178.66,
+         "arrepentimiento": 0.00026
+        },
+        "201909": {
+         "ganancia_esperada": 218.79,
+         "ganancia_suav": 216.56,
+         "arrepentimiento": 0.01095
+        }
+       }
+      }
+     },
+     "0.2": {
+      "minimax_sobre_curva_rho": 0.024,
+      "max_suav": {
+       "201908": 148.27,
+       "201909": 185.9
+      },
+      "fraccion_max_suav": {
+       "201908": 0.02591,
+       "201909": 0.02114
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 147.46,
+         "ganancia_suav": 146.43,
+         "arrepentimiento": 0.01244
+        },
+        "201909": {
+         "ganancia_esperada": 179.57,
+         "ganancia_suav": 179.74,
+         "arrepentimiento": 0.03315
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 117.67,
+         "ganancia_suav": 118.32,
+         "arrepentimiento": 0.20201
+        },
+        "201909": {
+         "ganancia_esperada": 158.76,
+         "ganancia_suav": 158.52,
+         "arrepentimiento": 0.14729
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.028,
+        "201908": {
+         "ganancia_esperada": 146.69,
+         "ganancia_suav": 147.5,
+         "arrepentimiento": 0.00525
+        },
+        "201909": {
+         "ganancia_esperada": 182.38,
+         "ganancia_suav": 181.06,
+         "arrepentimiento": 0.02602
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 147.46,
+         "ganancia_suav": 146.43,
+         "arrepentimiento": 0.01244
+        },
+        "201909": {
+         "ganancia_esperada": 179.57,
+         "ganancia_suav": 179.74,
+         "arrepentimiento": 0.03315
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.02775,
+        "201908": {
+         "ganancia_esperada": 146.71,
+         "ganancia_suav": 147.66,
+         "arrepentimiento": 0.00415
+        },
+        "201909": {
+         "ganancia_esperada": 183.29,
+         "ganancia_suav": 181.23,
+         "arrepentimiento": 0.02515
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.02725,
+        "201908": {
+         "ganancia_esperada": 147.65,
+         "ganancia_suav": 147.84,
+         "arrepentimiento": 0.00296
+        },
+        "201909": {
+         "ganancia_esperada": 183.37,
+         "ganancia_suav": 181.39,
+         "arrepentimiento": 0.02427
+        }
+       }
+      }
+     },
+     "0.33": {
+      "minimax_sobre_curva_rho": 0.018,
+      "max_suav": {
+       "201908": 110.7,
+       "201909": 143.32
+      },
+      "fraccion_max_suav": {
+       "201908": 0.01715,
+       "201909": 0.01954
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 106.41,
+         "ganancia_suav": 105.56,
+         "arrepentimiento": 0.04645
+        },
+        "201909": {
+         "ganancia_esperada": 133.1,
+         "ganancia_suav": 133.24,
+         "arrepentimiento": 0.07038
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 72.2,
+         "ganancia_suav": 72.74,
+         "arrepentimiento": 0.34287
+        },
+        "201909": {
+         "ganancia_esperada": 106.28,
+         "ganancia_suav": 106.08,
+         "arrepentimiento": 0.25987
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.028,
+        "201908": {
+         "ganancia_esperada": 106.36,
+         "ganancia_suav": 107.04,
+         "arrepentimiento": 0.03306
+        },
+        "201909": {
+         "ganancia_esperada": 136.05,
+         "ganancia_suav": 134.95,
+         "arrepentimiento": 0.05845
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 106.41,
+         "ganancia_suav": 105.56,
+         "arrepentimiento": 0.04645
+        },
+        "201909": {
+         "ganancia_esperada": 133.1,
+         "ganancia_suav": 133.24,
+         "arrepentimiento": 0.07038
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.02775,
+        "201908": {
+         "ganancia_esperada": 106.53,
+         "ganancia_suav": 107.32,
+         "arrepentimiento": 0.03049
+        },
+        "201909": {
+         "ganancia_esperada": 136.96,
+         "ganancia_suav": 135.23,
+         "arrepentimiento": 0.05648
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.02725,
+        "201908": {
+         "ganancia_esperada": 107.61,
+         "ganancia_suav": 107.76,
+         "arrepentimiento": 0.02649
+        },
+        "201909": {
+         "ganancia_esperada": 137.32,
+         "ganancia_suav": 135.66,
+         "arrepentimiento": 0.05344
+        }
+       }
+      }
+     },
+     "0.5": {
+      "minimax_sobre_curva_rho": 0.01425,
+      "max_suav": {
+       "201908": 67.54,
+       "201909": 91.5
+      },
+      "fraccion_max_suav": {
+       "201908": 0.01521,
+       "201909": 0.0115
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 52.74,
+         "ganancia_suav": 52.1,
+         "arrepentimiento": 0.22856
+        },
+        "201909": {
+         "ganancia_esperada": 72.33,
+         "ganancia_suav": 72.43,
+         "arrepentimiento": 0.20849
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 12.73,
+         "ganancia_suav": 13.14,
+         "arrepentimiento": 0.80547
+        },
+        "201909": {
+         "ganancia_esperada": 37.65,
+         "ganancia_suav": 37.5,
+         "arrepentimiento": 0.59019
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.028,
+        "201908": {
+         "ganancia_esperada": 53.62,
+         "ganancia_suav": 54.13,
+         "arrepentimiento": 0.19854
+        },
+        "201909": {
+         "ganancia_esperada": 75.46,
+         "ganancia_suav": 74.64,
+         "arrepentimiento": 0.18433
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 52.74,
+         "ganancia_suav": 52.1,
+         "arrepentimiento": 0.22856
+        },
+        "201909": {
+         "ganancia_esperada": 72.33,
+         "ganancia_suav": 72.43,
+         "arrepentimiento": 0.20849
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.02775,
+        "201908": {
+         "ganancia_esperada": 53.98,
+         "ganancia_suav": 54.57,
+         "arrepentimiento": 0.192
+        },
+        "201909": {
+         "ganancia_esperada": 76.37,
+         "ganancia_suav": 75.08,
+         "arrepentimiento": 0.17951
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.02725,
+        "201908": {
+         "ganancia_esperada": 55.25,
+         "ganancia_suav": 55.36,
+         "arrepentimiento": 0.18029
+        },
+        "201909": {
+         "ganancia_esperada": 77.11,
+         "ganancia_suav": 75.87,
+         "arrepentimiento": 0.17084
+        }
+       }
+      }
+     }
+    },
+    "10": {
+     "0.0": {
+      "minimax_sobre_curva_rho": 0.029,
+      "max_suav": {
+       "201908": 209.77,
+       "201909": 254.95
+      },
+      "fraccion_max_suav": {
+       "201908": 0.03062,
+       "201909": 0.02759
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 209.5,
+         "ganancia_suav": 209.4,
+         "arrepentimiento": 0.00176
+        },
+        "201909": {
+         "ganancia_esperada": 255.47,
+         "ganancia_suav": 254.69,
+         "arrepentimiento": 0.001
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 189.83,
+         "ganancia_suav": 191.04,
+         "arrepentimiento": 0.08926
+        },
+        "201909": {
+         "ganancia_esperada": 235.1,
+         "ganancia_suav": 235.76,
+         "arrepentimiento": 0.07524
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.028,
+        "201908": {
+         "ganancia_esperada": 208.72,
+         "ganancia_suav": 208.97,
+         "arrepentimiento": 0.00379
+        },
+        "201909": {
+         "ganancia_esperada": 254.76,
+         "ganancia_suav": 254.83,
+         "arrepentimiento": 0.00045
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 209.5,
+         "ganancia_suav": 209.4,
+         "arrepentimiento": 0.00176
+        },
+        "201909": {
+         "ganancia_esperada": 255.47,
+         "ganancia_suav": 254.69,
+         "arrepentimiento": 0.001
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.02775,
+        "201908": {
+         "ganancia_esperada": 209.63,
+         "ganancia_suav": 208.85,
+         "arrepentimiento": 0.00436
+        },
+        "201909": {
+         "ganancia_esperada": 255.67,
+         "ganancia_suav": 254.89,
+         "arrepentimiento": 0.00024
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.02725,
+        "201908": {
+         "ganancia_esperada": 210.35,
+         "ganancia_suav": 208.57,
+         "arrepentimiento": 0.00569
+        },
+        "201909": {
+         "ganancia_esperada": 254.21,
+         "ganancia_suav": 254.78,
+         "arrepentimiento": 0.00067
+        }
+       }
+      }
+     },
+     "0.1": {
+      "minimax_sobre_curva_rho": 0.0275,
+      "max_suav": {
+       "201908": 178.01,
+       "201909": 219.35
+      },
+      "fraccion_max_suav": {
+       "201908": 0.02875,
+       "201909": 0.02749
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 178.03,
+         "ganancia_suav": 177.95,
+         "arrepentimiento": 0.00036
+        },
+        "201909": {
+         "ganancia_esperada": 219.28,
+         "ganancia_suav": 218.58,
+         "arrepentimiento": 0.00352
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 154.63,
+         "ganancia_suav": 155.72,
+         "arrepentimiento": 0.12521
+        },
+        "201909": {
+         "ganancia_esperada": 195.17,
+         "ganancia_suav": 195.77,
+         "arrepentimiento": 0.10752
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.028,
+        "201908": {
+         "ganancia_esperada": 177.71,
+         "ganancia_suav": 177.93,
+         "arrepentimiento": 0.00047
+        },
+        "201909": {
+         "ganancia_esperada": 219.01,
+         "ganancia_suav": 219.08,
+         "arrepentimiento": 0.00126
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 178.03,
+         "ganancia_suav": 177.95,
+         "arrepentimiento": 0.00036
+        },
+        "201909": {
+         "ganancia_esperada": 219.28,
+         "ganancia_suav": 218.58,
+         "arrepentimiento": 0.00352
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.02775,
+        "201908": {
+         "ganancia_esperada": 178.61,
+         "ganancia_suav": 177.91,
+         "arrepentimiento": 0.00057
+        },
+        "201909": {
+         "ganancia_esperada": 219.92,
+         "ganancia_suav": 219.21,
+         "arrepentimiento": 0.00063
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.02725,
+        "201908": {
+         "ganancia_esperada": 179.44,
+         "ganancia_suav": 177.84,
+         "arrepentimiento": 0.00096
+        },
+        "201909": {
+         "ganancia_esperada": 218.79,
+         "ganancia_suav": 219.3,
+         "arrepentimiento": 0.00024
+        }
+       }
+      }
+     },
+     "0.2": {
+      "minimax_sobre_curva_rho": 0.026,
+      "max_suav": {
+       "201908": 147.11,
+       "201909": 184.12
+      },
+      "fraccion_max_suav": {
+       "201908": 0.02735,
+       "201909": 0.02649
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 146.57,
+         "ganancia_suav": 146.5,
+         "arrepentimiento": 0.0042
+        },
+        "201909": {
+         "ganancia_esperada": 183.09,
+         "ganancia_suav": 182.47,
+         "arrepentimiento": 0.00898
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 119.43,
+         "ganancia_suav": 120.4,
+         "arrepentimiento": 0.18159
+        },
+        "201909": {
+         "ganancia_esperada": 155.24,
+         "ganancia_suav": 155.77,
+         "arrepentimiento": 0.15398
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.028,
+        "201908": {
+         "ganancia_esperada": 146.69,
+         "ganancia_suav": 146.88,
+         "arrepentimiento": 0.00158
+        },
+        "201909": {
+         "ganancia_esperada": 183.26,
+         "ganancia_suav": 183.32,
+         "arrepentimiento": 0.00437
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 146.57,
+         "ganancia_suav": 146.5,
+         "arrepentimiento": 0.0042
+        },
+        "201909": {
+         "ganancia_esperada": 183.09,
+         "ganancia_suav": 182.47,
+         "arrepentimiento": 0.00898
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.02775,
+        "201908": {
+         "ganancia_esperada": 147.59,
+         "ganancia_suav": 146.97,
+         "arrepentimiento": 0.001
+        },
+        "201909": {
+         "ganancia_esperada": 184.17,
+         "ganancia_suav": 183.54,
+         "arrepentimiento": 0.00315
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.02725,
+        "201908": {
+         "ganancia_esperada": 148.53,
+         "ganancia_suav": 147.11,
+         "arrepentimiento": 5e-05
+        },
+        "201909": {
+         "ganancia_esperada": 183.37,
+         "ganancia_suav": 183.82,
+         "arrepentimiento": 0.00162
+        }
+       }
+      }
+     },
+     "0.33": {
+      "minimax_sobre_curva_rho": 0.01625,
+      "max_suav": {
+       "201908": 110.56,
+       "201909": 143.56
+      },
+      "fraccion_max_suav": {
+       "201908": 0.01997,
+       "201909": 0.01486
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 105.68,
+         "ganancia_suav": 105.61,
+         "arrepentimiento": 0.04475
+        },
+        "201909": {
+         "ganancia_esperada": 136.05,
+         "ganancia_suav": 135.52,
+         "arrepentimiento": 0.056
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 73.67,
+         "ganancia_suav": 74.48,
+         "arrepentimiento": 0.3263
+        },
+        "201909": {
+         "ganancia_esperada": 103.33,
+         "ganancia_suav": 103.78,
+         "arrepentimiento": 0.27714
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.028,
+        "201908": {
+         "ganancia_esperada": 106.36,
+         "ganancia_suav": 106.52,
+         "arrepentimiento": 0.0365
+        },
+        "201909": {
+         "ganancia_esperada": 136.78,
+         "ganancia_suav": 136.83,
+         "arrepentimiento": 0.04687
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 105.68,
+         "ganancia_suav": 105.61,
+         "arrepentimiento": 0.04475
+        },
+        "201909": {
+         "ganancia_esperada": 136.05,
+         "ganancia_suav": 135.52,
+         "arrepentimiento": 0.056
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.02775,
+        "201908": {
+         "ganancia_esperada": 107.27,
+         "ganancia_suav": 106.74,
+         "arrepentimiento": 0.03452
+        },
+        "201909": {
+         "ganancia_esperada": 137.69,
+         "ganancia_suav": 137.17,
+         "arrepentimiento": 0.04454
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.02725,
+        "201908": {
+         "ganancia_esperada": 108.34,
+         "ganancia_suav": 107.15,
+         "arrepentimiento": 0.03079
+        },
+        "201909": {
+         "ganancia_esperada": 137.32,
+         "ganancia_suav": 137.7,
+         "arrepentimiento": 0.04081
+        }
+       }
+      }
+     },
+     "0.5": {
+      "minimax_sobre_curva_rho": 0.01375,
+      "max_suav": {
+       "201908": 67.63,
+       "201909": 94.65
+      },
+      "fraccion_max_suav": {
+       "201908": 0.01451,
+       "201909": 0.01271
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 52.2,
+         "ganancia_suav": 52.15,
+         "arrepentimiento": 0.22895
+        },
+        "201909": {
+         "ganancia_esperada": 74.53,
+         "ganancia_suav": 74.13,
+         "arrepentimiento": 0.21674
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 13.83,
+         "ganancia_suav": 14.44,
+         "arrepentimiento": 0.78652
+        },
+        "201909": {
+         "ganancia_esperada": 35.45,
+         "ganancia_suav": 35.78,
+         "arrepentimiento": 0.62195
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.028,
+        "201908": {
+         "ganancia_esperada": 53.62,
+         "ganancia_suav": 53.75,
+         "arrepentimiento": 0.20526
+        },
+        "201909": {
+         "ganancia_esperada": 76.01,
+         "ganancia_suav": 76.05,
+         "arrepentimiento": 0.19652
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 52.2,
+         "ganancia_suav": 52.15,
+         "arrepentimiento": 0.22895
+        },
+        "201909": {
+         "ganancia_esperada": 74.53,
+         "ganancia_suav": 74.13,
+         "arrepentimiento": 0.21674
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.02775,
+        "201908": {
+         "ganancia_esperada": 54.53,
+         "ganancia_suav": 54.14,
+         "arrepentimiento": 0.19944
+        },
+        "201909": {
+         "ganancia_esperada": 76.92,
+         "ganancia_suav": 76.53,
+         "arrepentimiento": 0.19145
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.02725,
+        "201908": {
+         "ganancia_esperada": 55.8,
+         "ganancia_suav": 54.91,
+         "arrepentimiento": 0.18809
+        },
+        "201909": {
+         "ganancia_esperada": 77.11,
+         "ganancia_suav": 77.39,
+         "arrepentimiento": 0.18229
+        }
+       }
+      }
+     }
+    },
+    "20": {
+     "0.0": {
+      "minimax_sobre_curva_rho": 0.02775,
+      "max_suav": {
+       "201908": 209.55,
+       "201909": 255.39
+      },
+      "fraccion_max_suav": {
+       "201908": 0.02606,
+       "201909": 0.0296
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 206.19,
+         "ganancia_suav": 207.44,
+         "arrepentimiento": 0.01009
+        },
+        "201909": {
+         "ganancia_esperada": 257.68,
+         "ganancia_suav": 255.12,
+         "arrepentimiento": 0.00105
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 194.23,
+         "ganancia_suav": 193.75,
+         "arrepentimiento": 0.07541
+        },
+        "201909": {
+         "ganancia_esperada": 235.1,
+         "ganancia_suav": 233.91,
+         "arrepentimiento": 0.08412
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.028,
+        "201908": {
+         "ganancia_esperada": 207.62,
+         "ganancia_suav": 208.25,
+         "arrepentimiento": 0.00621
+        },
+        "201909": {
+         "ganancia_esperada": 254.76,
+         "ganancia_suav": 254.25,
+         "arrepentimiento": 0.00445
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 206.19,
+         "ganancia_suav": 207.44,
+         "arrepentimiento": 0.01009
+        },
+        "201909": {
+         "ganancia_esperada": 257.68,
+         "ganancia_suav": 255.12,
+         "arrepentimiento": 0.00105
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.02775,
+        "201908": {
+         "ganancia_esperada": 208.53,
+         "ganancia_suav": 208.41,
+         "arrepentimiento": 0.00548
+        },
+        "201909": {
+         "ganancia_esperada": 253.47,
+         "ganancia_suav": 253.83,
+         "arrepentimiento": 0.00609
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.02725,
+        "201908": {
+         "ganancia_esperada": 208.15,
+         "ganancia_suav": 208.96,
+         "arrepentimiento": 0.00281
+        },
+        "201909": {
+         "ganancia_esperada": 252.01,
+         "ganancia_suav": 252.8,
+         "arrepentimiento": 0.01014
+        }
+       }
+      }
+     },
+     "0.1": {
+      "minimax_sobre_curva_rho": 0.02725,
+      "max_suav": {
+       "201908": 179.28,
+       "201909": 219.01
+      },
+      "fraccion_max_suav": {
+       "201908": 0.02525,
+       "201909": 0.02952
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 175.06,
+         "ganancia_suav": 176.19,
+         "arrepentimiento": 0.01726
+        },
+        "201909": {
+         "ganancia_esperada": 221.26,
+         "ganancia_suav": 218.97,
+         "arrepentimiento": 0.0002
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 158.59,
+         "ganancia_suav": 158.16,
+         "arrepentimiento": 0.1178
+        },
+        "201909": {
+         "ganancia_esperada": 195.17,
+         "ganancia_suav": 194.1,
+         "arrepentimiento": 0.11375
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.028,
+        "201908": {
+         "ganancia_esperada": 176.72,
+         "ganancia_suav": 177.28,
+         "arrepentimiento": 0.01115
+        },
+        "201909": {
+         "ganancia_esperada": 219.01,
+         "ganancia_suav": 218.55,
+         "arrepentimiento": 0.00208
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 175.06,
+         "ganancia_suav": 176.19,
+         "arrepentimiento": 0.01726
+        },
+        "201909": {
+         "ganancia_esperada": 221.26,
+         "ganancia_suav": 218.97,
+         "arrepentimiento": 0.0002
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.02775,
+        "201908": {
+         "ganancia_esperada": 177.62,
+         "ganancia_suav": 177.51,
+         "arrepentimiento": 0.00988
+        },
+        "201909": {
+         "ganancia_esperada": 217.94,
+         "ganancia_suav": 218.27,
+         "arrepentimiento": 0.00339
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.02725,
+        "201908": {
+         "ganancia_esperada": 177.46,
+         "ganancia_suav": 178.19,
+         "arrepentimiento": 0.00606
+        },
+        "201909": {
+         "ganancia_esperada": 216.81,
+         "ganancia_suav": 217.52,
+         "arrepentimiento": 0.0068
+        }
+       }
+      }
+     },
+     "0.2": {
+      "minimax_sobre_curva_rho": 0.02275,
+      "max_suav": {
+       "201908": 149.38,
+       "201909": 182.95
+      },
+      "fraccion_max_suav": {
+       "201908": 0.0246,
+       "201909": 0.0282
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 143.94,
+         "ganancia_suav": 144.93,
+         "arrepentimiento": 0.02977
+        },
+        "201909": {
+         "ganancia_esperada": 184.85,
+         "ganancia_suav": 182.81,
+         "arrepentimiento": 0.00075
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 122.95,
+         "ganancia_suav": 122.57,
+         "arrepentimiento": 0.17948
+        },
+        "201909": {
+         "ganancia_esperada": 155.24,
+         "ganancia_suav": 154.29,
+         "arrepentimiento": 0.15668
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.028,
+        "201908": {
+         "ganancia_esperada": 145.81,
+         "ganancia_suav": 146.31,
+         "arrepentimiento": 0.02055
+        },
+        "201909": {
+         "ganancia_esperada": 183.26,
+         "ganancia_suav": 182.85,
+         "arrepentimiento": 0.00052
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 143.94,
+         "ganancia_suav": 144.93,
+         "arrepentimiento": 0.02977
+        },
+        "201909": {
+         "ganancia_esperada": 184.85,
+         "ganancia_suav": 182.81,
+         "arrepentimiento": 0.00075
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.02775,
+        "201908": {
+         "ganancia_esperada": 146.71,
+         "ganancia_suav": 146.61,
+         "arrepentimiento": 0.01852
+        },
+        "201909": {
+         "ganancia_esperada": 182.41,
+         "ganancia_suav": 182.7,
+         "arrepentimiento": 0.00136
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.02725,
+        "201908": {
+         "ganancia_esperada": 146.77,
+         "ganancia_suav": 147.42,
+         "arrepentimiento": 0.0131
+        },
+        "201909": {
+         "ganancia_esperada": 181.61,
+         "ganancia_suav": 182.24,
+         "arrepentimiento": 0.00387
+        }
+       }
+      }
+     },
+     "0.33": {
+      "minimax_sobre_curva_rho": 0.02025,
+      "max_suav": {
+       "201908": 111.13,
+       "201909": 142.12
+      },
+      "fraccion_max_suav": {
+       "201908": 0.02218,
+       "201909": 0.01285
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 103.47,
+         "ganancia_suav": 104.3,
+         "arrepentimiento": 0.06148
+        },
+        "201909": {
+         "ganancia_esperada": 137.52,
+         "ganancia_suav": 135.81,
+         "arrepentimiento": 0.04437
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 76.62,
+         "ganancia_suav": 76.3,
+         "arrepentimiento": 0.31345
+        },
+        "201909": {
+         "ganancia_esperada": 103.33,
+         "ganancia_suav": 102.53,
+         "arrepentimiento": 0.27854
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.028,
+        "201908": {
+         "ganancia_esperada": 105.62,
+         "ganancia_suav": 106.04,
+         "arrepentimiento": 0.0458
+        },
+        "201909": {
+         "ganancia_esperada": 136.78,
+         "ganancia_suav": 136.45,
+         "arrepentimiento": 0.03991
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 103.47,
+         "ganancia_suav": 104.3,
+         "arrepentimiento": 0.06148
+        },
+        "201909": {
+         "ganancia_esperada": 137.52,
+         "ganancia_suav": 135.81,
+         "arrepentimiento": 0.04437
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.02775,
+        "201908": {
+         "ganancia_esperada": 106.53,
+         "ganancia_suav": 106.44,
+         "arrepentimiento": 0.04219
+        },
+        "201909": {
+         "ganancia_esperada": 136.22,
+         "ganancia_suav": 136.46,
+         "arrepentimiento": 0.03978
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.02725,
+        "201908": {
+         "ganancia_esperada": 106.87,
+         "ganancia_suav": 107.42,
+         "arrepentimiento": 0.03343
+        },
+        "201909": {
+         "ganancia_esperada": 135.85,
+         "ganancia_suav": 136.38,
+         "arrepentimiento": 0.04037
+        }
+       }
+      }
+     },
+     "0.5": {
+      "minimax_sobre_curva_rho": 0.013,
+      "max_suav": {
+       "201908": 67.83,
+       "201909": 94.71
+      },
+      "fraccion_max_suav": {
+       "201908": 0.01431,
+       "201909": 0.01143
+      },
+      "candidatos": {
+       "2,9 %": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 50.55,
+         "ganancia_suav": 51.17,
+         "arrepentimiento": 0.2456
+        },
+        "201909": {
+         "ganancia_esperada": 75.62,
+         "ganancia_suav": 74.35,
+         "arrepentimiento": 0.21502
+        }
+       },
+       "4,475 %": {
+        "fraccion": 0.04475,
+        "201908": {
+         "ganancia_esperada": 16.03,
+         "ganancia_suav": 15.79,
+         "arrepentimiento": 0.76717
+        },
+        "201909": {
+         "ganancia_esperada": 35.45,
+         "ganancia_suav": 34.85,
+         "arrepentimiento": 0.63202
+        }
+       },
+       "minimax 5": {
+        "fraccion": 0.028,
+        "201908": {
+         "ganancia_esperada": 53.08,
+         "ganancia_suav": 53.39,
+         "arrepentimiento": 0.21285
+        },
+        "201909": {
+         "ganancia_esperada": 76.01,
+         "ganancia_suav": 75.76,
+         "arrepentimiento": 0.20016
+        }
+       },
+       "minimax 10": {
+        "fraccion": 0.029,
+        "201908": {
+         "ganancia_esperada": 50.55,
+         "ganancia_suav": 51.17,
+         "arrepentimiento": 0.2456
+        },
+        "201909": {
+         "ganancia_esperada": 75.62,
+         "ganancia_suav": 74.35,
+         "arrepentimiento": 0.21502
+        }
+       },
+       "minimax 20": {
+        "fraccion": 0.02775,
+        "201908": {
+         "ganancia_esperada": 53.98,
+         "ganancia_suav": 53.92,
+         "arrepentimiento": 0.20503
+        },
+        "201909": {
+         "ganancia_esperada": 75.82,
+         "ganancia_suav": 76.0,
+         "arrepentimiento": 0.19757
+        }
+       },
+       "MVE 20": {
+        "fraccion": 0.02725,
+        "201908": {
+         "ganancia_esperada": 54.7,
+         "ganancia_suav": 55.11,
+         "arrepentimiento": 0.18753
+        },
+        "201909": {
+         "ganancia_esperada": 76.01,
+         "ganancia_suav": 76.41,
+         "arrepentimiento": 0.19331
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ "tiempos_inferencia": {
+  "mes": 201909,
+  "filas": 133419,
+  "hilos": 4,
+  "por_modelo_s": {
+   "binario": [
+    3.37,
+    3.4,
+    2.95,
+    2.95,
+    3.02,
+    3.1,
+    2.83,
+    2.94,
+    2.94,
+    3.01,
+    2.91,
+    2.96,
+    3.06,
+    3.1,
+    2.97,
+    2.9,
+    2.97,
+    2.92,
+    3.03,
+    2.92
+   ],
+   "multiclase_p1": [
+    11.17,
+    10.52,
+    10.22,
+    10.6,
+    10.33,
+    10.52,
+    10.56,
+    11.39,
+    10.51,
+    11.0,
+    10.41,
+    11.72,
+    14.08,
+    12.53,
+    12.75,
+    12.35,
+    14.45,
+    13.62,
+    10.96,
+    10.8
+   ]
+  },
+  "ensambles": {
+   "5": {
+    "inferencia_estimada_153k_s": {
+     "binario": 18.0,
+     "multiclase_p1": 60.6
+    },
+    "inferencia_ambas_s": 78.6,
+    "mes_estimado_s": 141.5
+   },
+   "10": {
+    "inferencia_estimada_153k_s": {
+     "binario": 35.0,
+     "multiclase_p1": 122.5
+    },
+    "inferencia_ambas_s": 157.5,
+    "mes_estimado_s": 220.4
+   },
+   "20": {
+    "inferencia_estimada_153k_s": {
+     "binario": 69.1,
+     "multiclase_p1": 264.3
+    },
+    "inferencia_ambas_s": 333.4,
+    "mes_estimado_s": 396.3
+   }
+  },
+  "parte_no_inferencial_s": {
+   "mediana": 62.9,
+   "fuente": "resultados/i04_secuencia_tc01_202001_202006.json",
+   "meses": [
+    80.2,
+    46.7,
+    67.2,
+    62.9,
+    47.1
+   ]
+  },
+  "nota": "inferencia medida en 201909 (133.419 filas) y escalada linealmente a 153.000 filas; el mes estimado suma la parte no inferencial medida en la secuencia tc01 (pared, con arranque)",
+  "reutilizado": "medición de una corrida anterior del análisis con los mismos modelos"
+ },
+ "recomendacion": {
+  "binario": {
+   "condiciones_por_tamano": {
+    "5": {
+     "a_estabilidad": false,
+     "b_tiempo": true
+    },
+    "10": {
+     "a_estabilidad": false,
+     "b_tiempo": true
+    },
+    "20": {
+     "a_estabilidad": true,
+     "b_tiempo": true
+    }
+   },
+   "tamano_recomendado": "20",
+   "corte_minimax": 0.03675,
+   "corte_mve": 0.0235,
+   "tau": 0.0038156166006943224,
+   "arrepentimiento_rho_0_33": {
+    "minimax": {
+     "201908": 0.15085,
+     "201909": 0.14675
+    },
+    "mve": {
+     "201908": 0.00735,
+     "201909": 0.03794
+    }
+   },
+   "corte_recomendado": 0.0235,
+   "procedimiento": "MVE",
+   "activa": false
+  },
+  "multiclase_p1": {
+   "condiciones_por_tamano": {
+    "5": {
+     "a_estabilidad": false,
+     "b_tiempo": true
+    },
+    "10": {
+     "a_estabilidad": false,
+     "b_tiempo": true
+    },
+    "20": {
+     "a_estabilidad": true,
+     "b_tiempo": true
+    }
+   },
+   "tamano_recomendado": "20",
+   "corte_minimax": 0.02775,
+   "corte_mve": 0.02725,
+   "tau": 0.004847338446281426,
+   "arrepentimiento_rho_0_33": {
+    "minimax": {
+     "201908": 0.04219,
+     "201909": 0.03978
+    },
+    "mve": {
+     "201908": 0.03343,
+     "201909": 0.04037
+    }
+   },
+   "corte_recomendado": 0.02725,
+   "procedimiento": "MVE",
+   "activa": false
+  }
+ },
+ "figuras": [
+  "docs/figuras/ce02_curvas_ganancia.png",
+  "docs/figuras/ce02_minimax_composicion.png",
+  "docs/figuras/ce02_reduccion_baja2.png"
+ ],
+ "segundos": 56.8
+}
