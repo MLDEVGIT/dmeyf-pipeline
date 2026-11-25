@@ -1,0 +1,1005 @@
+{
+  "experimento": "TC01 target corregido (regla versión 2)",
+  "marca": "20261124T212203_16624",
+  "inicio": "2026-11-24T21:22:03",
+  "fin": "2026-11-25T08:22:06",
+  "plan_pruebas_sha256_al_inicio": "5bccf983c90324a94622c7bdc08c06f9e10eb95145c3a8d5fac4409b2e9f3cc5",
+  "target": {
+    "regla": {
+      "CONTINUA": "presente en t+2 (aunque falte en t+1)",
+      "BAJA+2": "presente en t+1 y ausente en t+2",
+      "BAJA+1": "ausente en t+1 y ausente en t+2",
+      "horizonte": "la clase definitiva necesita t+1 y t+2",
+      "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)"
+    },
+    "version": 2,
+    "archivo": "pipeline_competencia02/target_2019_v2.parquet",
+    "sha256": "f533e499940b9bf1c144d616a63235a36e907ff1dd462b7628634c6b21836da0",
+    "anterior": "competencia_02/competencia_02_2019_target.parquet"
+  },
+  "semillas": [
+    20261124,
+    20261125,
+    20261126,
+    20261127,
+    20261128
+  ],
+  "rondas": 300,
+  "params": {
+    "learning_rate": 0.05,
+    "num_leaves": 63,
+    "min_data_in_leaf": 200,
+    "feature_fraction": 0.5,
+    "bagging_fraction": 1.0,
+    "bagging_freq": 0,
+    "lambda_l2": 0.0,
+    "max_bin": 255,
+    "data_random_seed": 1,
+    "deterministic": true,
+    "force_col_wise": true,
+    "verbosity": -1
+  },
+  "hilos_entrenamiento": 8,
+  "hilos_prediccion": 4,
+  "e01": "ejecuciones/e01/20261124T092205_3832",
+  "particiones": {
+    "train": [
+      201903,
+      201904,
+      201905,
+      201906
+    ],
+    "desarrollo": [
+      201908,
+      201909
+    ],
+    "no_leido": [
+      201910
+    ]
+  },
+  "ganancia": {
+    "premio_bruto": 1100000,
+    "costo_envio": 27500,
+    "neta_por_acierto": 1072500,
+    "ventana_suavizado": 501
+  },
+  "maquina": {
+    "cpu_logicos": 8,
+    "ram_gb": 15.7,
+    "plataforma": "Windows-11-10.0.26300-SP0",
+    "python": "3.12.0",
+    "lightgbm": "4.7.0",
+    "duckdb": "1.5.5"
+  },
+  "clases_train": {
+    "CONTINUA": 501563,
+    "BAJA+1": 2712,
+    "BAJA+2": 2596
+  },
+  "clases_train_e01": {
+    "CONTINUA": 501558,
+    "BAJA+1": 2717,
+    "BAJA+2": 2596
+  },
+  "clases_desarrollo": {
+    "201908": {
+      "v1": {
+        "CONTINUA": 130573,
+        "BAJA+1": 659,
+        "BAJA+2": 543
+      },
+      "v2": {
+        "CONTINUA": 130585,
+        "BAJA+1": 647,
+        "BAJA+2": 543
+      }
+    },
+    "201909": {
+      "v1": {
+        "CONTINUA": 132256,
+        "BAJA+1": 548,
+        "BAJA+2": 615
+      },
+      "v2": {
+        "CONTINUA": 132256,
+        "BAJA+1": 548,
+        "BAJA+2": 615
+      }
+    }
+  },
+  "checks": {
+    "train_difiere_solo_en_las_5_filas": true,
+    "baja2_desarrollo_identico": true,
+    "e01_reproducido": true,
+    "e01_igual_con_target_v2": true
+  },
+  "tiempos_s": {
+    "carga": 40.2,
+    "comprobacion_e01": 174.6,
+    "binado": 38.4,
+    "modelos": {
+      "binario": {
+        "entrenar_s": [
+          115.3,
+          108.2,
+          182.0,
+          181.7,
+          143.9
+        ],
+        "predecir_s_por_mes": [
+          2.71,
+          2.71,
+          6.65,
+          7.04,
+          6.34,
+          5.77,
+          6.71,
+          8.17,
+          6.57,
+          6.53
+        ]
+      },
+      "multiclase_p1": {
+        "entrenar_s": [
+          295.9,
+          548.7,
+          563.2,
+          36467.3,
+          506.6
+        ],
+        "predecir_s_por_mes": [
+          9.77,
+          9.6,
+          23.44,
+          23.77,
+          23.15,
+          23.36,
+          18.58,
+          18.48,
+          12.43,
+          10.99
+        ]
+      }
+    },
+    "total": 39610.5
+  },
+  "memoria": {
+    "tras_entrenar": {
+      "rss_mb": 2011,
+      "pico_working_set_mb": 5985
+    },
+    "final": {
+      "rss_mb": 2095,
+      "pico_working_set_mb": 5985
+    }
+  },
+  "decision": {
+    "modelos": "los corregidos reemplazan a los anteriores (consistencia de definición, PLAN_PRUEBAS § 9)",
+    "alertas": {
+      "binario": {
+        "ganancia_cae_mas_de_2_desvios_en_ambos_meses": false,
+        "auc_cae_mas_de_0005_en_ambos_meses": false,
+        "alerta": false
+      },
+      "multiclase_p1": {
+        "ganancia_cae_mas_de_2_desvios_en_ambos_meses": false,
+        "auc_cae_mas_de_0005_en_ambos_meses": false,
+        "alerta": false
+      }
+    },
+    "catalogo_activo": "sí",
+    "roles_regla_e02_multiclase_vs_binario": {
+      "1_ensamble_mayor_en_todos_los_meses": false,
+      "2_semillas_a_favor_en_cada_mes": false,
+      "3_transferencia_no_empeora": false,
+      "adopta": false,
+      "pareadas": {
+        "201908": {
+          "diferencias": [
+            10092500.0,
+            -2007500.0,
+            17792500.0,
+            13392500.0,
+            1292500.0
+          ],
+          "positivas": 4,
+          "negativas": 1,
+          "media": 8112500.0,
+          "desvio": 8282934.262687348,
+          "ensamble": 7892500
+        },
+        "201909": {
+          "diferencias": [
+            6462500.0,
+            962500.0,
+            9762500.0,
+            -2337500.0,
+            -5637500.0
+          ],
+          "positivas": 3,
+          "negativas": 2,
+          "media": 1842500.0,
+          "desvio": 6290230.52041815,
+          "ensamble": -137500
+        }
+      }
+    },
+    "recomendacion": "binario",
+    "fracciones": {
+      "binario": 0.04475,
+      "multiclase_p1": 0.028
+    }
+  },
+  "comparacion": {
+    "binario": {
+      "fraccion": {
+        "anterior": 0.029,
+        "corregido": 0.04475,
+        "cambia": true
+      },
+      "arrepentimiento_max": {
+        "anterior": 0.008657063172619606,
+        "corregido": 0.0023576269080620715
+      },
+      "transferencia_peor_caso": {
+        "anterior": 0.038093675360308166,
+        "corregido": 0.005453344466365806
+      },
+      "fraccion_por_semilla_rango": {
+        "anterior": [
+          0.02275,
+          0.03875
+        ],
+        "corregido": [
+          0.02475,
+          0.04075
+        ]
+      },
+      "pareadas_corregido_menos_anterior": {
+        "201908": {
+          "diferencias": [
+            2337500.0,
+            2337500.0,
+            -4262500.0,
+            -7562500.0,
+            137500.0
+          ],
+          "positivas": 3,
+          "negativas": 2,
+          "media": -1402500.0,
+          "desvio": 4372413.521157394,
+          "ensamble": -2062500
+        },
+        "201909": {
+          "diferencias": [
+            -577500.0,
+            -2777500.0,
+            2722500.0,
+            1622500.0,
+            -2777500.0
+          ],
+          "positivas": 2,
+          "negativas": 3,
+          "media": -357500.0,
+          "desvio": 2508385.9352181037,
+          "ensamble": 3822500
+        }
+      },
+      "meses": {
+        "201908": {
+          "ensamble_scores": {
+            "pearson": 0.997131,
+            "correlacion_de_rangos": 0.983487,
+            "dif_abs_media": 0.0007786394204914569,
+            "dif_abs_max": 0.20147669757248338,
+            "media_anterior": 0.00792867611797048,
+            "media_corregido": 0.007953101806180998
+          },
+          "por_semilla_scores": [
+            {
+              "pearson": 0.984991,
+              "correlacion_de_rangos": 0.943908,
+              "dif_abs_media": 0.0016836978911207682,
+              "dif_abs_max": 0.4557069182253255,
+              "media_anterior": 0.007990505070859584,
+              "media_corregido": 0.00801369398243254,
+              "jaccard_top_k_anterior": 0.769
+            },
+            {
+              "pearson": 0.98801,
+              "correlacion_de_rangos": 0.94023,
+              "dif_abs_media": 0.0015463959839597228,
+              "dif_abs_max": 0.3830755698693279,
+              "media_anterior": 0.007953328411123221,
+              "media_corregido": 0.007960314007963707,
+              "jaccard_top_k_anterior": 0.7868
+            },
+            {
+              "pearson": 0.986266,
+              "correlacion_de_rangos": 0.937628,
+              "dif_abs_media": 0.001647951752562895,
+              "dif_abs_max": 0.3197894760649335,
+              "media_anterior": 0.007918551951213791,
+              "media_corregido": 0.007944185271771214,
+              "jaccard_top_k_anterior": 0.7744
+            },
+            {
+              "pearson": 0.984548,
+              "correlacion_de_rangos": 0.939863,
+              "dif_abs_media": 0.0016714330401121638,
+              "dif_abs_max": 0.6130256391296534,
+              "media_anterior": 0.007890892467047958,
+              "media_corregido": 0.0079628719087552,
+              "jaccard_top_k_anterior": 0.7674
+            },
+            {
+              "pearson": 0.986232,
+              "correlacion_de_rangos": 0.937592,
+              "dif_abs_media": 0.0016066622607175513,
+              "dif_abs_max": 0.4614597363591999,
+              "media_anterior": 0.00789010268960785,
+              "media_corregido": 0.007884443859982321,
+              "jaccard_top_k_anterior": 0.769
+            }
+          ],
+          "envios": {
+            "anterior": 3822,
+            "corregido": 5897
+          },
+          "jaccard_enviados_cada_uno_en_su_corte": 0.6459,
+          "jaccard_enviados_mismo_k": 0.8832,
+          "ruido_jaccard_entre_semillas_anteriores": [
+            0.6826,
+            0.6948,
+            0.7085
+          ],
+          "ganancia_ensamble": {
+            "anterior": 202895000,
+            "corregido": 200832500,
+            "corregido_en_fraccion_anterior": 197395000,
+            "anterior_en_fraccion_corregida": 195332500
+          },
+          "auc_baja2_ensamble": {
+            "anterior": 0.9104560666153834,
+            "corregido": 0.9093776059874898
+          },
+          "semillas_desvio_anterior": 1905255.888325765
+        },
+        "201909": {
+          "ensamble_scores": {
+            "pearson": 0.996523,
+            "correlacion_de_rangos": 0.984055,
+            "dif_abs_media": 0.0008499061114653836,
+            "dif_abs_max": 0.13975375415241648,
+            "media_anterior": 0.008206157468461683,
+            "media_corregido": 0.008213937596821794
+          },
+          "por_semilla_scores": [
+            {
+              "pearson": 0.982551,
+              "correlacion_de_rangos": 0.946655,
+              "dif_abs_media": 0.0018258442602420895,
+              "dif_abs_max": 0.38633549817231705,
+              "media_anterior": 0.008305339973917516,
+              "media_corregido": 0.008227213940279362,
+              "jaccard_top_k_anterior": 0.7579
+            },
+            {
+              "pearson": 0.984768,
+              "correlacion_de_rangos": 0.940454,
+              "dif_abs_media": 0.001711119257723071,
+              "dif_abs_max": 0.45922131828103396,
+              "media_anterior": 0.008300004539713867,
+              "media_corregido": 0.00824848791286164,
+              "jaccard_top_k_anterior": 0.7929
+            },
+            {
+              "pearson": 0.981557,
+              "correlacion_de_rangos": 0.938416,
+              "dif_abs_media": 0.001840935953833186,
+              "dif_abs_max": 0.381291547499603,
+              "media_anterior": 0.008183276596325369,
+              "media_corregido": 0.008241363552763274,
+              "jaccard_top_k_anterior": 0.7716
+            },
+            {
+              "pearson": 0.982208,
+              "correlacion_de_rangos": 0.940975,
+              "dif_abs_media": 0.001819602980591777,
+              "dif_abs_max": 0.4422514805419492,
+              "media_anterior": 0.008132669383658064,
+              "media_corregido": 0.008227962112915202,
+              "jaccard_top_k_anterior": 0.748
+            },
+            {
+              "pearson": 0.983936,
+              "correlacion_de_rangos": 0.939407,
+              "dif_abs_media": 0.0017465845860058457,
+              "dif_abs_max": 0.31707264306797445,
+              "media_anterior": 0.0081094968486936,
+              "media_corregido": 0.008124660465289498,
+              "jaccard_top_k_anterior": 0.7781
+            }
+          ],
+          "envios": {
+            "anterior": 3870,
+            "corregido": 5971
+          },
+          "jaccard_enviados_cada_uno_en_su_corte": 0.6465,
+          "jaccard_enviados_mismo_k": 0.8814,
+          "ruido_jaccard_entre_semillas_anteriores": [
+            0.6742,
+            0.6873,
+            0.6955
+          ],
+          "ganancia_ensamble": {
+            "anterior": 249975000,
+            "corregido": 253797500,
+            "corregido_en_fraccion_anterior": 243375000,
+            "anterior_en_fraccion_corregida": 244997500
+          },
+          "auc_baja2_ensamble": {
+            "anterior": 0.9091823808813672,
+            "corregido": 0.908026891148102
+          },
+          "semillas_desvio_anterior": 5789386.841453938
+        }
+      }
+    },
+    "multiclase_p1": {
+      "fraccion": {
+        "anterior": 0.028,
+        "corregido": 0.028,
+        "cambia": false
+      },
+      "arrepentimiento_max": {
+        "anterior": 0.0040779376691616465,
+        "corregido": 0.001814718679471028
+      },
+      "transferencia_peor_caso": {
+        "anterior": 0.010449077193364964,
+        "corregido": 0.0351234895025746
+      },
+      "fraccion_por_semilla_rango": {
+        "anterior": [
+          0.025,
+          0.03375
+        ],
+        "corregido": [
+          0.0245,
+          0.03475
+        ]
+      },
+      "pareadas_corregido_menos_anterior": {
+        "201908": {
+          "diferencias": [
+            5500000.0,
+            -4400000.0,
+            7700000.0,
+            -2200000.0,
+            2200000.0
+          ],
+          "positivas": 3,
+          "negativas": 2,
+          "media": 1760000.0,
+          "desvio": 5076711.534054304,
+          "ensamble": 0
+        },
+        "201909": {
+          "diferencias": [
+            7700000.0,
+            -2200000.0,
+            6600000.0,
+            4400000.0,
+            1100000.0
+          ],
+          "positivas": 4,
+          "negativas": 1,
+          "media": 3520000.0,
+          "desvio": 4071486.2151307845,
+          "ensamble": 3300000
+        }
+      },
+      "meses": {
+        "201908": {
+          "ensamble_scores": {
+            "pearson": 0.99462,
+            "correlacion_de_rangos": 0.987309,
+            "dif_abs_media": 0.0003686133382253736,
+            "dif_abs_max": 0.10827933720668559,
+            "media_anterior": 0.0033806437906595487,
+            "media_corregido": 0.003376634004656801
+          },
+          "por_semilla_scores": [
+            {
+              "pearson": 0.977498,
+              "correlacion_de_rangos": 0.948034,
+              "dif_abs_media": 0.0007917172151581996,
+              "dif_abs_max": 0.2449928324447161,
+              "media_anterior": 0.0034224794093131398,
+              "media_corregido": 0.003437441072962976,
+              "jaccard_top_k_anterior": 0.7878
+            },
+            {
+              "pearson": 0.97326,
+              "correlacion_de_rangos": 0.952435,
+              "dif_abs_media": 0.0007994260048344366,
+              "dif_abs_max": 0.2898700629203845,
+              "media_anterior": 0.0034371249675355623,
+              "media_corregido": 0.0034017888963551904,
+              "jaccard_top_k_anterior": 0.79
+            },
+            {
+              "pearson": 0.97629,
+              "correlacion_de_rangos": 0.950068,
+              "dif_abs_media": 0.0007933980681900026,
+              "dif_abs_max": 0.29580686114379995,
+              "media_anterior": 0.003405350346487251,
+              "media_corregido": 0.003383901817914445,
+              "jaccard_top_k_anterior": 0.7813
+            },
+            {
+              "pearson": 0.973864,
+              "correlacion_de_rangos": 0.949535,
+              "dif_abs_media": 0.0007722504403497504,
+              "dif_abs_max": 0.2390823902354242,
+              "media_anterior": 0.003304785293185398,
+              "media_corregido": 0.0032842256084131514,
+              "jaccard_top_k_anterior": 0.7762
+            },
+            {
+              "pearson": 0.978311,
+              "correlacion_de_rangos": 0.952953,
+              "dif_abs_media": 0.0007546933674088242,
+              "dif_abs_max": 0.21525806592748725,
+              "media_anterior": 0.0033334789367763925,
+              "media_corregido": 0.00337581262763824,
+              "jaccard_top_k_anterior": 0.7882
+            }
+          ],
+          "envios": {
+            "anterior": 3690,
+            "corregido": 3690
+          },
+          "jaccard_enviados_cada_uno_en_su_corte": 0.8894,
+          "jaccard_enviados_mismo_k": 0.8894,
+          "ruido_jaccard_entre_semillas_anteriores": [
+            0.6773,
+            0.6863,
+            0.6938
+          ],
+          "ganancia_ensamble": {
+            "anterior": 208725000,
+            "corregido": 208725000,
+            "corregido_en_fraccion_anterior": 208725000,
+            "anterior_en_fraccion_corregida": 208725000
+          },
+          "auc_baja2_ensamble": {
+            "anterior": 0.9061312079477539,
+            "corregido": 0.9078974556131708
+          },
+          "semillas_desvio_anterior": 3052376.123612554
+        },
+        "201909": {
+          "ensamble_scores": {
+            "pearson": 0.994483,
+            "correlacion_de_rangos": 0.987812,
+            "dif_abs_media": 0.0003893437955322629,
+            "dif_abs_max": 0.13686036995803175,
+            "media_anterior": 0.003516972375769413,
+            "media_corregido": 0.00352052073590311
+          },
+          "por_semilla_scores": [
+            {
+              "pearson": 0.977329,
+              "correlacion_de_rangos": 0.951165,
+              "dif_abs_media": 0.000827832985592189,
+              "dif_abs_max": 0.330040609969216,
+              "media_anterior": 0.003545313693686192,
+              "media_corregido": 0.003549060848016402,
+              "jaccard_top_k_anterior": 0.7752
+            },
+            {
+              "pearson": 0.97776,
+              "correlacion_de_rangos": 0.954632,
+              "dif_abs_media": 0.0008255724157876826,
+              "dif_abs_max": 0.2984314111030979,
+              "media_anterior": 0.0036079227333411495,
+              "media_corregido": 0.003584978417209586,
+              "jaccard_top_k_anterior": 0.782
+            },
+            {
+              "pearson": 0.974852,
+              "correlacion_de_rangos": 0.950162,
+              "dif_abs_media": 0.00083707873796627,
+              "dif_abs_max": 0.2895097488645887,
+              "media_anterior": 0.003480570550544694,
+              "media_corregido": 0.0034971552866793695,
+              "jaccard_top_k_anterior": 0.7736
+            },
+            {
+              "pearson": 0.973093,
+              "correlacion_de_rangos": 0.951483,
+              "dif_abs_media": 0.0008281278061652486,
+              "dif_abs_max": 0.3633621929500871,
+              "media_anterior": 0.0034813508101843413,
+              "media_corregido": 0.003495752407241708,
+              "jaccard_top_k_anterior": 0.7769
+            },
+            {
+              "pearson": 0.976162,
+              "correlacion_de_rangos": 0.95355,
+              "dif_abs_media": 0.0008039654546699511,
+              "dif_abs_max": 0.27876096269121614,
+              "media_anterior": 0.0034697040910906893,
+              "media_corregido": 0.0034756567203684855,
+              "jaccard_top_k_anterior": 0.7884
+            }
+          ],
+          "envios": {
+            "anterior": 3736,
+            "corregido": 3736
+          },
+          "jaccard_enviados_cada_uno_en_su_corte": 0.8869,
+          "jaccard_enviados_mismo_k": 0.8869,
+          "ruido_jaccard_entre_semillas_anteriores": [
+            0.6675,
+            0.6792,
+            0.6951
+          ],
+          "ganancia_ensamble": {
+            "anterior": 250360000,
+            "corregido": 253660000,
+            "corregido_en_fraccion_anterior": 253660000,
+            "anterior_en_fraccion_corregida": 250360000
+          },
+          "auc_baja2_ensamble": {
+            "anterior": 0.906702413459483,
+            "corregido": 0.9059030570878582
+          },
+          "semillas_desvio_anterior": 4188675.2082251497
+        }
+      }
+    }
+  },
+  "origen_modelos": "ejecuciones/tc01/20261124T212203_16624",
+  "compatibilidad_e01": {
+    "meta_identica": {
+      "201908": true,
+      "201909": true
+    },
+    "predicciones_identicas": {
+      "binario": true,
+      "multiclase": true
+    },
+    "metricas_identicas": {
+      "binario": true,
+      "multiclase": true
+    },
+    "compatible": true
+  },
+  "resultados": {
+    "binario": {
+      "corte": {
+        "fraccion": 0.04475,
+        "arrepentimiento_max": 0.0023576269080620715,
+        "201908": {
+          "envios": 5897,
+          "ganancia": 200832500,
+          "ganancia_suav": 200983997.00598803,
+          "ganancia_max_suav": 201458962.0758483,
+          "k_max_suav": 5624,
+          "por_semilla": [
+            190932500,
+            195332500,
+            188732500,
+            184332500,
+            193132500
+          ],
+          "semillas_media": 190492500.0,
+          "semillas_desvio": 4231784.493567696
+        },
+        "201909": {
+          "envios": 5971,
+          "ganancia": 253797500,
+          "ganancia_suav": 252021252.49501,
+          "ganancia_max_suav": 252370354.29141715,
+          "k_max_suav": 5891,
+          "por_semilla": [
+            243897500,
+            244997500,
+            236197500,
+            247197500,
+            243897500
+          ],
+          "semillas_media": 243237500.0,
+          "semillas_desvio": 4159687.488261588
+        },
+        "fraccion_por_semilla": [
+          0.02475,
+          0.04075,
+          0.0265,
+          0.02825,
+          0.03425
+        ],
+        "fraccion_por_semilla_rango": [
+          0.02475,
+          0.04075
+        ]
+      },
+      "ensamble": {
+        "201908": {
+          "k_max_suav": 5624,
+          "g_max_suav": 201458962.0758483,
+          "auc_baja2": 0.9093776059874898,
+          "n": 131775,
+          "baja2": 543
+        },
+        "201909": {
+          "k_max_suav": 5891,
+          "g_max_suav": 252370354.29141715,
+          "auc_baja2": 0.908026891148102,
+          "n": 133419,
+          "baja2": 615
+        }
+      },
+      "transferencia": {
+        "201908->201909": {
+          "fraccion": 0.04275,
+          "envios": 5704,
+          "ganancia": 252340000,
+          "arrepentimiento": 0.005453344466365806
+        },
+        "201909->201908": {
+          "fraccion": 0.044,
+          "envios": 5799,
+          "ganancia": 202427500,
+          "arrepentimiento": 0.004259967260782482
+        }
+      },
+      "transferencia_peor_caso": 0.005453344466365806
+    },
+    "multiclase_p1": {
+      "corte": {
+        "fraccion": 0.028,
+        "arrepentimiento_max": 0.001814718679471028,
+        "201908": {
+          "envios": 3690,
+          "ganancia": 208725000,
+          "ganancia_suav": 209739371.25748503,
+          "ganancia_max_suav": 209745134.73053893,
+          "k_max_suav": 3685,
+          "por_semilla": [
+            201025000,
+            193325000,
+            206525000,
+            197725000,
+            194425000
+          ],
+          "semillas_media": 198605000.0,
+          "semillas_desvio": 5355091.0356407575
+        },
+        "201909": {
+          "envios": 3736,
+          "ganancia": 253660000,
+          "ganancia_suav": 252015489.0219561,
+          "ganancia_max_suav": 252473657.68463075,
+          "k_max_suav": 3049,
+          "por_semilla": [
+            250360000,
+            245960000,
+            245960000,
+            244860000,
+            238260000
+          ],
+          "semillas_media": 245080000.0,
+          "semillas_desvio": 4358554.806354969
+        },
+        "fraccion_por_semilla": [
+          0.027,
+          0.03275,
+          0.0245,
+          0.03375,
+          0.03475
+        ],
+        "fraccion_por_semilla_rango": [
+          0.0245,
+          0.03475
+        ]
+      },
+      "ensamble": {
+        "201908": {
+          "k_max_suav": 3685,
+          "g_max_suav": 209745134.73053893,
+          "auc_baja2": 0.9078974556131708,
+          "n": 131775,
+          "baja2": 543
+        },
+        "201909": {
+          "k_max_suav": 3049,
+          "g_max_suav": 252473657.68463075,
+          "auc_baja2": 0.9059030570878582,
+          "n": 133419,
+          "baja2": 615
+        }
+      },
+      "transferencia": {
+        "201908->201909": {
+          "fraccion": 0.028,
+          "envios": 3736,
+          "ganancia": 253660000,
+          "arrepentimiento": 0.001814718679471028
+        },
+        "201909->201908": {
+          "fraccion": 0.02275,
+          "envios": 2998,
+          "ganancia": 200255000,
+          "arrepentimiento": 0.0351234895025746
+        }
+      },
+      "transferencia_peor_caso": 0.0351234895025746
+    }
+  },
+  "anteriores": {
+    "binario": {
+      "corte": {
+        "fraccion": 0.029,
+        "arrepentimiento_max": 0.008657063172619606,
+        "201908": {
+          "envios": 3822,
+          "ganancia": 202895000,
+          "ganancia_suav": 201184620.75848302,
+          "ganancia_max_suav": 202718308.38323355,
+          "k_max_suav": 3581,
+          "por_semilla": [
+            188595000,
+            192995000,
+            192995000,
+            191895000,
+            192995000
+          ],
+          "semillas_media": 191895000.0,
+          "semillas_desvio": 1905255.888325765
+        },
+        "201909": {
+          "envios": 3870,
+          "ganancia": 249975000,
+          "ganancia_suav": 248646656.68662673,
+          "ganancia_max_suav": 250818003.99201596,
+          "k_max_suav": 2912,
+          "por_semilla": [
+            244475000,
+            247775000,
+            233475000,
+            245575000,
+            246675000
+          ],
+          "semillas_media": 243595000.0,
+          "semillas_desvio": 5789386.841453938
+        },
+        "fraccion_por_semilla": [
+          0.03875,
+          0.02975,
+          0.025,
+          0.02275,
+          0.028
+        ],
+        "fraccion_por_semilla_rango": [
+          0.02275,
+          0.03875
+        ]
+      },
+      "ensamble": {
+        "201908": {
+          "k_max_suav": 3581,
+          "g_max_suav": 202718308.38323355,
+          "auc_baja2": 0.9104560666153834,
+          "n": 131775,
+          "baja2": 543
+        },
+        "201909": {
+          "k_max_suav": 2912,
+          "g_max_suav": 250818003.99201596,
+          "auc_baja2": 0.9091823808813672,
+          "n": 133419,
+          "baja2": 615
+        }
+      },
+      "transferencia": {
+        "201908->201909": {
+          "fraccion": 0.02725,
+          "envios": 3636,
+          "ganancia": 248710000,
+          "arrepentimiento": 0.00970007755860225
+        },
+        "201909->201908": {
+          "fraccion": 0.02175,
+          "envios": 2867,
+          "ganancia": 196157500,
+          "arrepentimiento": 0.038093675360308166
+        }
+      },
+      "transferencia_peor_caso": 0.038093675360308166
+    },
+    "multiclase_p1": {
+      "corte": {
+        "fraccion": 0.028,
+        "arrepentimiento_max": 0.0040779376691616465,
+        "201908": {
+          "envios": 3690,
+          "ganancia": 208725000,
+          "ganancia_suav": 207368113.7724551,
+          "ganancia_max_suav": 208217210.5788423,
+          "k_max_suav": 3521,
+          "por_semilla": [
+            195525000,
+            197725000,
+            198825000,
+            199925000,
+            192225000
+          ],
+          "semillas_media": 196845000.0,
+          "semillas_desvio": 3052376.123612554
+        },
+        "201909": {
+          "envios": 3736,
+          "ganancia": 250360000,
+          "ganancia_suav": 250142634.73053893,
+          "ganancia_max_suav": 250757514.97005987,
+          "k_max_suav": 3814,
+          "por_semilla": [
+            242660000,
+            248160000,
+            239360000,
+            240460000,
+            237160000
+          ],
+          "semillas_media": 241560000.0,
+          "semillas_desvio": 4188675.2082251497
+        },
+        "fraccion_por_semilla": [
+          0.03375,
+          0.025,
+          0.031,
+          0.025,
+          0.0305
+        ],
+        "fraccion_por_semilla_rango": [
+          0.025,
+          0.03375
+        ]
+      },
+      "ensamble": {
+        "201908": {
+          "k_max_suav": 3521,
+          "g_max_suav": 208217210.5788423,
+          "auc_baja2": 0.9061312079477539,
+          "n": 131775,
+          "baja2": 543
+        },
+        "201909": {
+          "k_max_suav": 3814,
+          "g_max_suav": 250757514.97005987,
+          "auc_baja2": 0.906702413459483,
+          "n": 133419,
+          "baja2": 615
+        }
+      },
+      "transferencia": {
+        "201908->201909": {
+          "fraccion": 0.02675,
+          "envios": 3569,
+          "ganancia": 250552500,
+          "arrepentimiento": 0.010449077193364964
+        },
+        "201909->201908": {
+          "fraccion": 0.0285,
+          "envios": 3756,
+          "ganancia": 206910000,
+          "arrepentimiento": 0.004654210973498496
+        }
+      },
+      "transferencia_peor_caso": 0.010449077193364964
+    }
+  }
+}

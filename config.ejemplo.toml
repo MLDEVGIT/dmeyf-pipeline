@@ -15,3 +15,5 @@ datos = "datos"
 # entornos       = "ejecuciones/entornos"                     # salidas de cada corrida
 # auditoria_2019 = "referencia/01_filas_por_mes.csv"
 # modelos        = "datos/pipeline_competencia02/modelos"     # copias de los modelos del catálogo (catalogo.py)
+# target_2019    = "datos/competencia_02/competencia_02_2019_target.parquet"     # regla v1 (sampling 03), se conserva
+# target_2019_v2 = "datos/pipeline_competencia02/target_2019_v2.parquet"        # regla v2 (evaluacion/target.py)

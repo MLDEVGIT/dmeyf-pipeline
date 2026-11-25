@@ -27,6 +27,8 @@ _CLAVES = {
     "auditoria_2019": ("DMEYF_AUDITORIA_2019", None),
     "features_2019": ("DMEYF_FEATURES_2019", "competencia_02/competencia_02_2019_features"),
     "target_2019": ("DMEYF_TARGET_2019", "competencia_02/competencia_02_2019_target.parquet"),
+    # regla versión 2 (evaluacion/target.py), generado por experimentos/tc01_target_2019.py; el anterior se conserva
+    "target_2019_v2": ("DMEYF_TARGET_2019_V2", "pipeline_competencia02/target_2019_v2.parquet"),
     "modelos": ("DMEYF_MODELOS", "pipeline_competencia02/modelos"),
 }
 
@@ -41,6 +43,7 @@ class Rutas:
     auditoria_2019: Path
     features_2019: Path
     target_2019: Path
+    target_2019_v2: Path
     modelos: Path
     archivo: Path | None
 

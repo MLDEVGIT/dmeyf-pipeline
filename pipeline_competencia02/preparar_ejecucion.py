@@ -4,7 +4,8 @@ Estructura:
   input/<yyyymm>.csv                 entrada del mes (la deja el operador o --copiar-desde de mensual.py)
   output/churn_<yyyymm>.csv          SALIDA OFICIAL: recomendación provisional (binario)
   historia/foto_mes=<yyyymm>.parquet historia tipada: inicial + meses completados
-  modelos/                           copia verificada del catálogo (catalogo/estrategias.json) y sus modelos
+  modelos/                           copia verificada del catálogo elegido (--catalogo; por defecto catalogo.ACTIVO)
+                                     como modelos/estrategias.json, y sus modelos
   diagnosticos/<yyyymm>/             features, predicciones por semilla, decisiones de las dos estrategias, reporte.json
   registro/                          meses/<yyyymm>.json (estado), ejecuciones.jsonl (intentos), reporte_acumulado.csv
   tmp/                               intentos en curso
@@ -20,7 +21,7 @@ un solo foto_mes por archivo, clientes únicos y el mismo esquema en todos.
 
 No lee etiquetas: ningún archivo de clase ni de 2019 ni de otro período.
 
-Uso: python -m pipeline_competencia02.preparar_ejecucion --nombre N --hasta 201912
+Uso: python -m pipeline_competencia02.preparar_ejecucion --nombre N --hasta 201912 [--catalogo tc01|e01]
 """
 from __future__ import annotations
 
@@ -55,8 +56,9 @@ def meses_entre(desde: int, hasta: int) -> list[int]:
     return out
 
 
-def copiar_catalogo(env: Path) -> dict:
-    cat = K.cargar()
+def copiar_catalogo(env: Path, nombre: str | None = None) -> dict:
+    origen_cat = K.archivo(nombre)
+    cat = K.cargar(origen_cat)
     for e in cat["estrategias"]:
         for m in e["modelos"]:
             origen = RUTAS.modelos / m["archivo"]
@@ -65,7 +67,7 @@ def copiar_catalogo(env: Path) -> dict:
             shutil.copy2(origen, destino)
             if sha256(destino) != m["sha256"]:
                 raise RuntimeError(f"{m['archivo']}: sha256 distinto del catálogo")
-    shutil.copy2(K.CATALOGO, env / "modelos" / "estrategias.json")
+    shutil.copy2(origen_cat, env / "modelos" / "estrategias.json")
     shutil.copy2(K.PREDICTORES, env / "modelos" / "predictores.json")
     return cat
 
@@ -141,7 +143,7 @@ def validar_cobertura(con, env: Path, hasta: int, esquema: list) -> dict:
             "checks": checks}
 
 
-def crear(nombre: str, hasta: int) -> Path:
+def crear(nombre: str, hasta: int, catalogo: str | None = None) -> Path:
     env = RUTAS.entornos / nombre
     if env.exists():
         raise FileExistsError(f"{env} ya existe; cada ensayo usa una carpeta nueva")
@@ -150,14 +152,17 @@ def crear(nombre: str, hasta: int) -> Path:
     for d in ("input", "output", "historia", "modelos", "diagnosticos", "registro/meses", "tmp"):
         (env / d).mkdir(parents=True)
     t0 = time.perf_counter()
-    cat = copiar_catalogo(env)
+    catalogo = catalogo or K.ACTIVO
+    cat = copiar_catalogo(env, catalogo)
     con = duckdb.connect()
     con.execute("SET threads = 4")
     con.execute("SET memory_limit = '2GB'")
     esquema = [[c, t] for c, t, *_ in con.execute(
         f"DESCRIBE SELECT * FROM read_parquet('{RUTAS.historico_2019.as_posix()}')").fetchall()]
     cfg = {"nombre": nombre, "tipo": "mensual_dos_estrategias", "creado": time.strftime("%Y-%m-%dT%H:%M:%S"),
-           "esquema_crudo": esquema, "catalogo": {"archivo": "modelos/estrategias.json",
+           "esquema_crudo": esquema, "catalogo": {"nombre": catalogo, "origen": K.archivo(catalogo).relative_to(RAIZ).as_posix(),
+                                                  "target_version": cat.get("target_version", 1),
+                                                  "archivo": "modelos/estrategias.json",
                                                   "sha256": sha256(env / "modelos" / "estrategias.json"),
                                                   "estrategias": [e["id"] for e in cat["estrategias"]]},
            "nota": "entorno aislado: la ejecución mensual sólo lee dentro de este directorio; no lee etiquetas"}
@@ -178,8 +183,9 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Crea una carpeta de ejecución para el pipeline mensual.")
     ap.add_argument("--nombre", required=True)
     ap.add_argument("--hasta", type=int, required=True, help="último foto_mes de historia (el anterior al primero a procesar)")
+    ap.add_argument("--catalogo", choices=sorted(K.CATALOGOS), default=K.ACTIVO)
     a = ap.parse_args(argv)
-    env = crear(a.nombre, a.hasta)
+    env = crear(a.nombre, a.hasta, a.catalogo)
     cfg = json.loads((env / "entorno.json").read_text(encoding="utf-8"))
     print(f"Ejecución creada: {mostrar(env)} | historia {cfg['historia']['cobertura']} | {cfg['preparacion_s']} s")
     return 0

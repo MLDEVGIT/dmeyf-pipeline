@@ -450,3 +450,191 @@ durante esta corrida; la CPU estaba al 100 % y no se identificó otro proceso do
   transferencia es la medida fuera de muestra.
 - Octubre no se leyó: ninguna de estas cifras dice cómo se comporta el modelo a 4 meses del
   entrenamiento.
+
+## 9. TC01 — target consistente (protocolo, escrito antes de entrenar)
+
+Rama `martin/target-consistente`.
+- **Scripts:** `experimentos/tc01_target_2019.py` (etiquetas) y `experimentos/tc01_target_corregido.py`
+  (modelos y comparación).
+- **Definición única del target:** `evaluacion/target.py`. La usan el entrenamiento, la evaluación y la
+  retrospectiva del pipeline.
+
+**Qué cambia.** Sólo la regla del target, de la versión 1 a la 2. El cliente presente en *t*, ausente
+en *t+1* y presente en *t+2* pasa de BAJA+1 a CONTINUA. La etiqueta definitiva necesita *t+2*.
+- **Paso 1, ya corrido:** el target de 2019 se regeneró por presencia, sólo para 201903–201906 y
+  201908–201909. Cambian 17 filas, todas de BAJA+1 a CONTINUA: 5 en entrenamiento y 12 en 201908. BAJA+2
+  queda idéntico (`resultados/tc01_target_2019_v2.json`). El target anterior se conserva.
+- **Lo que queda igual que en E01:**
+  - las 760 features;
+  - entrenamiento 201903–201906 y desarrollo 201908–201909; octubre bloqueado;
+  - las mismas 5 semillas (20261124–20261128), hiperparámetros y 300 rondas;
+  - el mismo binado (`max_bin` 255, `data_random_seed` 1);
+  - 8 hilos para entrenar y 4 para predecir.
+- **Brazos:**
+  - binario, positivo = BAJA+1 ∪ BAJA+2;
+  - multiclase con peso 1, score = P(BAJA+2).
+
+**Comprobaciones antes de comparar** (si alguna falla, el script se detiene):
+1. **Configuración y train.** La configuración es la de E01. El train difiere del de E01 sólo en las 5
+   filas esperadas: BAJA+1 −5 y CONTINUA +5.
+2. **Modelos anteriores.** Los de E01, vueltos a predecir, reproducen bit a bit sus predicciones
+   guardadas, y sus cifras reproducen `resultados.json` de E01. Se usa `reusar_e01` de E02, con las
+   etiquetas de desarrollo de la versión 1.
+3. **Las cifras de los modelos anteriores no dependen de la versión del target.** Evaluados con las
+   etiquetas de la versión 2, dan las mismas cifras de corte y ganancia, porque BAJA+2 es idéntico.
+
+**Comparación**, anteriores (E01) contra corregidos (TC01). Se evalúan en 201908 y 201909 con las
+etiquetas de la versión 2, por objetivo, semilla y ensamble:
+- **Ganancia:** del ensamble y por semilla, cada brazo en su fracción, con diferencias pareadas por
+  semilla (`evaluacion/comparacion.py`). También, para aislar el efecto del score, cada brazo en la
+  fracción del otro.
+- **Scores:** correlación de Pearson, correlación de rangos y diferencia absoluta media y máxima entre
+  el score anterior y el corregido de la misma semilla y del ensamble; media del score.
+- **Rankings y envíos:** envíos en la fracción de cada brazo y Jaccard del conjunto enviado anterior
+  contra el corregido. Como escala de ruido se usa el Jaccard entre dos semillas distintas del modelo
+  anterior.
+- **AUC de BAJA+2.**
+- **Estabilidad del corte:** fracción minimax, arrepentimiento máximo, transferencia agosto ↔
+  septiembre y fracción que elegiría cada semilla sola.
+
+**Procedimiento de corte** (el documentado en § 4 y § 5, sin cambios): fracción de clientes con menor
+arrepentimiento máximo entre 201908 y 201909, sobre la curva suavizada del ensamble, en la grilla de
+0,25 % a 8 %. Se aplica a cada modelo corregido y se registra si la fracción cambia respecto de E01.
+
+**Decisión, fijada de antemano:**
+- **Los modelos corregidos reemplazan a los anteriores por consistencia de definición, no por
+  desempeño.** El catálogo nuevo usa los modelos corregidos y su propia fracción minimax.
+- **Alerta, para revisar antes del vivo.** En un objetivo, se registra una alerta si se cumple
+  cualquiera de dos condiciones:
+  - la ganancia del ensamble corregido es menor que la anterior en **ambos** meses por más de dos
+    desvíos entre semillas del modelo anterior;
+  - el AUC de BAJA+2 cae más de 0,005 en ambos meses.
+
+  Con una alerta, el catálogo nuevo se arma igual, pero no pasa a ser el activo hasta discutirlo.
+- **Roles de recomendación y alternativa.** Se aplica a los modelos corregidos la regla de adopción de
+  E02 (§ 7, paso 2: multiclase contra binario). El catálogo sigue su resultado. Si no se cumple, el
+  binario sigue como recomendación.
+
+**Después:** catálogo nuevo (`catalogo/estrategias_tc01.json`) y secuencia 202001–202006 en una
+carpeta nueva, con las mismas comprobaciones, el reintento en 202003 y las métricas retrospectivas
+de la versión 2. Se compara con la secuencia anterior, que se conserva: envíos, coincidencia de las
+salidas por mes y métricas retrospectivas.
+
+**Limitaciones conocidas de antemano:**
+- **El cambio es mínimo.** Son 5 filas de 506.871 en entrenamiento. Las diferencias esperables son del
+  orden del ruido entre ejecuciones con distinto target. LightGBM es determinista con la misma entrada,
+  pero un cambio de etiqueta puede alterar una división temprana y propagarse.
+- **El desarrollo no distingue las versiones en la ganancia.** Las 12 filas que cambian en 201908 no
+  son BAJA+2, así que el target de desarrollo no puede distinguir entre las versiones por la ganancia.
+  Sí cambia la clase BAJA+1 del multiclase y el positivo del binario.
+
+## 10. Resultados de TC01
+
+- **Corrida:** `ejecuciones/tc01/20261124T212203_16624`.
+- **Resumen versionado:** `resultados/tc01_target_corregido.json`, sin datos por cliente. Target:
+  `resultados/tc01_target_2019_v2.json`.
+- **Protocolo fijado antes de entrenar:** el sha256 de `PLAN_PRUEBAS.md` registrado al inicio
+  (`5bccf983c903…`) es el del archivo con el § 9 y sin este § 10.
+- **Comprobaciones previas, todas OK:**
+  - el train difiere de E01 sólo en las 5 filas esperadas: 501.563 CONTINUA, 2.712 BAJA+1 y 2.596
+    BAJA+2;
+  - BAJA+2 de desarrollo es idéntico;
+  - los modelos de E01 se reprodujeron bit a bit;
+  - las cifras de E01 dan iguales con el target versión 2.
+- **Desarrollo con el target versión 2:** en 201908, 12 BAJA+1 pasan a CONTINUA (659 → 647); 201909
+  no cambia.
+
+**Ganancia en el corte de cada modelo** (millones, sin suavizar; "semillas" = cada semilla sola en
+la misma fracción):
+
+| Brazo | Modelos | *f* | Mes | Envíos | Ensamble | Semillas: media ± desvío | AUC BAJA+2 |
+|---|---|---|---|---|---|---|---|
+| Binario | anterior (E01) | 2,900 % | 201908 | 3.822 | 202,9 | 191,9 ± 1,9 | 0,9105 |
+| | | | 201909 | 3.870 | 250,0 | 243,6 ± 5,8 | 0,9092 |
+| | **corregido** | **4,475 %** | 201908 | 5.897 | 200,8 | 190,5 ± 4,2 | 0,9094 |
+| | | | 201909 | 5.971 | 253,8 | 243,2 ± 4,2 | 0,9080 |
+| Multiclase peso 1 | anterior (E01) | 2,800 % | 201908 | 3.690 | 208,7 | 196,8 ± 3,1 | 0,9061 |
+| | | | 201909 | 3.736 | 250,4 | 241,6 ± 4,2 | 0,9067 |
+| | **corregido** | 2,800 % | 201908 | 3.690 | 208,7 | 198,6 ± 5,4 | 0,9079 |
+| | | | 201909 | 3.736 | 253,7 | 245,1 ± 4,4 | 0,9059 |
+
+- **Binario corregido en la fracción anterior (2,9 %):** 197,4 M en agosto y 243,4 M en septiembre.
+- **Multiclase:** el ensamble corregido manda en agosto la misma cantidad de BAJA+2 que el anterior;
+  por eso la ganancia sale igual.
+
+**Diferencias pareadas por semilla, corregido − anterior** (millones, cada modelo en su fracción):
+
+| Brazo | Mes | Por semilla | A favor | Ensamble |
+|---|---|---|---|---|
+| Binario | 201908 | +2,3 · +2,3 · −4,3 · −7,6 · +0,1 | 3 de 5 | −2,1 |
+| | 201909 | −0,6 · −2,8 · +2,7 · +1,6 · −2,8 | 2 de 5 | +3,8 |
+| Multiclase | 201908 | +5,5 · −4,4 · +7,7 · −2,2 · +2,2 | 3 de 5 | 0,0 |
+| | 201909 | +7,7 · −2,2 · +6,6 · +4,4 · +1,1 | 4 de 5 | +3,3 |
+
+**Scores y rankings**, anterior contra corregido, 201908 / 201909:
+
+| | Binario | Multiclase |
+|---|---|---|
+| Ensamble: Pearson · correlación de rangos | 0,997 / 0,997 · 0,983 / 0,984 | 0,995 / 0,994 · 0,987 / 0,988 |
+| Ensamble: media del score (anterior → corregido) | 0,00793 → 0,00795 / 0,00821 → 0,00821 | 0,00338 → 0,00338 / 0,00352 → 0,00352 |
+| Por semilla: correlación de rangos | 0,938–0,944 / 0,938–0,947 | 0,948–0,953 / 0,950–0,955 |
+| Jaccard de los enviados con la misma cantidad *k*: ensamble | 0,883 / 0,881 | 0,889 / 0,887 |
+| Jaccard con la misma *k*: misma semilla, anterior contra corregida | 0,767–0,787 / 0,748–0,793 | 0,776–0,790 / 0,774–0,788 |
+| **Escala de ruido**: Jaccard entre dos semillas anteriores | 0,683–0,709 / 0,674–0,696 | 0,677–0,694 / 0,668–0,695 |
+
+Cambiar el target mueve el ranking **menos que cambiar de semilla**. El ensamble atenúa la diferencia:
+coinciden el 88–89 % de los enviados con la misma *k*.
+
+**Estabilidad del corte** (procedimiento de § 4, sin cambios):
+
+| Brazo | Modelos | *f* minimax | Arrepentimiento máx. | Transferencia: peor caso | *f* que elegiría cada semilla sola |
+|---|---|---|---|---|---|
+| Binario | anterior | 2,900 % | 0,87 % | 3,8 % | 2,275 %–3,875 % |
+| | corregido | **4,475 %** | 0,24 % | 0,55 % | 2,475 %–4,075 % |
+| Multiclase | anterior | 2,800 % | 0,41 % | 1,0 % | 2,500 %–3,375 % |
+| | corregido | 2,800 % | 0,18 % | 3,5 % | 2,450 %–3,475 % |
+
+**El corte del binario cambia de 2,9 % a 4,475 %.** No es un cambio del modelo, sino de dónde cae el
+mínimo en una curva plana. El peor arrepentimiento del binario corregido, con la ganancia suavizada,
+en cada fracción:
+
+| *f* | 2,5 % | 2,9 % | 3,5 % | 4,0 % | 4,475 % | 5,0 % |
+|---|---|---|---|---|---|---|
+| Peor arrepentimiento | 2,5 % | 3,0 % | 1,8 % | 0,8 % | **0,24 %** | 4,8 % |
+| Ganancia suavizada 201908 / 201909 (M) | 200,0 / 246,1 | 198,6 / 244,9 | 199,8 / 248,0 | 201,1 / 250,3 | 201,0 / 252,0 | 197,4 / 240,2 |
+
+- **La meseta.** Entre 2,5 % y 4,475 % la ganancia varía entre 1 y 3 %. El minimax elige el extremo
+  derecho de la meseta, y a 5 % la curva cae.
+- **Fuera del rango de las semillas.** La fracción del ensamble, 4,475 %, queda por encima de la que
+  elegiría cualquier semilla sola (hasta 4,075 %).
+- **Efecto en los envíos.** Son un 54 % más que con 2,9 %. En un mes de baja prevalencia, como
+  202002 en el ensayo, enviar más cuesta más.
+- **Decisión.** Según el protocolo, el catálogo usa 4,475 %. Queda señalado como riesgo para la
+  decisión de corte (pendientes en `INTEGRACION.md`).
+
+**Decisión según el § 9:**
+- **Alertas: ninguna.**
+  - La ganancia del ensamble corregido no cae más de dos desvíos en ambos meses: binario −2,1 M en
+    agosto y +3,8 M en septiembre; multiclase 0,0 y +3,3 M.
+  - El AUC no cae más de 0,005 en ambos meses: cambia entre −0,0012 y +0,0018.
+- **Modelos.** Los corregidos reemplazan a los anteriores. El catálogo activo pasa a ser `tc01`
+  (`catalogo/estrategias_tc01.json`).
+- **Roles.** La regla de E02 aplicada a los modelos corregidos (multiclase contra binario) no se cumple
+  en ninguna de sus tres condiciones. El binario sigue como recomendación provisional y el multiclase
+  como alternativa.
+- **Cortes.** Binario 4,475 % (cambia desde 2,9 %) y multiclase 2,8 % (sin cambio).
+
+**Tiempos** (8 hilos para entrenar, 4 para predecir): binario 108–182 s y multiclase 296–563 s por
+semilla. La multiclase de la semilla 20261127 registró 36.467 s porque la máquina se suspendió
+durante el entrenamiento (eventos de energía entre las 22:01 y las 08:02). El resultado no cambia,
+porque el entrenamiento es determinista, pero ese tiempo no es comparable. Total de la corrida:
+39.610 s, de los cuales unas 10 horas fueron de suspensión.
+
+**Limitaciones:**
+- **El cambio de target es mínimo.** Son 5 filas de 506.871 en entrenamiento, y las diferencias que
+  produce son del orden del ruido entre semillas.
+- **El desarrollo no separa las versiones por ganancia.** BAJA+2 es igual en las dos, así que cualquier
+  diferencia de ganancia viene del modelo, no de la etiqueta de evaluación.
+- **El corte es sensible a la meseta.** Las alternativas, como una fracción central de la meseta, la
+  mediana de las fracciones por semilla o un umbral de probabilidad, se evalúan con 2019 antes del
+  vivo.

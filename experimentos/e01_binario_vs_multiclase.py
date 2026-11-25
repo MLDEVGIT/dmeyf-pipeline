@@ -54,12 +54,15 @@ def mem() -> dict:
     return d
 
 
-def cargar(con, meses, predictores) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    """X float64 (BIGINT exacto hasta 2^53, NULL -> NaN), clase, clientes y mes, ordenados por mes y cliente."""
+def cargar(con, meses, predictores, ruta_target: Path | None = None) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """X float64 (BIGINT exacto hasta 2^53, NULL -> NaN), clase, clientes y mes, ordenados por mes y cliente.
+
+    ruta_target: por defecto el target de E01 (RUTAS.target_2019, regla versión 1); TC01 pasa RUTAS.target_2019_v2.
+    """
     feats = ", ".join(f"'{(RUTAS.features_2019 / f'features_{m}.parquet').as_posix()}'" for m in meses)
     con.execute(f"CREATE OR REPLACE TEMP VIEW f AS SELECT * FROM read_parquet([{feats}])")
     # el target se lee sólo con la función que controla los meses permitidos
-    tgt = P.leer_target(con, RUTAS.target_2019.as_posix(), meses).df()
+    tgt = P.leer_target(con, Path(ruta_target or RUTAS.target_2019).as_posix(), meses).df()
     con.register("tgt_df", tgt)
     con.execute("CREATE OR REPLACE TEMP TABLE j AS SELECT f.numero_de_cliente, f.foto_mes, tgt_df.clase_ternaria, "
                 "row_number() OVER (ORDER BY f.foto_mes, f.numero_de_cliente) - 1 AS fila "

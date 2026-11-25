@@ -28,8 +28,8 @@ Reintento provocado (--reintento-en M, un mes intermedio):
 Uso:
   python -m pipeline_competencia02.correr_meses --nueva <nombre> --desde 202001 --hasta 202006 [--reintento-en 202003]
   python -m pipeline_competencia02.correr_meses --ejecucion <carpeta> --desde 202001 --hasta 202006
-Con --nueva, prepara la carpeta (preparar_ejecucion, historia hasta el mes anterior a --desde) y mide esa
-preparación por separado: no forma parte del tiempo mensual.
+Con --nueva, prepara la carpeta (preparar_ejecucion, historia hasta el mes anterior a --desde, con el catálogo
+--catalogo; por defecto el activo) y mide esa preparación por separado: no forma parte del tiempo mensual.
 """
 from __future__ import annotations
 
@@ -50,6 +50,7 @@ import pandas as pd
 
 from evaluacion.ganancia import envios as envios_fraccion
 
+from . import catalogo as K
 from . import retrospectiva as R
 from .config import RAIZ, RUTAS, mostrar
 from .ejecutar_mes import anterior
@@ -282,16 +283,17 @@ def provocar_reintento(env: Path, mes: int, origen: Path, proximo: tuple[int, Pa
     return [a, c], detalle
 
 
-def preparar(nombre: str, hasta: int) -> tuple[Path, dict]:
+def preparar(nombre: str, hasta: int, catalogo: str) -> tuple[Path, dict]:
     t = time.perf_counter()
     rc = subprocess.run([sys.executable, "-m", "pipeline_competencia02.preparar_ejecucion", "--nombre", nombre,
-                         "--hasta", str(hasta)], cwd=RAIZ).returncode
+                         "--hasta", str(hasta), "--catalogo", catalogo], cwd=RAIZ).returncode
     pared = round(time.perf_counter() - t, 1)
     if rc != 0:
         raise RuntimeError(f"preparar_ejecucion terminó con código {rc}")
     env = RUTAS.entornos / nombre
     cfg = leer_json(env / "entorno.json")
     return env, {"pared_s": pared, "interno_s": cfg["preparacion_s"], "historia": cfg["historia"]["cobertura"],
+                 "catalogo": cfg["catalogo"],
                  "incluye": "copia y verificación de modelos y catálogo; historia inicial desde el Parquet de 2019 "
                             "controlada contra la auditoría de filas; validación de cobertura"}
 
@@ -305,6 +307,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--hasta", type=int, required=True)
     ap.add_argument("--reintento-en", type=int, help="mes intermedio en el que se provoca y se prueba un reintento")
     ap.add_argument("--resumen", type=Path, help="copia del resumen, además de <ejecución>/pruebas/")
+    ap.add_argument("--catalogo", choices=sorted(K.CATALOGOS), default=K.ACTIVO, help="sólo con --nueva")
     a = ap.parse_args(argv)
     meses = meses_entre(a.desde, a.hasta)
     if a.reintento_en and a.reintento_en not in meses[:-1]:
@@ -315,7 +318,7 @@ def main(argv: list[str] | None = None) -> int:
                         "input/) hasta que termina, con la salida publicada y el reporte acumulado regenerado",
                "meses": []}
     if a.nueva:
-        env, resumen["preparacion"] = preparar(a.nueva, anterior(a.desde))
+        env, resumen["preparacion"] = preparar(a.nueva, anterior(a.desde), a.catalogo)
         print(f"Preparación: {resumen['preparacion']['pared_s']} s (fuera del tiempo mensual)", flush=True)
     else:
         env = a.ejecucion.resolve()

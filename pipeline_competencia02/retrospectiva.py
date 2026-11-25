@@ -43,12 +43,12 @@ import numpy as np
 import pandas as pd
 
 from evaluacion.ganancia import COSTO_ENVIO, PREMIO_BRUTO, curva
+from evaluacion import target as T  # definición única del target (también entrenamiento y evaluación)
+from evaluacion.target import etiquetar
 
-REGLA = {"CONTINUA": "presente en t+2 (aunque falte en t+1)", "BAJA+2": "presente en t+1 y ausente en t+2",
-         "BAJA+1": "ausente en t+1 y ausente en t+2",
-         "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
+REGLA = {**T.REGLA,
          "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"}
-VERSION = 2
+VERSION = T.VERSION
 
 
 def siguiente(m: int) -> int:
@@ -62,11 +62,6 @@ def disponibilidad(historia: Path, mes: int) -> dict:
     estado = "completa" if h1 and h2 else "parcial" if h1 else "pendiente"
     falta = [str(m) for m, h in ((m1, h1), (m2, h2)) if not h]
     return {"estado": estado, "requiere": [m1, m2], "falta": falta}
-
-
-def etiquetar(en1: np.ndarray, en2: np.ndarray) -> np.ndarray:
-    """Clase con t+1 y t+2 observados (regla versión 2). La presencia en t+2 manda."""
-    return np.where(en2, "CONTINUA", np.where(en1, "BAJA+2", "BAJA+1"))
 
 
 def auc(score: np.ndarray, positivo: np.ndarray) -> float | None:

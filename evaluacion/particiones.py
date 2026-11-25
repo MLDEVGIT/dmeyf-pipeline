@@ -6,11 +6,12 @@ clase_ternaria del mes t en el target de 2019 que lee este módulo (experimento_
   presente en t+1 y en t+2       -> CONTINUA (necesita t+1 y t+2)
 Con datos de 201901–201912: 201901–201910 completos; 201911 solo BAJA+1; 201912 sin etiqueta.
 
-ATENCIÓN: las etiquetas oficiales de competencia 01 siguen otra regla ("versión 2", la de
-pipeline_competencia02/retrospectiva.py): presente en t+2 -> CONTINUA aunque falte en t+1. Difieren sólo en los
-clientes que vuelven en t+2 (en 2019: 5 filas de 201903–201906 y 12 de 201908, todas BAJA+1 aquí y CONTINUA por la
-regla oficial). BAJA+2 es idéntico en ambas, así que la ganancia no cambia. Con la versión 2, además, 201911
-no tendría ninguna clase definitiva. Ver docs/INTEGRACION.md y resultados/i03_correccion_target_retrospectivo.json.
+La regla vigente es la "versión 2" (evaluacion/target.py), que reproduce las etiquetas oficiales de competencia 01:
+presente en t+2 -> CONTINUA aunque falte en t+1. El target de 2019 con esa regla es RUTAS.target_2019_v2
+(experimentos/tc01_target_2019.py; sólo 201903–201906 y 201908–201909) y lo usan TC01 y el catálogo activo.
+RUTAS.target_2019 (versión 1) se conserva para reproducir E01/E02. Difieren sólo en los clientes que vuelven en t+2
+(5 filas de 201903–201906 y 12 de 201908); BAJA+2 es idéntico. leer_target recibe la ruta: el control de meses es
+el mismo para las dos versiones. Con la versión 2, 201911 no tendría ninguna clase definitiva.
 
 Las etiquetas se leen sólo para los meses que permite cada experimento: `leer_target`
 rechaza cualquier otro mes. Octubre (201910) queda reservado para la evaluación final.
