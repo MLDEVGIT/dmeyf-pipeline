@@ -1513,3 +1513,187 @@ Además:
 - Las ganancias retrospectivas son de 4 meses con target completo.
 - Los tiempos son de una laptop con carga y frecuencia variables.
 - La estimación de `ce02_b20m10` en las condiciones de la secuencia es una extrapolación.
+
+## 17. CA02 — ensayo de `ce02_b20m10` (protocolo, escrito antes de calcular y de correr)
+
+Rama `martin/ensayo-b20m10`. Seguimos en local: GCP todavía no está configurado.
+- **Scripts:**
+  - `experimentos/ca02_b20m10.py corte`: respaldo del corte multiclase con las semillas 0–9 (2019);
+  - `pipeline_competencia02/correr_meses.py`: la secuencia; ahora registra además las condiciones de la
+    máquina antes y después de cada proceso mensual;
+  - `scripts/verificar_scores.py`, `scripts/comparar_secuencias.py`: como en CA01;
+  - `experimentos/ca02_b20m10.py identidad`: el multiclase de 10 contra las semillas 0–9 guardadas
+    por la corrida `ce02`.
+- **No cambia el catálogo activo** (`tc01`) ni modifica `ce02`, `ce02_b20m10`, `tc01` o `e01`, ni las
+  corridas existentes.
+
+**Paso 1. ¿Respalda 2019 el 2,725 % para el multiclase de 10 semillas?** En CA01 el corte del
+multiclase de `ce02_b20m10` se tomó del ensamble de 20 (MVE₂₀). Antes de correr se verifica con el
+ensamble anidado de 10 (semillas 0–9, índices 0–9 de `resultados/ce02_composicion.json`), con las
+mismas predicciones, meses (201908 y 201909, target versión 2; octubre bloqueado) y funciones de CE01
+y CE02:
+- **Criterio (fijado ahora):** el 2,725 % está respaldado si cae dentro del **conjunto equivalente del
+  ensamble de 10**: su peor arrepentimiento suavizado entre 201908 y 201909 queda a ≤ τ₁₀ del mínimo,
+  con τ₁₀ el ruido entre semillas en el minimax de 10, igual que τ₂₀ en CE02.
+- **Se informa además:** minimax₁₀, MVE₁₀, el peor arrepentimiento en 2,725 %, en MVE₁₀ y en
+  minimax₁₀; el arrepentimiento con ρ = 0,33; el traslado del corte fijo de 2,725 % a cada mes; y qué
+  corte daría la regla del § 13 aplicada al tamaño 10.
+- **Si se cumple,** la secuencia se corre con `ce02_b20m10` tal como está: mismo corte que el
+  multiclase de `ce02`, sin una decisión nueva.
+- **Si no se cumple,** `ce02_b20m10` no se modifica: se crea un catálogo aparte con el corte de la regla
+  del § 13 para 10 semillas y se corre ése, informando el cambio.
+
+**Paso 2. Secuencia 202001–202006.** Igual que la de CA01 (§ 15):
+- carpeta nueva `ejecuciones/entornos/secuencia_ce02_b20m10_202001_202006_<marca>`, preparada con
+  `--catalogo ce02_b20m10`; un proceso por mes; historia inicial 201901–201912 más sólo los meses
+  recibidos; reintento provocado en 202003 con los mismos cuatro pasos;
+- **tiempo mensual:** pared del proceso, desde antes de lanzarlo (arranque del intérprete, imports y
+  copia de la entrada a `input/`) hasta la salida publicada y el reporte acumulado regenerado; incluye
+  validación, features, inferencia, publicación y reporte, que se informan además por separado con los
+  tiempos internos. En 202003 se informa cada intento y la suma;
+- **memoria:** pico de working set y de commit privado del proceso;
+- **condiciones de la máquina,** antes y después de cada proceso: frecuencia y carga de la CPU, RAM
+  libre, si está enchufada y el plan de energía. La máquina se mantiene despierta y sin otras tareas
+  pesadas del ensayo mientras corre.
+
+**Verificaciones, en los seis meses:**
+1. scores contra los modelos originales: cada semilla, el ensamble, las decisiones y la salida oficial,
+   bit a bit;
+2. secuencia: decisiones, historia, reporte acumulado y retrospectiva (`correr_meses.comprobar`);
+3. recuperación ante el fallo intermedio: los pasos 1 a 4 del reintento;
+4. identidad con la corrida `ce02` guardada: el binario debe ser **idéntico** (probabilidad, envíos y
+   salida oficial), porque son los mismos 20 modelos y el mismo corte; el ensamble multiclase debe ser
+   **idéntico** al promedio de las semillas 0–9 guardadas por `ce02`.
+
+**Comparación con `ce02` (20 + 20)**, usando `secuencia_ce02_202001_202006_20261125T143926`: envíos y
+Jaccard por rol, ganancia retrospectiva con target completo (202001–202004), distribución de scores y
+anomalías, tiempo y memoria por mes. Todo lo de 2020 es **exploratorio** (R1).
+
+**Se informa por separado:**
+1. **Límite de la consigna, 900 s por mes:** cada intento y la suma de 202003.
+2. **Margen interno, 450 s por mes** en esta máquina (§ 15).
+3. **Medición en GCP:** pendiente hasta que esté configurado; no se estima con esta máquina.
+
+**Con estos resultados** se da una recomendación provisional para seguir las pruebas locales. La
+activación la decide el grupo.
+
+## 18. Resultados de CA02
+
+**Corridas y archivos:**
+- **Secuencia:** `ejecuciones/entornos/secuencia_ce02_b20m10_202001_202006_20261125T190118`. Resumen en
+  `resultados/i08_secuencia_ce02_b20m10_202001_202006.json`, con las condiciones de la máquina por intento.
+- **Respaldo del corte (2019):** `resultados/ca02_corte_multiclase_10.json`.
+- **Identidad con `ce02`:** `resultados/ca02_identidad_con_ce02.json`.
+- **Comparación con `ce02`:** `resultados/i09_comparacion_secuencias_ce02_b20m10.json`.
+- **Scores contra los modelos originales:** `resultados/ca02_verificacion_scores.json`.
+- `catalogo.ACTIVO` sigue en `tc01`; `ce02`, `ce02_b20m10`, `tc01` y `e01` no cambian.
+
+> **Todo lo de 2020 es exploratorio (R1).** El paso 1 usa sólo 201908–201909.
+
+### 1. Respaldo del 2,725 % con las semillas 0–9 (2019)
+
+| Ensamble de 10 multiclase (semillas 0–9) | Valor |
+|---|---|
+| Minimax₁₀ | 2,9 % (peor arrepentimiento 0,18 %) |
+| τ₁₀ | 0,67 % |
+| Conjunto equivalente de 10 | **2,675 %–3,075 %** (peor arrepentimiento ≤ 0,845 %) |
+| Peor arrepentimiento en **2,725 %** | **0,57 %**: dentro del conjunto |
+| MVE₁₀ | 2,675 % (peor arrepentimiento 0,82 %) |
+| Arrepentimiento con ρ = 0,33 (201908 / 201909) | 2,725 %: 3,1 / 4,1 % · MVE₁₀: 2,9 / 3,8 % · minimax₁₀: 4,5 / 5,6 % |
+| Corte fijo de 2,725 % en cada mes | 201908: 3.591 envíos, 210,4 M, arrepentimiento 0,57 % · 201909: 3.636 envíos, 254,2 M, 0,07 % |
+
+- **El 2,725 % está respaldado** según el criterio del § 17.
+- El cálculo reproduce exactamente el minimax₁₀, τ₁₀ y MVE₁₀ que registró CE02 (§ 14).
+- **La regla del § 13 aplicada sólo al tamaño 10** daría 2,675 % (MVE₁₀), un paso de grilla más abajo
+  (unos 70 envíos menos). Se mantiene 2,725 %: es lo fijado antes de calcular, está dentro del conjunto
+  equivalente y deja el multiclase con el mismo corte que `ce02`.
+
+### 2. Verificaciones (secuencia 202001–202006)
+
+| Verificación | Resultado |
+|---|---|
+| Secuencia, en los 6 meses: estado, integridad, salida oficial, decisiones de las dos estrategias, historia sin huecos, lecturas permitidas, reporte acumulado y retrospectiva según los meses recibidos | ✓ |
+| Reintento en 202003: (a) muere tras publicar, código 3 · (b) 202004 rechazado, código 4, sin cambios · (c) reconcilia sin recalcular, código 0 · (d) nuevo intento rechazado, sin cambios | ✓ |
+| Scores contra los modelos originales, en los 6 meses: 30 semillas, ensambles, decisiones y salida oficial bit a bit | ✓ (`resultados/ca02_verificacion_scores.json`) |
+| Binario idéntico a la corrida `ce02`: semillas, ensamble, decisiones y `output/churn_<mes>.csv` byte a byte | ✓ |
+| Multiclase: semillas 0–9 idénticas a las de `ce02`; ensamble **idéntico** al promedio de las semillas 0–9 guardadas por `ce02` | ✓ |
+| Alertas y anomalías iguales a `ce02` (dependen de la entrada) | ✓ |
+
+### 3. Tiempo, memoria y condiciones de la máquina
+
+Pared del proceso mensual, con arranque, imports y copia de la entrada hasta la salida y el reporte
+acumulado. En 202003, el intento que muere tras publicar (410,3 s) más la reconciliación (6,4 s).
+
+| Mes | `ce02` (s) | **`ce02_b20m10` (s)** | Validación · features (s) | Inferencia binario + multiclase (s) | Resto (s) | Commit privado pico (MB) | Carga de CPU antes de lanzar |
+|---|---|---|---|---|---|---|---|
+| 202001 | 431,9 | **395,3** | 18 · 31 | 127 + 193 | 26 | 4.026 | 30 % |
+| 202002 | 524,2 | **476,2** | 18 · 40 | 146 + 234 | 38 | 4.071 | 83 % |
+| 202003 | 698,2 | **416,7** (410,3 + 6,4) | 17 · 25 | 131 + 207 | 37 | 4.112 | 44 % |
+| 202004 | 729,7 | **395,1** | 16 · 23 | 128 + 202 | 26 | 4.131 | 48 % |
+| 202005 | 695,5 | **346,9** | 12 · 23 | 106 + 171 | 35 | 4.161 | 51 % |
+| 202006 | 706,3 | **375,0** | 14 · 25 | 121 + 187 | 28 | 4.205 | 17 % |
+
+- **Inferencia:** 80–84 % del mes. El multiclase de 10 tarda 1,5–1,6 veces el binario de 20.
+- **Memoria:** igual que `ce02` y `tc01` (4,0–4,2 GB de commit privado; working set 2,6–3,4 GB).
+- **Condiciones:** laptop i7-1165G7 (4 núcleos, 8 hilos, 15,7 GB), enchufada, plan "Equilibrado",
+  unos 425–433 procesos, con Chrome, Outlook y VS Code abiertos: 1,9–4,2 GB de RAM libre y 17–83 % de
+  carga antes de cada mes. `psutil` informó siempre 1.201 MHz: en Windows da la frecuencia nominal, así
+  que no sirve para seguir la frecuencia real.
+- **Contra `ce02`:** las dos secuencias no se corrieron en las mismas condiciones; la medición alternada
+  de CA01 (§ 16) es la comparación controlada.
+
+**Por separado:**
+1. **Límite de la consigna, 900 s por mes: se cumple en los 6 meses.** El máximo es 476,2 s (202002), el
+   53 % del límite. En 202003 cada intento y la suma (416,7 s) quedan por debajo.
+2. **Margen interno, 450 s por mes en esta máquina: se cumple en 5 de 6 meses.** 202002 lo excede
+   (476,2 s, +26 s), con 83 % de carga de CPU de otras aplicaciones al lanzar. Los demás: 347–417 s.
+3. **Medición en GCP: pendiente.** GCP todavía no está configurado y estos tiempos no se trasladan a
+   otra máquina. Cuando esté, correr allí:
+
+   ```
+   python scripts/medir_tiempos_catalogos.py --mes 202001 --catalogos tc01 ce02 ce02_b20m10 --repeticiones 2
+   python -m pipeline_competencia02.correr_meses --nueva <nombre> --catalogo ce02_b20m10 --desde 202001 --hasta 202006 --reintento-en 202003
+   ```
+
+### 4. Comparación con `ce02` (20 + 20), exploratoria
+
+**Binario:** idéntico en todos los meses (mismos 20 modelos y mismo corte de 2,35 %): 3.359–3.589
+envíos, Jaccard 1 y la misma ganancia retrospectiva, 644,1 M en 202001–202004.
+
+**Multiclase** (2,725 %; los envíos son iguales porque el corte es una fracción de clientes):
+
+| Mes | Envíos | Jaccard de enviados, 20 vs 10 | Correlación de rangos | Ganancia retrospectiva `ce02` → `ce02_b20m10` (M) |
+|---|---|---|---|---|
+| 202001 | 3.895 | 0,937 | 0,9979 | 255,9 → 258,1 |
+| 202002 | 3.984 | 0,931 | 0,9979 | 31,2 → 32,3 |
+| 202003 | 4.042 | 0,942 | 0,9979 | 152,8 → 157,2 |
+| 202004 | 4.056 | 0,925 | 0,9977 | 182,2 → 180,0 |
+| 202005 | 4.095 | 0,932 | 0,9980 | parcial |
+| 202006 | 4.162 | 0,845 | 0,9959 | pendiente |
+
+- **Acumulado 202001–202004:** 622,1 M → 627,6 M (+5,5 M, unos ±2–4 BAJA+2 por mes). Coincide con la
+  celda «ensamble de 10, corte 2,725 %» de la separación de CA01 (§ 16).
+- **Distribución de scores:** prácticamente igual (media y cuantiles 0,5–0,999 dentro de ±5 %); en
+  202006 el ensamble de 10 da algo menos de probabilidad media (0,0095 contra 0,0100).
+- **202006 sigue siendo el mes anómalo:** el Jaccard entre 10 y 20 baja a 0,85 y la coincidencia entre
+  estrategias, a 0,48 (0,50 en `ce02`).
+- **Lectura:** el multiclase de 10 no pierde nada distinguible del ruido frente al de 20, y en esta
+  máquina ahorra unos 90–290 s de inferencia por mes.
+
+### 5. Recomendación provisional para seguir las pruebas locales
+
+1. **Usar `ce02_b20m10` como catálogo de trabajo en las pruebas locales**, pasándolo explícitamente
+   (`--catalogo ce02_b20m10`). `ACTIVO` sigue en `tc01` hasta que el grupo decida.
+   - Cumple el límite de 900 s con holgura todos los meses y conserva el binario de 20 en 2,35 %, que
+     es la salida oficial y lo que motivó CE02.
+   - Su multiclase está respaldado por 2019 con las semillas 0–9 y no difiere del de 20 en 2020.
+2. **El margen de 450 s queda en el límite en esta laptop:** lo excedió un mes con carga alta de otras
+   aplicaciones. Para las próximas mediciones locales, cerrar las aplicaciones y usar el plan de máximo
+   rendimiento; las condiciones quedan registradas en cada intento.
+3. **`ce02` (20 + 20) no sirve como referencia local:** 432–730 s.
+4. **Antes de activar para el vivo:** medir en GCP (pendiente) con los comandos de arriba. Si allí
+   `ce02` entra en 450 s, se puede preferir el de 20 + 20; si `ce02_b20m10` no entra, la opción es
+   volver a `tc01` o analizar con 2019 un multiclase de menos semillas.
+
+**Limitaciones:** 2020 es exploratorio; las ganancias retrospectivas son de 4 meses; los tiempos son de
+una laptop con carga variable y no se trasladan a GCP.

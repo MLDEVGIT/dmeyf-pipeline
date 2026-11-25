@@ -544,9 +544,18 @@ guardadas:
        medición alternada.
      - **Separación exploratoria (2020):** la diferencia de ganancia con `tc01` es casi toda efecto del
        corte: +111,6 M en 202001–202004. El ensamble aporta +2,2 M.
-   - **Recomendación:** activar `ce02_b20m10`, sujeto a medir el tiempo en la máquina del vivo (T12),
-     con `scripts/medir_tiempos_catalogos.py`, y repetir la secuencia con el catálogo elegido. Lo
-     decide el grupo; `ACTIVO` sigue en `tc01`.
+   - **CA02**, ya corrido (`PLAN_PRUEBAS.md` § 17–18): `ce02_b20m10` en 202001–202006.
+     - **Corte del multiclase de 10:** el 2,725 % cae dentro del conjunto equivalente de las semillas
+       0–9 en 2019 (2,675–3,075 %).
+     - **Verificaciones:** todas pasan; el binario es idéntico al de `ce02` y el multiclase es el
+       promedio exacto de las semillas 0–9 de `ce02`.
+     - **Tiempo:** 347–476 s por mes, con 4,0–4,2 GB de pico. Cumple los 900 s de la consigna en los
+       6 meses; el margen de 450 s, en 5 de 6 (202002 con la laptop cargada).
+     - **Multiclase 10 contra 20 (2020, exploratorio):** Jaccard 0,93 (0,85 en 202006) y 627,6 M
+       contra 622,1 M en 202001–202004.
+   - **Recomendación:** seguir las pruebas locales con `ce02_b20m10` (pasándolo con `--catalogo`) y
+     medir en GCP cuando esté configurado, con `scripts/medir_tiempos_catalogos.py` y la secuencia
+     completa. Lo decide el grupo; `ACTIVO` sigue en `tc01`.
    - **Mientras tanto,** `tc01` (4,475 %) es el catálogo activo, según el protocolo, y `e01` (2,9 %)
      sigue disponible con `--catalogo e01`. Qué usar en vivo lo decide el grupo.
 1. **E06, tratamiento de columnas en cero.** Con 202006 se dimensiona: el 16–17 % de la importancia
@@ -556,7 +565,8 @@ guardadas:
 2. **Corte y prevalencia.** 202002 mostró que la fracción fija puede enviar cuatro veces más que el
    máximo ex post. Cualquier alternativa, como un umbral de probabilidad calibrada, se evalúa con 2019.
 3. **Tiempo en la máquina del vivo (T12).** En la máquina de Martín, 172–194 s por mes con `tc01` y
-   432–730 s con `ce02`, con carga variable. El multiclase es más de la mitad. Para medir:
+   432–730 s con `ce02` y 347–476 s con `ce02_b20m10`, con carga variable. La inferencia es el 80 % del
+   mes. La máquina del vivo será GCP, todavía sin configurar. Para medir:
    `python scripts/medir_tiempos_catalogos.py --mes 202001 --catalogos tc01 ce02 ce02_b20m10`.
 4. **Consigna**:
    - confirmar las columnas de la salida y **la interpretación de la probabilidad**: hoy es

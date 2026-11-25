@@ -1,0 +1,93 @@
+{
+  "experimento": "CA02 paso 1: respaldo del corte multiclase de 2,725 % con las semillas 0–9",
+  "datos": "201908 y 201909 (desarrollo), target versión 2; octubre bloqueado; sin 2020",
+  "fuente": {
+    "predicciones": "ejecuciones/ce02/20261125T094345_13976",
+    "composicion": "resultados/ce02_composicion.json",
+    "resumen_ce02": "resultados/ce02_ensambles_20.json",
+    "indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "semillas": [
+      20261124,
+      20261125,
+      20261126,
+      20261127,
+      20261128,
+      20261129,
+      20261130,
+      20261131,
+      20261132,
+      20261133
+    ]
+  },
+  "corte_evaluado": 0.02725,
+  "minimax_10": 0.029,
+  "tau_10": 0.006691494250230868,
+  "mve_10": 0.02675,
+  "conjunto_equivalente_10": {
+    "umbral_peor_arrepentimiento": 0.00845,
+    "tramos": [
+      [
+        0.02675,
+        0.03075
+      ]
+    ]
+  },
+  "peor_arrepentimiento": {
+    "corte_evaluado": 0.00569,
+    "mve_10": 0.00822,
+    "minimax_10": 0.00176
+  },
+  "arrepentimiento_rho_0_33": {
+    "corte_evaluado": {
+      "201908": 0.03079,
+      "201909": 0.04081
+    },
+    "mve_10": {
+      "201908": 0.02859,
+      "201909": 0.03765
+    },
+    "minimax_10": {
+      "201908": 0.04475,
+      "201909": 0.056
+    }
+  },
+  "regla_s13_tamano_10": {
+    "usar_mve": true,
+    "corte": 0.02675,
+    "procedimiento": "MVE"
+  },
+  "corte_fijo_por_mes": {
+    "201908": {
+      "envios": 3591,
+      "ganancia": 210.35,
+      "ganancia_suav": 208.57,
+      "max_suav": 209.77,
+      "arrepentimiento": 0.00569
+    },
+    "201909": {
+      "envios": 3636,
+      "ganancia": 254.21,
+      "ganancia_suav": 254.78,
+      "max_suav": 254.95,
+      "arrepentimiento": 0.00067
+    }
+  },
+  "consistencia_con_ce02": {
+    "minimax_10": true,
+    "tau_10": true,
+    "mve_10": true
+  },
+  "criterio": "respaldado si el corte evaluado cae dentro del conjunto equivalente del ensamble de 10 (peor arrepentimiento <= minimo + tau_10), PLAN_PRUEBAS.md § 17",
+  "respaldado": true
+}

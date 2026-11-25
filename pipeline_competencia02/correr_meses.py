@@ -100,15 +100,47 @@ def diferencias(a: dict, b: dict) -> list[str]:
     return sorted(k for k in set(a) | set(b) if a.get(k) != b.get(k))
 
 
+def condiciones() -> dict:
+    """Estado de la máquina alrededor de cada proceso mensual (§ 17). En Windows, psutil puede informar la frecuencia
+    nominal en lugar de la instantánea: se registra igual, junto con la carga, la RAM libre, la batería y el plan."""
+    try:
+        import psutil
+    except ImportError:
+        return {"disponible": False}
+    f, bat = psutil.cpu_freq(), psutil.sensors_battery()
+    plan = None
+    if sys.platform == "win32":
+        try:
+            out = subprocess.run(["powercfg", "/getactivescheme"], capture_output=True, text=True, timeout=10).stdout
+            plan = out[out.rfind("(") + 1:out.rfind(")")] or None
+        except (OSError, subprocess.SubprocessError):
+            pass
+    return {"momento": time.strftime("%Y-%m-%dT%H:%M:%S"), "frecuencia_mhz": round(f.current) if f else None,
+            "frecuencia_max_mhz": round(f.max) if f else None, "carga_cpu_pct": psutil.cpu_percent(interval=1),
+            "ram_libre_gb": round(psutil.virtual_memory().available / 2**30, 2),
+            "enchufada": bat.power_plugged if bat else None, "bateria_pct": bat.percent if bat else None,
+            "plan_energia": plan, "procesos": len(psutil.pids())}
+
+
+def despierto(activar: bool) -> None:
+    """Evita la suspensión mientras corre la secuencia (ES_CONTINUOUS | ES_SYSTEM_REQUIRED)."""
+    if sys.platform == "win32":
+        import ctypes
+        ctypes.windll.kernel32.SetThreadExecutionState(0x80000000 | (0x00000001 if activar else 0))
+
+
 def lanzar(env: Path, mes: int, origen: Path, falla: str | None = None) -> dict:
     cmd = [sys.executable, "-m", "pipeline_competencia02.mensual", "--ejecucion", str(env), "--mes", str(mes),
            "--copiar-desde", str(origen)]
     entorno = {k: v for k, v in os.environ.items() if k != "PIPELINE_C02_FALLA"}
     if falla:
         entorno["PIPELINE_C02_FALLA"] = falla
+    antes = condiciones()  # fuera del reloj
     t = time.perf_counter()
     rc = subprocess.run(cmd, cwd=RAIZ, env=entorno, stdout=subprocess.DEVNULL).returncode
-    return {"codigo": rc, "pared_s": round(time.perf_counter() - t, 1), "falla_inyectada": falla}
+    pared = round(time.perf_counter() - t, 1)
+    return {"codigo": rc, "pared_s": pared, "falla_inyectada": falla,
+            "maquina": {"antes": antes, "despues": condiciones()}}
 
 
 def leer_json(p: Path) -> dict:
@@ -325,6 +357,7 @@ def main(argv: list[str] | None = None) -> int:
     resumen["ejecucion"] = mostrar(env)
     inicial = {int(m) for m in leer_json(env / "entorno.json")["historia"]["meses"]}
     codigo = 0
+    despierto(True)
     for i, mes in enumerate(meses):
         if mes == a.reintento_en:
             intentos, resumen["reintento"] = provocar_reintento(env, mes, origenes[mes],
@@ -350,6 +383,7 @@ def main(argv: list[str] | None = None) -> int:
         if not r["ok"]:
             codigo = 2
             break
+    despierto(False)
     resumen["retrospectiva"] = {m: (R.cargar(env, m) or {}) for m in completados(env)}
     resumen["fin"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     resumen["ok"] = codigo == 0

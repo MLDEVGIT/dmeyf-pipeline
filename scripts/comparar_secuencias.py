@@ -91,10 +91,13 @@ def main(argv=None) -> int:
                 "solo_anterior": int((x["env"][r] & ~y["env"][r]).sum()),
                 "solo_nueva": int((y["env"][r] & ~x["env"][r]).sum()),
                 "correlacion_de_rangos_score": corr_rangos(x["p"][r], y["p"][r]),
+                "probabilidades_identicas": bool(np.array_equal(x["p"][r], y["p"][r])),
                 "probabilidad_minima_enviada": [float(x["p"][r][x["env"][r]].min()), float(y["p"][r][y["env"][r]].min())]}
         d["coincidencia_entre_estrategias"] = [x["rep"]["coincidencia"]["jaccard"], y["rep"]["coincidencia"]["jaccard"]]
         d["salida_oficial"] = {"jaccard_enviar": jaccard(x["salida_env"], y["salida_env"]),
-                               "correlacion_de_rangos_probabilidad": corr_rangos(x["salida_p"], y["salida_p"])}
+                               "correlacion_de_rangos_probabilidad": corr_rangos(x["salida_p"], y["salida_p"]),
+                               "identica": bool(np.array_equal(x["salida_p"], y["salida_p"])
+                                                and np.array_equal(x["salida_env"], y["salida_env"]))}
         d["tiempo_total_desde_entrada_s"] = [x["est"].get("total_desde_entrada_s"), y["est"].get("total_desde_entrada_s")]
         d["tiempo_pared_con_arranque_s"] = [x["pared"], y["pared"]]
         d["tiempos_internos"] = [x["rep"]["tiempos"], y["rep"]["tiempos"]]
