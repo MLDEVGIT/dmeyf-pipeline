@@ -442,10 +442,13 @@ Las comprobaciones dieron verdadero:
 
   Ninguna alerta del protocolo. La regla de E02 no adopta el multiclase, así que **el binario sigue
   como recomendación**.
-- **El corte del binario cambia de 2,9 % a 4,475 %**, con el mismo procedimiento minimax. La curva
-  suavizada es una meseta entre 2,5 % y 4,475 %, con diferencias de 1–3 % de ganancia, y el mínimo
-  del arrepentimiento cayó en el extremo derecho. El multiclase queda en 2,8 %. Según el protocolo,
-  el catálogo `tc01` usa 4,475 %.
+- **El corte del binario cambia de 2,9 % a 4,475 %**, con el mismo procedimiento minimax. CE01
+  (`PLAN_PRUEBAS.md` § 12) precisó que:
+  - el reentrenamiento corrió los máximos de la curva del ensamble a 4,27 % y 4,42 %;
+  - hay dos zonas casi equivalentes, cerca de 2,2 % y de 3,7 % a 4,65 %;
+  - el 2,9 % cae en el valle entre ambas.
+
+  El multiclase queda en 2,8 %. Según el protocolo, el catálogo `tc01` usa 4,475 %.
 
 **4. Secuencia 202001–202006 con `tc01`**
 - **Carpeta:** `ejecuciones/entornos/secuencia_tc01_202001_202006_20261125T082349`.
@@ -507,22 +510,24 @@ guardadas:
   completo, la pérdida es de 7,3 a 38,0 M. En 202002, con pocas BAJA+2, la ganancia queda negativa.
 - **Ex post.** El máximo ex post de 2020 está entre 1.023 y 5.282 envíos, según el mes y la
   estrategia, y 4,475 % manda entre 6.397 y 6.834.
-- **Qué se hace con esto.** Por R1 no cambia el corte, que se elige con 2019. Sí indica que el
-  procedimiento minimax es frágil en una meseta, y eso pasa a ser el primer pendiente.
+- **Qué se hace con esto.** Por R1 no cambia el corte, que se elige con 2019. Sí motivó revisar la
+  estabilidad del corte con 2019 (CE01, abajo).
 
 ## Pendientes
 
-0. **Corte del binario corregido (antes del vivo).** El minimax eligió 4,475 % en el extremo de una
-   meseta, fuera del rango de las semillas. En 2020, que es sólo monitoreo, ese corte pierde entre 7 y
-   38 M por mes frente a 2,9 %. Hay que acordar con el grupo un criterio de corte robusto y fijarlo
-   con 2019, sin mirar 2020, antes de usar `tc01` en vivo. Opciones:
-   - centro de la meseta;
-   - mediana de las fracciones por semilla;
-   - minimax con penalización por distancia al borde;
-   - umbral de probabilidad.
-
-   Mientras tanto, `tc01` es el catálogo activo, según el protocolo. `e01` sigue disponible con
-   `--catalogo e01`.
+0. **Corte del binario corregido (antes del vivo).** CE01 ya se corrió; protocolo y resultados en
+   `PLAN_PRUEBAS.md` § 11–12, con figuras en `docs/figuras/ce01_*.png`. Usó sólo 2019, con octubre
+   bloqueado; lo motivó el ensayo exploratorio de 2020.
+   - **Minimax.** Es estable para el ensamble, con traslado de 0,55 %. Pero las semillas solas eligen
+     entre 2,5 % y 4,1 %, y el 4,475 % queda fuera de ese rango.
+   - **Mínimo volumen equivalente.** Con τ = 0,82 % (error estándar entre semillas) elige 3,85 %, un
+     14 % menos de envíos. No cumple el criterio fijado: es menos estable entre semillas y traslada
+     peor (2,29 %).
+   - **Decisión.** No se activa otro corte.
+   - **Propuesta, a acordar:** CE02 con más semillas (por ejemplo 20) y, fijada de antemano, una
+     evaluación bajo caída simulada de la prevalencia en 2019.
+   - **Mientras tanto,** `tc01` (4,475 %) es el catálogo activo, según el protocolo, y `e01` (2,9 %)
+     sigue disponible con `--catalogo e01`. Qué usar en vivo lo decide el grupo.
 1. **E06, tratamiento de columnas en cero.** Con 202006 se dimensiona: el 16–17 % de la importancia
    está afectada y la selección cambia en más de la mitad de los clientes según el tratamiento. Hay que
    decidir con 2019 entre advertir, N y L, y medir los falsos positivos de la detección. En 2019

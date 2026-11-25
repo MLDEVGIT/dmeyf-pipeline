@@ -57,7 +57,7 @@ Detalle en `INTEGRACION.md`.
 | Reintentos consistentes | **Resuelta** y probada aislada (`scripts/probar_reintentos.py`) y dentro de la secuencia (202003; el mes siguiente se rechaza hasta reconciliar) |
 | B10 anomalías | 202006 diagnosticado (`resultados/i02_columnas_en_cero_202006.json`); el tratamiento queda para E06 con 2019 |
 | Target consistente | **Resuelta en este repo** (`martin/target-consistente`): regla única `evaluacion/target.py`, target 2019 regenerado, candidatos reentrenados (TC01), catálogo `tc01` activo y secuencia repetida. Falta coordinar el repo de sampling |
-| Corte del binario `tc01` | **Abierta**: el minimax eligió 4,475 % (borde de meseta); fijar un criterio robusto con 2019 antes del vivo |
+| Corte del binario `tc01` | **Abierta**. CE01 (2019): el corte está mal determinado con 5 semillas (2,5–4,1 % según la semilla); el MVE no cumplió el criterio; no se activa otro corte. Próximo: CE02 con más semillas, a acordar |
 | B11, B13 | Sin cambios |
 
 ## Orden de implementación propuesto

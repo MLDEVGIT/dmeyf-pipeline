@@ -1,0 +1,3824 @@
+{
+  "experimento": "CE01 estabilidad del corte",
+  "inicio": "2026-11-25T09:25:02",
+  "plan_pruebas_sha256_al_inicio": "af3c670606c38c4e0d3fbfd40d909c607eae135172726479271979ec1bc33f62",
+  "motivacion": "revisión motivada por el ensayo exploratorio de 2020 (secuencia con tc01); ningún dato de 2020 se usa: todo con 201908 y 201909, target versión 2; octubre bloqueado",
+  "modelos": {
+    "anterior": "ejecuciones/e01/20261124T092205_3832",
+    "corregido": "ejecuciones/tc01/20261124T212203_16624"
+  },
+  "meses": [
+    201908,
+    201909
+  ],
+  "target": "pipeline_competencia02/target_2019_v2.parquet",
+  "grilla": [
+    0.0025,
+    0.08,
+    0.00025
+  ],
+  "ventana_suavizado": 501,
+  "verificaciones": {
+    "desarrollo_igual_a_tc01": true,
+    "predicciones_iguales_a_las_guardadas": {
+      "anterior/binario": true,
+      "anterior/multiclase_p1": true,
+      "corregido/binario": true,
+      "corregido/multiclase_p1": true
+    },
+    "minimax_reproduce/anterior/binario": true,
+    "ganancias_reproducen/anterior/binario": true,
+    "minimax_reproduce/corregido/binario": true,
+    "ganancias_reproducen/corregido/binario": true,
+    "minimax_reproduce/anterior/multiclase_p1": true,
+    "ganancias_reproducen/anterior/multiclase_p1": true,
+    "minimax_reproduce/corregido/multiclase_p1": true,
+    "ganancias_reproducen/corregido/multiclase_p1": true,
+    "todas": true
+  },
+  "descomposicion": {
+    "binario": {
+      "celdas": {
+        "0.028": {
+          "anterior": {
+            "201908": {
+              "envios": 3690,
+              "ganancia": 202.12,
+              "ganancia_suav": 202.06,
+              "semillas_media": 193.54,
+              "semillas_desvio": 2.74
+            },
+            "201909": {
+              "envios": 3736,
+              "ganancia": 248.16,
+              "ganancia_suav": 248.31,
+              "semillas_media": 244.42,
+              "semillas_desvio": 6.0
+            }
+          },
+          "corregido": {
+            "201908": {
+              "envios": 3690,
+              "ganancia": 198.82,
+              "ganancia_suav": 198.92,
+              "semillas_media": 196.19,
+              "semillas_desvio": 2.53
+            },
+            "201909": {
+              "envios": 3736,
+              "ganancia": 242.66,
+              "ganancia_suav": 243.72,
+              "semillas_media": 244.64,
+              "semillas_desvio": 7.44
+            }
+          }
+        },
+        "0.029": {
+          "anterior": {
+            "201908": {
+              "envios": 3822,
+              "ganancia": 202.9,
+              "ganancia_suav": 201.18,
+              "semillas_media": 191.9,
+              "semillas_desvio": 1.91
+            },
+            "201909": {
+              "envios": 3870,
+              "ganancia": 249.97,
+              "ganancia_suav": 248.65,
+              "semillas_media": 243.59,
+              "semillas_desvio": 5.79
+            }
+          },
+          "corregido": {
+            "201908": {
+              "envios": 3822,
+              "ganancia": 197.4,
+              "ganancia_suav": 198.62,
+              "semillas_media": 194.97,
+              "semillas_desvio": 2.95
+            },
+            "201909": {
+              "envios": 3870,
+              "ganancia": 243.38,
+              "ganancia_suav": 244.93,
+              "semillas_media": 243.81,
+              "semillas_desvio": 6.72
+            }
+          }
+        },
+        "0.04475": {
+          "anterior": {
+            "201908": {
+              "envios": 5897,
+              "ganancia": 195.33,
+              "ganancia_suav": 195.82,
+              "semillas_media": 186.31,
+              "semillas_desvio": 4.0
+            },
+            "201909": {
+              "envios": 5971,
+              "ganancia": 245.0,
+              "ganancia_suav": 246.1,
+              "semillas_media": 239.94,
+              "semillas_desvio": 5.31
+            }
+          },
+          "corregido": {
+            "201908": {
+              "envios": 5897,
+              "ganancia": 200.83,
+              "ganancia_suav": 200.98,
+              "semillas_media": 190.49,
+              "semillas_desvio": 4.23
+            },
+            "201909": {
+              "envios": 5971,
+              "ganancia": 253.8,
+              "ganancia_suav": 252.02,
+              "semillas_media": 243.24,
+              "semillas_desvio": 4.16
+            }
+          }
+        }
+      },
+      "efectos_ensamble_sin_suavizar_M": {
+        "201908": {
+          "reentrenamiento_en_2_9": -5.5,
+          "reentrenamiento_en_4_475": 5.5,
+          "corte_con_anteriores": -7.57,
+          "corte_con_corregidos": 3.43,
+          "interaccion": 11.0
+        },
+        "201909": {
+          "reentrenamiento_en_2_9": -6.59,
+          "reentrenamiento_en_4_475": 8.8,
+          "corte_con_anteriores": -4.97,
+          "corte_con_corregidos": 10.42,
+          "interaccion": 15.39
+        }
+      }
+    },
+    "multiclase_p1": {
+      "celdas": {
+        "0.028": {
+          "anterior": {
+            "201908": {
+              "envios": 3690,
+              "ganancia": 208.72,
+              "ganancia_suav": 207.37,
+              "semillas_media": 196.84,
+              "semillas_desvio": 3.05
+            },
+            "201909": {
+              "envios": 3736,
+              "ganancia": 250.36,
+              "ganancia_suav": 250.14,
+              "semillas_media": 241.56,
+              "semillas_desvio": 4.19
+            }
+          },
+          "corregido": {
+            "201908": {
+              "envios": 3690,
+              "ganancia": 208.72,
+              "ganancia_suav": 209.74,
+              "semillas_media": 198.6,
+              "semillas_desvio": 5.36
+            },
+            "201909": {
+              "envios": 3736,
+              "ganancia": 253.66,
+              "ganancia_suav": 252.02,
+              "semillas_media": 245.08,
+              "semillas_desvio": 4.36
+            }
+          }
+        },
+        "0.029": {
+          "anterior": {
+            "201908": {
+              "envios": 3822,
+              "ganancia": 206.19,
+              "ganancia_suav": 207.25,
+              "semillas_media": 197.62,
+              "semillas_desvio": 4.76
+            },
+            "201909": {
+              "envios": 3870,
+              "ganancia": 251.07,
+              "ganancia_suav": 250.69,
+              "semillas_media": 242.28,
+              "semillas_desvio": 4.4
+            }
+          },
+          "corregido": {
+            "201908": {
+              "envios": 3822,
+              "ganancia": 210.59,
+              "ganancia_suav": 209.31,
+              "semillas_media": 197.4,
+              "semillas_desvio": 5.77
+            },
+            "201909": {
+              "envios": 3870,
+              "ganancia": 251.07,
+              "ganancia_suav": 251.28,
+              "semillas_media": 244.69,
+              "semillas_desvio": 4.07
+            }
+          }
+        },
+        "0.04475": {
+          "anterior": {
+            "201908": {
+              "envios": 5897,
+              "ganancia": 193.13,
+              "ganancia_suav": 192.0,
+              "semillas_media": 186.53,
+              "semillas_desvio": 7.34
+            },
+            "201909": {
+              "envios": 5971,
+              "ganancia": 241.7,
+              "ganancia_suav": 242.17,
+              "semillas_media": 235.98,
+              "semillas_desvio": 6.48
+            }
+          },
+          "corregido": {
+            "201908": {
+              "envios": 5897,
+              "ganancia": 187.63,
+              "ganancia_suav": 188.44,
+              "semillas_media": 185.65,
+              "semillas_desvio": 3.43
+            },
+            "201909": {
+              "envios": 5971,
+              "ganancia": 239.5,
+              "ganancia_suav": 239.2,
+              "semillas_media": 232.9,
+              "semillas_desvio": 3.73
+            }
+          }
+        }
+      },
+      "efectos_ensamble_sin_suavizar_M": {
+        "201908": {
+          "reentrenamiento_en_2_9": 4.4,
+          "reentrenamiento_en_4_475": -5.5,
+          "corte_con_anteriores": -13.06,
+          "corte_con_corregidos": -22.96,
+          "interaccion": -9.9
+        },
+        "201909": {
+          "reentrenamiento_en_2_9": 0.0,
+          "reentrenamiento_en_4_475": -2.2,
+          "corte_con_anteriores": -9.37,
+          "corte_con_corregidos": -11.57,
+          "interaccion": -2.2
+        }
+      }
+    }
+  },
+  "revision_minimax": {
+    "binario": {
+      "anterior": {
+        "fraccion_minimax": 0.029,
+        "fraccion_registrada": 0.029,
+        "peor_en_minimax": 0.00866,
+        "arrepentimiento_por_mes_en_minimax": {
+          "201908": 0.00757,
+          "201909": 0.00866
+        },
+        "mes_que_define_el_peor": "201909",
+        "maximos_por_mes": {
+          "201908": {
+            "max_suav": 202.72,
+            "k_max_suav": 3581,
+            "fraccion_max_suav": 0.02718,
+            "max_sin_suavizar": 205.01,
+            "k_max_sin_suavizar": 3345,
+            "fraccion_max_sin_suavizar": 0.02538
+          },
+          "201909": {
+            "max_suav": 250.82,
+            "k_max_suav": 2912,
+            "fraccion_max_suav": 0.02183,
+            "max_sin_suavizar": 253.36,
+            "k_max_sin_suavizar": 2827,
+            "fraccion_max_sin_suavizar": 0.02119
+          }
+        },
+        "top10": [
+          {
+            "fraccion": 0.029,
+            "peor": 0.00866,
+            "201908": 0.00757,
+            "201909": 0.00866
+          },
+          {
+            "fraccion": 0.0245,
+            "peor": 0.00872,
+            "201908": 0.00794,
+            "201909": 0.00872
+          },
+          {
+            "fraccion": 0.02925,
+            "peor": 0.00874,
+            "201908": 0.00874,
+            "201909": 0.00818
+          },
+          {
+            "fraccion": 0.0295,
+            "peor": 0.00931,
+            "201908": 0.00931,
+            "201909": 0.00801
+          },
+          {
+            "fraccion": 0.02875,
+            "peor": 0.00945,
+            "201908": 0.00666,
+            "201909": 0.00945
+          },
+          {
+            "fraccion": 0.02475,
+            "peor": 0.00953,
+            "201908": 0.00568,
+            "201909": 0.00953
+          },
+          {
+            "fraccion": 0.02725,
+            "peor": 0.0097,
+            "201908": 6e-05,
+            "201909": 0.0097
+          },
+          {
+            "fraccion": 0.0275,
+            "peor": 0.00971,
+            "201908": 0.00092,
+            "201909": 0.00971
+          },
+          {
+            "fraccion": 0.0285,
+            "peor": 0.00981,
+            "201908": 0.00578,
+            "201909": 0.00981
+          },
+          {
+            "fraccion": 0.02775,
+            "peor": 0.00983,
+            "201908": 0.00199,
+            "201909": 0.00983
+          }
+        ],
+        "en_2_9": {
+          "peor": 0.00866,
+          "201908": 0.00757,
+          "201909": 0.00866
+        },
+        "mesetas": {
+          "0.0": {
+            "tramos": [
+              [
+                0.029,
+                0.029
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 1,
+            "rango_fraccion": [
+              0.029,
+              0.029
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3822,
+                  3822
+                ],
+                "ganancia_suav_min_max": [
+                  201.18,
+                  201.18
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3870,
+                  3870
+                ],
+                "ganancia_suav_min_max": [
+                  248.65,
+                  248.65
+                ]
+              }
+            }
+          },
+          "0.0025": {
+            "tramos": [
+              [
+                0.02425,
+                0.03
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 24,
+            "rango_fraccion": [
+              0.02425,
+              0.03
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3196,
+                  3954
+                ],
+                "ganancia_suav_min_max": [
+                  200.5,
+                  202.71
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3236,
+                  4003
+                ],
+                "ganancia_suav_min_max": [
+                  248.1,
+                  248.97
+                ]
+              }
+            }
+          },
+          "0.005": {
+            "tramos": [
+              [
+                0.024,
+                0.0305
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 27,
+            "rango_fraccion": [
+              0.024,
+              0.0305
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3163,
+                  4020
+                ],
+                "ganancia_suav_min_max": [
+                  199.99,
+                  202.71
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3203,
+                  4070
+                ],
+                "ganancia_suav_min_max": [
+                  248.1,
+                  249.15
+                ]
+              }
+            }
+          },
+          "0.01": {
+            "tramos": [
+              [
+                0.0235,
+                0.03125
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 32,
+            "rango_fraccion": [
+              0.0235,
+              0.03125
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3097,
+                  4118
+                ],
+                "ganancia_suav_min_max": [
+                  199.08,
+                  202.71
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3136,
+                  4170
+                ],
+                "ganancia_suav_min_max": [
+                  248.1,
+                  249.22
+                ]
+              }
+            }
+          },
+          "0.015": {
+            "tramos": [
+              [
+                0.023,
+                0.03225
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 38,
+            "rango_fraccion": [
+              0.023,
+              0.03225
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3031,
+                  4250
+                ],
+                "ganancia_suav_min_max": [
+                  198.16,
+                  202.71
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3069,
+                  4303
+                ],
+                "ganancia_suav_min_max": [
+                  248.1,
+                  249.79
+                ]
+              }
+            }
+          },
+          "0.02": {
+            "tramos": [
+              [
+                0.0225,
+                0.033
+              ],
+              [
+                0.0415,
+                0.0435
+              ]
+            ],
+            "contigua": false,
+            "fracciones": 52,
+            "rango_fraccion": [
+              0.0225,
+              0.0435
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  2965,
+                  5733
+                ],
+                "ganancia_suav_min_max": [
+                  196.95,
+                  202.71
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3002,
+                  5804
+                ],
+                "ganancia_suav_min_max": [
+                  246.62,
+                  250.43
+                ]
+              }
+            }
+          },
+          "0.03": {
+            "tramos": [
+              [
+                0.02175,
+                0.034
+              ],
+              [
+                0.03925,
+                0.04575
+              ]
+            ],
+            "contigua": false,
+            "fracciones": 77,
+            "rango_fraccion": [
+              0.02175,
+              0.04575
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  2867,
+                  6029
+                ],
+                "ganancia_suav_min_max": [
+                  194.89,
+                  202.71
+                ]
+              },
+              "201909": {
+                "envios": [
+                  2902,
+                  6104
+                ],
+                "ganancia_suav_min_max": [
+                  246.1,
+                  250.81
+                ]
+              }
+            }
+          },
+          "0.05": {
+            "tramos": [
+              [
+                0.02,
+                0.05225
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 130,
+            "rango_fraccion": [
+              0.02,
+              0.05225
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  2636,
+                  6886
+                ],
+                "ganancia_suav_min_max": [
+                  191.07,
+                  202.71
+                ]
+              },
+              "201909": {
+                "envios": [
+                  2669,
+                  6972
+                ],
+                "ganancia_suav_min_max": [
+                  240.28,
+                  250.81
+                ]
+              }
+            }
+          }
+        }
+      },
+      "corregido": {
+        "fraccion_minimax": 0.04475,
+        "fraccion_registrada": 0.04475,
+        "peor_en_minimax": 0.00236,
+        "arrepentimiento_por_mes_en_minimax": {
+          "201908": 0.00236,
+          "201909": 0.00138
+        },
+        "mes_que_define_el_peor": "201908",
+        "maximos_por_mes": {
+          "201908": {
+            "max_suav": 201.46,
+            "k_max_suav": 5624,
+            "fraccion_max_suav": 0.04268,
+            "max_sin_suavizar": 203.5,
+            "k_max_sin_suavizar": 5440,
+            "fraccion_max_sin_suavizar": 0.04128
+          },
+          "201909": {
+            "max_suav": 252.37,
+            "k_max_suav": 5891,
+            "fraccion_max_suav": 0.04415,
+            "max_sin_suavizar": 254.4,
+            "k_max_sin_suavizar": 5989,
+            "fraccion_max_sin_suavizar": 0.04489
+          }
+        },
+        "top10": [
+          {
+            "fraccion": 0.04475,
+            "peor": 0.00236,
+            "201908": 0.00236,
+            "201909": 0.00138
+          },
+          {
+            "fraccion": 0.045,
+            "peor": 0.00246,
+            "201908": 0.00163,
+            "201909": 0.00246
+          },
+          {
+            "fraccion": 0.0435,
+            "peor": 0.00273,
+            "201908": 0.00273,
+            "201909": 0.00146
+          },
+          {
+            "fraccion": 0.04325,
+            "peor": 0.0028,
+            "201908": 0.00146,
+            "201909": 0.0028
+          },
+          {
+            "fraccion": 0.0445,
+            "peor": 0.0036,
+            "201908": 0.0036,
+            "201909": 0.0006
+          },
+          {
+            "fraccion": 0.04375,
+            "peor": 0.00371,
+            "201908": 0.00371,
+            "201909": 0.00056
+          },
+          {
+            "fraccion": 0.04525,
+            "peor": 0.00377,
+            "201908": 0.00162,
+            "201909": 0.00377
+          },
+          {
+            "fraccion": 0.044,
+            "peor": 0.00426,
+            "201908": 0.00426,
+            "201909": 8e-05
+          },
+          {
+            "fraccion": 0.043,
+            "peor": 0.00437,
+            "201908": 0.00058,
+            "201909": 0.00437
+          },
+          {
+            "fraccion": 0.04425,
+            "peor": 0.00448,
+            "201908": 0.00448,
+            "201909": 0.00015
+          }
+        ],
+        "en_2_9": {
+          "peor": 0.02947,
+          "201908": 0.01408,
+          "201909": 0.02947
+        },
+        "mesetas": {
+          "0.0": {
+            "tramos": [
+              [
+                0.04475,
+                0.04475
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 1,
+            "rango_fraccion": [
+              0.04475,
+              0.04475
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  5897,
+                  5897
+                ],
+                "ganancia_suav_min_max": [
+                  200.98,
+                  200.98
+                ]
+              },
+              "201909": {
+                "envios": [
+                  5971,
+                  5971
+                ],
+                "ganancia_suav_min_max": [
+                  252.02,
+                  252.02
+                ]
+              }
+            }
+          },
+          "0.0025": {
+            "tramos": [
+              [
+                0.043,
+                0.04525
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 10,
+            "rango_fraccion": [
+              0.043,
+              0.04525
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  5667,
+                  5963
+                ],
+                "ganancia_suav_min_max": [
+                  200.56,
+                  201.34
+                ]
+              },
+              "201909": {
+                "envios": [
+                  5738,
+                  6038
+                ],
+                "ganancia_suav_min_max": [
+                  251.27,
+                  252.35
+                ]
+              }
+            }
+          },
+          "0.005": {
+            "tramos": [
+              [
+                0.03925,
+                0.0395
+              ],
+              [
+                0.042,
+                0.04575
+              ]
+            ],
+            "contigua": false,
+            "fracciones": 18,
+            "rango_fraccion": [
+              0.03925,
+              0.04575
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  5173,
+                  6029
+                ],
+                "ganancia_suav_min_max": [
+                  200.11,
+                  201.45
+                ]
+              },
+              "201909": {
+                "envios": [
+                  5237,
+                  6104
+                ],
+                "ganancia_suav_min_max": [
+                  250.6,
+                  252.35
+                ]
+              }
+            }
+          },
+          "0.01": {
+            "tramos": [
+              [
+                0.037,
+                0.0465
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 39,
+            "rango_fraccion": [
+              0.037,
+              0.0465
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  4876,
+                  6128
+                ],
+                "ganancia_suav_min_max": [
+                  198.97,
+                  201.45
+                ]
+              },
+              "201909": {
+                "envios": [
+                  4937,
+                  6204
+                ],
+                "ganancia_suav_min_max": [
+                  249.4,
+                  252.35
+                ]
+              }
+            }
+          },
+          "0.015": {
+            "tramos": [
+              [
+                0.0225,
+                0.02375
+              ],
+              [
+                0.03125,
+                0.033
+              ],
+              [
+                0.03625,
+                0.047
+              ]
+            ],
+            "contigua": false,
+            "fracciones": 58,
+            "rango_fraccion": [
+              0.0225,
+              0.047
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  2965,
+                  6194
+                ],
+                "ganancia_suav_min_max": [
+                  198.3,
+                  201.45
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3002,
+                  6271
+                ],
+                "ganancia_suav_min_max": [
+                  248.0,
+                  252.35
+                ]
+              }
+            }
+          },
+          "0.02": {
+            "tramos": [
+              [
+                0.0215,
+                0.0245
+              ],
+              [
+                0.03025,
+                0.04725
+              ]
+            ],
+            "contigua": false,
+            "fracciones": 82,
+            "rango_fraccion": [
+              0.0215,
+              0.04725
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  2834,
+                  6227
+                ],
+                "ganancia_suav_min_max": [
+                  197.07,
+                  201.45
+                ]
+              },
+              "201909": {
+                "envios": [
+                  2869,
+                  6305
+                ],
+                "ganancia_suav_min_max": [
+                  246.73,
+                  252.35
+                ]
+              }
+            }
+          },
+          "0.03": {
+            "tramos": [
+              [
+                0.02025,
+                0.02625
+              ],
+              [
+                0.02875,
+                0.04825
+              ]
+            ],
+            "contigua": false,
+            "fracciones": 104,
+            "rango_fraccion": [
+              0.02025,
+              0.04825
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  2669,
+                  6359
+                ],
+                "ganancia_suav_min_max": [
+                  195.01,
+                  201.45
+                ]
+              },
+              "201909": {
+                "envios": [
+                  2702,
+                  6438
+                ],
+                "ganancia_suav_min_max": [
+                  244.25,
+                  252.35
+                ]
+              }
+            }
+          },
+          "0.05": {
+            "tramos": [
+              [
+                0.0185,
+                0.05025
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 128,
+            "rango_fraccion": [
+              0.0185,
+              0.05025
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  2438,
+                  6622
+                ],
+                "ganancia_suav_min_max": [
+                  191.18,
+                  201.45
+                ]
+              },
+              "201909": {
+                "envios": [
+                  2469,
+                  6705
+                ],
+                "ganancia_suav_min_max": [
+                  239.68,
+                  252.35
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "multiclase_p1": {
+      "anterior": {
+        "fraccion_minimax": 0.028,
+        "fraccion_registrada": 0.028,
+        "peor_en_minimax": 0.00408,
+        "arrepentimiento_por_mes_en_minimax": {
+          "201908": 0.00408,
+          "201909": 0.00245
+        },
+        "mes_que_define_el_peor": "201908",
+        "maximos_por_mes": {
+          "201908": {
+            "max_suav": 208.22,
+            "k_max_suav": 3521,
+            "fraccion_max_suav": 0.02672,
+            "max_sin_suavizar": 210.49,
+            "k_max_sin_suavizar": 3626,
+            "fraccion_max_sin_suavizar": 0.02752
+          },
+          "201909": {
+            "max_suav": 250.76,
+            "k_max_suav": 3814,
+            "fraccion_max_suav": 0.02859,
+            "max_sin_suavizar": 252.84,
+            "k_max_sin_suavizar": 3926,
+            "fraccion_max_sin_suavizar": 0.02943
+          }
+        },
+        "top10": [
+          {
+            "fraccion": 0.028,
+            "peor": 0.00408,
+            "201908": 0.00408,
+            "201909": 0.00245
+          },
+          {
+            "fraccion": 0.02775,
+            "peor": 0.0041,
+            "201908": 0.00314,
+            "201909": 0.0041
+          },
+          {
+            "fraccion": 0.02875,
+            "peor": 0.00432,
+            "201908": 0.00432,
+            "201909": 0.0001
+          },
+          {
+            "fraccion": 0.0285,
+            "peor": 0.00465,
+            "201908": 0.00465,
+            "201909": 9e-05
+          },
+          {
+            "fraccion": 0.029,
+            "peor": 0.00466,
+            "201908": 0.00466,
+            "201909": 0.00026
+          },
+          {
+            "fraccion": 0.02825,
+            "peor": 0.00472,
+            "201908": 0.00472,
+            "201909": 0.00092
+          },
+          {
+            "fraccion": 0.02925,
+            "peor": 0.00533,
+            "201908": 0.00533,
+            "201909": 0.00064
+          },
+          {
+            "fraccion": 0.0275,
+            "peor": 0.00621,
+            "201908": 0.00233,
+            "201909": 0.00621
+          },
+          {
+            "fraccion": 0.0295,
+            "peor": 0.00625,
+            "201908": 0.00625,
+            "201909": 0.00137
+          },
+          {
+            "fraccion": 0.02975,
+            "peor": 0.00678,
+            "201908": 0.00678,
+            "201909": 0.00171
+          }
+        ],
+        "en_2_9": {
+          "peor": 0.00466,
+          "201908": 0.00466,
+          "201909": 0.00026
+        },
+        "mesetas": {
+          "0.0": {
+            "tramos": [
+              [
+                0.028,
+                0.028
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 1,
+            "rango_fraccion": [
+              0.028,
+              0.028
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3690,
+                  3690
+                ],
+                "ganancia_suav_min_max": [
+                  207.37,
+                  207.37
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3736,
+                  3736
+                ],
+                "ganancia_suav_min_max": [
+                  250.14,
+                  250.14
+                ]
+              }
+            }
+          },
+          "0.0025": {
+            "tramos": [
+              [
+                0.0275,
+                0.0295
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 9,
+            "rango_fraccion": [
+              0.0275,
+              0.0295
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3624,
+                  3888
+                ],
+                "ganancia_suav_min_max": [
+                  206.92,
+                  207.73
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3670,
+                  3936
+                ],
+                "ganancia_suav_min_max": [
+                  249.2,
+                  250.74
+                ]
+              }
+            }
+          },
+          "0.005": {
+            "tramos": [
+              [
+                0.02725,
+                0.03125
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 17,
+            "rango_fraccion": [
+              0.02725,
+              0.03125
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3591,
+                  4118
+                ],
+                "ganancia_suav_min_max": [
+                  206.52,
+                  207.91
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3636,
+                  4170
+                ],
+                "ganancia_suav_min_max": [
+                  248.77,
+                  250.74
+                ]
+              }
+            }
+          },
+          "0.01": {
+            "tramos": [
+              [
+                0.0255,
+                0.032
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 27,
+            "rango_fraccion": [
+              0.0255,
+              0.032
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3361,
+                  4217
+                ],
+                "ganancia_suav_min_max": [
+                  206.27,
+                  208.2
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3403,
+                  4270
+                ],
+                "ganancia_suav_min_max": [
+                  247.23,
+                  250.74
+                ]
+              }
+            }
+          },
+          "0.015": {
+            "tramos": [
+              [
+                0.02375,
+                0.03275
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 37,
+            "rango_fraccion": [
+              0.02375,
+              0.03275
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3130,
+                  4316
+                ],
+                "ganancia_suav_min_max": [
+                  204.32,
+                  208.2
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3169,
+                  4370
+                ],
+                "ganancia_suav_min_max": [
+                  246.08,
+                  250.74
+                ]
+              }
+            }
+          },
+          "0.02": {
+            "tramos": [
+              [
+                0.0235,
+                0.03375
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 42,
+            "rango_fraccion": [
+              0.0235,
+              0.03375
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3097,
+                  4448
+                ],
+                "ganancia_suav_min_max": [
+                  203.74,
+                  208.2
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3136,
+                  4503
+                ],
+                "ganancia_suav_min_max": [
+                  244.75,
+                  250.74
+                ]
+              }
+            }
+          },
+          "0.03": {
+            "tramos": [
+              [
+                0.02275,
+                0.036
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 54,
+            "rango_fraccion": [
+              0.02275,
+              0.036
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  2998,
+                  4744
+                ],
+                "ganancia_suav_min_max": [
+                  201.43,
+                  208.2
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3036,
+                  4804
+                ],
+                "ganancia_suav_min_max": [
+                  242.34,
+                  250.74
+                ]
+              }
+            }
+          },
+          "0.05": {
+            "tramos": [
+              [
+                0.02075,
+                0.03925
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 75,
+            "rango_fraccion": [
+              0.02075,
+              0.03925
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  2735,
+                  5173
+                ],
+                "ganancia_suav_min_max": [
+                  197.01,
+                  208.2
+                ]
+              },
+              "201909": {
+                "envios": [
+                  2769,
+                  5237
+                ],
+                "ganancia_suav_min_max": [
+                  241.59,
+                  250.74
+                ]
+              }
+            }
+          }
+        }
+      },
+      "corregido": {
+        "fraccion_minimax": 0.028,
+        "fraccion_registrada": 0.028,
+        "peor_en_minimax": 0.00181,
+        "arrepentimiento_por_mes_en_minimax": {
+          "201908": 3e-05,
+          "201909": 0.00181
+        },
+        "mes_que_define_el_peor": "201909",
+        "maximos_por_mes": {
+          "201908": {
+            "max_suav": 209.75,
+            "k_max_suav": 3685,
+            "fraccion_max_suav": 0.02796,
+            "max_sin_suavizar": 211.06,
+            "k_max_sin_suavizar": 3845,
+            "fraccion_max_sin_suavizar": 0.02918
+          },
+          "201909": {
+            "max_suav": 252.47,
+            "k_max_suav": 3049,
+            "fraccion_max_suav": 0.02285,
+            "max_sin_suavizar": 254.81,
+            "k_max_sin_suavizar": 2974,
+            "fraccion_max_sin_suavizar": 0.02229
+          }
+        },
+        "top10": [
+          {
+            "fraccion": 0.028,
+            "peor": 0.00181,
+            "201908": 3e-05,
+            "201909": 0.00181
+          },
+          {
+            "fraccion": 0.02775,
+            "peor": 0.00192,
+            "201908": 0.00014,
+            "201909": 0.00192
+          },
+          {
+            "fraccion": 0.02825,
+            "peor": 0.00197,
+            "201908": 0.00077,
+            "201909": 0.00197
+          },
+          {
+            "fraccion": 0.0275,
+            "peor": 0.00223,
+            "201908": 0.00054,
+            "201909": 0.00223
+          },
+          {
+            "fraccion": 0.0285,
+            "peor": 0.0023,
+            "201908": 0.00133,
+            "201909": 0.0023
+          },
+          {
+            "fraccion": 0.02725,
+            "peor": 0.00293,
+            "201908": 0.00125,
+            "201909": 0.00293
+          },
+          {
+            "fraccion": 0.02875,
+            "peor": 0.00324,
+            "201908": 0.00187,
+            "201909": 0.00324
+          },
+          {
+            "fraccion": 0.027,
+            "peor": 0.00338,
+            "201908": 0.00207,
+            "201909": 0.00338
+          },
+          {
+            "fraccion": 0.02675,
+            "peor": 0.00382,
+            "201908": 0.00252,
+            "201909": 0.00382
+          },
+          {
+            "fraccion": 0.0265,
+            "peor": 0.00401,
+            "201908": 0.00283,
+            "201909": 0.00401
+          }
+        ],
+        "en_2_9": {
+          "peor": 0.00473,
+          "201908": 0.00205,
+          "201909": 0.00473
+        },
+        "mesetas": {
+          "0.0": {
+            "tramos": [
+              [
+                0.028,
+                0.028
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 1,
+            "rango_fraccion": [
+              0.028,
+              0.028
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3690,
+                  3690
+                ],
+                "ganancia_suav_min_max": [
+                  209.74,
+                  209.74
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3736,
+                  3736
+                ],
+                "ganancia_suav_min_max": [
+                  252.02,
+                  252.02
+                ]
+              }
+            }
+          },
+          "0.0025": {
+            "tramos": [
+              [
+                0.0265,
+                0.02875
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 10,
+            "rango_fraccion": [
+              0.0265,
+              0.02875
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3493,
+                  3789
+                ],
+                "ganancia_suav_min_max": [
+                  209.15,
+                  209.74
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3536,
+                  3836
+                ],
+                "ganancia_suav_min_max": [
+                  251.46,
+                  252.02
+                ]
+              }
+            }
+          },
+          "0.005": {
+            "tramos": [
+              [
+                0.0255,
+                0.029
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 15,
+            "rango_fraccion": [
+              0.0255,
+              0.029
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3361,
+                  3822
+                ],
+                "ganancia_suav_min_max": [
+                  208.34,
+                  209.74
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3403,
+                  3870
+                ],
+                "ganancia_suav_min_max": [
+                  250.84,
+                  252.02
+                ]
+              }
+            }
+          },
+          "0.01": {
+            "tramos": [
+              [
+                0.025,
+                0.02975
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 20,
+            "rango_fraccion": [
+              0.025,
+              0.02975
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3295,
+                  3921
+                ],
+                "ganancia_suav_min_max": [
+                  207.37,
+                  209.74
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3336,
+                  3970
+                ],
+                "ganancia_suav_min_max": [
+                  249.49,
+                  252.02
+                ]
+              }
+            }
+          },
+          "0.015": {
+            "tramos": [
+              [
+                0.02475,
+                0.03025
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 23,
+            "rango_fraccion": [
+              0.02475,
+              0.03025
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3262,
+                  3987
+                ],
+                "ganancia_suav_min_max": [
+                  206.76,
+                  209.74
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3303,
+                  4036
+                ],
+                "ganancia_suav_min_max": [
+                  248.31,
+                  252.02
+                ]
+              }
+            }
+          },
+          "0.02": {
+            "tramos": [
+              [
+                0.02425,
+                0.031
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 28,
+            "rango_fraccion": [
+              0.02425,
+              0.031
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3196,
+                  4086
+                ],
+                "ganancia_suav_min_max": [
+                  205.37,
+                  209.74
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3236,
+                  4136
+                ],
+                "ganancia_suav_min_max": [
+                  246.97,
+                  252.02
+                ]
+              }
+            }
+          },
+          "0.03": {
+            "tramos": [
+              [
+                0.02325,
+                0.03225
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 37,
+            "rango_fraccion": [
+              0.02325,
+              0.03225
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  3064,
+                  4250
+                ],
+                "ganancia_suav_min_max": [
+                  203.28,
+                  209.74
+                ]
+              },
+              "201909": {
+                "envios": [
+                  3102,
+                  4303
+                ],
+                "ganancia_suav_min_max": [
+                  244.61,
+                  252.21
+                ]
+              }
+            }
+          },
+          "0.05": {
+            "tramos": [
+              [
+                0.0195,
+                0.039
+              ]
+            ],
+            "contigua": true,
+            "fracciones": 79,
+            "rango_fraccion": [
+              0.0195,
+              0.039
+            ],
+            "por_mes": {
+              "201908": {
+                "envios": [
+                  2570,
+                  5140
+                ],
+                "ganancia_suav_min_max": [
+                  199.05,
+                  209.74
+                ]
+              },
+              "201909": {
+                "envios": [
+                  2602,
+                  5204
+                ],
+                "ganancia_suav_min_max": [
+                  243.43,
+                  252.46
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sensibilidad": {
+    "binario": {
+      "anterior": {
+        "0.0": {
+          "fraccion": 0.029,
+          "seleccion": {
+            "peor_arrepentimiento": 0.00866,
+            "por_mes": {
+              "201908": {
+                "envios": 3822,
+                "ganancia": 202.9,
+                "ganancia_suav": 201.18,
+                "semillas_media": 191.9,
+                "semillas_desvio": 1.91
+              },
+              "201909": {
+                "envios": 3870,
+                "ganancia": 249.97,
+                "ganancia_suav": 248.65,
+                "semillas_media": 243.59,
+                "semillas_desvio": 5.79
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.02725,
+                "envios": 3636,
+                "ganancia": 248.71,
+                "ganancia_suav": 248.39,
+                "arrepentimiento": 0.0097
+              },
+              "201909->201908": {
+                "fraccion": 0.02175,
+                "envios": 2867,
+                "ganancia": 196.16,
+                "ganancia_suav": 195.0,
+                "arrepentimiento": 0.03809
+              }
+            },
+            "traslado_peor": 0.03809,
+            "fraccion_por_semilla": [
+              0.03875,
+              0.02975,
+              0.025,
+              0.02275,
+              0.028
+            ],
+            "rango_semillas": [
+              0.02275,
+              0.03875
+            ],
+            "desvio_semillas": 0.00616
+          }
+        },
+        "0.0025": {
+          "fraccion": 0.02425,
+          "seleccion": {
+            "peor_arrepentimiento": 0.01026,
+            "por_mes": {
+              "201908": {
+                "envios": 3196,
+                "ganancia": 201.41,
+                "ganancia_suav": 200.64,
+                "semillas_media": 193.27,
+                "semillas_desvio": 2.41
+              },
+              "201909": {
+                "envios": 3236,
+                "ganancia": 248.71,
+                "ganancia_suav": 248.81,
+                "semillas_media": 242.77,
+                "semillas_desvio": 3.7
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.0255,
+                "envios": 3403,
+                "ganancia": 249.62,
+                "ganancia_suav": 248.1,
+                "arrepentimiento": 0.01085
+              },
+              "201909->201908": {
+                "fraccion": 0.02125,
+                "envios": 2801,
+                "ganancia": 195.77,
+                "ganancia_suav": 193.72,
+                "arrepentimiento": 0.04438
+              }
+            },
+            "traslado_peor": 0.04438,
+            "fraccion_por_semilla": [
+              0.0245,
+              0.02925,
+              0.02425,
+              0.0225,
+              0.027
+            ],
+            "rango_semillas": [
+              0.0225,
+              0.02925
+            ],
+            "desvio_semillas": 0.00264
+          }
+        },
+        "0.005": {
+          "fraccion": 0.024,
+          "seleccion": {
+            "peor_arrepentimiento": 0.01257,
+            "por_mes": {
+              "201908": {
+                "envios": 3163,
+                "ganancia": 201.22,
+                "ganancia_suav": 200.17,
+                "semillas_media": 193.08,
+                "semillas_desvio": 2.65
+              },
+              "201909": {
+                "envios": 3203,
+                "ganancia": 248.52,
+                "ganancia_suav": 248.89,
+                "semillas_media": 242.8,
+                "semillas_desvio": 4.29
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.025,
+                "envios": 3336,
+                "ganancia": 247.06,
+                "ganancia_suav": 248.29,
+                "arrepentimiento": 0.0101
+              },
+              "201909->201908": {
+                "fraccion": 0.0205,
+                "envios": 2702,
+                "ganancia": 189.69,
+                "ganancia_suav": 192.34,
+                "arrepentimiento": 0.05119
+              }
+            },
+            "traslado_peor": 0.05119,
+            "fraccion_por_semilla": [
+              0.024,
+              0.02875,
+              0.02375,
+              0.02225,
+              0.02625
+            ],
+            "rango_semillas": [
+              0.02225,
+              0.02875
+            ],
+            "desvio_semillas": 0.00254
+          }
+        },
+        "0.01": {
+          "fraccion": 0.0235,
+          "seleccion": {
+            "peor_arrepentimiento": 0.01796,
+            "por_mes": {
+              "201908": {
+                "envios": 3097,
+                "ganancia": 200.83,
+                "ganancia_suav": 199.08,
+                "semillas_media": 192.25,
+                "semillas_desvio": 2.38
+              },
+              "201909": {
+                "envios": 3136,
+                "ganancia": 249.26,
+                "ganancia_suav": 249.14,
+                "semillas_media": 243.54,
+                "semillas_desvio": 4.5
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.0245,
+                "envios": 3269,
+                "ganancia": 247.8,
+                "ganancia_suav": 248.63,
+                "arrepentimiento": 0.00872
+              },
+              "201909->201908": {
+                "fraccion": 0.01975,
+                "envios": 2603,
+                "ganancia": 190.22,
+                "ganancia_suav": 190.64,
+                "arrepentimiento": 0.05958
+              }
+            },
+            "traslado_peor": 0.05958,
+            "fraccion_por_semilla": [
+              0.0235,
+              0.026,
+              0.02325,
+              0.022,
+              0.0255
+            ],
+            "rango_semillas": [
+              0.022,
+              0.026
+            ],
+            "desvio_semillas": 0.00166
+          }
+        },
+        "0.015": {
+          "fraccion": 0.023,
+          "seleccion": {
+            "peor_arrepentimiento": 0.02197,
+            "por_mes": {
+              "201908": {
+                "envios": 3031,
+                "ganancia": 197.15,
+                "ganancia_suav": 198.27,
+                "semillas_media": 190.11,
+                "semillas_desvio": 1.84
+              },
+              "201909": {
+                "envios": 3069,
+                "ganancia": 250.0,
+                "ganancia_suav": 249.79,
+                "semillas_media": 242.96,
+                "semillas_desvio": 4.83
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.024,
+                "envios": 3203,
+                "ganancia": 248.52,
+                "ganancia_suav": 248.89,
+                "arrepentimiento": 0.0077
+              },
+              "201909->201908": {
+                "fraccion": 0.01925,
+                "envios": 2537,
+                "ganancia": 189.83,
+                "ganancia_suav": 189.51,
+                "arrepentimiento": 0.06514
+              }
+            },
+            "traslado_peor": 0.06514,
+            "fraccion_por_semilla": [
+              0.023,
+              0.0245,
+              0.02275,
+              0.0205,
+              0.024
+            ],
+            "rango_semillas": [
+              0.0205,
+              0.0245
+            ],
+            "desvio_semillas": 0.00155
+          }
+        },
+        "0.02": {
+          "fraccion": 0.0225,
+          "seleccion": {
+            "peor_arrepentimiento": 0.02709,
+            "por_mes": {
+              "201908": {
+                "envios": 2965,
+                "ganancia": 195.66,
+                "ganancia_suav": 197.23,
+                "semillas_media": 189.5,
+                "semillas_desvio": 1.48
+              },
+              "201909": {
+                "envios": 3002,
+                "ganancia": 250.75,
+                "ganancia_suav": 250.43,
+                "semillas_media": 243.26,
+                "semillas_desvio": 5.41
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.0235,
+                "envios": 3136,
+                "ganancia": 249.26,
+                "ganancia_suav": 249.14,
+                "arrepentimiento": 0.0067
+              },
+              "201909->201908": {
+                "fraccion": 0.01875,
+                "envios": 2471,
+                "ganancia": 189.45,
+                "ganancia_suav": 188.79,
+                "arrepentimiento": 0.06871
+              }
+            },
+            "traslado_peor": 0.06871,
+            "fraccion_por_semilla": [
+              0.0225,
+              0.0205,
+              0.0225,
+              0.01925,
+              0.02275
+            ],
+            "rango_semillas": [
+              0.01925,
+              0.02275
+            ],
+            "desvio_semillas": 0.00155
+          }
+        },
+        "0.03": {
+          "fraccion": 0.02175,
+          "seleccion": {
+            "peor_arrepentimiento": 0.03809,
+            "por_mes": {
+              "201908": {
+                "envios": 2867,
+                "ganancia": 196.16,
+                "ganancia_suav": 195.0,
+                "semillas_media": 189.12,
+                "semillas_desvio": 3.86
+              },
+              "201909": {
+                "envios": 2902,
+                "ganancia": 251.29,
+                "ganancia_suav": 250.81,
+                "semillas_media": 241.84,
+                "semillas_desvio": 4.89
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.0225,
+                "envios": 3002,
+                "ganancia": 250.75,
+                "ganancia_suav": 250.43,
+                "arrepentimiento": 0.00155
+              },
+              "201909->201908": {
+                "fraccion": 0.01725,
+                "envios": 2274,
+                "ganancia": 188.26,
+                "ganancia_suav": 186.37,
+                "arrepentimiento": 0.08066
+              }
+            },
+            "traslado_peor": 0.08066,
+            "fraccion_por_semilla": [
+              0.0215,
+              0.01925,
+              0.022,
+              0.01825,
+              0.02075
+            ],
+            "rango_semillas": [
+              0.01825,
+              0.022
+            ],
+            "desvio_semillas": 0.00157
+          }
+        },
+        "0.05": {
+          "fraccion": 0.02,
+          "seleccion": {
+            "peor_arrepentimiento": 0.05664,
+            "por_mes": {
+              "201908": {
+                "envios": 2636,
+                "ganancia": 190.41,
+                "ganancia_suav": 191.24,
+                "semillas_media": 185.79,
+                "semillas_desvio": 3.68
+              },
+              "201909": {
+                "envios": 2669,
+                "ganancia": 250.0,
+                "ganancia_suav": 249.17,
+                "semillas_media": 243.18,
+                "semillas_desvio": 5.58
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.02075,
+                "envios": 2769,
+                "ganancia": 251.65,
+                "ganancia_suav": 249.96,
+                "arrepentimiento": 0.0034
+              },
+              "201909->201908": {
+                "fraccion": 0.015,
+                "envios": 1977,
+                "ganancia": 182.13,
+                "ganancia_suav": 181.18,
+                "arrepentimiento": 0.10626
+              }
+            },
+            "traslado_peor": 0.10626,
+            "fraccion_por_semilla": [
+              0.02,
+              0.01725,
+              0.02075,
+              0.017,
+              0.019
+            ],
+            "rango_semillas": [
+              0.017,
+              0.02075
+            ],
+            "desvio_semillas": 0.00165
+          }
+        },
+        "0.007811483735070533": {
+          "fraccion": 0.02375,
+          "seleccion": {
+            "peor_arrepentimiento": 0.01526,
+            "por_mes": {
+              "201908": {
+                "envios": 3130,
+                "ganancia": 199.93,
+                "ganancia_suav": 199.62,
+                "semillas_media": 193.1,
+                "semillas_desvio": 1.81
+              },
+              "201909": {
+                "envios": 3169,
+                "ganancia": 248.35,
+                "ganancia_suav": 248.99,
+                "semillas_media": 242.63,
+                "semillas_desvio": 4.5
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.02475,
+                "envios": 3303,
+                "ganancia": 246.87,
+                "ganancia_suav": 248.43,
+                "arrepentimiento": 0.00953
+              },
+              "201909->201908": {
+                "fraccion": 0.02,
+                "envios": 2636,
+                "ganancia": 190.41,
+                "ganancia_suav": 191.24,
+                "arrepentimiento": 0.05664
+              }
+            },
+            "traslado_peor": 0.05664,
+            "fraccion_por_semilla": [
+              0.02375,
+              0.0265,
+              0.0235,
+              0.022,
+              0.02575
+            ],
+            "rango_semillas": [
+              0.022,
+              0.0265
+            ],
+            "desvio_semillas": 0.00181
+          }
+        },
+        "tau_calculado": 0.007811483735070533
+      },
+      "corregido": {
+        "0.0": {
+          "fraccion": 0.04475,
+          "seleccion": {
+            "peor_arrepentimiento": 0.00236,
+            "por_mes": {
+              "201908": {
+                "envios": 5897,
+                "ganancia": 200.83,
+                "ganancia_suav": 200.98,
+                "semillas_media": 190.49,
+                "semillas_desvio": 4.23
+              },
+              "201909": {
+                "envios": 5971,
+                "ganancia": 253.8,
+                "ganancia_suav": 252.02,
+                "semillas_media": 243.24,
+                "semillas_desvio": 4.16
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.04275,
+                "envios": 5704,
+                "ganancia": 252.34,
+                "ganancia_suav": 250.99,
+                "arrepentimiento": 0.00545
+              },
+              "201909->201908": {
+                "fraccion": 0.044,
+                "envios": 5799,
+                "ganancia": 202.43,
+                "ganancia_suav": 200.6,
+                "arrepentimiento": 0.00426
+              }
+            },
+            "traslado_peor": 0.00545,
+            "fraccion_por_semilla": [
+              0.02475,
+              0.04075,
+              0.0265,
+              0.02825,
+              0.03425
+            ],
+            "rango_semillas": [
+              0.02475,
+              0.04075
+            ],
+            "desvio_semillas": 0.00657
+          }
+        },
+        "0.0025": {
+          "fraccion": 0.043,
+          "seleccion": {
+            "peor_arrepentimiento": 0.00437,
+            "por_mes": {
+              "201908": {
+                "envios": 5667,
+                "ganancia": 200.56,
+                "ganancia_suav": 201.34,
+                "semillas_media": 192.86,
+                "semillas_desvio": 5.22
+              },
+              "201909": {
+                "envios": 5738,
+                "ganancia": 253.6,
+                "ganancia_suav": 251.27,
+                "semillas_media": 243.93,
+                "semillas_desvio": 4.94
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.04,
+                "envios": 5337,
+                "ganancia": 250.33,
+                "ganancia_suav": 250.35,
+                "arrepentimiento": 0.00801
+              },
+              "201909->201908": {
+                "fraccion": 0.0435,
+                "envios": 5733,
+                "ganancia": 202.04,
+                "ganancia_suav": 200.91,
+                "arrepentimiento": 0.00273
+              }
+            },
+            "traslado_peor": 0.00801,
+            "fraccion_por_semilla": [
+              0.02325,
+              0.0405,
+              0.02525,
+              0.027,
+              0.03375
+            ],
+            "rango_semillas": [
+              0.02325,
+              0.0405
+            ],
+            "desvio_semillas": 0.0071
+          }
+        },
+        "0.005": {
+          "fraccion": 0.03925,
+          "seleccion": {
+            "peor_arrepentimiento": 0.00676,
+            "por_mes": {
+              "201908": {
+                "envios": 5173,
+                "ganancia": 200.94,
+                "ganancia_suav": 200.11,
+                "semillas_media": 192.58,
+                "semillas_desvio": 3.26
+              },
+              "201909": {
+                "envios": 5237,
+                "ganancia": 251.98,
+                "ganancia_suav": 250.67,
+                "semillas_media": 247.58,
+                "semillas_desvio": 6.12
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.0395,
+                "envios": 5271,
+                "ganancia": 251.05,
+                "ganancia_suav": 250.62,
+                "arrepentimiento": 0.00692
+              },
+              "201909->201908": {
+                "fraccion": 0.043,
+                "envios": 5667,
+                "ganancia": 200.56,
+                "ganancia_suav": 201.34,
+                "arrepentimiento": 0.00058
+              }
+            },
+            "traslado_peor": 0.00692,
+            "fraccion_por_semilla": [
+              0.023,
+              0.04025,
+              0.0245,
+              0.0265,
+              0.03325
+            ],
+            "rango_semillas": [
+              0.023,
+              0.04025
+            ],
+            "desvio_semillas": 0.00717
+          }
+        },
+        "0.01": {
+          "fraccion": 0.037,
+          "seleccion": {
+            "peor_arrepentimiento": 0.01234,
+            "por_mes": {
+              "201908": {
+                "envios": 4876,
+                "ganancia": 199.21,
+                "ganancia_suav": 198.97,
+                "semillas_media": 191.73,
+                "semillas_desvio": 1.97
+              },
+              "201909": {
+                "envios": 4937,
+                "ganancia": 248.13,
+                "ganancia_suav": 249.4,
+                "semillas_media": 244.61,
+                "semillas_desvio": 8.21
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.024,
+                "envios": 3203,
+                "ganancia": 247.42,
+                "ganancia_suav": 247.93,
+                "arrepentimiento": 0.01759
+              },
+              "201909->201908": {
+                "fraccion": 0.0375,
+                "envios": 4942,
+                "ganancia": 197.4,
+                "ganancia_suav": 199.09,
+                "arrepentimiento": 0.01177
+              }
+            },
+            "traslado_peor": 0.01759,
+            "fraccion_por_semilla": [
+              0.0225,
+              0.02975,
+              0.0235,
+              0.0255,
+              0.032
+            ],
+            "rango_semillas": [
+              0.0225,
+              0.032
+            ],
+            "desvio_semillas": 0.00408
+          }
+        },
+        "0.015": {
+          "fraccion": 0.0225,
+          "seleccion": {
+            "peor_arrepentimiento": 0.0171,
+            "por_mes": {
+              "201908": {
+                "envios": 2965,
+                "ganancia": 198.96,
+                "ganancia_suav": 198.3,
+                "semillas_media": 192.8,
+                "semillas_desvio": 2.87
+              },
+              "201909": {
+                "envios": 3002,
+                "ganancia": 250.75,
+                "ganancia_suav": 248.06,
+                "semillas_media": 243.26,
+                "semillas_desvio": 5.18
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.02275,
+                "envios": 3036,
+                "ganancia": 252.01,
+                "ganancia_suav": 248.38,
+                "arrepentimiento": 0.01581
+              },
+              "201909->201908": {
+                "fraccion": 0.03675,
+                "envios": 4843,
+                "ganancia": 197.92,
+                "ganancia_suav": 198.97,
+                "arrepentimiento": 0.01235
+              }
+            },
+            "traslado_peor": 0.01581,
+            "fraccion_por_semilla": [
+              0.022,
+              0.02625,
+              0.02275,
+              0.02175,
+              0.0265
+            ],
+            "rango_semillas": [
+              0.02175,
+              0.0265
+            ],
+            "desvio_semillas": 0.00234
+          }
+        },
+        "0.02": {
+          "fraccion": 0.0215,
+          "seleccion": {
+            "peor_arrepentimiento": 0.02229,
+            "por_mes": {
+              "201908": {
+                "envios": 2834,
+                "ganancia": 197.06,
+                "ganancia_suav": 197.07,
+                "semillas_media": 189.59,
+                "semillas_desvio": 2.63
+              },
+              "201909": {
+                "envios": 2869,
+                "ganancia": 248.9,
+                "ganancia_suav": 246.74,
+                "semillas_media": 242.08,
+                "semillas_desvio": 3.43
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.02175,
+                "envios": 2902,
+                "ganancia": 249.09,
+                "ganancia_suav": 247.07,
+                "arrepentimiento": 0.02101
+              },
+              "201909->201908": {
+                "fraccion": 0.022,
+                "envios": 2900,
+                "ganancia": 197.45,
+                "ganancia_suav": 197.71,
+                "arrepentimiento": 0.01859
+              }
+            },
+            "traslado_peor": 0.02101,
+            "fraccion_por_semilla": [
+              0.02175,
+              0.02525,
+              0.02175,
+              0.02075,
+              0.02575
+            ],
+            "rango_semillas": [
+              0.02075,
+              0.02575
+            ],
+            "desvio_semillas": 0.00228
+          }
+        },
+        "0.03": {
+          "fraccion": 0.02025,
+          "seleccion": {
+            "peor_arrepentimiento": 0.03202,
+            "por_mes": {
+              "201908": {
+                "envios": 2669,
+                "ganancia": 195.0,
+                "ganancia_suav": 195.01,
+                "semillas_media": 188.4,
+                "semillas_desvio": 2.69
+              },
+              "201909": {
+                "envios": 2702,
+                "ganancia": 242.5,
+                "ganancia_suav": 244.88,
+                "semillas_media": 241.62,
+                "semillas_desvio": 4.56
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.0205,
+                "envios": 2736,
+                "ganancia": 242.66,
+                "ganancia_suav": 245.23,
+                "arrepentimiento": 0.02828
+              },
+              "201909->201908": {
+                "fraccion": 0.0165,
+                "envios": 2175,
+                "ganancia": 186.59,
+                "ganancia_suav": 187.22,
+                "arrepentimiento": 0.0707
+              }
+            },
+            "traslado_peor": 0.0707,
+            "fraccion_por_semilla": [
+              0.021,
+              0.02225,
+              0.02025,
+              0.01875,
+              0.02275
+            ],
+            "rango_semillas": [
+              0.01875,
+              0.02275
+            ],
+            "desvio_semillas": 0.0016
+          }
+        },
+        "0.05": {
+          "fraccion": 0.0185,
+          "seleccion": {
+            "peor_arrepentimiento": 0.05101,
+            "por_mes": {
+              "201908": {
+                "envios": 2438,
+                "ganancia": 191.46,
+                "ganancia_suav": 191.18,
+                "semillas_media": 184.63,
+                "semillas_desvio": 2.85
+              },
+              "201909": {
+                "envios": 2469,
+                "ganancia": 243.4,
+                "ganancia_suav": 245.15,
+                "semillas_media": 240.32,
+                "semillas_desvio": 5.12
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.01875,
+                "envios": 2502,
+                "ganancia": 244.69,
+                "ganancia_suav": 244.97,
+                "arrepentimiento": 0.02934
+              },
+              "201909->201908": {
+                "fraccion": 0.015,
+                "envios": 1977,
+                "ganancia": 183.23,
+                "ganancia_suav": 184.41,
+                "arrepentimiento": 0.08461
+              }
+            },
+            "traslado_peor": 0.08461,
+            "fraccion_por_semilla": [
+              0.01875,
+              0.02,
+              0.019,
+              0.0175,
+              0.02075
+            ],
+            "rango_semillas": [
+              0.0175,
+              0.02075
+            ],
+            "desvio_semillas": 0.00124
+          }
+        },
+        "0.008199861879748012": {
+          "fraccion": 0.0385,
+          "seleccion": {
+            "peor_arrepentimiento": 0.00994,
+            "por_mes": {
+              "201908": {
+                "envios": 5074,
+                "ganancia": 199.26,
+                "ganancia_suav": 199.46,
+                "semillas_media": 192.66,
+                "semillas_desvio": 1.91
+              },
+              "201909": {
+                "envios": 5137,
+                "ganancia": 252.53,
+                "ganancia_suav": 250.41,
+                "semillas_media": 246.15,
+                "semillas_desvio": 6.39
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.02475,
+                "envios": 3303,
+                "ganancia": 245.77,
+                "ganancia_suav": 246.6,
+                "arrepentimiento": 0.02287
+              },
+              "201909->201908": {
+                "fraccion": 0.03825,
+                "envios": 5041,
+                "ganancia": 197.97,
+                "ganancia_suav": 199.28,
+                "arrepentimiento": 0.01083
+              }
+            },
+            "traslado_peor": 0.02287,
+            "fraccion_por_semilla": [
+              0.02275,
+              0.03975,
+              0.024,
+              0.026,
+              0.0325
+            ],
+            "rango_semillas": [
+              0.02275,
+              0.03975
+            ],
+            "desvio_semillas": 0.00709
+          }
+        },
+        "tau_calculado": 0.008199861879748012
+      }
+    },
+    "multiclase_p1": {
+      "anterior": {
+        "0.0": {
+          "fraccion": 0.028,
+          "seleccion": {
+            "peor_arrepentimiento": 0.00408,
+            "por_mes": {
+              "201908": {
+                "envios": 3690,
+                "ganancia": 208.72,
+                "ganancia_suav": 207.37,
+                "semillas_media": 196.84,
+                "semillas_desvio": 3.05
+              },
+              "201909": {
+                "envios": 3736,
+                "ganancia": 250.36,
+                "ganancia_suav": 250.14,
+                "semillas_media": 241.56,
+                "semillas_desvio": 4.19
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.02675,
+                "envios": 3569,
+                "ganancia": 250.55,
+                "ganancia_suav": 248.14,
+                "arrepentimiento": 0.01045
+              },
+              "201909->201908": {
+                "fraccion": 0.0285,
+                "envios": 3756,
+                "ganancia": 206.91,
+                "ganancia_suav": 207.25,
+                "arrepentimiento": 0.00465
+              }
+            },
+            "traslado_peor": 0.01045,
+            "fraccion_por_semilla": [
+              0.03375,
+              0.025,
+              0.031,
+              0.025,
+              0.0305
+            ],
+            "rango_semillas": [
+              0.025,
+              0.03375
+            ],
+            "desvio_semillas": 0.0039
+          }
+        },
+        "0.0025": {
+          "fraccion": 0.0275,
+          "seleccion": {
+            "peor_arrepentimiento": 0.00621,
+            "por_mes": {
+              "201908": {
+                "envios": 3624,
+                "ganancia": 209.44,
+                "ganancia_suav": 207.73,
+                "semillas_media": 196.02,
+                "semillas_desvio": 4.36
+              },
+              "201909": {
+                "envios": 3670,
+                "ganancia": 249.97,
+                "ganancia_suav": 249.2,
+                "semillas_media": 241.62,
+                "semillas_desvio": 4.58
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.026,
+                "envios": 3469,
+                "ganancia": 245.6,
+                "ganancia_suav": 247.51,
+                "arrepentimiento": 0.01293
+              },
+              "201909->201908": {
+                "fraccion": 0.028,
+                "envios": 3690,
+                "ganancia": 208.72,
+                "ganancia_suav": 207.37,
+                "arrepentimiento": 0.00408
+              }
+            },
+            "traslado_peor": 0.01293,
+            "fraccion_por_semilla": [
+              0.03325,
+              0.0245,
+              0.03,
+              0.02425,
+              0.03
+            ],
+            "rango_semillas": [
+              0.02425,
+              0.03325
+            ],
+            "desvio_semillas": 0.00391
+          }
+        },
+        "0.005": {
+          "fraccion": 0.02725,
+          "seleccion": {
+            "peor_arrepentimiento": 0.00785,
+            "por_mes": {
+              "201908": {
+                "envios": 3591,
+                "ganancia": 209.25,
+                "ganancia_suav": 207.91,
+                "semillas_media": 196.49,
+                "semillas_desvio": 4.44
+              },
+              "201909": {
+                "envios": 3636,
+                "ganancia": 249.81,
+                "ganancia_suav": 248.79,
+                "semillas_media": 241.23,
+                "semillas_desvio": 5.89
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.02575,
+                "envios": 3436,
+                "ganancia": 244.31,
+                "ganancia_suav": 247.36,
+                "arrepentimiento": 0.01353
+              },
+              "201909->201908": {
+                "fraccion": 0.02775,
+                "envios": 3657,
+                "ganancia": 209.63,
+                "ganancia_suav": 207.56,
+                "arrepentimiento": 0.00314
+              }
+            },
+            "traslado_peor": 0.01353,
+            "fraccion_por_semilla": [
+              0.0325,
+              0.024,
+              0.02925,
+              0.024,
+              0.02925
+            ],
+            "rango_semillas": [
+              0.024,
+              0.0325
+            ],
+            "desvio_semillas": 0.00371
+          }
+        },
+        "0.01": {
+          "fraccion": 0.0255,
+          "seleccion": {
+            "peor_arrepentimiento": 0.01406,
+            "por_mes": {
+              "201908": {
+                "envios": 3361,
+                "ganancia": 207.87,
+                "ganancia_suav": 207.03,
+                "semillas_media": 197.31,
+                "semillas_desvio": 6.49
+              },
+              "201909": {
+                "envios": 3403,
+                "ganancia": 245.22,
+                "ganancia_suav": 247.23,
+                "semillas_media": 241.92,
+                "semillas_desvio": 5.77
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.025,
+                "envios": 3336,
+                "ganancia": 247.06,
+                "ganancia_suav": 246.95,
+                "arrepentimiento": 0.01517
+              },
+              "201909->201908": {
+                "fraccion": 0.027,
+                "envios": 3558,
+                "ganancia": 209.06,
+                "ganancia_suav": 208.02,
+                "arrepentimiento": 0.00094
+              }
+            },
+            "traslado_peor": 0.01517,
+            "fraccion_por_semilla": [
+              0.0295,
+              0.02225,
+              0.02525,
+              0.02325,
+              0.02825
+            ],
+            "rango_semillas": [
+              0.02225,
+              0.0295
+            ],
+            "desvio_semillas": 0.00312
+          }
+        },
+        "0.015": {
+          "fraccion": 0.02375,
+          "seleccion": {
+            "peor_arrepentimiento": 0.01874,
+            "por_mes": {
+              "201908": {
+                "envios": 3130,
+                "ganancia": 204.32,
+                "ganancia_suav": 204.32,
+                "semillas_media": 194.43,
+                "semillas_desvio": 4.92
+              },
+              "201909": {
+                "envios": 3169,
+                "ganancia": 248.35,
+                "ganancia_suav": 247.0,
+                "semillas_media": 243.07,
+                "semillas_desvio": 5.79
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.02425,
+                "envios": 3236,
+                "ganancia": 247.61,
+                "ganancia_suav": 246.79,
+                "arrepentimiento": 0.01582
+              },
+              "201909->201908": {
+                "fraccion": 0.02025,
+                "envios": 2669,
+                "ganancia": 195.0,
+                "ganancia_suav": 196.16,
+                "arrepentimiento": 0.05793
+              }
+            },
+            "traslado_peor": 0.05793,
+            "fraccion_por_semilla": [
+              0.02875,
+              0.02175,
+              0.0245,
+              0.02275,
+              0.027
+            ],
+            "rango_semillas": [
+              0.02175,
+              0.02875
+            ],
+            "desvio_semillas": 0.00291
+          }
+        },
+        "0.02": {
+          "fraccion": 0.0235,
+          "seleccion": {
+            "peor_arrepentimiento": 0.02149,
+            "por_mes": {
+              "201908": {
+                "envios": 3097,
+                "ganancia": 203.03,
+                "ganancia_suav": 203.74,
+                "semillas_media": 194.01,
+                "semillas_desvio": 5.36
+              },
+              "201909": {
+                "envios": 3136,
+                "ganancia": 248.16,
+                "ganancia_suav": 247.11,
+                "semillas_media": 243.54,
+                "semillas_desvio": 5.94
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.02375,
+                "envios": 3169,
+                "ganancia": 248.35,
+                "ganancia_suav": 247.0,
+                "arrepentimiento": 0.015
+              },
+              "201909->201908": {
+                "fraccion": 0.0195,
+                "envios": 2570,
+                "ganancia": 196.62,
+                "ganancia_suav": 195.43,
+                "arrepentimiento": 0.06139
+              }
+            },
+            "traslado_peor": 0.06139,
+            "fraccion_por_semilla": [
+              0.02775,
+              0.0215,
+              0.02425,
+              0.0225,
+              0.0215
+            ],
+            "rango_semillas": [
+              0.0215,
+              0.02775
+            ],
+            "desvio_semillas": 0.00263
+          }
+        },
+        "0.03": {
+          "fraccion": 0.02275,
+          "seleccion": {
+            "peor_arrepentimiento": 0.03261,
+            "por_mes": {
+              "201908": {
+                "envios": 2998,
+                "ganancia": 203.56,
+                "ganancia_suav": 201.43,
+                "semillas_media": 193.88,
+                "semillas_desvio": 4.15
+              },
+              "201909": {
+                "envios": 3036,
+                "ganancia": 246.51,
+                "ganancia_suav": 247.21,
+                "semillas_media": 242.77,
+                "semillas_desvio": 5.75
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.023,
+                "envios": 3069,
+                "ganancia": 246.7,
+                "ganancia_suav": 247.21,
+                "arrepentimiento": 0.01415
+              },
+              "201909->201908": {
+                "fraccion": 0.01825,
+                "envios": 2405,
+                "ganancia": 194.56,
+                "ganancia_suav": 195.36,
+                "arrepentimiento": 0.06173
+              }
+            },
+            "traslado_peor": 0.06173,
+            "fraccion_por_semilla": [
+              0.024,
+              0.0205,
+              0.02375,
+              0.02175,
+              0.02
+            ],
+            "rango_semillas": [
+              0.02,
+              0.024
+            ],
+            "desvio_semillas": 0.00183
+          }
+        },
+        "0.05": {
+          "fraccion": 0.02075,
+          "seleccion": {
+            "peor_arrepentimiento": 0.05381,
+            "por_mes": {
+              "201908": {
+                "envios": 2735,
+                "ganancia": 194.29,
+                "ganancia_suav": 197.01,
+                "semillas_media": 190.33,
+                "semillas_desvio": 4.71
+              },
+              "201909": {
+                "envios": 2769,
+                "ganancia": 248.35,
+                "ganancia_suav": 247.57,
+                "semillas_media": 239.77,
+                "semillas_desvio": 8.5
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.02125,
+                "envios": 2836,
+                "ganancia": 246.51,
+                "ganancia_suav": 247.68,
+                "arrepentimiento": 0.01227
+              },
+              "201909->201908": {
+                "fraccion": 0.01525,
+                "envios": 2010,
+                "ganancia": 190.03,
+                "ganancia_suav": 189.01,
+                "arrepentimiento": 0.09225
+              }
+            },
+            "traslado_peor": 0.09225,
+            "fraccion_por_semilla": [
+              0.01925,
+              0.019,
+              0.0225,
+              0.02,
+              0.01825
+            ],
+            "rango_semillas": [
+              0.01825,
+              0.0225
+            ],
+            "desvio_semillas": 0.00163
+          }
+        },
+        "0.009178915521779824": {
+          "fraccion": 0.026,
+          "seleccion": {
+            "peor_arrepentimiento": 0.01293,
+            "por_mes": {
+              "201908": {
+                "envios": 3427,
+                "ganancia": 208.26,
+                "ganancia_suav": 207.79,
+                "semillas_media": 196.6,
+                "semillas_desvio": 6.49
+              },
+              "201909": {
+                "envios": 3469,
+                "ganancia": 245.6,
+                "ganancia_suav": 247.51,
+                "semillas_media": 242.74,
+                "semillas_desvio": 7.28
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.02525,
+                "envios": 3369,
+                "ganancia": 246.15,
+                "ganancia_suav": 247.11,
+                "arrepentimiento": 0.01456
+              },
+              "201909->201908": {
+                "fraccion": 0.027,
+                "envios": 3558,
+                "ganancia": 209.06,
+                "ganancia_suav": 208.02,
+                "arrepentimiento": 0.00094
+              }
+            },
+            "traslado_peor": 0.01456,
+            "fraccion_por_semilla": [
+              0.0315,
+              0.02225,
+              0.02525,
+              0.0235,
+              0.02825
+            ],
+            "rango_semillas": [
+              0.02225,
+              0.0315
+            ],
+            "desvio_semillas": 0.00374
+          }
+        },
+        "tau_calculado": 0.009178915521779824
+      },
+      "corregido": {
+        "0.0": {
+          "fraccion": 0.028,
+          "seleccion": {
+            "peor_arrepentimiento": 0.00181,
+            "por_mes": {
+              "201908": {
+                "envios": 3690,
+                "ganancia": 208.72,
+                "ganancia_suav": 209.74,
+                "semillas_media": 198.6,
+                "semillas_desvio": 5.36
+              },
+              "201909": {
+                "envios": 3736,
+                "ganancia": 253.66,
+                "ganancia_suav": 252.02,
+                "semillas_media": 245.08,
+                "semillas_desvio": 4.36
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.028,
+                "envios": 3736,
+                "ganancia": 253.66,
+                "ganancia_suav": 252.02,
+                "arrepentimiento": 0.00181
+              },
+              "201909->201908": {
+                "fraccion": 0.02275,
+                "envios": 2998,
+                "ganancia": 200.25,
+                "ganancia_suav": 202.38,
+                "arrepentimiento": 0.03512
+              }
+            },
+            "traslado_peor": 0.03512,
+            "fraccion_por_semilla": [
+              0.027,
+              0.03275,
+              0.0245,
+              0.03375,
+              0.03475
+            ],
+            "rango_semillas": [
+              0.0245,
+              0.03475
+            ],
+            "desvio_semillas": 0.00453
+          }
+        },
+        "0.0025": {
+          "fraccion": 0.0265,
+          "seleccion": {
+            "peor_arrepentimiento": 0.00401,
+            "por_mes": {
+              "201908": {
+                "envios": 3493,
+                "ganancia": 209.74,
+                "ganancia_suav": 209.15,
+                "semillas_media": 197.86,
+                "semillas_desvio": 4.22
+              },
+              "201909": {
+                "envios": 3536,
+                "ganancia": 250.36,
+                "ganancia_suav": 251.46,
+                "semillas_media": 244.2,
+                "semillas_desvio": 4.44
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.02675,
+                "envios": 3569,
+                "ganancia": 251.65,
+                "ganancia_suav": 251.51,
+                "arrepentimiento": 0.00382
+              },
+              "201909->201908": {
+                "fraccion": 0.02125,
+                "envios": 2801,
+                "ganancia": 202.37,
+                "ganancia_suav": 200.48,
+                "arrepentimiento": 0.04419
+              }
+            },
+            "traslado_peor": 0.04419,
+            "fraccion_por_semilla": [
+              0.02425,
+              0.032,
+              0.024,
+              0.03325,
+              0.03175
+            ],
+            "rango_semillas": [
+              0.024,
+              0.03325
+            ],
+            "desvio_semillas": 0.00453
+          }
+        },
+        "0.005": {
+          "fraccion": 0.0255,
+          "seleccion": {
+            "peor_arrepentimiento": 0.00669,
+            "por_mes": {
+              "201908": {
+                "envios": 3361,
+                "ganancia": 207.87,
+                "ganancia_suav": 208.34,
+                "semillas_media": 198.85,
+                "semillas_desvio": 5.84
+              },
+              "201909": {
+                "envios": 3403,
+                "ganancia": 248.52,
+                "ganancia_suav": 250.84,
+                "semillas_media": 244.12,
+                "semillas_desvio": 4.19
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.026,
+                "envios": 3469,
+                "ganancia": 250.0,
+                "ganancia_suav": 251.22,
+                "arrepentimiento": 0.00496
+              },
+              "201909->201908": {
+                "fraccion": 0.021,
+                "envios": 2768,
+                "ganancia": 201.08,
+                "ganancia_suav": 200.28,
+                "arrepentimiento": 0.04512
+              }
+            },
+            "traslado_peor": 0.04512,
+            "fraccion_por_semilla": [
+              0.024,
+              0.0315,
+              0.02375,
+              0.02625,
+              0.03125
+            ],
+            "rango_semillas": [
+              0.02375,
+              0.0315
+            ],
+            "desvio_semillas": 0.0038
+          }
+        },
+        "0.01": {
+          "fraccion": 0.025,
+          "seleccion": {
+            "peor_arrepentimiento": 0.01133,
+            "por_mes": {
+              "201908": {
+                "envios": 3295,
+                "ganancia": 208.59,
+                "ganancia_suav": 207.37,
+                "semillas_media": 198.91,
+                "semillas_desvio": 6.66
+              },
+              "201909": {
+                "envios": 3336,
+                "ganancia": 250.36,
+                "ganancia_suav": 250.63,
+                "semillas_media": 243.98,
+                "semillas_desvio": 3.76
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.02525,
+                "envios": 3369,
+                "ganancia": 249.45,
+                "ganancia_suav": 250.66,
+                "arrepentimiento": 0.00718
+              },
+              "201909->201908": {
+                "fraccion": 0.02,
+                "envios": 2636,
+                "ganancia": 201.41,
+                "ganancia_suav": 199.84,
+                "arrepentimiento": 0.04722
+              }
+            },
+            "traslado_peor": 0.04722,
+            "fraccion_por_semilla": [
+              0.0235,
+              0.03075,
+              0.02325,
+              0.02525,
+              0.03025
+            ],
+            "rango_semillas": [
+              0.02325,
+              0.03075
+            ],
+            "desvio_semillas": 0.00365
+          }
+        },
+        "0.015": {
+          "fraccion": 0.02475,
+          "seleccion": {
+            "peor_arrepentimiento": 0.01424,
+            "por_mes": {
+              "201908": {
+                "envios": 3262,
+                "ganancia": 209.5,
+                "ganancia_suav": 206.76,
+                "semillas_media": 198.72,
+                "semillas_desvio": 7.56
+              },
+              "201909": {
+                "envios": 3303,
+                "ganancia": 251.27,
+                "ganancia_suav": 250.68,
+                "semillas_media": 243.35,
+                "semillas_desvio": 3.34
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.02475,
+                "envios": 3303,
+                "ganancia": 251.27,
+                "ganancia_suav": 250.68,
+                "arrepentimiento": 0.0071
+              },
+              "201909->201908": {
+                "fraccion": 0.0195,
+                "envios": 2570,
+                "ganancia": 197.72,
+                "ganancia_suav": 199.16,
+                "arrepentimiento": 0.05045
+              }
+            },
+            "traslado_peor": 0.05045,
+            "fraccion_por_semilla": [
+              0.023,
+              0.0205,
+              0.02275,
+              0.0245,
+              0.02925
+            ],
+            "rango_semillas": [
+              0.0205,
+              0.02925
+            ],
+            "desvio_semillas": 0.00326
+          }
+        },
+        "0.02": {
+          "fraccion": 0.02425,
+          "seleccion": {
+            "peor_arrepentimiento": 0.02088,
+            "por_mes": {
+              "201908": {
+                "envios": 3196,
+                "ganancia": 208.01,
+                "ganancia_suav": 205.37,
+                "semillas_media": 197.67,
+                "semillas_desvio": 8.61
+              },
+              "201909": {
+                "envios": 3236,
+                "ganancia": 250.91,
+                "ganancia_suav": 251.15,
+                "semillas_media": 243.87,
+                "semillas_desvio": 2.87
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.0245,
+                "envios": 3269,
+                "ganancia": 251.1,
+                "ganancia_suav": 250.9,
+                "arrepentimiento": 0.00625
+              },
+              "201909->201908": {
+                "fraccion": 0.01875,
+                "envios": 2471,
+                "ganancia": 198.25,
+                "ganancia_suav": 198.05,
+                "arrepentimiento": 0.05574
+              }
+            },
+            "traslado_peor": 0.05574,
+            "fraccion_por_semilla": [
+              0.02275,
+              0.0195,
+              0.0225,
+              0.024,
+              0.02775
+            ],
+            "rango_semillas": [
+              0.0195,
+              0.02775
+            ],
+            "desvio_semillas": 0.00299
+          }
+        },
+        "0.03": {
+          "fraccion": 0.02325,
+          "seleccion": {
+            "peor_arrepentimiento": 0.03083,
+            "por_mes": {
+              "201908": {
+                "envios": 3064,
+                "ganancia": 201.74,
+                "ganancia_suav": 203.28,
+                "semillas_media": 196.02,
+                "semillas_desvio": 8.85
+              },
+              "201909": {
+                "envios": 3102,
+                "ganancia": 252.4,
+                "ganancia_suav": 252.21,
+                "semillas_media": 243.59,
+                "semillas_desvio": 5.1
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.0235,
+                "envios": 3136,
+                "ganancia": 251.46,
+                "ganancia_suav": 252.0,
+                "arrepentimiento": 0.00188
+              },
+              "201909->201908": {
+                "fraccion": 0.01775,
+                "envios": 2340,
+                "ganancia": 195.25,
+                "ganancia_suav": 196.69,
+                "arrepentimiento": 0.06226
+              }
+            },
+            "traslado_peor": 0.06226,
+            "fraccion_por_semilla": [
+              0.022,
+              0.01825,
+              0.02175,
+              0.02225,
+              0.0235
+            ],
+            "rango_semillas": [
+              0.01825,
+              0.0235
+            ],
+            "desvio_semillas": 0.00196
+          }
+        },
+        "0.05": {
+          "fraccion": 0.0195,
+          "seleccion": {
+            "peor_arrepentimiento": 0.05045,
+            "por_mes": {
+              "201908": {
+                "envios": 2570,
+                "ganancia": 197.72,
+                "ganancia_suav": 199.16,
+                "semillas_media": 187.6,
+                "semillas_desvio": 6.39
+              },
+              "201909": {
+                "envios": 2602,
+                "ganancia": 249.65,
+                "ganancia_suav": 249.16,
+                "semillas_media": 238.65,
+                "semillas_desvio": 7.74
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.01975,
+                "envios": 2636,
+                "ganancia": 249.81,
+                "ganancia_suav": 249.57,
+                "arrepentimiento": 0.01152
+              },
+              "201909->201908": {
+                "fraccion": 0.016,
+                "envios": 2109,
+                "ganancia": 195.0,
+                "ganancia_suav": 192.51,
+                "arrepentimiento": 0.08217
+              }
+            },
+            "traslado_peor": 0.08217,
+            "fraccion_por_semilla": [
+              0.0185,
+              0.01625,
+              0.02075,
+              0.01925,
+              0.0215
+            ],
+            "rango_semillas": [
+              0.01625,
+              0.0215
+            ],
+            "desvio_semillas": 0.00205
+          }
+        },
+        "0.008846106046825583": {
+          "fraccion": 0.02525,
+          "seleccion": {
+            "peor_arrepentimiento": 0.00889,
+            "por_mes": {
+              "201908": {
+                "envios": 3328,
+                "ganancia": 207.68,
+                "ganancia_suav": 207.88,
+                "semillas_media": 198.88,
+                "semillas_desvio": 6.07
+              },
+              "201909": {
+                "envios": 3369,
+                "ganancia": 249.45,
+                "ganancia_suav": 250.66,
+                "semillas_media": 244.17,
+                "semillas_desvio": 4.22
+              }
+            }
+          },
+          "evaluacion": {
+            "traslado": {
+              "201908->201909": {
+                "fraccion": 0.0255,
+                "envios": 3403,
+                "ganancia": 248.52,
+                "ganancia_suav": 250.84,
+                "arrepentimiento": 0.00645
+              },
+              "201909->201908": {
+                "fraccion": 0.02025,
+                "envios": 2669,
+                "ganancia": 201.6,
+                "ganancia_suav": 199.96,
+                "arrepentimiento": 0.04667
+              }
+            },
+            "traslado_peor": 0.04667,
+            "fraccion_por_semilla": [
+              0.0235,
+              0.031,
+              0.02325,
+              0.02525,
+              0.0305
+            ],
+            "rango_semillas": [
+              0.02325,
+              0.031
+            ],
+            "desvio_semillas": 0.00378
+          }
+        },
+        "tau_calculado": 0.008846106046825583
+      }
+    }
+  },
+  "tau_calculado": {
+    "binario": {
+      "anterior": 0.007811483735070533,
+      "corregido": 0.008199861879748012
+    },
+    "multiclase_p1": {
+      "anterior": 0.009178915521779824,
+      "corregido": 0.008846106046825583
+    }
+  },
+  "mve": {
+    "binario": {
+      "anterior": 0.02375,
+      "corregido": 0.0385
+    },
+    "multiclase_p1": {
+      "anterior": 0.026,
+      "corregido": 0.02525
+    }
+  },
+  "recomendacion_binario_corregido": {
+    "condiciones": {
+      "1_rango_semillas_no_mayor": false,
+      "2_traslado_peor_no_supera_en_mas_de_tau": false,
+      "3_envia_menos": true
+    },
+    "tau": 0.008199861879748012,
+    "minimax": 0.04475,
+    "mve": 0.0385,
+    "recomienda": "discutir / conservar minimax",
+    "activa": false,
+    "nota": "no activa ningún corte; tc01 y las corridas existentes no cambian"
+  },
+  "figuras": [
+    "docs/figuras/ce01_curvas_ganancia.png",
+    "docs/figuras/ce01_peor_arrepentimiento.png",
+    "docs/figuras/ce01_sensibilidad_tau.png"
+  ],
+  "segundos": 447.5
+}
