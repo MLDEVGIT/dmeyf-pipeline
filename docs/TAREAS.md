@@ -40,22 +40,23 @@ los meses de ensayo 202001–202006. **Eso contradice R1** y queda descartado.
 | B12 | Consistencia entre entrenamiento y producción (F2 pregunta 2) | `features.py` compartido. Igualdad bit a bit verificada en 201908. | Mantener una sola implementación para cualquier feature nueva y repetir la prueba de equivalencia. |
 | B13 | R8 criterios de evaluación | Desconocidos en detalle. | Transcribirlos y mapear cada uno a un entregable. |
 
-## Avance de la integración (24-nov, rama `martin/integracion-estrategias`)
+## Avance de la integración (24-nov, ramas `martin/integracion-estrategias` y `martin/ensayo-secuencia`)
 
 Detalle en `INTEGRACION.md`.
 
 | Brecha | Estado |
 |---|---|
-| B1 entrada `input/<yyyymm>.csv` | **Resuelta** en `mensual.py`. Falta adaptar `correr_meses.py` |
+| B1 entrada `input/<yyyymm>.csv` | **Resuelta** en `mensual.py` y en `correr_meses.py` |
 | B2 salida `output/churn_<yyyymm>.csv` | **Resuelta**, en la carpeta de ejecución |
-| B3 reloj de 15 min | **Resuelta**: tiempo desde la entrada hasta el reporte (104 s en 202001). Falta medir en la máquina del vivo (T12) |
+| B3 reloj de 15 min | **Resuelta**: 172–194 s por mes en la secuencia 202001–202006, con el arranque del proceso. Falta medir en la máquina del vivo (T12) |
 | B5 dos modelos | **Resuelta en forma provisional**: binario y multiclase de E01, sin optimizar |
 | B6 recomendación por cliente | **Provisional**: binario; el multiclase queda como alternativa en el reporte |
 | B7 cortes con 2019 | **Resuelta**: fracción por estrategia, de E01 (201908–201909) |
-| B8 reporte acumulativo | **Resuelta**: una fila por mes, derivada, con métricas con target pendientes. Falta el drift contra 2019 (PSI) |
-| B9 historia para el vivo | **Resuelta**: `preparar_ejecucion` arma la historia desde 2019 y desde los insumos de 2020, con cobertura validada. Falta ensayar la secuencia 202001–202006 |
-| Reintentos consistentes | **Resuelta** y probada (`scripts/probar_reintentos.py`) |
-| B10, B11, B13 | Sin cambios |
+| B8 reporte acumulativo | **Resuelta**: una fila por mes, derivada; métricas con target completadas a posteriori (`retrospectiva.py`). Falta el drift contra 2019 (PSI) |
+| B9 historia para el vivo | **Resuelta** y ensayada en secuencia 202001–202006: la historia crece sólo con los meses recibidos |
+| Reintentos consistentes | **Resuelta** y probada aislada (`scripts/probar_reintentos.py`) y dentro de la secuencia (202003; el mes siguiente se rechaza hasta reconciliar) |
+| B10 anomalías | 202006 diagnosticado (`resultados/i02_columnas_en_cero_202006.json`); el tratamiento queda para E06 con 2019 |
+| B11, B13 | Sin cambios |
 
 ## Orden de implementación propuesto
 

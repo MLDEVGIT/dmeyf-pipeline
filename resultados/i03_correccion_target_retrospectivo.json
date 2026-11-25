@@ -1,0 +1,186 @@
+{
+  "fecha": "2026-11-24",
+  "ejecucion": "secuencia_202001_202006_20261124T200817",
+  "hallazgo": "La retrospectiva versión 1 copiaba experimento_sampling/03 (igual al código docente R): un cliente presente en t, ausente en t+1 y presente en t+2 quedaba BAJA+1. En las etiquetas oficiales de competencia 01 ese caso es CONTINUA (15 de 15; experimento_sampling/reportes/03b_validacion_target_competencia01.json).",
+  "regla_v1": {
+    "BAJA+1": "ausente en t+1",
+    "BAJA+2": "presente en t+1 y ausente en t+2",
+    "CONTINUA": "presente en t+1 y en t+2"
+  },
+  "regla_v2": {
+    "CONTINUA": "presente en t+2",
+    "BAJA+2": "presente en t+1 y ausente en t+2",
+    "BAJA+1": "ausente en t+1 y en t+2",
+    "verificacion": "0 diferencias con las etiquetas oficiales de competencia 01 en 983.061 filas (03b)"
+  },
+  "implementaciones": {
+    "experimento_sampling/03_construir_target.py y entrenamiento/legado/03_construir_target.py": "v1 (lead sobre la grilla); son idénticos",
+    "código docente R (shift lead), replicado en 03b": "v1; 0 diferencias con 03",
+    "etiquetas oficiales de competencia 01": "v2; 15 diferencias con v1, todas clientes que vuelven en t+2",
+    "pipeline_competencia02/retrospectiva.py": "v1 hasta af6bb61; v2 desde esta corrección",
+    "evaluacion/particiones.py": "lee el target de 2019 construido con 03 (v1); no lo reconstruye"
+  },
+  "recalculo": {
+    "fuente": "decisiones_<mes>.csv ya publicadas + presencia en historia/; sin volver a predecir",
+    "publicado_sin_cambios": true,
+    "por_mes": {
+      "202001": {
+        "clientes_que_cambian_de_clase": 2,
+        "transiciones": {
+          "BAJA+1->CONTINUA": 2
+        },
+        "de_ellos_enviados": {
+          "binario_e01_300r": 0,
+          "multiclase_p1_e01_300r": 0
+        },
+        "estado": "completa",
+        "metricas_que_cambian": [
+          [
+            "clases.BAJA+1",
+            608,
+            606
+          ],
+          [
+            "clases.CONTINUA",
+            141800,
+            141802
+          ],
+          [
+            "clases.definitivas",
+            null,
+            true
+          ]
+        ]
+      },
+      "202002": {
+        "clientes_que_cambian_de_clase": 0,
+        "transiciones": {
+          "BAJA+1->CONTINUA": 0
+        },
+        "de_ellos_enviados": {
+          "binario_e01_300r": 0,
+          "multiclase_p1_e01_300r": 0
+        },
+        "estado": "completa",
+        "metricas_que_cambian": [
+          [
+            "clases.definitivas",
+            null,
+            true
+          ]
+        ]
+      },
+      "202003": {
+        "clientes_que_cambian_de_clase": 0,
+        "transiciones": {
+          "BAJA+1->CONTINUA": 0
+        },
+        "de_ellos_enviados": {
+          "binario_e01_300r": 0,
+          "multiclase_p1_e01_300r": 0
+        },
+        "estado": "completa",
+        "metricas_que_cambian": [
+          [
+            "clases.definitivas",
+            null,
+            true
+          ]
+        ]
+      },
+      "202004": {
+        "clientes_que_cambian_de_clase": 1,
+        "transiciones": {
+          "BAJA+1->CONTINUA": 1
+        },
+        "de_ellos_enviados": {
+          "binario_e01_300r": 0,
+          "multiclase_p1_e01_300r": 0
+        },
+        "estado": "completa",
+        "metricas_que_cambian": [
+          [
+            "clases.BAJA+1",
+            399,
+            398
+          ],
+          [
+            "clases.CONTINUA",
+            147908,
+            147909
+          ],
+          [
+            "clases.definitivas",
+            null,
+            true
+          ]
+        ]
+      },
+      "202005": {
+        "etiquetas_v1_ya_no_definitivas": 527,
+        "estado": "parcial",
+        "metricas_que_cambian": [
+          [
+            "clases.BAJA+1",
+            527,
+            null
+          ],
+          [
+            "clases.definitivas",
+            null,
+            false
+          ],
+          [
+            "binario_e01_300r.baja1_enviados",
+            315,
+            null
+          ],
+          [
+            "binario_e01_300r.provisional_ausentes_en_t1_enviados",
+            null,
+            315
+          ],
+          [
+            "multiclase_p1_e01_300r.baja1_enviados",
+            290,
+            null
+          ],
+          [
+            "multiclase_p1_e01_300r.provisional_ausentes_en_t1_enviados",
+            null,
+            290
+          ]
+        ]
+      },
+      "202006": {
+        "estado": "pendiente",
+        "metricas_que_cambian": []
+      }
+    },
+    "resumen": {
+      "clientes_que_cambian_de_clase": 3,
+      "transicion": "BAJA+1 -> CONTINUA (2 en 202001, 1 en 202004)",
+      "de_ellos_enviados": 0,
+      "metricas_que_cambian": [
+        "202001 BAJA+1 608->606",
+        "202001 CONTINUA 141800->141802",
+        "202004 BAJA+1 399->398",
+        "202004 CONTINUA 147908->147909"
+      ],
+      "metricas_sin_cambio": "ganancia, aciertos, precisión, recall y AUC de BAJA+2, máximos ex post, BAJA+1 enviados, diferencia de ganancia entre estrategias",
+      "202005_parcial": "527 BAJA+1 y 315/290 enviados dejan de presentarse como definitivos: pasan a 'ausentes en t+1, provisional'"
+    }
+  },
+  "efecto_en_2019_sin_corregir": {
+    "filas_v1_BAJA+1_que_v2_seria_CONTINUA": {
+      "201903": 1,
+      "201904": 0,
+      "201905": 1,
+      "201906": 3,
+      "201908": 12,
+      "201909": 0
+    },
+    "calculo": "sólo presencia de clientes del Parquet de 2019 (sin leer etiquetas); 201910 no se informa (reservado)",
+    "consecuencia": "E01/E02 entrenaron con 5 filas positivas que por la regla oficial son CONTINUA (201903–201906) y el desarrollo tiene 12 en 201908. BAJA+2 no cambia, así que la ganancia y los cortes de desarrollo no cambian; el target de entrenamiento sí, levemente. No se reentrenó: queda como decisión pendiente."
+  }
+}

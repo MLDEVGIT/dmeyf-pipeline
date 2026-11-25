@@ -5,7 +5,9 @@ Estrategias (catálogo copiado en <ejecución>/modelos/estrategias.json; ver cat
   alternativa                multiclase_p1_e01_300r  score = P(BAJA+2) (multiclase, BAJA+1 con peso 1)
 Cada una promedia las probabilidades de sus 5 semillas y corta en su propia fracción de clientes.
 La salida oficial lleva la recomendación (binario). Las predicciones y decisiones de las dos quedan en
-diagnosticos/<mes>/ y se comparan en el reporte. Ninguna métrica con target se calcula: figuran como pendientes.
+diagnosticos/<mes>/ y se comparan en el reporte. Al publicar, las métricas con target del mes son pendientes; se
+completan después en el reporte acumulado (retrospectiva.py) cuando llegan los dos meses siguientes, con la etiqueta
+reconstruida por presencia. Son monitoreo: no cambian modelos, cortes ni salidas.
 
 Etapas: recepción -> validación (ejecutar_mes.validar_entrada) -> perfil de columnas -> features del mes (features.py,
 la misma definición del entrenamiento) -> verificación de features (nombres, orden, tipos, lags) -> inferencia de las
@@ -14,6 +16,8 @@ oficial) -> estado completado -> reporte acumulado regenerado.
 
 Reintentos y consistencia:
   - un mes completado se rechaza (código 4) sin tocar nada; un mes con otro intento vivo, también;
+  - un mes se rechaza (código 4) si algún mes anterior ya procesado no está completado (por ejemplo, murió después
+    de publicar): primero hay que reintentar ese mes, que se reconcilia;
   - si un intento anterior murió después de publicar, el mes se reconcilia: si diagnóstico, historia y salida
     existen y sus sha256 coinciden con reporte.json, se marca completado sin recalcular; si hay piezas sueltas,
     se mueven a cuarentena y el mes se recalcula;
@@ -47,6 +51,7 @@ import pandas as pd
 import psutil
 
 from . import incidentes as I
+from . import retrospectiva as R
 from .ejecutar_mes import (EXIT_DUPLICADO, EXIT_FALLA, HILOS, VECTORES_POR_BLOQUE, Entorno, adquirir, anterior,
                            cerrar, distribucion, escribir_atomico, escribir_csv, memoria, perfil_mes, publicar,
                            sha256, validar_entrada)
@@ -223,7 +228,7 @@ def reconciliar(env: Entorno, mes: int, ejecucion: str, pol: I.Politica) -> str:
     return "cuarentena"
 
 
-def fila_reporte(env: Entorno, mes: int, est: dict) -> dict:
+def fila_reporte(env: Entorno, mes: int, est: dict, retro: dict | None = None) -> dict:
     rep = json.loads((rutas_mes(env, mes)["diagnostico"] / "reporte.json").read_text(encoding="utf-8"))
     e = {x["rol"]: x for x in rep["estrategias"]}
     rec, alt = e[ROL_OFICIAL], e[ROL_ALTERNATIVA]
@@ -245,15 +250,33 @@ def fila_reporte(env: Entorno, mes: int, est: dict) -> dict:
                      f"{pref}_p99": d["cuantiles"]["0.99"], f"{pref}_media": d["media"],
                      f"{pref}_saturados": d["exactamente_0"] + d["exactamente_1"], f"{pref}_fraccion": x["fraccion"],
                      f"{pref}_envios": x["envios"], f"{pref}_prob_minima_enviada": x["probabilidad_minima_enviada"],
-                     f"{pref}_modelos_sha12": "|".join(m[:12] for m in x["modelos_sha256"]),
-                     f"{pref}_ganancia": "pendiente", f"{pref}_auc_baja2": "pendiente"})
+                     f"{pref}_modelos_sha12": "|".join(m[:12] for m in x["modelos_sha256"])})
     c = rep["coincidencia"]
     fila.update({"coinc_interseccion": c["interseccion"], "coinc_solo_recomendacion": c["solo_recomendacion"],
                  "coinc_solo_alternativa": c["solo_alternativa"], "coinc_jaccard": c["jaccard"],
-                 "coinc_correlacion_rangos": c["correlacion_de_rangos"],
-                 "metricas_con_target": rep["metricas_con_target"]["estado"],
-                 "etiqueta_completa_requiere_lista_de": rep["metricas_con_target"]["requiere_listas_de"],
-                 "catalogo_sha12": rep["catalogo"]["sha256"][:12]})
+                 "coinc_correlacion_rangos": c["correlacion_de_rangos"]})
+    # Métricas retrospectivas (retrospectiva.py): sólo cuando ya llegaron los meses que etiquetan este mes
+    disp = (retro or {}).get("disponibilidad", {})
+    estado_target = "error" if (retro or {}).get("error") else disp.get("estado", rep["metricas_con_target"]["estado"])
+    fila.update({"metricas_con_target": estado_target,
+                 "etiqueta_falta_lista_de": "|".join(disp.get("falta", [])) if disp else
+                 rep["metricas_con_target"]["requiere_listas_de"]})
+    # Clases sólo si son definitivas (t+1 y t+2 recibidos); con t+1 solo, los ausentes van aparte como provisionales
+    cl = (retro or {}).get("clases", {})
+    prov = (retro or {}).get("provisional", {})
+    fila.update({"target_regla_version": (retro or {}).get("version", ""),
+                 "target_baja1": cl.get("BAJA+1", "pendiente"), "target_baja2": cl.get("BAJA+2", "pendiente"),
+                 "target_continua": cl.get("CONTINUA", "pendiente"),
+                 "target_retornos_t1_ausente_t2_presente": cl.get("ausentes_en_t1_que_vuelven_en_t2", "pendiente"),
+                 "provisional_ausentes_t1": prov.get("ausentes_en_t1", "")})
+    por_rol = {x["rol"]: x for x in (retro or {}).get("estrategias", [])}
+    for pref, rol in (("rec", ROL_OFICIAL), ("alt", ROL_ALTERNATIVA)):
+        r = por_rol.get(rol, {})
+        for k in ("baja1_enviados", "baja2_enviados", "ganancia", "auc_baja2", "ganancia_maxima_ex_post",
+                  "envios_ganancia_maxima_ex_post"):
+            fila[f"{pref}_{k}"] = r.get(k, "pendiente")
+        fila[f"{pref}_provisional_ausentes_t1_enviados"] = r.get("provisional_ausentes_en_t1_enviados", "")
+    fila["catalogo_sha12"] = rep["catalogo"]["sha256"][:12]
     for k, v in t.items():
         fila[f"t_{k}"] = v
     fila["t_total_desde_entrada_s"] = est.get("total_desde_entrada_s")
@@ -262,13 +285,27 @@ def fila_reporte(env: Entorno, mes: int, est: dict) -> dict:
 
 
 def regenerar_reporte(env: Entorno) -> Path:
-    """Una fila por mes completado, ordenadas; se reescribe entero (tmp + replace)."""
+    """Una fila por mes completado, ordenadas; se reescribe entero (tmp + replace).
+
+    Antes actualiza la retrospectiva (retrospectiva.actualizar) de los meses completados. Si falla, el reporte se
+    regenera igual y esas filas quedan con metricas_con_target = error (la salida ya publicada no depende de esto).
+    """
     reg = env.raiz / "registro"
-    filas = []
+    completados = {}
     for p in sorted((reg / "meses").glob("*.json")):
         est = json.loads(p.read_text(encoding="utf-8"))
         if est.get("estado") == "completado":
-            filas.append(fila_reporte(env, int(est["mes"]), est))
+            completados[int(est["mes"])] = est
+    retro_error = None
+    try:
+        R.actualizar(env.raiz, list(completados))
+    except Exception as e:  # noqa: BLE001
+        retro_error = repr(e)
+        log.warning("No se pudo actualizar la retrospectiva: %s", retro_error)
+    filas = []
+    for mes, est in sorted(completados.items()):
+        retro = {"error": retro_error} if retro_error else R.cargar(env.raiz, mes)
+        filas.append(fila_reporte(env, mes, est, retro))
     destino = reg / "reporte_acumulado.csv"
     tmp = destino.with_name(destino.name + f".tmp-{os.getpid()}")
     campos = []
@@ -280,6 +317,24 @@ def regenerar_reporte(env: Entorno) -> Path:
         w.writerows(filas)
     os.replace(tmp, destino)
     return destino
+
+
+def previos_sin_completar(env: Entorno, mes: int) -> list[int]:
+    """Meses anteriores a `mes` que están en historia/ o en el registro sin ser historia inicial ni completados.
+
+    Caso típico: un intento murió después de publicar (la historia del mes ya está) y antes de marcarlo completado.
+    El mes siguiente no se procesa hasta reintentar (y así reconciliar) ese mes.
+    """
+    inicial = {int(m) for m in env.cfg["historia"]["meses"]}
+    candidatos = {int(p.stem.split("=")[1]) for p in (env.raiz / "historia").glob("foto_mes=*.parquet")}
+    candidatos |= {int(p.stem) for p in (env.raiz / "registro" / "meses").glob("*.json")}
+    out = []
+    for m in sorted(c for c in candidatos if c < mes and c not in inicial):
+        est_path = env.raiz / "registro" / "meses" / f"{m}.json"
+        est = json.loads(est_path.read_text(encoding="utf-8")) if est_path.exists() else {}
+        if est.get("estado") != "completado":
+            out.append(m)
+    return out
 
 
 def anotar_intento(env: Entorno, rep: dict):
@@ -343,6 +398,13 @@ def main(argv: list[str] | None = None) -> int:
 
     if str(mes) in env.cfg["historia"]["meses"]:
         rep.update({"estado": "rechazada", "motivo": f"{mes} es parte de la historia inicial de la ejecución"})
+        anotar_intento(env, rep)
+        log.error(rep["motivo"])
+        return EXIT_DUPLICADO
+    pendientes = previos_sin_completar(env, mes)
+    if pendientes:
+        rep.update({"estado": "rechazada", "motivo": f"meses previos procesados sin estado completado: {pendientes}; "
+                                                     f"reintentá esos meses primero"})
         anotar_intento(env, rep)
         log.error(rep["motivo"])
         return EXIT_DUPLICADO

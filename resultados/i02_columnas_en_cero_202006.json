@@ -1,0 +1,503 @@
+{
+  "mes": 202006,
+  "ejecucion": "secuencia_202001_202006_20261124T200817",
+  "columnas_observados_en_cero": 47,
+  "sin_precedente_en_historia": [
+    "active_quarter",
+    "catm_trx",
+    "catm_trx_other",
+    "ccajas_consultas",
+    "ccajas_depositos",
+    "ccajas_extracciones",
+    "ccajas_otras",
+    "ccajas_transacciones",
+    "ccallcenter_transacciones",
+    "ccheques_depositados",
+    "ccheques_depositados_rechazados",
+    "ccheques_emitidos",
+    "ccheques_emitidos_rechazados",
+    "cextraccion_autoservicio",
+    "cmobile_app_trx",
+    "ctarjeta_debito_transacciones",
+    "ctarjeta_master_transacciones",
+    "ctarjeta_visa_transacciones",
+    "internet",
+    "matm",
+    "matm_other",
+    "mautoservicio",
+    "mcheques_depositados",
+    "mcheques_depositados_rechazados",
+    "mcheques_emitidos",
+    "mcheques_emitidos_rechazados",
+    "mcuentas_saldo",
+    "mextraccion_autoservicio",
+    "mtarjeta_master_consumo",
+    "mtarjeta_visa_consumo",
+    "tcallcenter",
+    "thomebanking",
+    "tmobile_app"
+  ],
+  "con_precedente": [
+    "ccajeros_propios_descuentos",
+    "ccomisiones_otras",
+    "chomebanking_transacciones",
+    "ctarjeta_master_descuentos",
+    "ctarjeta_visa_descuentos",
+    "mactivos_margen",
+    "mcajeros_propios_descuentos",
+    "mcomisiones",
+    "mcomisiones_otras",
+    "mpasivos_margen",
+    "mrentabilidad",
+    "mrentabilidad_annual",
+    "mtarjeta_master_descuentos",
+    "mtarjeta_visa_descuentos"
+  ],
+  "historia_revisada": "201901–202005",
+  "columnas": {
+    "active_quarter": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.9813
+    },
+    "catm_trx": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.3545
+    },
+    "catm_trx_other": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.1785
+    },
+    "ccajas_consultas": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.0392
+    },
+    "ccajas_depositos": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.0108
+    },
+    "ccajas_extracciones": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.0692
+    },
+    "ccajas_otras": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.008
+    },
+    "ccajas_transacciones": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.0873
+    },
+    "ccajeros_propios_descuentos": {
+      "meses_previos_todo_en_cero": [
+        201910,
+        202002
+      ],
+      "fraccion_no_cero_mes_anterior": 0.0217
+    },
+    "ccallcenter_transacciones": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.1173
+    },
+    "ccheques_depositados": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.0346
+    },
+    "ccheques_depositados_rechazados": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.0041
+    },
+    "ccheques_emitidos": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.0264
+    },
+    "ccheques_emitidos_rechazados": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.0037
+    },
+    "ccomisiones_otras": {
+      "meses_previos_todo_en_cero": [
+        201905,
+        201910
+      ],
+      "fraccion_no_cero_mes_anterior": 0.9651
+    },
+    "cextraccion_autoservicio": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.4433
+    },
+    "chomebanking_transacciones": {
+      "meses_previos_todo_en_cero": [
+        201910
+      ],
+      "fraccion_no_cero_mes_anterior": 0.8299
+    },
+    "cmobile_app_trx": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.613
+    },
+    "ctarjeta_debito_transacciones": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.6217
+    },
+    "ctarjeta_master_descuentos": {
+      "meses_previos_todo_en_cero": [
+        201910,
+        202002
+      ],
+      "fraccion_no_cero_mes_anterior": 0.0352
+    },
+    "ctarjeta_master_transacciones": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.3275
+    },
+    "ctarjeta_visa_descuentos": {
+      "meses_previos_todo_en_cero": [
+        201910,
+        202002
+      ],
+      "fraccion_no_cero_mes_anterior": 0.0468
+    },
+    "ctarjeta_visa_transacciones": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.8357
+    },
+    "internet": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.9253
+    },
+    "mactivos_margen": {
+      "meses_previos_todo_en_cero": [
+        201905,
+        201910
+      ],
+      "fraccion_no_cero_mes_anterior": 0.947
+    },
+    "matm": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.3545
+    },
+    "matm_other": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.1785
+    },
+    "mautoservicio": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.6217
+    },
+    "mcajeros_propios_descuentos": {
+      "meses_previos_todo_en_cero": [
+        201910,
+        202002
+      ],
+      "fraccion_no_cero_mes_anterior": 0.0216
+    },
+    "mcheques_depositados": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.0346
+    },
+    "mcheques_depositados_rechazados": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.0041
+    },
+    "mcheques_emitidos": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.0264
+    },
+    "mcheques_emitidos_rechazados": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.0037
+    },
+    "mcomisiones": {
+      "meses_previos_todo_en_cero": [
+        201905,
+        201910
+      ],
+      "fraccion_no_cero_mes_anterior": 0.965
+    },
+    "mcomisiones_otras": {
+      "meses_previos_todo_en_cero": [
+        201905,
+        201910
+      ],
+      "fraccion_no_cero_mes_anterior": 0.965
+    },
+    "mcuentas_saldo": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.9921
+    },
+    "mextraccion_autoservicio": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.4433
+    },
+    "mpasivos_margen": {
+      "meses_previos_todo_en_cero": [
+        201905,
+        201910
+      ],
+      "fraccion_no_cero_mes_anterior": 0.9821
+    },
+    "mrentabilidad": {
+      "meses_previos_todo_en_cero": [
+        201905,
+        201910
+      ],
+      "fraccion_no_cero_mes_anterior": 0.9965
+    },
+    "mrentabilidad_annual": {
+      "meses_previos_todo_en_cero": [
+        201905,
+        201910
+      ],
+      "fraccion_no_cero_mes_anterior": 0.9972
+    },
+    "mtarjeta_master_consumo": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.3275
+    },
+    "mtarjeta_master_descuentos": {
+      "meses_previos_todo_en_cero": [
+        201910,
+        202002
+      ],
+      "fraccion_no_cero_mes_anterior": 0.0078
+    },
+    "mtarjeta_visa_consumo": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.8357
+    },
+    "mtarjeta_visa_descuentos": {
+      "meses_previos_todo_en_cero": [
+        201910,
+        202002
+      ],
+      "fraccion_no_cero_mes_anterior": 0.0344
+    },
+    "tcallcenter": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.1173
+    },
+    "thomebanking": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.7833
+    },
+    "tmobile_app": {
+      "meses_previos_todo_en_cero": [],
+      "fraccion_no_cero_mes_anterior": 0.6216
+    }
+  },
+  "peso_en_modelos": {
+    "binario_e01_300r": {
+      "fraccion_ganancia_cruda_y_deltas_del_mes": 0.1596,
+      "fraccion_ganancia_lags": 0.0594,
+      "top10_afectadas": [
+        [
+          "mtarjeta_visa_consumo",
+          0.032
+        ],
+        [
+          "mcuentas_saldo",
+          0.0226
+        ],
+        [
+          "ctarjeta_visa_transacciones",
+          0.0214
+        ],
+        [
+          "mcuentas_saldo_delta2",
+          0.0048
+        ],
+        [
+          "ctarjeta_visa_transacciones_delta2",
+          0.0036
+        ],
+        [
+          "mcuentas_saldo_delta1",
+          0.0035
+        ],
+        [
+          "mtarjeta_visa_consumo_delta2",
+          0.0035
+        ],
+        [
+          "mactivos_margen_delta2",
+          0.0031
+        ],
+        [
+          "mrentabilidad_annual_delta2",
+          0.0026
+        ],
+        [
+          "mactivos_margen",
+          0.0024
+        ]
+      ]
+    },
+    "multiclase_p1_e01_300r": {
+      "fraccion_ganancia_cruda_y_deltas_del_mes": 0.1725,
+      "fraccion_ganancia_lags": 0.0721,
+      "top10_afectadas": [
+        [
+          "mcuentas_saldo",
+          0.0252
+        ],
+        [
+          "mtarjeta_visa_consumo",
+          0.0209
+        ],
+        [
+          "ctarjeta_visa_transacciones",
+          0.0161
+        ],
+        [
+          "mcuentas_saldo_delta1",
+          0.0069
+        ],
+        [
+          "mcuentas_saldo_delta2",
+          0.0054
+        ],
+        [
+          "mactivos_margen_delta2",
+          0.0041
+        ],
+        [
+          "mrentabilidad_annual_delta2",
+          0.0038
+        ],
+        [
+          "mrentabilidad_delta2",
+          0.0035
+        ],
+        [
+          "mactivos_margen",
+          0.0034
+        ],
+        [
+          "mactivos_margen_delta1",
+          0.0031
+        ]
+      ]
+    }
+  },
+  "variantes": {
+    "A": {
+      "por_estrategia": {
+        "binario_e01_300r": {
+          "media": 0.030905,
+          "p50": 0.007619684775051295,
+          "p99": 0.3325821196484989,
+          "probabilidad_minima_enviada": 0.17405801056379527,
+          "envios": 4429
+        },
+        "multiclase_p1_e01_300r": {
+          "media": 0.009494,
+          "p50": 0.002095151193615941,
+          "p99": 0.10771478327970409,
+          "probabilidad_minima_enviada": 0.05409190611763687,
+          "envios": 4276
+        }
+      },
+      "coincidencia_entre_estrategias": {
+        "jaccard": 0.4603,
+        "interseccion": 2744,
+        "entran": 1532,
+        "salen": 1685,
+        "correlacion_de_rangos": 0.9324
+      }
+    },
+    "N": {
+      "por_estrategia": {
+        "binario_e01_300r": {
+          "media": 0.040489,
+          "p50": 0.015317004410655154,
+          "p99": 0.34354119313867076,
+          "probabilidad_minima_enviada": 0.19924037474216533,
+          "envios": 4429,
+          "contra_A": {
+            "jaccard": 0.6361,
+            "interseccion": 3444,
+            "entran": 985,
+            "salen": 985,
+            "correlacion_de_rangos": 0.9392
+          }
+        },
+        "multiclase_p1_e01_300r": {
+          "media": 0.016394,
+          "p50": 0.005785394372935557,
+          "p99": 0.1443176236020388,
+          "probabilidad_minima_enviada": 0.07977091543425555,
+          "envios": 4276,
+          "contra_A": {
+            "jaccard": 0.5586,
+            "interseccion": 3065,
+            "entran": 1211,
+            "salen": 1211,
+            "correlacion_de_rangos": 0.9281
+          }
+        }
+      },
+      "coincidencia_entre_estrategias": {
+        "jaccard": 0.4235,
+        "interseccion": 2590,
+        "entran": 1686,
+        "salen": 1839,
+        "correlacion_de_rangos": 0.8795
+      }
+    },
+    "L": {
+      "por_estrategia": {
+        "binario_e01_300r": {
+          "media": 0.01114,
+          "p50": 0.0010748462530586543,
+          "p99": 0.20117655047578992,
+          "probabilidad_minima_enviada": 0.06664330307669906,
+          "envios": 4429,
+          "contra_A": {
+            "jaccard": 0.3231,
+            "interseccion": 2163,
+            "entran": 2266,
+            "salen": 2266,
+            "correlacion_de_rangos": 0.7768
+          }
+        },
+        "multiclase_p1_e01_300r": {
+          "media": 0.004054,
+          "p50": 0.0003778770420330158,
+          "p99": 0.07355412473446934,
+          "probabilidad_minima_enviada": 0.026913895159165157,
+          "envios": 4276,
+          "contra_A": {
+            "jaccard": 0.4847,
+            "interseccion": 2792,
+            "entran": 1484,
+            "salen": 1484,
+            "correlacion_de_rangos": 0.8207
+          }
+        }
+      },
+      "coincidencia_entre_estrategias": {
+        "jaccard": 0.6989,
+        "interseccion": 3581,
+        "entran": 695,
+        "salen": 848,
+        "correlacion_de_rangos": 0.956
+      }
+    }
+  },
+  "referencia_ruido_semillas": {
+    "binario_e01_300r": {
+      "jaccard_semilla_sola_vs_ensamble": [
+        0.5598,
+        0.5863
+      ]
+    },
+    "multiclase_p1_e01_300r": {
+      "jaccard_semilla_sola_vs_ensamble": [
+        0.5689,
+        0.5893
+      ]
+    }
+  },
+  "nota": "diagnóstico: A es lo publicado; N y L son contrafácticos, no tratamientos adoptados (E06, R1). Sin etiquetas: el efecto en ganancia de 202006 no se puede medir hasta tener 202007 y 202008.",
+  "segundos": 280.2
+}

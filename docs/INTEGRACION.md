@@ -1,8 +1,11 @@
 # Pipeline mensual con dos estrategias
 
-Rama `martin/integracion-estrategias`, 24-nov-2026. Código: `pipeline_competencia02/mensual.py`,
-`preparar_ejecucion.py` y `catalogo.py`. Verificadores: `scripts/verificar_scores.py`,
-`scripts/verificar_salida.py` y `scripts/probar_reintentos.py`.
+Ramas `martin/integracion-estrategias` y `martin/ensayo-secuencia`, 24-nov-2026.
+- **Código**: `pipeline_competencia02/mensual.py`, `preparar_ejecucion.py`, `catalogo.py`,
+  `retrospectiva.py` (métricas con target a posteriori) y `correr_meses.py` (ensayo secuencial).
+- **Verificadores**: `scripts/verificar_scores.py`, `scripts/verificar_salida.py` y
+  `scripts/probar_reintentos.py`.
+- **Diagnóstico de anomalías**: `scripts/analizar_columnas_en_cero.py`.
 
 ## Estrategias integradas
 
@@ -98,13 +101,72 @@ que en el entrenamiento, pero nunca su clase.
 4. **Reloj.** Con `--copiar-desde`, el tiempo arranca antes de copiar la entrada a `input/` y termina
    con el reporte acumulado regenerado. No incluye el arranque del intérprete y los imports (~10 s,
    la diferencia entre "pared" y "desde la entrada" en el ensayo). Sin `--copiar-desde`, arranca con
-   el proceso y la entrada ya en `input/`.
-5. **Probabilidad de la salida oficial = P(BAJA+1 ∪ BAJA+2).** Si la consigna exige P(BAJA+2) en la
+   el proceso y la entrada ya en `input/`. En el ensayo secuencial (`correr_meses`) el tiempo
+   del mes es la **pared del proceso**, que sí incluye el arranque (5,5–15,7 s por mes).
+5. **Probabilidad de la salida oficial = P(BAJA+1 ∪ BAJA+2), pendiente de confirmar su
+   interpretación con la cátedra.** Si la consigna exige P(BAJA+2) en la
    columna `probabilidad`, la recomendación tendría que pasar al multiclase o cambiar la columna
    (pendiente de la transcripción de la consigna, F1).
-6. **Métricas con target pendientes.** La etiqueta de un mes necesita la lista de clientes de los dos
-   meses siguientes. La ganancia, el AUC y los aciertos figuran como `pendiente` hasta tener etiquetas
-   válidas y aceptadas según R1.
+6. **Métricas con target retrospectivas.** La etiqueta de un mes necesita la lista de clientes de los
+   dos meses siguientes. Al publicar un mes, sus métricas son `pendiente`; cuando llegan esos meses, el
+   reporte acumulado las completa (`retrospectiva.py`, regla abajo). Son **monitoreo**: no cambian
+   modelos, features, cortes ni salidas, que se eligen sólo con 2019 (R1). La etiqueta se reconstruye
+   con la presencia de cada cliente en los meses recibidos; no se lee ningún archivo de clase.
+
+**Regla de target** (versión 2, `retrospectiva.py`), para un cliente presente en el mes *t*:
+
+| Presencia en *t+1* | Presencia en *t+2* | Clase |
+|---|---|---|
+| sí o no | **sí** | CONTINUA (también si faltó en *t+1*: el cliente "vuelve") |
+| sí | no | BAJA+2 |
+| no | no | BAJA+1 |
+
+- **Fuente.** Es la regla que reproduce **sin diferencias** las etiquetas oficiales de competencia 01:
+  0 discrepancias en 983.061 filas en `experimento_sampling/03b_validar_target_competencia01.py`.
+- **Caso del cliente que vuelve.** Presente en *t*, ausente en *t+1* y presente en *t+2*: el archivo
+  oficial lo etiqueta CONTINUA en los 15 casos.
+- **Patrón sin verificar.** Ausente en *t+1*, presente en *t+2* y ausente en *t+3* no aparece en esa
+  verificación; se le aplica la misma regla.
+
+**Corrección del 24-nov (versión 1 → 2).**
+- **Error.** La versión 1 copiaba `experimento_sampling/03_construir_target.py`, que es idéntico a
+  `entrenamiento/legado/03_construir_target.py` y al código docente en R (`shift` lead). Esa versión
+  etiqueta BAJA+1 al cliente que vuelve.
+- **Recálculo.** Se recalculó con las decisiones ya guardadas, sin volver a predecir. Lo publicado no
+  cambió (sha256 verificados).
+- **Clientes.** Cambian de clase **3 clientes**, de BAJA+1 a CONTINUA: 2 en 202001 y 1 en 202004.
+  Ninguno había recibido envío.
+- **Métricas.** Cambian **4 valores**: BAJA+1 y CONTINUA de 202001 (608 → 606 y 141.800 → 141.802) y
+  de 202004 (399 → 398 y 147.908 → 147.909). Ganancias, aciertos, precisión, recall y AUC de BAJA+2,
+  máximos ex post, BAJA+1 enviados y diferencias entre estrategias **no cambian**, porque BAJA+2 no
+  cambia.
+- **202005.** Deja de presentar 527 BAJA+1 y 315 / 290 enviados como definitivos (abajo).
+- **Detalle.** `resultados/i03_correccion_target_retrospectivo.json`.
+
+**La clase siempre depende de *t+2*.** También BAJA+1, porque un ausente en *t+1* puede volver.
+
+| Estado | Meses recibidos | Qué se informa |
+|---|---|---|
+| `completa` | *t+1* y *t+2* | Clases **definitivas**; ganancia, aciertos y AUC de BAJA+2 por estrategia |
+| `parcial` | sólo *t+1* | **Ninguna clase definitiva.** En columnas aparte (`provisional_ausentes_t1`, `*_provisional_ausentes_t1_enviados`): cuántos faltan en *t+1* y cuántos de ellos se enviaron. Son BAJA+1 *provisionales*, que pasan a CONTINUA si vuelven. Las columnas de clase y de métricas quedan `pendiente` |
+| `pendiente` | ninguno | Nada |
+
+- **Convención del archivo oficial.** El archivo oficial de competencia 01 etiquetó BAJA+1 en su
+  anteúltimo mes sin esperar *t+2*. Acá no se adopta esa convención, para no presentar como
+  definitiva una etiqueta que todavía puede cambiar.
+- **Tamaño del efecto.** Los que vuelven son pocos: 3 de 1.744 ausentes en *t+1* en 202001–202004 y
+  15 de unos 4.000 en competencia 01.
+- **Importes.** La ganancia usa los de C01 (`GANANCIA.md`), porque los de C02 siguen sin fuente.
+
+**Efecto en 2019, sin corregir.**
+- **El target de 2019 usa la versión 1.** E01 y E02 se entrenaron y evaluaron con el target de 2019
+  construido por `03`. Esa regla etiqueta BAJA+1 a clientes que, por la regla oficial, son CONTINUA.
+- **Cuántas filas.** Contadas sólo con la presencia de clientes, sin leer etiquetas: **5 filas de
+  entrenamiento** (201903: 1, 201905: 1, 201906: 3) y **12 de desarrollo** (201908). 201910 no se
+  informa.
+- **Qué cambia.** BAJA+2 no cambia, así que la ganancia y los cortes de desarrollo son los mismos. El
+  target de entrenamiento cambia levemente: positivos del binario y clase BAJA+1 del multiclase.
+- **Decisión.** No se reentrenó: queda pendiente (abajo).
 
 ## Ensayo de 202001
 
@@ -152,7 +214,8 @@ Incidentes (todos `advertir`, estado de calidad `sin_alertas`):
   lag1, 13 en lag2);
 - `estrategia_provisional`: las dos.
 
-Métricas con target: **pendientes**. La etiqueta de 202001 necesita las listas de 202002 y 202003.
+Métricas con target: **pendientes** en ese ensayo; la etiqueta de 202001 necesita las listas de
+202002 y 202003. Se completaron en el ensayo secuencial (abajo).
 
 **Verificaciones:**
 
@@ -181,19 +244,159 @@ Métricas con target: **pendientes**. La etiqueta de 202001 necesita las listas 
 - `ejecutar_mes.adquirir`, ante un candado huérfano, marcaba el mes como fallido, pero dejaba el
   último intento como `en_curso`. Ahora el intento también queda `fallido`.
 
-## Pendientes para ensayar 202001–202006
+## Ensayo secuencial 202001–202006
 
-1. **Secuencia completa**: correr 202001 a 202006 en una sola carpeta, cada mes con
-   `--copiar-desde`. Verificar que la historia crece un mes por vez, que el reporte acumulado tiene
-   6 filas e `integridad_ok` en todas, y medir los tiempos por mes (la historia crece).
-2. **202006**: 47 columnas con todos los observados en 0. Hoy se advierte y no se trata (E06).
-   Revisar cómo cambian los scores, los envíos y la coincidencia entre estrategias.
-3. **Tiempo**: el multiclase es la etapa más cara (132 s en 202001 con la máquina cargada). Repetir
-   T01 y la secuencia en la máquina del vivo (T12). Si sube, una opción es bajar a menos semillas en la
-   alternativa, porque no define la salida oficial.
-4. **Reintentos dentro de la secuencia**: fallar un mes intermedio, por ejemplo 202003, y comprobar que
-   202004 se rechaza por secuencia hasta reintentar 202003.
-5. **`correr_meses.py`** sigue usando `ejecutar_mes` (un modelo) e insumos con nombre
-   `competencia_02_<mes>_crudo.csv`. Hay que adaptarlo a `mensual.py` y a `input/<yyyymm>.csv`.
-6. **Consigna**: confirmar las columnas de la salida y qué probabilidad se espera (supuesto 5) y el
-   formato del reporte (R2, R3; T1).
+Resúmenes versionados: `resultados/i02_secuencia_202001_202006.json` (secuencia, reintento y
+retrospectiva) y `resultados/i02_columnas_en_cero_202006.json` (anomalía de 202006). Carpeta:
+`ejecuciones/entornos/secuencia_202001_202006_20261124T200817` (no versionada).
+
+```powershell
+python -m pipeline_competencia02.correr_meses --nueva <nombre> --desde 202001 --hasta 202006 `
+    --reintento-en 202003 --resumen resultados/i02_secuencia_202001_202006.json
+```
+
+- **Un archivo por vez.** Cada mes es un proceso `mensual --copiar-desde`. La historia empieza en
+  201901–201912 y sólo crece con los meses recibidos y completados.
+- **Modelos, features y cortes fijos** durante todo el ensayo: el catálogo de E01, con el mismo
+  sha256 en los seis meses.
+- **Reloj del mes.** Es la pared del proceso: desde antes de lanzarlo hasta que termina. Incluye el
+  arranque del intérprete y los imports, la copia a `input/`, la salida oficial y el reporte
+  acumulado regenerado. La verificación del sha256 del insumo queda fuera del reloj.
+- **Preparación previa del entorno**, medida aparte: **42,4 s** de pared (38,0 s internos). Incluye
+  la copia y verificación de los 10 modelos y del catálogo, y la historia 201901–201912 desde el
+  Parquet de 2019, contrastada con la auditoría de filas y con la cobertura validada.
+
+### Resultados por mes
+
+| Mes | Tiempo total | Clientes | Envíos recomendación | Envíos alternativa | Jaccard entre estrategias | Anomalías | Métricas con target |
+|---|---|---|---|---|---|---|---|
+| 202001 | 183,6 s | 142.929 | 4.145 | 4.003 | 0,743 | 4.165 sin historia · 14 con lag ≠ calendario | **completa**: G 267,7 M / 259,5 M · AUC 0,938 / 0,936 |
+| 202002 | 173,7 s | 146.184 | 4.240 | 4.094 | 0,721 | **6 columnas en cero** (descuentos de tarjetas y cajeros) · 3.849 · 21 | **completa**: G 26,4 M / 26,0 M · AUC 0,950 / 0,948 |
+| 202003 | 171,7 s (167,3 + 4,4; reintento) | 148.313 | 4.302 | 4.153 | 0,727 | 2.643 · 24 | **completa**: G 163,3 M / 156,4 M · AUC 0,942 / 0,941 |
+| 202004 | 190,9 s | 148.831 | 4.317 | 4.168 | 0,739 | 727 · 14 | **completa**: G 184,9 M / 173,6 M · AUC 0,929 / 0,928 |
+| 202005 | 193,9 s | 150.267 | 4.358 | 4.208 | 0,724 | 1.826 · 13 | **parcial, sin clases definitivas**: 527 ausentes en 202006 (BAJA+1 provisional), enviados 315 / 290. Falta 202007 |
+| 202006 | 174,3 s | 152.712 | 4.429 | 4.276 | **0,460** | **47 columnas en cero** · 2.957 · 24 | **pendiente**: faltan 202007 y 202008 |
+
+- G = ganancia recomendación / alternativa, en pesos, con los importes de C01.
+- **Anomalías**: clientes sin historia · clientes con lag por fila distinto del calendario.
+- **Advertencias**: todas las de la tabla son `advertir`; ningún mes se rechazó. El estado de calidad
+  es `con_alertas` en 202002 y 202006 (columnas en cero) y `sin_alertas` en el resto. No hubo
+  columnas 100 % nulas, constantes ni con cambios de tasa de nulos.
+
+**Tiempos.** Todos los meses tardaron entre 172 y 194 s, menos de 900 s. El arranque y cierre del
+proceso, fuera del reloj interno, sumó entre 5,5 y 15,7 s. La etapa más larga es la inferencia
+multiclase, con 85–96 s. 202001 tardó 178 s en este ensayo y 104 s en el ensayo limpio de la
+integración, con la misma salida byte a byte. La diferencia de tiempo viene de la carga de la
+máquina y no del pipeline. El pico de working set fue de 3,1–3,4 GB. Con la historia, el tiempo
+crece poco: de 12 a 17 meses de historia, el cálculo de features pasó de 19 a 24–29 s.
+
+**Métricas retrospectivas** (sólo monitoreo, R1; regla versión 2):
+
+| Mes | BAJA+2 | BAJA+1 | Recomendación: aciertos / ganancia / máximo ex post (envíos) | Alternativa: aciertos / ganancia / máximo ex post (envíos) |
+|---|---|---|---|---|
+| 202001 | 521 | 606 | 347 / 267,7 M / 274,0 M (3.278) | 336 / 259,5 M / 260,2 M (3.699) |
+| 202002 | 213 | 524 | 130 / 26,4 M / 55,1 M (996) | 126 / 26,0 M / 52,3 M (1.060) |
+| 202003 | 398 | 213 | 256 / 163,3 M / 169,9 M (3.743) | 246 / 156,4 M / 162,5 M (3.570) |
+| 202004 | 524 | 398 | 276 / 184,9 M / 188,3 M (4.553) | 262 / 173,6 M / 184,4 M (4.575) |
+
+- **Las dos estrategias.** La recomendación supera a la alternativa en los cuatro meses completos:
+  por +8,2, +0,4, +6,9 y +11,3 M. Es un registro, no un criterio para cambiar la recomendación
+  (R1).
+- **202002 tuvo muy pocas BAJA+2** (213). El corte por fracción (2,9 %) envió unas cuatro veces más
+  que el máximo ex post y la ganancia quedó en menos de la mitad de ese máximo. Es el riesgo del
+  supuesto 2: el corte no se adapta a la prevalencia del mes. El máximo ex post usa la etiqueta y sólo
+  sirve de referencia.
+- **Clientes que vuelven.** Los ausentes en *t+1* que vuelven en *t+2* son 2 en 202001, 0 en 202002 y
+  202003, y 1 en 202004. Son CONTINUA (regla versión 2).
+
+### Verificaciones
+
+| Verificación | Resultado |
+|---|---|
+| Chequeos de `correr_meses` en cada mes: estado, integridad sha256, salida oficial (cabecera, clientes = entrada, probabilidades en [0,1], igual a la recomendación), decisiones de las dos estrategias (envíos = techo(f·n), prefijo del orden con desempate), historia = inicial + completados sin huecos, lecturas sólo de la entrada, la historia anterior completa y los modelos, reporte con una fila por mes completado, retrospectiva según los meses recibidos | **OK los 6 meses** |
+| `scripts/verificar_scores.py` (modelos **originales** de E01) en los 6 meses | OK: 10/10 semillas, ensambles, decisiones y salida oficial idénticos bit a bit |
+| `scripts/verificar_salida.py` (independiente) en los 6 meses | OK |
+| Reproducibilidad: `churn_202001.csv` contra el ensayo de la integración | Idéntico byte a byte |
+| Reporte acumulado final | 6 filas (202001–202006), `integridad_ok` en todas; 202003 marcada `recuperado`; `tmp/` vacío |
+
+**Reintento provocado en 202003** (`--reintento-en 202003`):
+
+| Paso | Código | Tiempo | Qué se comprobó |
+|---|---|---|---|
+| a. El proceso muere después de publicar (`tras_publicacion`) | 3 | 167,3 s | Salida, historia y diagnóstico publicados; estado `en_curso`; candado huérfano; el reporte sigue con 202001–202002 |
+| b. Se intenta 202004 | 4 | 3,2 s | Rechazado: "meses previos procesados sin estado completado: [202003]". Ningún archivo publicado ni del registro cambia |
+| c. Reintento de 202003 | 0 | 4,4 s | Reconciliado con hashes íntegros, `completado` **sin recalcular** (features y publicados intactos); intentos `fallido, completado`. La retrospectiva de 202001 pasa a `completa` |
+| d. Se repite 202003 | 4 | 2,8 s | Rechazado sin cambios |
+
+El paso b es una regla nueva de `mensual.py`. Sin ella, 202004 se habría aceptado: la historia de
+202003 ya estaba publicada aunque el mes no figuraba completado, y el reporte habría quedado sin
+la fila de 202003. El intento que muere no llega a escribir en `ejecuciones.jsonl`, por eso el
+archivo tiene 8 líneas y no 9. Ese intento queda como `fallido` en `registro/meses/202003.json`.
+
+### 202006: 47 columnas con todos los observados en 0
+
+Diagnóstico fuera del pipeline: `scripts/analizar_columnas_en_cero.py`. No cambia lo publicado y no
+usa etiquetas.
+
+- **Precedente en la historia**:
+  - 33 de las 47 columnas **nunca** habían llegado todas en cero en 201901–202005;
+  - de las 14 restantes, 7 lo hicieron en 201905 y 201910 (márgenes, comisiones y rentabilidad), 1
+    sólo en 201910 (`chomebanking_transacciones`) y 6 en 201910 y 202002. Esas 6 son las de descuentos,
+    las mismas columnas en cero de 202002.
+
+  En 202005, la mediana de la fracción de observados distintos de 0 en las 47 columnas era 0,33.
+  Algunas, como `mrentabilidad` o `mcomisiones`, tenían más del 96 % de los observados distintos
+  de 0.
+- **Peso en los modelos.** Las variables crudas y sus deltas, que son las que afecta el 0 del mes,
+  explican el 16 % de la importancia por ganancia del binario y el 17 % del multiclase. Los lags de
+  esas columnas vienen de meses sanos: 6–7 %.
+- **Efecto en lo publicado (A).**
+  - **Scores**: los de las dos estrategias se corren hacia arriba. La mediana del binario pasa de
+    0,00078 en 202005 a 0,0076, unas 10 veces más, y la del multiclase de 0,00030 a 0,0021.
+  - **Envíos**: la cantidad no cambia, porque el corte es una fracción de los clientes. Sí cambia la
+    probabilidad mínima enviada, que sube de 0,065 a **0,174** en el binario y de 0,032 a 0,054 en el
+    multiclase. A esos clientes los separa menos el riesgo y más el "cero" del mes.
+  - **Coincidencia entre estrategias**: baja de 0,72–0,74 a **0,46**.
+  - **Coincidencia entre semillas**: la de cada semilla sola con el ensamble baja de 0,75–0,80 en los
+    meses normales a 0,56–0,59.
+- **Contrafácticos** sobre las features publicadas, con los mismos modelos y cortes. Ninguno es un
+  tratamiento adoptado:
+
+| Variante | Binario: mediana · mínima enviada · Jaccard con A | Multiclase: mediana · mínima enviada · Jaccard con A | Jaccard entre estrategias |
+|---|---|---|---|
+| A publicado (ceros) | 0,0076 · 0,174 · — | 0,0021 · 0,054 · — | 0,460 |
+| N como faltantes | 0,0153 · 0,199 · 0,64 | 0,0058 · 0,080 · 0,56 | 0,424 |
+| L último valor | 0,0011 · 0,067 · 0,32 | 0,0004 · 0,027 · 0,48 | **0,699** |
+
+**Lectura.**
+- **Con el último valor (L)**, la distribución de scores, la probabilidad mínima enviada y la
+  coincidencia entre estrategias vuelven a niveles de 202001–202005.
+- **Pasarlas a faltantes (N) no corrige el corrimiento.** Los modelos no vieron esas columnas
+  vacías en entrenamiento.
+- **El tratamiento cambia mucho la selección.** Con L, el binario enviaría a otros 2.266 de sus
+  4.429 clientes.
+- **Ganancia sin medir.** No se sabe cuál variante gana más: en 202006 hace falta 202007 y 202008.
+- **Decisión.** Elegir el tratamiento corresponde a E06, con la inyección del patrón en meses de
+  2019 (R1). Hasta entonces el pipeline advierte y no trata.
+
+## Pendientes
+
+1. **E06, tratamiento de columnas en cero.** Con 202006 se dimensiona: el 16–17 % de la importancia
+   está afectada y la selección cambia en más de la mitad de los clientes según el tratamiento. Hay que
+   decidir con 2019 entre advertir, N y L, y medir los falsos positivos de la detección. En 2019
+   aparecen 201905 y 201910 y, en el ensayo, 202002.
+2. **Corte y prevalencia.** 202002 mostró que la fracción fija puede enviar cuatro veces más que el
+   máximo ex post. Cualquier alternativa, como un umbral de probabilidad calibrada, se evalúa con 2019.
+3. **Tiempo en la máquina del vivo (T12).** En la máquina de Martín, 172–194 s por mes con carga
+   variable. El multiclase es más de la mitad.
+4. **Consigna**:
+   - confirmar las columnas de la salida y **la interpretación de la probabilidad**: hoy es
+     P(BAJA+1 ∪ BAJA+2), supuesto 5;
+   - el formato del reporte (R2, R3; T1);
+   - si las métricas retrospectivas con la presencia de 2020 se aceptan en el reporte (R1).
+5. **Importes de ganancia de C02**: siguen siendo los de C01.
+6. **Target de 2019 con la regla oficial.** El de E01/E02 usa la versión 1: 5 filas de entrenamiento y
+   12 de desarrollo son CONTINUA por la regla oficial. Hay que decidir con el grupo si se regenera el
+   target (en el repo de sampling) y se reentrenan los candidatos. Los cortes no deberían cambiar,
+   porque BAJA+2 es igual. La discrepancia ya estaba registrada en sampling como pendiente de consultar
+   con el tutor.

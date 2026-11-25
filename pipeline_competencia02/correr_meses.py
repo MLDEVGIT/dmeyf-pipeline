@@ -1,161 +1,361 @@
-"""Ejecuta meses consecutivos en un entorno, uno por proceso, y comprueba cada uno.
+"""Ensayo secuencial del pipeline mensual con dos estrategias (mensual.py): un proceso por mes, y comprobación de cada uno.
 
-No calcula desempeño: no lee etiquetas. Para cada mes verifica:
-  - estado completado y salida oficial publicada;
-  - cobertura: los clientes de output/churn_AAAAMM.csv, de las decisiones y
-    de las features son exactamente los del CSV recibido;
-  - probabilidades finitas, en [0,1] e iguales en la salida oficial y en las
-    decisiones;
-  - decisiones: A = cupo fijo, B = techo(1 % de los clientes); ambas son el
-    prefijo del mismo orden (probabilidad descendente, desempate por
-    numero_de_cliente) y el conjunto menor está contenido en el mayor;
-  - aislamiento: sólo leyó el mes recibido, la historia anterior y el modelo.
+Por mes, en orden:
+  1. verifica el insumo (sha256 contra su .json) ANTES de arrancar el reloj;
+  2. lanza `python -m pipeline_competencia02.mensual --mes M --copiar-desde <insumo>` y mide la PARED del proceso:
+     desde antes de lanzarlo (arranque del intérprete, imports, copia a input/<M>.csv) hasta que termina (salida
+     oficial publicada y reporte acumulado regenerado). También guarda el total interno del proceso;
+  3. comprueba el mes (comprobar), sin leer etiquetas:
+     - estado completado, integridad (sha256 de salida, historia y decisiones = reporte.json);
+     - salida oficial: cabecera exacta, mismos clientes que input/<M>.csv, probabilidades en [0,1], igual a la
+       recomendación de decisiones_<M>.csv (probabilidad y enviar);
+     - decisiones de las DOS estrategias: envíos = techo(fracción · n) y selección = prefijo del orden
+       (probabilidad descendente, numero_de_cliente ascendente);
+     - historia: historia/foto_mes=<M> con los clientes de la entrada; la historia es la inicial más los meses
+       completados, sin huecos; el mes sólo leyó su entrada, la historia anterior completa y los modelos;
+     - reporte acumulado: una fila por mes completado, en orden, con integridad_ok y los envíos del reporte;
+     - retrospectiva: cada mes completado tiene el estado de etiqueta que corresponde a los meses ya recibidos.
+  Se detiene ante el primer mes que no pase.
 
-Se detiene ante el primer mes que no pase.
+Reintento provocado (--reintento-en M, un mes intermedio):
+  a. M con PIPELINE_C02_FALLA=tras_publicacion: el proceso muere después de publicar y antes de marcar completado
+     (código 3). Se comprueba: todo publicado, estado en_curso, candado huérfano, reporte sin la fila de M;
+  b. el mes siguiente se rechaza (código 4) porque M no está completado, sin cambiar nada publicado ni el registro;
+  c. reintento de M: reconcilia (hashes íntegros) y lo marca completado SIN recalcular (código 0);
+  d. otro intento de M: rechazado (código 4), sin cambios.
+  El tiempo del mes M es la suma de los intentos a y c.
 
 Uso:
-  python -m pipeline_competencia02.correr_meses --entorno <dir> --desde 202001 --hasta 202006 \
-      --estrategia cupo_fijo:1000 --estrategia porcentaje:1 --principal cupo_fijo
+  python -m pipeline_competencia02.correr_meses --nueva <nombre> --desde 202001 --hasta 202006 [--reintento-en 202003]
+  python -m pipeline_competencia02.correr_meses --ejecucion <carpeta> --desde 202001 --hasta 202006
+Con --nueva, prepara la carpeta (preparar_ejecucion, historia hasta el mes anterior a --desde) y mide esa
+preparación por separado: no forma parte del tiempo mensual.
 """
 from __future__ import annotations
 
 import argparse
+import csv
+import hashlib
 import json
 import os
 import subprocess
 import sys
 import time
+from decimal import Decimal
 from pathlib import Path
 
 import duckdb
 import numpy as np
+import pandas as pd
 
-from . import estrategias as E
+from evaluacion.ganancia import envios as envios_fraccion
 
-from .config import RAIZ as ROOT, RUTAS, mostrar
+from . import retrospectiva as R
+from .config import RAIZ, RUTAS, mostrar
+from .ejecutar_mes import anterior
+from .estrategias import orden_por_score
 
-INSUMOS = RUTAS.insumos
+REC, ALT = "recomendacion_provisional", "alternativa"
 
 
 def meses_entre(desde: int, hasta: int) -> list[int]:
     out, m = [], desde
     while m <= hasta:
         out.append(m)
-        a, mm = divmod(m, 100)
-        m = a * 100 + mm + 1 if mm < 12 else (a + 1) * 100 + 1
+        m = R.siguiente(m)
     return out
 
 
-def comprobar(con, env: Path, mes: int, estrategias: list[E.Estrategia], principal: str) -> dict:
+def sha(p: Path) -> str | None:
+    if not p.is_file():
+        return None
+    h = hashlib.sha256()
+    with open(p, "rb") as f:
+        for b in iter(lambda: f.read(1 << 20), b""):
+            h.update(b)
+    return h.hexdigest()
+
+
+def insumo(mes: int) -> Path:
+    p = RUTAS.insumos / f"competencia_02_{mes}_crudo.csv"
+    meta = json.loads(p.with_suffix(".json").read_text(encoding="utf-8"))
+    if sha(p) != meta["sha256"]:
+        raise RuntimeError(f"{p.name}: sha256 distinto del registrado al prepararlo")
+    return p
+
+
+def foto(env: Path) -> dict:
+    """sha256 de lo publicado y del registro (sin logs ni ejecuciones.jsonl, que crecen con cada intento)."""
+    out = {}
+    for patron in ("output/*", "historia/*", "diagnosticos/*/reporte.json", "diagnosticos/*/decisiones_*.csv",
+                   "registro/meses/*", "registro/retrospectiva/*", "registro/reporte_acumulado.csv"):
+        for p in env.glob(patron):
+            if p.is_file():
+                out[p.relative_to(env).as_posix()] = sha(p)
+    return out
+
+
+def diferencias(a: dict, b: dict) -> list[str]:
+    return sorted(k for k in set(a) | set(b) if a.get(k) != b.get(k))
+
+
+def lanzar(env: Path, mes: int, origen: Path, falla: str | None = None) -> dict:
+    cmd = [sys.executable, "-m", "pipeline_competencia02.mensual", "--ejecucion", str(env), "--mes", str(mes),
+           "--copiar-desde", str(origen)]
+    entorno = {k: v for k, v in os.environ.items() if k != "PIPELINE_C02_FALLA"}
+    if falla:
+        entorno["PIPELINE_C02_FALLA"] = falla
+    t = time.perf_counter()
+    rc = subprocess.run(cmd, cwd=RAIZ, env=entorno, stdout=subprocess.DEVNULL).returncode
+    return {"codigo": rc, "pared_s": round(time.perf_counter() - t, 1), "falla_inyectada": falla}
+
+
+def leer_json(p: Path) -> dict:
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+
+
+def acumulado(env: Path) -> list[dict]:
+    p = env / "registro" / "reporte_acumulado.csv"
+    if not p.exists():
+        return []
+    with open(p, encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+
+
+def completados(env: Path) -> list[int]:
+    return sorted(int(p.stem) for p in (env / "registro" / "meses").glob("*.json")
+                  if leer_json(p).get("estado") == "completado")
+
+
+def clientes_parquet(con, p: Path) -> np.ndarray:
+    return np.sort(con.execute(f"SELECT numero_de_cliente FROM read_parquet('{p.as_posix()}')").fetchnumpy()[
+        "numero_de_cliente"].astype(np.int64))
+
+
+def comprobar(env: Path, mes: int, inicial: set[int]) -> dict:
     diag = env / "diagnosticos" / str(mes)
-    rep = json.loads((diag / "reporte.json").read_text(encoding="utf-8"))
-    estado = json.loads((env / "registro" / "meses" / f"{mes}.json").read_text(encoding="utf-8"))
-    entrada = (env / rep["entrada"]["archivo"]).as_posix()
-    oficial = (env / "output" / f"churn_{mes}.csv").as_posix()
-    dec = (diag / f"decisiones_{mes}.csv").as_posix()
-    feat = (diag / f"features_{mes}.parquet").as_posix()
-
-    cab_oficial = (env / "output" / f"churn_{mes}.csv").read_text(encoding="utf-8").split("\n", 1)[0]
-    ins = con.execute(f"SELECT numero_de_cliente FROM read_csv('{entrada}', header=true, all_varchar=true)").fetchall()
-    cli_entrada = {int(float(c)) for (c,) in ins}  # algunos ids vienen en notación científica (ver README de 02)
-    o = con.execute(f"SELECT numero_de_cliente, probabilidad, enviar FROM read_csv('{oficial}', header=true) "
-                    f"ORDER BY numero_de_cliente").fetchnumpy()
-    d = con.execute(f"SELECT * FROM read_csv('{dec}', header=true) ORDER BY numero_de_cliente").fetchnumpy()
-    cli_feat = {c for (c,) in con.execute(f"SELECT numero_de_cliente FROM read_parquet('{feat}')").fetchall()}
-    cli, prob = np.asarray(o["numero_de_cliente"]), np.asarray(o["probabilidad"], np.float64)
+    rep = leer_json(diag / "reporte.json")
+    est = leer_json(env / "registro" / "meses" / f"{mes}.json")
+    cat = leer_json(env / "modelos" / "estrategias.json")
+    entrada = pd.read_csv(env / "input" / f"{mes}.csv", usecols=["numero_de_cliente"], dtype=str)
+    # algunos ids vienen en notación científica; Decimal los convierte sin pasar por float
+    cli_entrada = np.array(sorted(int(Decimal(c)) for c in entrada["numero_de_cliente"]), np.int64)
+    salida_txt = (env / "output" / f"churn_{mes}.csv").read_text(encoding="utf-8")
+    o = pd.read_csv(env / "output" / f"churn_{mes}.csv", float_precision="round_trip").sort_values(
+        "numero_de_cliente", kind="stable")
+    d = pd.read_csv(diag / f"decisiones_{mes}.csv", float_precision="round_trip").sort_values(
+        "numero_de_cliente", kind="stable")
+    cli = o["numero_de_cliente"].to_numpy(np.int64)
+    prob = o["probabilidad"].to_numpy(np.float64)
     n = len(cli)
+    con = duckdb.connect()
+    cli_hist = clientes_parquet(con, env / "historia" / f"foto_mes={mes}.parquet")
+    cli_feat = clientes_parquet(con, diag / f"features_{mes}.parquet")
+    con.close()
 
-    orden = E.orden_por_score(cli, prob)
-    sel = {}
-    for e in estrategias:
-        k = e.cupo if isinstance(e, E.CupoFijo) else e.cantidad(n)
+    estr = {}
+    for e in cat["estrategias"]:
+        p = d[f"probabilidad_{e['id']}"].to_numpy(np.float64)
+        env_ = d[f"enviar_{e['id']}"].to_numpy() == 1
+        k = envios_fraccion(e["corte"]["fraccion"], n)
         esperado = np.zeros(n, bool)
-        esperado[orden[:k]] = True
-        sel[e.nombre] = {"esperados": int(k), "seleccionados": int(np.asarray(d[f"enviar_{e.nombre}"]).sum()),
-                         "igual_al_prefijo_del_orden": bool(np.array_equal(np.asarray(d[f"enviar_{e.nombre}"]) == 1,
-                                                                           esperado))}
-    conjuntos = [np.asarray(d[f"enviar_{e.nombre}"]) == 1 for e in estrategias]
-    anidadas = all(((a & b).sum() == min(a.sum(), b.sum())) for a in conjuntos for b in conjuntos)
+        esperado[orden_por_score(cli, p)[:k]] = True
+        estr[e["rol"]] = {"id": e["id"], "envios": int(env_.sum()), "envios_esperados": k,
+                          "seleccion_es_prefijo_del_orden": bool(np.array_equal(env_, esperado)),
+                          "probabilidades_validas": bool(np.isfinite(p).all() and ((p >= 0) & (p <= 1)).all()),
+                          "envios_igual_reporte": int(env_.sum()) == next(
+                              x["envios"] for x in rep["estrategias"] if x["id"] == e["id"])}
+    rec_id = estr[REC]["id"]
 
-    lect = rep["lecturas"]
+    hist_meses = sorted(int(p.stem.split("=")[1]) for p in (env / "historia").glob("foto_mes=*.parquet"))
+    comp = completados(env)
+    lect = rep.get("lecturas", [])
     hist_leida = sorted(int(p.split("foto_mes=")[1][:6]) for p in lect if p.startswith("historia/"))
-    hist_previa = sorted(int(p.stem.split("=")[1]) for p in (env / "historia").glob("foto_mes=*.parquet")
-                         if int(p.stem.split("=")[1]) < mes)
-    permitidas = all(p.startswith((f"entradas/{mes}/", f"tmp/{rep['ejecucion']}/", "historia/", "modelo/"))
+    permitidas = all(p == f"input/{mes}.csv" or p.startswith((f"tmp/{rep['ejecucion']}/", "historia/", "modelos/"))
                      for p in lect)
+    filas = acumulado(env)
+    filas_por_mes = {int(f["mes"]): f for f in filas}
+    retro_ok = {}
+    for m in comp:
+        disp = R.disponibilidad(env / "historia", m)
+        r = R.cargar(env, m) or {}
+        fila = filas_por_mes.get(m, {})
+        ok = r.get("disponibilidad") == disp and fila.get("metricas_con_target") == disp["estado"]
+        if disp["estado"] == "completa":
+            cl = r["clases"]
+            ok = (ok and cl["BAJA+1"] + cl["BAJA+2"] + cl["CONTINUA"] == cl["clientes"]
+                  and fila.get("rec_ganancia") not in (None, "", "pendiente"))
+        retro_ok[m] = ok
 
     checks = {
-        "completado": estado["estado"] == "completado" and rep["estado"] == "completado",
-        "cabecera_oficial": cab_oficial == "numero_de_cliente,probabilidad,enviar",
-        "cobertura_oficial_igual_entrada": n == len(cli_entrada) and set(cli.tolist()) == cli_entrada
-                                           and len(np.unique(cli)) == n,
-        "cobertura_features_y_decisiones": cli_feat == cli_entrada
-                                           and np.array_equal(np.asarray(d["numero_de_cliente"]), cli),
-        "probabilidades_finitas_en_0_1": bool(np.isfinite(prob).all() and ((prob >= 0) & (prob <= 1)).all()),
-        "probabilidades_iguales_oficial_y_decisiones": bool(np.array_equal(np.asarray(d["probabilidad"]), prob)),
-        "oficial_es_la_principal": bool(np.array_equal(np.asarray(o["enviar"]), np.asarray(d[f"enviar_{principal}"]))),
-        "cantidades_correctas": all(v["esperados"] == v["seleccionados"] for v in sel.values()),
-        "seleccion_por_orden_y_desempate": all(v["igual_al_prefijo_del_orden"] for v in sel.values()),
-        "estrategias_anidadas": anidadas,
-        "solo_lee_mes_historia_previa_y_modelo": permitidas and hist_leida == hist_previa
-                                                  and all(m < mes for m in hist_leida),
-        "historia_actualizada": (env / "historia" / f"foto_mes={mes}.parquet").exists(),
+        "completado": est.get("estado") == "completado" and rep.get("estado") == "completado",
+        "integridad_sha256": rep.get("integridad", {}) == {
+            "salida": sha(env / "output" / f"churn_{mes}.csv"),
+            "historia": sha(env / "historia" / f"foto_mes={mes}.parquet"),
+            "decisiones": sha(diag / f"decisiones_{mes}.csv")},
+        "salida_cabecera_exacta": salida_txt.split("\n", 1)[0] == "numero_de_cliente,probabilidad,enviar",
+        "salida_clientes_igual_entrada": np.array_equal(cli, cli_entrada) and len(np.unique(cli)) == n,
+        "features_decisiones_historia_igual_entrada": np.array_equal(cli_feat, cli_entrada)
+        and np.array_equal(d["numero_de_cliente"].to_numpy(np.int64), cli) and np.array_equal(cli_hist, cli_entrada),
+        "salida_probabilidades_en_0_1": bool(np.isfinite(prob).all() and ((prob >= 0) & (prob <= 1)).all()),
+        "salida_es_la_recomendacion": bool(np.array_equal(prob, d[f"probabilidad_{rec_id}"].to_numpy(np.float64))
+                                           and np.array_equal(o["enviar"].to_numpy(), d[f"enviar_{rec_id}"].to_numpy())),
+        "decisiones_dos_estrategias": all(v["envios"] == v["envios_esperados"] and v["seleccion_es_prefijo_del_orden"]
+                                          and v["probabilidades_validas"] and v["envios_igual_reporte"]
+                                          for v in estr.values()),
+        "historia_inicial_mas_completados_sin_huecos": hist_meses == sorted(inicial | set(comp))
+        and hist_meses == meses_entre(hist_meses[0], hist_meses[-1]),
+        "lee_solo_entrada_historia_previa_y_modelos": permitidas and hist_leida == [m for m in hist_meses if m < mes],
+        "reporte_una_fila_por_completado": [int(f["mes"]) for f in filas] == comp
+        and all(f["integridad_ok"] == "True" for f in filas)
+        and int(filas_por_mes[mes]["rec_envios"]) == estr[REC]["envios"]
+        and int(filas_por_mes[mes]["alt_envios"]) == estr[ALT]["envios"],
+        "retrospectiva_segun_meses_recibidos": all(retro_ok.values()),
     }
-    return {"mes": mes, "ok": all(checks.values()), "checks": checks, "clientes": n, "seleccion": sel,
-            "historia_leida": f"{hist_leida[0]}-{hist_leida[-1]} ({len(hist_leida)} meses)",
-            "comparacion_estrategias": {k: {c: v[c] for c in ("seleccionados", "proporcion",
-                                                              "interseccion_con_principal", "jaccard_con_principal")}
-                                        for k, v in rep["comparacion_estrategias"].items()},
-            "tiempos": rep["tiempos"], "memoria": rep["memoria"], "alertas": rep["alertas"],
-            "distribucion_scores": rep["distribucion_scores"]}
+    cat_col = rep.get("categorias_columnas", {})
+    return {
+        "mes": mes, "ok": all(checks.values()), "checks": checks, "clientes": n,
+        "envios": {"recomendacion": estr[REC]["envios"], "alternativa": estr[ALT]["envios"]},
+        "probabilidad_minima_enviada": {x["rol"]: x["probabilidad_minima_enviada"] for x in rep["estrategias"]},
+        "distribucion": {x["rol"]: x["distribucion"] for x in rep["estrategias"]},
+        "coincidencia": rep["coincidencia"], "estado_calidad": rep.get("estado_calidad"),
+        "anomalias": {"clientes_sin_historia": rep["features"]["clientes_sin_historia"],
+                      "lag_fila_distinto_calendario":
+                          rep["verificacion_features"]["lags"]["clientes_con_algun_lag_distinto_del_calendario"],
+                      "columnas_100_nulas": cat_col.get("nula_100", []),
+                      "columnas_observados_en_cero": cat_col.get("observados_en_cero", []),
+                      "columnas_constantes_no_nulas": cat_col.get("constante_no_nula", []),
+                      "cambio_tasa_nulos": next((i["variables"] for i in rep["incidentes"]
+                                                 if i["regla"] == "cambio_tasa_nulos"), []),
+                      "reglas": sorted({i["regla"] for i in rep["incidentes"]})},
+        "historia_leida": f"{hist_leida[0]}-{hist_leida[-1]} ({len(hist_leida)} meses)",
+        "tiempos_internos": rep["tiempos"], "total_interno_desde_entrada_s": est.get("total_desde_entrada_s"),
+        "memoria": rep["memoria"], "reconciliacion": rep.get("reconciliacion"), "recuperado": est.get("recuperado", False),
+    }
+
+
+def provocar_reintento(env: Path, mes: int, origen: Path, proximo: tuple[int, Path]) -> tuple[list, dict]:
+    """Pasos a–d del docstring. Devuelve (intentos que cuentan para el tiempo del mes, detalle de la prueba)."""
+    filas_antes = [int(f["mes"]) for f in acumulado(env)]
+    a = lanzar(env, mes, origen, falla="tras_publicacion")
+    est = leer_json(env / "registro" / "meses" / f"{mes}.json")
+    publicado = {k: (env / p).exists() for k, p in (("salida", f"output/churn_{mes}.csv"),
+                                                    ("historia", f"historia/foto_mes={mes}.parquet"),
+                                                    ("diagnostico", f"diagnosticos/{mes}/reporte.json"))}
+    paso_a = {**a, "esperado": 3, "publicado": publicado, "estado": est.get("estado"),
+              "candado_huerfano": (env / "registro" / "meses" / f"{mes}.lock").exists(),
+              "reporte_sin_el_mes": [int(f["mes"]) for f in acumulado(env)] == filas_antes}
+    paso_a["ok"] = (a["codigo"] == 3 and all(publicado.values()) and paso_a["estado"] == "en_curso"
+                    and paso_a["candado_huerfano"] and paso_a["reporte_sin_el_mes"])
+    detalle = {"mes": mes, "a_muere_tras_publicar": paso_a}
+
+    antes = foto(env)
+    b = lanzar(env, proximo[0], proximo[1])
+    cambios = diferencias(antes, foto(env))
+    ultimo = (env / "registro" / "ejecuciones.jsonl").read_text(encoding="utf-8").strip().split("\n")[-1]
+    detalle["b_mes_siguiente_rechazado"] = {**b, "mes": proximo[0], "esperado": 4, "cambios": cambios,
+                                            "motivo": json.loads(ultimo).get("motivo"),
+                                            "ok": b["codigo"] == 4 and not cambios}
+    # El intento rechazado ya había copiado input/<proximo>.csv (la recepción es lo primero). Se quita para que,
+    # en la secuencia, ese mes vuelva a medirse desde la copia.
+    (env / "input" / f"{proximo[0]}.csv").unlink(missing_ok=True)
+
+    features = env / "diagnosticos" / str(mes) / f"features_{mes}.parquet"
+    mtime = features.stat().st_mtime_ns
+    antes = foto(env)
+    c = lanzar(env, mes, origen)
+    est = leer_json(env / "registro" / "meses" / f"{mes}.json")
+    despues = foto(env)
+    publicados_iguales = all(antes.get(k) == despues.get(k) for k in antes
+                             if k.startswith(("output/", "historia/", f"diagnosticos/{mes}/")))
+    sin_recalcular = features.stat().st_mtime_ns == mtime and publicados_iguales
+    detalle["c_reintento_recupera"] = {
+        **c, "esperado": 0, "estado": est.get("estado"), "recuperado": est.get("recuperado", False),
+        "sin_recalcular": sin_recalcular, "intentos": [i["estado"] for i in est.get("intentos", [])],
+        "ok": c["codigo"] == 0 and est.get("estado") == "completado" and est.get("recuperado", False) and sin_recalcular}
+
+    antes = foto(env)
+    dd = lanzar(env, mes, origen)
+    cambios = diferencias(antes, foto(env))
+    detalle["d_repetir_rechazado"] = {**dd, "esperado": 4, "cambios": cambios, "ok": dd["codigo"] == 4 and not cambios}
+    detalle["ok"] = all(v["ok"] for v in detalle.values() if isinstance(v, dict))
+    return [a, c], detalle
+
+
+def preparar(nombre: str, hasta: int) -> tuple[Path, dict]:
+    t = time.perf_counter()
+    rc = subprocess.run([sys.executable, "-m", "pipeline_competencia02.preparar_ejecucion", "--nombre", nombre,
+                         "--hasta", str(hasta)], cwd=RAIZ).returncode
+    pared = round(time.perf_counter() - t, 1)
+    if rc != 0:
+        raise RuntimeError(f"preparar_ejecucion terminó con código {rc}")
+    env = RUTAS.entornos / nombre
+    cfg = leer_json(env / "entorno.json")
+    return env, {"pared_s": pared, "interno_s": cfg["preparacion_s"], "historia": cfg["historia"]["cobertura"],
+                 "incluye": "copia y verificación de modelos y catálogo; historia inicial desde el Parquet de 2019 "
+                            "controlada contra la auditoría de filas; validación de cobertura"}
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Ejecuta y comprueba meses consecutivos en un entorno.")
-    ap.add_argument("--entorno", type=Path, required=True)
+    ap = argparse.ArgumentParser(description="Ensayo secuencial del pipeline mensual con dos estrategias.")
+    g = ap.add_mutually_exclusive_group(required=True)
+    g.add_argument("--nueva", help="nombre de una carpeta de ejecución nueva (se prepara y se mide aparte)")
+    g.add_argument("--ejecucion", type=Path, help="carpeta ya preparada")
     ap.add_argument("--desde", type=int, required=True)
     ap.add_argument("--hasta", type=int, required=True)
-    ap.add_argument("--estrategia", action="append", required=True)
-    ap.add_argument("--principal", required=True)
+    ap.add_argument("--reintento-en", type=int, help="mes intermedio en el que se provoca y se prueba un reintento")
+    ap.add_argument("--resumen", type=Path, help="copia del resumen, además de <ejecución>/pruebas/")
     a = ap.parse_args(argv)
-    env = a.entorno.resolve()
-    estrategias = [E.construir(s) for s in a.estrategia]
-    resumen = {"entorno": mostrar(env), "estrategias": a.estrategia, "principal": a.principal,
-               "nota": "sin desempeño: no se leen etiquetas", "meses": []}
-    con = duckdb.connect()
-    con.execute("SET threads = 4")
-    con.execute("SET memory_limit = '1GB'")
+    meses = meses_entre(a.desde, a.hasta)
+    if a.reintento_en and a.reintento_en not in meses[:-1]:
+        ap.error("--reintento-en debe ser un mes de la secuencia que no sea el último")
+    origenes = {m: insumo(m) for m in meses}  # verificación de los insumos, fuera del reloj
+    resumen = {"inicio": time.strftime("%Y-%m-%dT%H:%M:%S"), "desde": a.desde, "hasta": a.hasta,
+               "reloj": "pared del proceso mensual: desde antes de lanzarlo (incluye arranque e imports y la copia a "
+                        "input/) hasta que termina, con la salida publicada y el reporte acumulado regenerado",
+               "meses": []}
+    if a.nueva:
+        env, resumen["preparacion"] = preparar(a.nueva, anterior(a.desde))
+        print(f"Preparación: {resumen['preparacion']['pared_s']} s (fuera del tiempo mensual)", flush=True)
+    else:
+        env = a.ejecucion.resolve()
+    resumen["ejecucion"] = mostrar(env)
+    inicial = {int(m) for m in leer_json(env / "entorno.json")["historia"]["meses"]}
     codigo = 0
-    for mes in meses_entre(a.desde, a.hasta):
-        entrada = INSUMOS / f"competencia_02_{mes}_crudo.csv"
-        cmd = [sys.executable, "-m", "pipeline_competencia02.ejecutar_mes", "--entorno", str(env),
-               "--entrada", str(entrada), "--mes", str(mes), "--principal", a.principal]
-        for e in a.estrategia:
-            cmd += ["--estrategia", e]
-        t = time.perf_counter()
-        rc = subprocess.run(cmd, cwd=ROOT, env={k: v for k, v in os.environ.items() if k != "PIPELINE_C02_FALLA"}
-                            ).returncode
-        pared = round(time.perf_counter() - t, 1)
-        if rc != 0:
-            resumen["meses"].append({"mes": mes, "ok": False, "codigo": rc})
-            print(f"[{mes}] FALLÓ con código {rc}; se detiene la secuencia", flush=True)
+    for i, mes in enumerate(meses):
+        if mes == a.reintento_en:
+            intentos, resumen["reintento"] = provocar_reintento(env, mes, origenes[mes],
+                                                                (meses[i + 1], origenes[meses[i + 1]]))
+            ok_intentos = resumen["reintento"]["ok"]
+        else:
+            intentos = [lanzar(env, mes, origenes[mes])]
+            ok_intentos = intentos[0]["codigo"] == 0
+        if not ok_intentos:
+            resumen["meses"].append({"mes": mes, "ok": False, "intentos": intentos})
+            print(f"[{mes}] intentos inesperados {intentos}; se detiene la secuencia", flush=True)
             codigo = 2
             break
-        r = comprobar(con, env, mes, estrategias, a.principal)
-        r["tiempo_proceso_s"] = pared
+        r = comprobar(env, mes, inicial)
+        r["intentos"] = intentos
+        r["tiempo_total_s"] = round(sum(x["pared_s"] for x in intentos), 1)
+        r["arranque_y_cierre_s"] = (round(intentos[0]["pared_s"] - r["total_interno_desde_entrada_s"], 1)
+                                    if len(intentos) == 1 and r["total_interno_desde_entrada_s"] else None)
         resumen["meses"].append(r)
-        print(f"[{mes}] {'OK' if r['ok'] else 'FALLA'} | clientes {r['clientes']:,} | "
-              f"{ {k: v['seleccionados'] for k, v in r['comparacion_estrategias'].items()} } | "
-              f"{r['tiempos']['total_s']}s | pico WS {r['memoria']['pico_working_set_mb']:,.0f} MB | "
+        print(f"[{mes}] {'OK' if r['ok'] else 'FALLA'} | {r['tiempo_total_s']} s | clientes {r['clientes']:,} | "
+              f"envíos {r['envios']} | jaccard {r['coincidencia']['jaccard']} | "
               f"checks fallidos: {[k for k, v in r['checks'].items() if not v]}", flush=True)
         if not r["ok"]:
             codigo = 2
             break
-    con.close()
+    resumen["retrospectiva"] = {m: (R.cargar(env, m) or {}) for m in completados(env)}
+    resumen["fin"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     resumen["ok"] = codigo == 0
     (env / "pruebas").mkdir(exist_ok=True)
     out = env / "pruebas" / f"secuencia_{a.desde}_{a.hasta}.json"
-    out.write_text(json.dumps(resumen, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
+    texto = json.dumps(resumen, indent=2, ensure_ascii=False, default=str)
+    out.write_text(texto, encoding="utf-8")
+    if a.resumen:
+        a.resumen.write_text(texto + "\n", encoding="utf-8", newline="\n")
     print(f"Resumen: {mostrar(out)}")
     return codigo
 

@@ -148,11 +148,128 @@ class TestReintentosYReporte(unittest.TestCase):
         self.assertIn("pendiente", primera)
         self.assertIn("True", filas[0])  # integridad_ok
 
+    def test_reporte_no_presenta_provisionales_como_clases(self):
+        self.publicar_falso(202001)
+        parcial = {"version": 2, "disponibilidad": {"estado": "parcial", "requiere": [202002, 202003], "falta": ["202003"]},
+                   "clases": {"clientes": 100, "definitivas": False}, "provisional": {"ausentes_en_t1": 7},
+                   "estrategias": [{"rol": M.ROL_OFICIAL, "provisional_ausentes_en_t1_enviados": 3},
+                                   {"rol": M.ROL_ALTERNATIVA, "provisional_ausentes_en_t1_enviados": 2}]}
+        f = M.fila_reporte(self.env, 202001, {"estado": "completado"}, parcial)
+        self.assertEqual((f["metricas_con_target"], f["target_baja1"], f["target_continua"]),
+                         ("parcial", "pendiente", "pendiente"))
+        self.assertEqual((f["rec_baja1_enviados"], f["rec_ganancia"]), ("pendiente", "pendiente"))
+        self.assertEqual((f["provisional_ausentes_t1"], f["rec_provisional_ausentes_t1_enviados"],
+                          f["alt_provisional_ausentes_t1_enviados"]), (7, 3, 2))
+
+
+class TestRetrospectiva(unittest.TestCase):
+    """Etiqueta reconstruida por presencia en t+1 y t+2 (retrospectiva.py), con datos sintéticos."""
+
+    def setUp(self):
+        import duckdb
+        self.tmp = tempfile.TemporaryDirectory()
+        self.raiz = Path(self.tmp.name)
+        for d in ("historia", "diagnosticos/202001", "registro/meses"):
+            (self.raiz / d).mkdir(parents=True)
+        self.con = duckdb.connect()
+        self.historia(202001, range(1, 11))
+        self.historia(202002, range(3, 11))                 # 1 y 2 ausentes en t+1: clase pendiente de t+2
+        p = np.array([.1, .2, .9, .8, .7, .01, .02, .03, .04, .05])
+        rec = np.isin(np.arange(1, 11), [3, 4, 5]).astype(int)
+        alt = np.isin(np.arange(1, 11), [1, 3]).astype(int)
+        palt = np.where(alt == 1, .95, .01)
+        import pandas as pd
+        pd.DataFrame({"numero_de_cliente": np.arange(1, 11), "probabilidad_r": p, "enviar_r": rec,
+                      "probabilidad_a": palt, "enviar_a": alt}).to_csv(
+            self.raiz / "diagnosticos" / "202001" / "decisiones_202001.csv", index=False)
+        (self.raiz / "diagnosticos" / "202001" / "reporte.json").write_text(json.dumps({"estrategias": [
+            {"id": "a", "rol": M.ROL_ALTERNATIVA, "score_corto": "P(BAJA+2)"},
+            {"id": "r", "rol": M.ROL_OFICIAL, "score_corto": "P(BAJA+1∪BAJA+2)"}]}))
+
+    def tearDown(self):
+        self.con.close()
+        self.tmp.cleanup()
+
+    def historia(self, mes, clientes):
+        lista = ",".join(f"({c}, {mes})" for c in clientes)
+        self.con.execute(f"COPY (SELECT * FROM (VALUES {lista}) t(numero_de_cliente, foto_mes)) TO "
+                         f"'{(self.raiz / 'historia' / f'foto_mes={mes}.parquet').as_posix()}' (FORMAT parquet)")
+
+    def test_parcial_y_despues_completa(self):
+        from pipeline_competencia02 import retrospectiva as R
+        self.assertEqual(R.disponibilidad(self.raiz / "historia", 202002),
+                         {"estado": "pendiente", "requiere": [202003, 202004], "falta": ["202003", "202004"]})
+        self.assertEqual(R.actualizar(self.raiz, [202001]), {202001: "parcial"})
+        r = R.cargar(self.raiz, 202001)
+        # con t+1 solo ninguna clase es definitiva: los ausentes son BAJA+1 PROVISIONAL (pueden volver en t+2)
+        self.assertEqual(r["clases"], {"clientes": 10, "definitivas": False})
+        self.assertEqual(r["provisional"]["ausentes_en_t1"], 2)
+        self.assertEqual([x["rol"] for x in r["estrategias"]], [M.ROL_OFICIAL, M.ROL_ALTERNATIVA])
+        for x in r["estrategias"]:
+            self.assertFalse({"ganancia", "baja1_enviados", "baja2_enviados"} & set(x))
+        self.assertEqual(r["estrategias"][1]["provisional_ausentes_en_t1_enviados"], 1)
+        # llega 202003: 3 y 4 estaban en 202002 y faltan en 202003 -> BAJA+2; 2 falta en ambos -> BAJA+1;
+        # 1 faltó en 202002 y VUELVE en 202003 -> CONTINUA (regla oficial verificada en sampling, 03b)
+        self.historia(202003, [1] + list(range(5, 11)))
+        self.assertEqual(R.actualizar(self.raiz, [202001]), {202001: "completa"})
+        r = R.cargar(self.raiz, 202001)
+        self.assertEqual(r["version"], 2)
+        self.assertEqual(r["clases"], {"clientes": 10, "BAJA+1": 1, "BAJA+2": 2, "CONTINUA": 7,
+                                       "ausentes_en_t1_que_vuelven_en_t2": 1, "definitivas": True})
+        self.assertNotIn("provisional", r)
+        rec, alt = r["estrategias"]
+        self.assertEqual((rec["baja1_enviados"], alt["baja1_enviados"]), (0, 0))  # alt envió a 1, que es CONTINUA
+        self.assertEqual((rec["baja2_enviados"], rec["ganancia"]), (2, 1_100_000 * 2 - 27_500 * 3))
+        self.assertEqual((alt["baja2_enviados"], alt["ganancia"]), (1, 1_100_000 - 27_500 * 2))
+        self.assertEqual(rec["auc_baja2"], 1.0)  # 3 y 4 tienen los scores más altos de la recomendación
+        self.assertEqual(r["diferencia_ganancia_recomendacion_menos_alternativa"], rec["ganancia"] - alt["ganancia"])
+
+    def test_presente_ausente_presente_es_continua(self):
+        """Cliente presente en t, ausente en t+1 y presente en t+2: CONTINUA (no BAJA+1)."""
+        from pipeline_competencia02.retrospectiva import etiquetar
+        self.assertEqual(etiquetar(np.array([False]), np.array([True]))[0], "CONTINUA")
+
+    def test_patrones_de_la_verificacion_oficial(self):
+        """Tabla de experimento_sampling/03b (presencia en t+1, t+2, t+3 -> etiqueta oficial de competencia 01).
+
+        t+3 no interviene. El patrón 0 1 0 no aparece en la verificación; se incluye con la regla (CONTINUA).
+        """
+        from pipeline_competencia02.retrospectiva import etiquetar
+        oficial = {"000": "BAJA+1", "001": "BAJA+1", "011": "CONTINUA", "100": "BAJA+2", "101": "BAJA+2",
+                   "110": "CONTINUA", "111": "CONTINUA", "010": "CONTINUA"}
+        for patron, clase in oficial.items():
+            en1, en2 = np.array([patron[0] == "1"]), np.array([patron[1] == "1"])
+            self.assertEqual(etiquetar(en1, en2)[0], clase, patron)
+
+    def test_auc_con_empates(self):
+        from pipeline_competencia02.retrospectiva import auc
+        s, y = np.array([.1, .4, .35, .8, .4]), np.array([0, 0, 1, 1, 1], bool)
+        pares = [(a > b) + 0.5 * (a == b) for a in s[y] for b in s[~y]]
+        self.assertAlmostEqual(auc(s, y), float(np.mean(pares)))
+        self.assertIsNone(auc(s, np.zeros(5, bool)))
+
+
+class TestPreviosSinCompletar(unittest.TestCase):
+    def test_mes_publicado_sin_completar_bloquea_el_siguiente(self):
+        with tempfile.TemporaryDirectory() as d:
+            raiz = Path(d)
+            for x in ("historia", "registro/meses"):
+                (raiz / x).mkdir(parents=True)
+            (raiz / "entorno.json").write_text(json.dumps({"nombre": "t", "historia": {"meses": {"201912": {}}}}))
+            for m in (201912, 202001, 202002):
+                (raiz / "historia" / f"foto_mes={m}.parquet").write_bytes(b"h")
+            (raiz / "registro" / "meses" / "202001.json").write_text(json.dumps({"mes": 202001, "estado": "completado"}))
+            (raiz / "registro" / "meses" / "202002.json").write_text(json.dumps({"mes": 202002, "estado": "en_curso"}))
+            env = Entorno(raiz)
+            self.assertEqual(M.previos_sin_completar(env, 202003), [202002])
+            self.assertEqual(M.previos_sin_completar(env, 202002), [])
+
 
 class TestNoLeeEtiquetas(unittest.TestCase):
     def test_modulos_nuevos_no_leen_target(self):
         for f in ("pipeline_competencia02/mensual.py", "pipeline_competencia02/preparar_ejecucion.py",
-                  "pipeline_competencia02/catalogo.py"):
+                  "pipeline_competencia02/catalogo.py", "pipeline_competencia02/retrospectiva.py",
+                  "pipeline_competencia02/correr_meses.py"):
             texto = (RAIZ / f).read_text(encoding="utf-8")
             for prohibido in ("target_2019", "leer_target", "_target.parquet"):
                 self.assertNotIn(prohibido, texto, f"{f} menciona {prohibido}")
