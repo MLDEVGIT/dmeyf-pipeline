@@ -56,6 +56,8 @@ Detalle en `INTEGRACION.md`.
 | B9 historia para el vivo | **Resuelta** y ensayada en secuencia 202001–202006: la historia crece sólo con los meses recibidos |
 | Reintentos consistentes | **Resuelta** y probada aislada (`scripts/probar_reintentos.py`) y dentro de la secuencia (202003; el mes siguiente se rechaza hasta reconciliar) |
 | B10 anomalías | 202006 diagnosticado (`resultados/i02_columnas_en_cero_202006.json`); el tratamiento queda para E06 con 2019 |
+| Target consistente | **Resuelta en este repo** (`martin/target-consistente`): regla única `evaluacion/target.py`, target 2019 regenerado, candidatos reentrenados (TC01), catálogo `tc01` activo y secuencia repetida. Falta coordinar el repo de sampling |
+| Corte del binario `tc01` | **Abierta**: el minimax eligió 4,475 % (borde de meseta); fijar un criterio robusto con 2019 antes del vivo |
 | B11, B13 | Sin cambios |
 
 ## Orden de implementación propuesto

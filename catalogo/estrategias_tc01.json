@@ -1,0 +1,181 @@
+{
+  "version": 1,
+  "nombre": "tc01",
+  "creado": "2026-11-25T08:23:28",
+  "estado": "candidatos de TC01: misma configuración que E01 reentrenada con el target versión 2 (evaluacion/target.py); la recomendación es provisional (PLAN_PRUEBAS.md § 9 y § 10)",
+  "target_version": 2,
+  "origen": {
+    "modelos_de": "ejecuciones/tc01/20261124T212203_16624",
+    "resumen": "resultados/tc01_target_corregido.json",
+    "resumen_sha256": "63eae1fd3babae9ad8f3849a17576f5ce39d7704084d9f1858e68fba1203838b"
+  },
+  "features": {
+    "definicion": "152 variables crudas + lag1, delta1, lag2, delta2 de cada una (760). lag_k = k-ésima observación previa del cliente (por fila, ordenado por foto_mes); delta_k = x − lag_k. Sin imputaciones. Igual a experimento_sampling/04 y pipeline_competencia02/features.py.",
+    "n": 760,
+    "sha256_nombres": "70759f43cfd86cb4cf430716375efcaeb98dc33b41e125c347bc8a7ea43f272f",
+    "archivo": "catalogo/predictores.json",
+    "lags": "por fila (k-ésima observación previa), NO por calendario"
+  },
+  "promedio": "media aritmética de las probabilidades de las semillas, en el orden de 'modelos'",
+  "orden_y_desempate": "probabilidad descendente; a igual probabilidad, numero_de_cliente ascendente",
+  "estrategias": [
+    {
+      "id": "binario_tc01_300r",
+      "rol": "recomendacion_provisional",
+      "objetivo": "binary",
+      "columna_score": null,
+      "score": "P(BAJA+1 ∪ BAJA+2): probabilidad del objetivo binario del baseline 208135 (positivo = BAJA+1 o BAJA+2)",
+      "num_class": null,
+      "candidato": "300 rondas, sin optimización (TC01 = E01 con target versión 2)",
+      "target_version": 2,
+      "params": {
+        "learning_rate": 0.05,
+        "num_leaves": 63,
+        "min_data_in_leaf": 200,
+        "feature_fraction": 0.5,
+        "bagging_fraction": 1.0,
+        "bagging_freq": 0,
+        "lambda_l2": 0.0,
+        "max_bin": 255,
+        "data_random_seed": 1,
+        "deterministic": true,
+        "force_col_wise": true,
+        "verbosity": -1
+      },
+      "rondas": 300,
+      "corte": {
+        "tipo": "fraccion_clientes",
+        "fraccion": 0.04475,
+        "redondeo": "techo(fraccion · n) (evaluacion.ganancia.envios)",
+        "fuente": "resultados/tc01_target_corregido.json → resultados.binario.corte.fraccion",
+        "elegido_con": "201908 y 201909 (menor arrepentimiento máximo del ensamble)"
+      },
+      "modelos": [
+        {
+          "semilla": 20261124,
+          "archivo": "binario_tc01_300r/semilla_20261124.txt",
+          "sha256": "6777957fd7d16c87b98f39f8b3ae05bbb6dcd1d2943df2e61b6a8d6a4c082112",
+          "origen": "ejecuciones/tc01/20261124T212203_16624/modelos/binario_20261124.txt",
+          "sha256_origen": "c44aba4003f91f47ee84c8ab0bf17b11b9fd0389d01c5e2876f7cf5730d3e0c5",
+          "rondas": 300,
+          "arboles": 300
+        },
+        {
+          "semilla": 20261125,
+          "archivo": "binario_tc01_300r/semilla_20261125.txt",
+          "sha256": "5031c5d9794f657caf5da112a1471cd232feaf9f9ad13b9cbc3b4026148c5cb6",
+          "origen": "ejecuciones/tc01/20261124T212203_16624/modelos/binario_20261125.txt",
+          "sha256_origen": "196bf1334043dbc321e04f40a8dee7f97ccaffcd86bab518e178cb782a50b4d1",
+          "rondas": 300,
+          "arboles": 300
+        },
+        {
+          "semilla": 20261126,
+          "archivo": "binario_tc01_300r/semilla_20261126.txt",
+          "sha256": "ffd06f4af53dd99deb2d5e549f143527230fce6c38b5ec93edefde8588a05bbd",
+          "origen": "ejecuciones/tc01/20261124T212203_16624/modelos/binario_20261126.txt",
+          "sha256_origen": "5ea1fb9e4a4722a69b9dcb9dceddfa55f0028ad927c7ffef4449ae5a0b8b47ea",
+          "rondas": 300,
+          "arboles": 300
+        },
+        {
+          "semilla": 20261127,
+          "archivo": "binario_tc01_300r/semilla_20261127.txt",
+          "sha256": "b3cc4e6b4f66c8690e1b8425e4eca2973499c53919b30949fdb84b9e13c250a2",
+          "origen": "ejecuciones/tc01/20261124T212203_16624/modelos/binario_20261127.txt",
+          "sha256_origen": "76e686a0a9b869604dbffb31ebefcca942a4273ece9d199f96a4189a6fc9eb90",
+          "rondas": 300,
+          "arboles": 300
+        },
+        {
+          "semilla": 20261128,
+          "archivo": "binario_tc01_300r/semilla_20261128.txt",
+          "sha256": "9f7a17ec4b8f1a1d7dfb25b76bf90bd9b84d7a1d38385576ddf0e4e2d6588c15",
+          "origen": "ejecuciones/tc01/20261124T212203_16624/modelos/binario_20261128.txt",
+          "sha256_origen": "935da0612c610a386303bbd29e959e658e9d0222b564801b5d0be0fd2513c149",
+          "rondas": 300,
+          "arboles": 300
+        }
+      ]
+    },
+    {
+      "id": "multiclase_p1_tc01_300r",
+      "rol": "alternativa",
+      "objetivo": "multiclass",
+      "columna_score": 2,
+      "score": "P(BAJA+2): columna 2 del multiclase CONTINUA/BAJA+1/BAJA+2 (BAJA+1 con peso 1)",
+      "num_class": 3,
+      "candidato": "300 rondas, sin optimización (TC01 = E01 con target versión 2)",
+      "target_version": 2,
+      "params": {
+        "learning_rate": 0.05,
+        "num_leaves": 63,
+        "min_data_in_leaf": 200,
+        "feature_fraction": 0.5,
+        "bagging_fraction": 1.0,
+        "bagging_freq": 0,
+        "lambda_l2": 0.0,
+        "max_bin": 255,
+        "data_random_seed": 1,
+        "deterministic": true,
+        "force_col_wise": true,
+        "verbosity": -1
+      },
+      "rondas": 300,
+      "corte": {
+        "tipo": "fraccion_clientes",
+        "fraccion": 0.028,
+        "redondeo": "techo(fraccion · n) (evaluacion.ganancia.envios)",
+        "fuente": "resultados/tc01_target_corregido.json → resultados.multiclase_p1.corte.fraccion",
+        "elegido_con": "201908 y 201909 (menor arrepentimiento máximo del ensamble)"
+      },
+      "modelos": [
+        {
+          "semilla": 20261124,
+          "archivo": "multiclase_p1_tc01_300r/semilla_20261124.txt",
+          "sha256": "e45e0a5f32b2becabd3df05086059bbc3a494b1828dfd4fb5a0862dacf1484f2",
+          "origen": "ejecuciones/tc01/20261124T212203_16624/modelos/multiclase_20261124.txt",
+          "sha256_origen": "e8b9a6540378893728996584c9832c5e159fdc5c5b122afc0ce8133a47baedf2",
+          "rondas": 300,
+          "arboles": 900
+        },
+        {
+          "semilla": 20261125,
+          "archivo": "multiclase_p1_tc01_300r/semilla_20261125.txt",
+          "sha256": "6059362ca4ebf83e18e09318529577b29ba6610a7f16da2aafa5a2b8c82de500",
+          "origen": "ejecuciones/tc01/20261124T212203_16624/modelos/multiclase_20261125.txt",
+          "sha256_origen": "8437a859882760787ef23558f626815e3e6d61a3ffc78dfd65a987d179b319fb",
+          "rondas": 300,
+          "arboles": 900
+        },
+        {
+          "semilla": 20261126,
+          "archivo": "multiclase_p1_tc01_300r/semilla_20261126.txt",
+          "sha256": "234c5d4b6daf576a92ec70107eae15e4f1b941d7680a6f9acefdd365568665d1",
+          "origen": "ejecuciones/tc01/20261124T212203_16624/modelos/multiclase_20261126.txt",
+          "sha256_origen": "17681ce4881cd6fc3b37b8bf40cb0e2cdac21bfb9e2b852b5a318eadfeb1a41e",
+          "rondas": 300,
+          "arboles": 900
+        },
+        {
+          "semilla": 20261127,
+          "archivo": "multiclase_p1_tc01_300r/semilla_20261127.txt",
+          "sha256": "651353c359ae4c93593fdd055091da9f05d7c1133156ddf0c108085f72d4b234",
+          "origen": "ejecuciones/tc01/20261124T212203_16624/modelos/multiclase_20261127.txt",
+          "sha256_origen": "2528e9e355e3a831801c5e0b69d8afff4debbf522e9a4d0b1348bbe519aea9c0",
+          "rondas": 300,
+          "arboles": 900
+        },
+        {
+          "semilla": 20261128,
+          "archivo": "multiclase_p1_tc01_300r/semilla_20261128.txt",
+          "sha256": "515f0a31931b29207800379c3979b3bd37905d0cb9e26fa8282d7067e898ece2",
+          "origen": "ejecuciones/tc01/20261124T212203_16624/modelos/multiclase_20261128.txt",
+          "sha256_origen": "144a79558e7c52f2b3004579edf9ccc766f4d02f188bac57e5d072ba26a43f20",
+          "rondas": 300,
+          "arboles": 900
+        }
+      ]
+    }
+  ]
+}

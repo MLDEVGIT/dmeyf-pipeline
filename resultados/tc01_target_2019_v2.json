@@ -1,0 +1,184 @@
+{
+  "experimento": "TC01 paso 1: target 2019 regla versión 2",
+  "inicio": "2026-11-24T21:19:40",
+  "regla": {
+    "CONTINUA": "presente en t+2 (aunque falte en t+1)",
+    "BAJA+2": "presente en t+1 y ausente en t+2",
+    "BAJA+1": "ausente en t+1 y ausente en t+2",
+    "horizonte": "la clase definitiva necesita t+1 y t+2",
+    "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)"
+  },
+  "version": 2,
+  "meses": [
+    201903,
+    201904,
+    201905,
+    201906,
+    201908,
+    201909
+  ],
+  "octubre": "no se etiqueta ni se informa",
+  "fuente_presencia": {
+    "archivo": "competencia_02/competencia_02_2019.parquet",
+    "sha256": "2e74ff62d777917cb1ef775adf7d13d5f14f934da87b174f7d06a49fd2ec4707",
+    "meses": [
+      201901,
+      201902,
+      201903,
+      201904,
+      201905,
+      201906,
+      201907,
+      201908,
+      201909,
+      201910,
+      201911,
+      201912
+    ]
+  },
+  "anterior": {
+    "archivo": "competencia_02/competencia_02_2019_target.parquet",
+    "sha256": "46b4b996e0379ce7c89fef14f532fd41741be68cbbdf70bb9c581dcc06e1f9bb",
+    "regla": "versión 1 (experimento_sampling/03): ausente en t+1 -> BAJA+1"
+  },
+  "codigo": {
+    "evaluacion/target.py": "e6f8bd586dbeca938ab22eeede3e345580405bfdf18f5939b7309fe7eb86ec82",
+    "experimentos/tc01_target_2019.py": "0880fa149662c74c1dfbe412fc540022924ab0fa01200e6de8fd62af979382a1"
+  },
+  "conteo_v1": {
+    "201903": {
+      "CONTINUA": 124148,
+      "BAJA+1": 700,
+      "BAJA+2": 774
+    },
+    "201904": {
+      "CONTINUA": 124765,
+      "BAJA+1": 776,
+      "BAJA+2": 575
+    },
+    "201905": {
+      "CONTINUA": 125529,
+      "BAJA+1": 576,
+      "BAJA+2": 658
+    },
+    "201906": {
+      "CONTINUA": 127116,
+      "BAJA+1": 665,
+      "BAJA+2": 589
+    },
+    "201908": {
+      "CONTINUA": 130573,
+      "BAJA+1": 659,
+      "BAJA+2": 543
+    },
+    "201909": {
+      "CONTINUA": 132256,
+      "BAJA+1": 548,
+      "BAJA+2": 615
+    }
+  },
+  "conteo_v2": {
+    "201903": {
+      "CONTINUA": 124149,
+      "BAJA+1": 699,
+      "BAJA+2": 774
+    },
+    "201904": {
+      "CONTINUA": 124765,
+      "BAJA+1": 776,
+      "BAJA+2": 575
+    },
+    "201905": {
+      "CONTINUA": 125530,
+      "BAJA+1": 575,
+      "BAJA+2": 658
+    },
+    "201906": {
+      "CONTINUA": 127119,
+      "BAJA+1": 662,
+      "BAJA+2": 589
+    },
+    "201908": {
+      "CONTINUA": 130585,
+      "BAJA+1": 647,
+      "BAJA+2": 543
+    },
+    "201909": {
+      "CONTINUA": 132256,
+      "BAJA+1": 548,
+      "BAJA+2": 615
+    }
+  },
+  "transiciones_v1_a_v2": {
+    "201903": {
+      "BAJA+1 -> BAJA+1": 699,
+      "BAJA+1 -> CONTINUA": 1,
+      "BAJA+2 -> BAJA+2": 774,
+      "CONTINUA -> CONTINUA": 124148
+    },
+    "201904": {
+      "BAJA+1 -> BAJA+1": 776,
+      "BAJA+2 -> BAJA+2": 575,
+      "CONTINUA -> CONTINUA": 124765
+    },
+    "201905": {
+      "BAJA+1 -> BAJA+1": 575,
+      "BAJA+1 -> CONTINUA": 1,
+      "BAJA+2 -> BAJA+2": 658,
+      "CONTINUA -> CONTINUA": 125529
+    },
+    "201906": {
+      "BAJA+1 -> BAJA+1": 662,
+      "BAJA+1 -> CONTINUA": 3,
+      "BAJA+2 -> BAJA+2": 589,
+      "CONTINUA -> CONTINUA": 127116
+    },
+    "201908": {
+      "BAJA+1 -> BAJA+1": 647,
+      "BAJA+1 -> CONTINUA": 12,
+      "BAJA+2 -> BAJA+2": 543,
+      "CONTINUA -> CONTINUA": 130573
+    },
+    "201909": {
+      "BAJA+1 -> BAJA+1": 548,
+      "BAJA+2 -> BAJA+2": 615,
+      "CONTINUA -> CONTINUA": 132256
+    }
+  },
+  "cambios": {
+    "201903": {
+      "BAJA+1 -> CONTINUA": 1
+    },
+    "201905": {
+      "BAJA+1 -> CONTINUA": 1
+    },
+    "201906": {
+      "BAJA+1 -> CONTINUA": 3
+    },
+    "201908": {
+      "BAJA+1 -> CONTINUA": 12
+    }
+  },
+  "clientes_que_vuelven_por_mes": {
+    "201903": 1,
+    "201904": 0,
+    "201905": 1,
+    "201906": 3,
+    "201908": 12,
+    "201909": 0
+  },
+  "checks": {
+    "sql_igual_numpy": true,
+    "mismas_claves_que_features_y_sin_nulos": true,
+    "mismas_filas_que_v1": true,
+    "baja2_identico": true,
+    "unico_cambio_baja1_a_continua": true,
+    "cambios_igual_clientes_que_vuelven": true
+  },
+  "salida": {
+    "archivo": "pipeline_competencia02/target_2019_v2.parquet",
+    "sha256": "f533e499940b9bf1c144d616a63235a36e907ff1dd462b7628634c6b21836da0",
+    "filas": 772065
+  },
+  "segundos": 11.8
+}

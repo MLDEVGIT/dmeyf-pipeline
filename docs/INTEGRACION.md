@@ -1,16 +1,31 @@
 # Pipeline mensual con dos estrategias
 
-Ramas `martin/integracion-estrategias` y `martin/ensayo-secuencia`, 24-nov-2026.
+Ramas `martin/integracion-estrategias`, `martin/ensayo-secuencia` (24-nov-2026) y `martin/target-consistente`
+(25-nov-2026).
 - **Código**: `pipeline_competencia02/mensual.py`, `preparar_ejecucion.py`, `catalogo.py`,
   `retrospectiva.py` (métricas con target a posteriori) y `correr_meses.py` (ensayo secuencial).
+- **Target**: definición única en `evaluacion/target.py`, usada en entrenamiento, evaluación y
+  retrospectiva.
+- **Comparación de secuencias**: `scripts/comparar_secuencias.py`.
 - **Verificadores**: `scripts/verificar_scores.py`, `scripts/verificar_salida.py` y
   `scripts/probar_reintentos.py`.
 - **Diagnóstico de anomalías**: `scripts/analizar_columnas_en_cero.py`.
 
 ## Estrategias integradas
 
-Las dos son los **candidatos de E01**: 300 rondas, hiperparámetros fijos, **sin optimización**
-(`PLAN_PRUEBAS.md` § 5 y § 8). Se reutilizan los 10 modelos de E01 sin reentrenar.
+Hay **dos catálogos** (`pipeline_competencia02/catalogo.py`, `CATALOGOS`). Cada carpeta de ejecución
+copia uno (`preparar_ejecucion --catalogo`). Los dos tienen candidatos de 300 rondas, con
+hiperparámetros fijos y **sin optimización**.
+
+| Catálogo | Archivo | Modelos | Target | Corte binario · multiclase | Estado |
+|---|---|---|---|---|---|
+| `tc01` | `catalogo/estrategias_tc01.json` | TC01: E01 reentrenado (`PLAN_PRUEBAS.md` § 9 y § 10) | **versión 2** (`evaluacion/target.py`) | **4,475 %** · 2,8 % | **activo** |
+| `e01` | `catalogo/estrategias.json` | E01 (`PLAN_PRUEBAS.md` § 5 y § 8) | versión 1 (sampling 03) | 2,9 % · 2,8 % | se conserva para comparar |
+
+La tabla siguiente describe el catálogo `e01`, que es el del ensayo secuencial del 24-nov. En `tc01`
+cambian los ids (`binario_tc01_300r`, `multiclase_p1_tc01_300r`), el target, la fracción del binario
+y la fuente del corte (`resultados/tc01_target_corregido.json`). Los roles, los scores, las semillas
+y la salida son los mismos.
 
 | | Recomendación provisional | Alternativa |
 |---|---|---|
@@ -379,8 +394,135 @@ usa etiquetas.
 - **Decisión.** Elegir el tratamiento corresponde a E06, con la inyección del patrón en meses de
   2019 (R1). Hasta entonces el pipeline advierte y no trata.
 
+## Target consistente (TC01) y secuencia con el catálogo `tc01`
+
+Rama `martin/target-consistente`, 24/25-nov. Protocolo y resultados de 2019 en `PLAN_PRUEBAS.md` § 9
+y § 10.
+
+**1. Definición única del target.**
+- **Dónde vive.** `evaluacion/target.py` tiene la regla versión 2 con dos implementaciones, SQL y
+  numpy, contrastadas entre sí. La usan:
+  - `experimentos/tc01_target_2019.py`, que regenera el target de 2019;
+  - `experimentos/tc01_target_corregido.py`, que entrena y evalúa;
+  - `pipeline_competencia02/retrospectiva.py`, que calcula las métricas retrospectivas.
+- **Versiones anteriores.** El target versión 1 (`competencia_02_2019_target.parquet`) y E01/E02 se
+  conservan sin cambios. `experimentos/e01_binario_vs_multiclase.cargar` recibe la ruta del target y
+  sigue usando la versión 1 por defecto, para que E01 y E02 se puedan reproducir.
+- **Repo de sampling.** El repo grupal no se modificó; su actualización se coordina aparte.
+
+**2. Target de 2019 regenerado por presencia.** Archivo `RUTAS.target_2019_v2`, con procedencia en
+`.json` al lado y en `resultados/tc01_target_2019_v2.json`. Sólo se generaron 201903–201906 y
+201908–201909; octubre no se etiquetó.
+
+| Mes | BAJA+1 → CONTINUA | BAJA+2 | Otros cambios |
+|---|---|---|---|
+| 201903 | 1 | igual | 0 |
+| 201904 | 0 | igual | 0 |
+| 201905 | 1 | igual | 0 |
+| 201906 | 3 | igual | 0 |
+| 201908 | 12 | igual | 0 |
+| 201909 | 0 | igual | 0 |
+
+Las comprobaciones dieron verdadero:
+- SQL igual a numpy;
+- mismas claves que las features y ninguna clase nula;
+- BAJA+2 idéntico fila a fila;
+- el único cambio es BAJA+1 → CONTINUA;
+- los cambios coinciden con los clientes que vuelven, contados aparte.
+
+**3. Modelos corregidos y comparación en 2019** (detalle en `PLAN_PRUEBAS.md` § 10):
+- **Reproducción de E01.** Los modelos de E01 se reprodujeron bit a bit y sus cifras no dependen de la
+  versión del target.
+- **Scores.** Los del ensamble corregido correlacionan 0,995–0,997 con los anteriores (rangos
+  0,983–0,988). Con la misma cantidad de envíos coinciden el 88–89 % de los clientes. Cambiar el
+  target mueve el ranking menos que cambiar de semilla: 0,75–0,79 contra 0,67–0,71.
+- **Ganancia del ensamble en el corte de cada uno**, corregido − anterior:
+  - binario: −2,1 M en agosto y +3,8 M en septiembre;
+  - multiclase: 0,0 y +3,3 M.
+
+  Ninguna alerta del protocolo. La regla de E02 no adopta el multiclase, así que **el binario sigue
+  como recomendación**.
+- **El corte del binario cambia de 2,9 % a 4,475 %**, con el mismo procedimiento minimax. La curva
+  suavizada es una meseta entre 2,5 % y 4,475 %, con diferencias de 1–3 % de ganancia, y el mínimo
+  del arrepentimiento cayó en el extremo derecho. El multiclase queda en 2,8 %. Según el protocolo,
+  el catálogo `tc01` usa 4,475 %.
+
+**4. Secuencia 202001–202006 con `tc01`**
+- **Carpeta:** `ejecuciones/entornos/secuencia_tc01_202001_202006_20261125T082349`.
+- **Resultados versionados:** `resultados/i04_secuencia_tc01_202001_202006.json`; comparación con
+  la secuencia anterior en `resultados/i05_comparacion_secuencias_e01_tc01.json`.
+- **Corridas anteriores:** se conservan sin cambios.
+- **Preparación:** 68,9 s, fuera del tiempo mensual.
+
+| Mes | Tiempo total | Clientes | Envíos recomendación / alternativa | Jaccard entre estrategias | Anomalías | Métricas con target (regla v2) |
+|---|---|---|---|---|---|---|
+| 202001 | 161,1 s | 142.929 | 6.397 / 4.003 | 0,609 | 4.165 sin historia · 14 lag ≠ calendario | completa: G 233,3 M / 256,2 M · AUC 0,937 / 0,936 |
+| 202002 | 135,3 s | 146.184 | 6.542 / 4.094 | 0,609 | 6 columnas en cero · 3.849 · 21 | completa: G **−11,6 M** / 29,3 M · AUC 0,950 / 0,947 |
+| 202003 | 261,7 s (258,0 + 3,7; reintento) | 148.313 | 6.638 / 4.153 | 0,609 | 2.643 · 24 | completa: G 131,0 M / 153,1 M · AUC 0,943 / 0,940 |
+| 202004 | 170,5 s | 148.831 | 6.661 / 4.168 | 0,602 | 727 · 14 | completa: G 177,6 M / 180,2 M · AUC 0,928 / 0,928 |
+| 202005 | 181,8 s | 150.267 | 6.725 / 4.208 | 0,602 | 1.826 · 13 | parcial, sin clases definitivas: 527 ausentes en 202006; enviados 365 / 296 |
+| 202006 | 143,2 s | 152.712 | 6.834 / 4.276 | **0,420** | **47 columnas en cero** · 2.957 · 24 | pendiente: faltan 202007 y 202008 |
+
+- **Tiempos.** Entre 135 y 182 s por mes, y 262 s en 202003, que suma el intento que muere tras
+  publicar y la recuperación. Incluyen el arranque del proceso (4,5–8,5 s). El pico de working set fue
+  de 3,3–3,4 GB.
+- **Chequeos de `correr_meses`.** Todos OK en los seis meses: salida oficial, las dos estrategias,
+  historia inicial más los meses completados, lecturas, reporte acumulado y retrospectiva.
+- **Reintento en 202003.**
+  1. El proceso muere tras publicar (código 3).
+  2. 202004 se rechaza sin cambios (código 4).
+  3. El reintento recupera el mes sin recalcularlo (código 0, 3,7 s).
+  4. Repetir 202003 se rechaza sin cambios (código 4).
+- **Verificadores independientes:** OK en los seis meses.
+  - `verificar_scores.py`: las 10 semillas de los modelos **originales** de TC01, con sha256
+    verificado, el ensamble, las decisiones y la salida oficial coinciden bit a bit.
+  - `verificar_salida.py`: OK.
+
+**Comparación con la secuencia anterior** (`e01`). La retrospectiva de las dos usa la regla versión 2.
+
+| Mes | Recomendación: envíos e01 → tc01 · Jaccard · correlación de rangos | Alternativa: Jaccard · correlación de rangos | Ganancia recomendación e01 → tc01 | Ganancia alternativa e01 → tc01 |
+|---|---|---|---|---|
+| 202001 | 4.145 → 6.397 · 0,646 · 0,982 | 0,892 · 0,986 | 267,7 → 233,3 M | 259,5 → 256,2 M |
+| 202002 | 4.240 → 6.542 · 0,646 · 0,982 | 0,882 · 0,986 | 26,4 → −11,6 M | 26,0 → 29,3 M |
+| 202003 | 4.302 → 6.638 · 0,646 · 0,983 | 0,890 · 0,987 | 163,3 → 131,0 M | 156,4 → 153,1 M |
+| 202004 | 4.317 → 6.661 · 0,647 · 0,981 | 0,885 · 0,986 | 184,9 → 177,6 M | 173,6 → 180,2 M |
+| 202005 | 4.358 → 6.725 · 0,646 · 0,983 | 0,880 · 0,988 | parcial | parcial |
+| 202006 | 4.429 → 6.834 · 0,610 · 0,974 | 0,746 · 0,982 | pendiente | pendiente |
+
+**Corte contra target.** Es un diagnóstico retrospectivo que no se usa para decidir (R1). Mide la
+ganancia del score corregido con la misma cantidad de envíos que el anterior, con las decisiones
+guardadas:
+
+| Mes | Binario e01, k anterior | Binario tc01, mismo k | Binario tc01, k propio (4,475 %) |
+|---|---|---|---|
+| 202001 | 267,7 M | 262,2 M | 233,3 M |
+| 202002 | 26,4 M | 25,3 M | −11,6 M |
+| 202003 | 163,3 M | 165,5 M | 131,0 M |
+| 202004 | 184,9 M | 180,5 M | 177,6 M |
+
+- **Efecto del target.** Con la misma *k* es chico y de signo mixto: entre −5,5 y +2,2 M en el binario
+  y entre −3,3 y +6,6 M en el multiclase.
+- **Efecto del corte.** Casi toda la caída del binario viene de pasar a 4,475 %. Con el mismo score
+  corregido, el corte nuevo pierde entre 2,9 y 36,9 M por mes contra la *k* anterior. Contra `e01`
+  completo, la pérdida es de 7,3 a 38,0 M. En 202002, con pocas BAJA+2, la ganancia queda negativa.
+- **Ex post.** El máximo ex post de 2020 está entre 1.023 y 5.282 envíos, según el mes y la
+  estrategia, y 4,475 % manda entre 6.397 y 6.834.
+- **Qué se hace con esto.** Por R1 no cambia el corte, que se elige con 2019. Sí indica que el
+  procedimiento minimax es frágil en una meseta, y eso pasa a ser el primer pendiente.
+
 ## Pendientes
 
+0. **Corte del binario corregido (antes del vivo).** El minimax eligió 4,475 % en el extremo de una
+   meseta, fuera del rango de las semillas. En 2020, que es sólo monitoreo, ese corte pierde entre 7 y
+   38 M por mes frente a 2,9 %. Hay que acordar con el grupo un criterio de corte robusto y fijarlo
+   con 2019, sin mirar 2020, antes de usar `tc01` en vivo. Opciones:
+   - centro de la meseta;
+   - mediana de las fracciones por semilla;
+   - minimax con penalización por distancia al borde;
+   - umbral de probabilidad.
+
+   Mientras tanto, `tc01` es el catálogo activo, según el protocolo. `e01` sigue disponible con
+   `--catalogo e01`.
 1. **E06, tratamiento de columnas en cero.** Con 202006 se dimensiona: el 16–17 % de la importancia
    está afectada y la selección cambia en más de la mitad de los clientes según el tratamiento. Hay que
    decidir con 2019 entre advertir, N y L, y medir los falsos positivos de la detección. En 2019
@@ -395,8 +537,6 @@ usa etiquetas.
    - el formato del reporte (R2, R3; T1);
    - si las métricas retrospectivas con la presencia de 2020 se aceptan en el reporte (R1).
 5. **Importes de ganancia de C02**: siguen siendo los de C01.
-6. **Target de 2019 con la regla oficial.** El de E01/E02 usa la versión 1: 5 filas de entrenamiento y
-   12 de desarrollo son CONTINUA por la regla oficial. Hay que decidir con el grupo si se regenera el
-   target (en el repo de sampling) y se reentrenan los candidatos. Los cortes no deberían cambiar,
-   porque BAJA+2 es igual. La discrepancia ya estaba registrada en sampling como pendiente de consultar
-   con el tutor.
+6. **Target de 2019 con la regla oficial: resuelto en este repo** (TC01, arriba). Falta coordinar
+   la actualización del repo grupal de sampling (`03_construir_target.py`) y confirmar la regla con el
+   tutor, como ya estaba registrado allí. Contra lo esperado, el corte del binario sí cambió (punto 0).

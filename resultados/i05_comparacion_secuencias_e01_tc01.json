@@ -1,0 +1,655 @@
+{
+  "anterior": "secuencia_202001_202006_20261124T200817",
+  "nueva": "secuencia_tc01_202001_202006_20261125T082349",
+  "meses": {
+    "202001": {
+      "clientes": 142929,
+      "catalogos": [
+        "e01",
+        "tc01"
+      ],
+      "por_rol": {
+        "recomendacion_provisional": {
+          "ids": [
+            "binario_e01_300r",
+            "binario_tc01_300r"
+          ],
+          "envios": [
+            4145,
+            6397
+          ],
+          "jaccard_enviados_entre_corridas": 0.6464,
+          "solo_anterior": 6,
+          "solo_nueva": 2258,
+          "correlacion_de_rangos_score": 0.981997,
+          "probabilidad_minima_enviada": [
+            0.053008089734823946,
+            0.0322961090013651
+          ]
+        },
+        "alternativa": {
+          "ids": [
+            "multiclase_p1_e01_300r",
+            "multiclase_p1_tc01_300r"
+          ],
+          "envios": [
+            4003,
+            4003
+          ],
+          "jaccard_enviados_entre_corridas": 0.8918,
+          "solo_anterior": 229,
+          "solo_nueva": 229,
+          "correlacion_de_rangos_score": 0.986376,
+          "probabilidad_minima_enviada": [
+            0.025407967390956153,
+            0.02544554824694395
+          ]
+        }
+      },
+      "coincidencia_entre_estrategias": [
+        0.743261,
+        0.609409
+      ],
+      "salida_oficial": {
+        "jaccard_enviar": 0.6464,
+        "correlacion_de_rangos_probabilidad": 0.981997
+      },
+      "tiempo_total_desde_entrada_s": [
+        178.1,
+        152.6
+      ],
+      "retrospectiva": [
+        {
+          "estado": "completa",
+          "version_regla": 2,
+          "clases": {
+            "BAJA+1": 606,
+            "BAJA+2": 521,
+            "CONTINUA": 141802
+          },
+          "recomendacion_provisional": {
+            "envios": 4145,
+            "baja2_enviados": 347,
+            "ganancia": 267712500,
+            "auc_baja2": 0.938017,
+            "ganancia_maxima_ex_post": 273955000
+          },
+          "alternativa": {
+            "envios": 4003,
+            "baja2_enviados": 336,
+            "ganancia": 259517500,
+            "auc_baja2": 0.935975,
+            "ganancia_maxima_ex_post": 260177500
+          }
+        },
+        {
+          "estado": "completa",
+          "version_regla": 2,
+          "clases": {
+            "BAJA+1": 606,
+            "BAJA+2": 521,
+            "CONTINUA": 141802
+          },
+          "recomendacion_provisional": {
+            "envios": 6397,
+            "baja2_enviados": 372,
+            "ganancia": 233282500,
+            "auc_baja2": 0.936591,
+            "ganancia_maxima_ex_post": 264825000
+          },
+          "alternativa": {
+            "envios": 4003,
+            "baja2_enviados": 333,
+            "ganancia": 256217500,
+            "auc_baja2": 0.935723,
+            "ganancia_maxima_ex_post": 262322500
+          }
+        }
+      ]
+    },
+    "202002": {
+      "clientes": 146184,
+      "catalogos": [
+        "e01",
+        "tc01"
+      ],
+      "por_rol": {
+        "recomendacion_provisional": {
+          "ids": [
+            "binario_e01_300r",
+            "binario_tc01_300r"
+          ],
+          "envios": [
+            4240,
+            6542
+          ],
+          "jaccard_enviados_entre_corridas": 0.6464,
+          "solo_anterior": 7,
+          "solo_nueva": 2309,
+          "correlacion_de_rangos_score": 0.98196,
+          "probabilidad_minima_enviada": [
+            0.06473048785456434,
+            0.038869880843531754
+          ]
+        },
+        "alternativa": {
+          "ids": [
+            "multiclase_p1_e01_300r",
+            "multiclase_p1_tc01_300r"
+          ],
+          "envios": [
+            4094,
+            4094
+          ],
+          "jaccard_enviados_entre_corridas": 0.8819,
+          "solo_anterior": 257,
+          "solo_nueva": 257,
+          "correlacion_de_rangos_score": 0.986304,
+          "probabilidad_minima_enviada": [
+            0.028073845746958342,
+            0.02826689980867373
+          ]
+        }
+      },
+      "coincidencia_entre_estrategias": [
+        0.720834,
+        0.609077
+      ],
+      "salida_oficial": {
+        "jaccard_enviar": 0.6464,
+        "correlacion_de_rangos_probabilidad": 0.98196
+      },
+      "tiempo_total_desde_entrada_s": [
+        166.4,
+        129.8
+      ],
+      "retrospectiva": [
+        {
+          "estado": "completa",
+          "version_regla": 2,
+          "clases": {
+            "BAJA+1": 524,
+            "BAJA+2": 213,
+            "CONTINUA": 145447
+          },
+          "recomendacion_provisional": {
+            "envios": 4240,
+            "baja2_enviados": 130,
+            "ganancia": 26400000,
+            "auc_baja2": 0.95029,
+            "ganancia_maxima_ex_post": 55110000
+          },
+          "alternativa": {
+            "envios": 4094,
+            "baja2_enviados": 126,
+            "ganancia": 26015000,
+            "auc_baja2": 0.947865,
+            "ganancia_maxima_ex_post": 52250000
+          }
+        },
+        {
+          "estado": "completa",
+          "version_regla": 2,
+          "clases": {
+            "BAJA+1": 524,
+            "BAJA+2": 213,
+            "CONTINUA": 145447
+          },
+          "recomendacion_provisional": {
+            "envios": 6542,
+            "baja2_enviados": 153,
+            "ganancia": -11605000,
+            "auc_baja2": 0.949537,
+            "ganancia_maxima_ex_post": 54367500
+          },
+          "alternativa": {
+            "envios": 4094,
+            "baja2_enviados": 129,
+            "ganancia": 29315000,
+            "auc_baja2": 0.947288,
+            "ganancia_maxima_ex_post": 51837500
+          }
+        }
+      ]
+    },
+    "202003": {
+      "clientes": 148313,
+      "catalogos": [
+        "e01",
+        "tc01"
+      ],
+      "por_rol": {
+        "recomendacion_provisional": {
+          "ids": [
+            "binario_e01_300r",
+            "binario_tc01_300r"
+          ],
+          "envios": [
+            4302,
+            6638
+          ],
+          "jaccard_enviados_entre_corridas": 0.6459,
+          "solo_anterior": 9,
+          "solo_nueva": 2345,
+          "correlacion_de_rangos_score": 0.982826,
+          "probabilidad_minima_enviada": [
+            0.0581562345352067,
+            0.036291671471296784
+          ]
+        },
+        "alternativa": {
+          "ids": [
+            "multiclase_p1_e01_300r",
+            "multiclase_p1_tc01_300r"
+          ],
+          "envios": [
+            4153,
+            4153
+          ],
+          "jaccard_enviados_entre_corridas": 0.8899,
+          "solo_anterior": 242,
+          "solo_nueva": 242,
+          "correlacion_de_rangos_score": 0.986857,
+          "probabilidad_minima_enviada": [
+            0.02927186867761858,
+            0.02918713455008114
+          ]
+        }
+      },
+      "coincidencia_entre_estrategias": [
+        0.72692,
+        0.609156
+      ],
+      "salida_oficial": {
+        "jaccard_enviar": 0.6459,
+        "correlacion_de_rangos_probabilidad": 0.982826
+      },
+      "tiempo_total_desde_entrada_s": [
+        null,
+        null
+      ],
+      "retrospectiva": [
+        {
+          "estado": "completa",
+          "version_regla": 2,
+          "clases": {
+            "BAJA+1": 213,
+            "BAJA+2": 398,
+            "CONTINUA": 147702
+          },
+          "recomendacion_provisional": {
+            "envios": 4302,
+            "baja2_enviados": 256,
+            "ganancia": 163295000,
+            "auc_baja2": 0.941862,
+            "ganancia_maxima_ex_post": 169867500
+          },
+          "alternativa": {
+            "envios": 4153,
+            "baja2_enviados": 246,
+            "ganancia": 156392500,
+            "auc_baja2": 0.940543,
+            "ganancia_maxima_ex_post": 162525000
+          }
+        },
+        {
+          "estado": "completa",
+          "version_regla": 2,
+          "clases": {
+            "BAJA+1": 213,
+            "BAJA+2": 398,
+            "CONTINUA": 147702
+          },
+          "recomendacion_provisional": {
+            "envios": 6638,
+            "baja2_enviados": 285,
+            "ganancia": 130955000,
+            "auc_baja2": 0.943192,
+            "ganancia_maxima_ex_post": 171682500
+          },
+          "alternativa": {
+            "envios": 4153,
+            "baja2_enviados": 243,
+            "ganancia": 153092500,
+            "auc_baja2": 0.940121,
+            "ganancia_maxima_ex_post": 157740000
+          }
+        }
+      ]
+    },
+    "202004": {
+      "clientes": 148831,
+      "catalogos": [
+        "e01",
+        "tc01"
+      ],
+      "por_rol": {
+        "recomendacion_provisional": {
+          "ids": [
+            "binario_e01_300r",
+            "binario_tc01_300r"
+          ],
+          "envios": [
+            4317,
+            6661
+          ],
+          "jaccard_enviados_entre_corridas": 0.6469,
+          "solo_anterior": 5,
+          "solo_nueva": 2349,
+          "correlacion_de_rangos_score": 0.981465,
+          "probabilidad_minima_enviada": [
+            0.0641114606673967,
+            0.040516647446077324
+          ]
+        },
+        "alternativa": {
+          "ids": [
+            "multiclase_p1_e01_300r",
+            "multiclase_p1_tc01_300r"
+          ],
+          "envios": [
+            4168,
+            4168
+          ],
+          "jaccard_enviados_entre_corridas": 0.8851,
+          "solo_anterior": 254,
+          "solo_nueva": 254,
+          "correlacion_de_rangos_score": 0.986032,
+          "probabilidad_minima_enviada": [
+            0.02784888231587121,
+            0.028000280944002438
+          ]
+        }
+      },
+      "coincidencia_entre_estrategias": [
+        0.73873,
+        0.602397
+      ],
+      "salida_oficial": {
+        "jaccard_enviar": 0.6469,
+        "correlacion_de_rangos_probabilidad": 0.981465
+      },
+      "tiempo_total_desde_entrada_s": [
+        184.4,
+        165.5
+      ],
+      "retrospectiva": [
+        {
+          "estado": "completa",
+          "version_regla": 2,
+          "clases": {
+            "BAJA+1": 398,
+            "BAJA+2": 524,
+            "CONTINUA": 147909
+          },
+          "recomendacion_provisional": {
+            "envios": 4317,
+            "baja2_enviados": 276,
+            "ganancia": 184882500,
+            "auc_baja2": 0.929134,
+            "ganancia_maxima_ex_post": 188292500
+          },
+          "alternativa": {
+            "envios": 4168,
+            "baja2_enviados": 262,
+            "ganancia": 173580000,
+            "auc_baja2": 0.927669,
+            "ganancia_maxima_ex_post": 184387500
+          }
+        },
+        {
+          "estado": "completa",
+          "version_regla": 2,
+          "clases": {
+            "BAJA+1": 398,
+            "BAJA+2": 524,
+            "CONTINUA": 147909
+          },
+          "recomendacion_provisional": {
+            "envios": 6661,
+            "baja2_enviados": 328,
+            "ganancia": 177622500,
+            "auc_baja2": 0.928326,
+            "ganancia_maxima_ex_post": 187000000
+          },
+          "alternativa": {
+            "envios": 4168,
+            "baja2_enviados": 268,
+            "ganancia": 180180000,
+            "auc_baja2": 0.928,
+            "ganancia_maxima_ex_post": 185845000
+          }
+        }
+      ]
+    },
+    "202005": {
+      "clientes": 150267,
+      "catalogos": [
+        "e01",
+        "tc01"
+      ],
+      "por_rol": {
+        "recomendacion_provisional": {
+          "ids": [
+            "binario_e01_300r",
+            "binario_tc01_300r"
+          ],
+          "envios": [
+            4358,
+            6725
+          ],
+          "jaccard_enviados_entre_corridas": 0.6458,
+          "solo_anterior": 9,
+          "solo_nueva": 2376,
+          "correlacion_de_rangos_score": 0.982673,
+          "probabilidad_minima_enviada": [
+            0.06511969233696774,
+            0.04218103502125888
+          ]
+        },
+        "alternativa": {
+          "ids": [
+            "multiclase_p1_e01_300r",
+            "multiclase_p1_tc01_300r"
+          ],
+          "envios": [
+            4208,
+            4208
+          ],
+          "jaccard_enviados_entre_corridas": 0.8803,
+          "solo_anterior": 268,
+          "solo_nueva": 268,
+          "correlacion_de_rangos_score": 0.9875,
+          "probabilidad_minima_enviada": [
+            0.03211330355622579,
+            0.032157667861554946
+          ]
+        }
+      },
+      "coincidencia_entre_estrategias": [
+        0.723541,
+        0.60167
+      ],
+      "salida_oficial": {
+        "jaccard_enviar": 0.6458,
+        "correlacion_de_rangos_probabilidad": 0.982673
+      },
+      "tiempo_total_desde_entrada_s": [
+        186.8,
+        175.7
+      ],
+      "retrospectiva": [
+        {
+          "estado": "parcial",
+          "version_regla": 2,
+          "provisional_ausentes_en_t1": 527
+        },
+        {
+          "estado": "parcial",
+          "version_regla": 2,
+          "provisional_ausentes_en_t1": 527
+        }
+      ]
+    },
+    "202006": {
+      "clientes": 152712,
+      "catalogos": [
+        "e01",
+        "tc01"
+      ],
+      "por_rol": {
+        "recomendacion_provisional": {
+          "ids": [
+            "binario_e01_300r",
+            "binario_tc01_300r"
+          ],
+          "envios": [
+            4429,
+            6834
+          ],
+          "jaccard_enviados_entre_corridas": 0.6095,
+          "solo_anterior": 164,
+          "solo_nueva": 2569,
+          "correlacion_de_rangos_score": 0.97408,
+          "probabilidad_minima_enviada": [
+            0.17405801056379527,
+            0.13980713281310989
+          ]
+        },
+        "alternativa": {
+          "ids": [
+            "multiclase_p1_e01_300r",
+            "multiclase_p1_tc01_300r"
+          ],
+          "envios": [
+            4276,
+            4276
+          ],
+          "jaccard_enviados_entre_corridas": 0.7457,
+          "solo_anterior": 623,
+          "solo_nueva": 623,
+          "correlacion_de_rangos_score": 0.981523,
+          "probabilidad_minima_enviada": [
+            0.05409190611763687,
+            0.054746702839048346
+          ]
+        }
+      },
+      "coincidencia_entre_estrategias": [
+        0.460325,
+        0.41999
+      ],
+      "salida_oficial": {
+        "jaccard_enviar": 0.6095,
+        "correlacion_de_rangos_probabilidad": 0.97408
+      },
+      "tiempo_total_desde_entrada_s": [
+        158.6,
+        138.7
+      ],
+      "retrospectiva": [
+        {
+          "estado": "pendiente",
+          "version_regla": 2
+        },
+        {
+          "estado": "pendiente",
+          "version_regla": 2
+        }
+      ]
+    }
+  },
+  "diagnostico_corte_vs_target": {
+    "nota": "monitoreo retrospectivo (R1): separa el efecto del corte del efecto del target con las decisiones ya guardadas; no se usa para elegir cortes",
+    "meses": {
+      "202001": {
+        "binario": {
+          "envios": [
+            4145,
+            6397
+          ],
+          "anterior_en_su_corte": 267712500,
+          "corregido_en_su_corte": 233282500,
+          "corregido_con_k_anterior": 262212500,
+          "anterior_con_k_corregido": 231082500
+        },
+        "multiclase": {
+          "envios": [
+            4003,
+            4003
+          ],
+          "anterior_en_su_corte": 259517500,
+          "corregido_en_su_corte": 256217500,
+          "corregido_con_k_anterior": 256217500,
+          "anterior_con_k_corregido": 259517500
+        }
+      },
+      "202002": {
+        "binario": {
+          "envios": [
+            4240,
+            6542
+          ],
+          "anterior_en_su_corte": 26400000,
+          "corregido_en_su_corte": -11605000,
+          "corregido_con_k_anterior": 25300000,
+          "anterior_con_k_corregido": -10505000
+        },
+        "multiclase": {
+          "envios": [
+            4094,
+            4094
+          ],
+          "anterior_en_su_corte": 26015000,
+          "corregido_en_su_corte": 29315000,
+          "corregido_con_k_anterior": 29315000,
+          "anterior_con_k_corregido": 26015000
+        }
+      },
+      "202003": {
+        "binario": {
+          "envios": [
+            4302,
+            6638
+          ],
+          "anterior_en_su_corte": 163295000,
+          "corregido_en_su_corte": 130955000,
+          "corregido_con_k_anterior": 165495000,
+          "anterior_con_k_corregido": 127655000
+        },
+        "multiclase": {
+          "envios": [
+            4153,
+            4153
+          ],
+          "anterior_en_su_corte": 156392500,
+          "corregido_en_su_corte": 153092500,
+          "corregido_con_k_anterior": 153092500,
+          "anterior_con_k_corregido": 156392500
+        }
+      },
+      "202004": {
+        "binario": {
+          "envios": [
+            4317,
+            6661
+          ],
+          "anterior_en_su_corte": 184882500,
+          "corregido_en_su_corte": 177622500,
+          "corregido_con_k_anterior": 180482500,
+          "anterior_con_k_corregido": 176522500
+        },
+        "multiclase": {
+          "envios": [
+            4168,
+            4168
+          ],
+          "anterior_en_su_corte": 173580000,
+          "corregido_en_su_corte": 180180000,
+          "corregido_con_k_anterior": 180180000,
+          "anterior_con_k_corregido": 173580000
+        }
+      }
+    }
+  }
+}
