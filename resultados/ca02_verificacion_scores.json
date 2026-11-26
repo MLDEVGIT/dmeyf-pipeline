@@ -1,0 +1,134 @@
+{
+  "ejecucion": "ejecuciones/entornos/secuencia_ce02_b20m10_202001_202006_20261125T190118",
+  "script": "scripts/verificar_scores.py",
+  "comparacion": "modelos originales (ejecuciones/ce02/<marca>/modelos) aplicados a diagnosticos/<mes>/features_<mes>.parquet, bit a bit",
+  "meses": {
+    "202001": {
+      "ok": true,
+      "clientes_iguales": true,
+      "estrategias": {
+        "binario_ce02_20s": {
+          "semillas_identicas": "20/20",
+          "sha256_original_ok": true,
+          "ensamble_identico": true,
+          "decisiones_identicas": true,
+          "envios": 3359,
+          "salida_oficial_identica": true
+        },
+        "multiclase_p1_ce02_10s": {
+          "semillas_identicas": "10/10",
+          "sha256_original_ok": true,
+          "ensamble_identico": true,
+          "decisiones_identicas": true,
+          "envios": 3895
+        }
+      }
+    },
+    "202002": {
+      "ok": true,
+      "clientes_iguales": true,
+      "estrategias": {
+        "binario_ce02_20s": {
+          "semillas_identicas": "20/20",
+          "sha256_original_ok": true,
+          "ensamble_identico": true,
+          "decisiones_identicas": true,
+          "envios": 3436,
+          "salida_oficial_identica": true
+        },
+        "multiclase_p1_ce02_10s": {
+          "semillas_identicas": "10/10",
+          "sha256_original_ok": true,
+          "ensamble_identico": true,
+          "decisiones_identicas": true,
+          "envios": 3984
+        }
+      }
+    },
+    "202003": {
+      "ok": true,
+      "clientes_iguales": true,
+      "estrategias": {
+        "binario_ce02_20s": {
+          "semillas_identicas": "20/20",
+          "sha256_original_ok": true,
+          "ensamble_identico": true,
+          "decisiones_identicas": true,
+          "envios": 3486,
+          "salida_oficial_identica": true
+        },
+        "multiclase_p1_ce02_10s": {
+          "semillas_identicas": "10/10",
+          "sha256_original_ok": true,
+          "ensamble_identico": true,
+          "decisiones_identicas": true,
+          "envios": 4042
+        }
+      }
+    },
+    "202004": {
+      "ok": true,
+      "clientes_iguales": true,
+      "estrategias": {
+        "binario_ce02_20s": {
+          "semillas_identicas": "20/20",
+          "sha256_original_ok": true,
+          "ensamble_identico": true,
+          "decisiones_identicas": true,
+          "envios": 3498,
+          "salida_oficial_identica": true
+        },
+        "multiclase_p1_ce02_10s": {
+          "semillas_identicas": "10/10",
+          "sha256_original_ok": true,
+          "ensamble_identico": true,
+          "decisiones_identicas": true,
+          "envios": 4056
+        }
+      }
+    },
+    "202005": {
+      "ok": true,
+      "clientes_iguales": true,
+      "estrategias": {
+        "binario_ce02_20s": {
+          "semillas_identicas": "20/20",
+          "sha256_original_ok": true,
+          "ensamble_identico": true,
+          "decisiones_identicas": true,
+          "envios": 3532,
+          "salida_oficial_identica": true
+        },
+        "multiclase_p1_ce02_10s": {
+          "semillas_identicas": "10/10",
+          "sha256_original_ok": true,
+          "ensamble_identico": true,
+          "decisiones_identicas": true,
+          "envios": 4095
+        }
+      }
+    },
+    "202006": {
+      "ok": true,
+      "clientes_iguales": true,
+      "estrategias": {
+        "binario_ce02_20s": {
+          "semillas_identicas": "20/20",
+          "sha256_original_ok": true,
+          "ensamble_identico": true,
+          "decisiones_identicas": true,
+          "envios": 3589,
+          "salida_oficial_identica": true
+        },
+        "multiclase_p1_ce02_10s": {
+          "semillas_identicas": "10/10",
+          "sha256_original_ok": true,
+          "ensamble_identico": true,
+          "decisiones_identicas": true,
+          "envios": 4162
+        }
+      }
+    }
+  },
+  "ok": true
+}

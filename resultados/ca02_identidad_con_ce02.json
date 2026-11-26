@@ -1,0 +1,130 @@
+{
+  "experimento": "CA02 identidad de ce02_b20m10 con ce02 (predicciones guardadas)",
+  "exploratorio": true,
+  "nota": "2020: verificación operativa, no criterio de elección (R1)",
+  "ce02": "ejecuciones/entornos/secuencia_ce02_202001_202006_20261125T143926",
+  "b20m10": "ejecuciones/entornos/secuencia_ce02_b20m10_202001_202006_20261125T190118",
+  "meses": {
+    "202001": {
+      "binario": {
+        "mismo_id_semillas_y_corte": true,
+        "semillas_identicas": true,
+        "ensamble_identico": true,
+        "decisiones_identicas": true,
+        "envios": 3359,
+        "salida_oficial_identica": true
+      },
+      "multiclase": {
+        "semillas_son_las_0_9_de_ce02": true,
+        "semillas_identicas_a_las_de_ce02": true,
+        "ensamble_igual_a_promedio_semillas_0_9_de_ce02": true,
+        "mismo_corte": true,
+        "envios": [
+          3895,
+          3895
+        ]
+      }
+    },
+    "202002": {
+      "binario": {
+        "mismo_id_semillas_y_corte": true,
+        "semillas_identicas": true,
+        "ensamble_identico": true,
+        "decisiones_identicas": true,
+        "envios": 3436,
+        "salida_oficial_identica": true
+      },
+      "multiclase": {
+        "semillas_son_las_0_9_de_ce02": true,
+        "semillas_identicas_a_las_de_ce02": true,
+        "ensamble_igual_a_promedio_semillas_0_9_de_ce02": true,
+        "mismo_corte": true,
+        "envios": [
+          3984,
+          3984
+        ]
+      }
+    },
+    "202003": {
+      "binario": {
+        "mismo_id_semillas_y_corte": true,
+        "semillas_identicas": true,
+        "ensamble_identico": true,
+        "decisiones_identicas": true,
+        "envios": 3486,
+        "salida_oficial_identica": true
+      },
+      "multiclase": {
+        "semillas_son_las_0_9_de_ce02": true,
+        "semillas_identicas_a_las_de_ce02": true,
+        "ensamble_igual_a_promedio_semillas_0_9_de_ce02": true,
+        "mismo_corte": true,
+        "envios": [
+          4042,
+          4042
+        ]
+      }
+    },
+    "202004": {
+      "binario": {
+        "mismo_id_semillas_y_corte": true,
+        "semillas_identicas": true,
+        "ensamble_identico": true,
+        "decisiones_identicas": true,
+        "envios": 3498,
+        "salida_oficial_identica": true
+      },
+      "multiclase": {
+        "semillas_son_las_0_9_de_ce02": true,
+        "semillas_identicas_a_las_de_ce02": true,
+        "ensamble_igual_a_promedio_semillas_0_9_de_ce02": true,
+        "mismo_corte": true,
+        "envios": [
+          4056,
+          4056
+        ]
+      }
+    },
+    "202005": {
+      "binario": {
+        "mismo_id_semillas_y_corte": true,
+        "semillas_identicas": true,
+        "ensamble_identico": true,
+        "decisiones_identicas": true,
+        "envios": 3532,
+        "salida_oficial_identica": true
+      },
+      "multiclase": {
+        "semillas_son_las_0_9_de_ce02": true,
+        "semillas_identicas_a_las_de_ce02": true,
+        "ensamble_igual_a_promedio_semillas_0_9_de_ce02": true,
+        "mismo_corte": true,
+        "envios": [
+          4095,
+          4095
+        ]
+      }
+    },
+    "202006": {
+      "binario": {
+        "mismo_id_semillas_y_corte": true,
+        "semillas_identicas": true,
+        "ensamble_identico": true,
+        "decisiones_identicas": true,
+        "envios": 3589,
+        "salida_oficial_identica": true
+      },
+      "multiclase": {
+        "semillas_son_las_0_9_de_ce02": true,
+        "semillas_identicas_a_las_de_ce02": true,
+        "ensamble_igual_a_promedio_semillas_0_9_de_ce02": true,
+        "mismo_corte": true,
+        "envios": [
+          4162,
+          4162
+        ]
+      }
+    }
+  },
+  "ok": true
+}

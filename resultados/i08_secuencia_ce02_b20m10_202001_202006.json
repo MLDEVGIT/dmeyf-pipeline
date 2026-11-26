@@ -1,0 +1,1447 @@
+{
+  "inicio": "2026-11-25T19:01:37",
+  "desde": 202001,
+  "hasta": 202006,
+  "reloj": "pared del proceso mensual: desde antes de lanzarlo (incluye arranque e imports y la copia a input/) hasta que termina, con la salida publicada y el reporte acumulado regenerado",
+  "meses": [
+    {
+      "mes": 202001,
+      "ok": true,
+      "checks": {
+        "completado": true,
+        "integridad_sha256": true,
+        "salida_cabecera_exacta": true,
+        "salida_clientes_igual_entrada": true,
+        "features_decisiones_historia_igual_entrada": true,
+        "salida_probabilidades_en_0_1": true,
+        "salida_es_la_recomendacion": true,
+        "decisiones_dos_estrategias": true,
+        "historia_inicial_mas_completados_sin_huecos": true,
+        "lee_solo_entrada_historia_previa_y_modelos": true,
+        "reporte_una_fila_por_completado": true,
+        "retrospectiva_segun_meses_recibidos": true
+      },
+      "clientes": 142929,
+      "envios": {
+        "recomendacion": 3359,
+        "alternativa": 3895
+      },
+      "probabilidad_minima_enviada": {
+        "recomendacion_provisional": 0.06640232196694648,
+        "alternativa": 0.026271467394615257
+      },
+      "distribucion": {
+        "recomendacion_provisional": {
+          "cuantiles": {
+            "0": 4.03092554152538e-06,
+            "0.01": 4.34148031589781e-05,
+            "0.1": 0.0001268175689378074,
+            "0.25": 0.00023979925006963596,
+            "0.5": 0.0006015986660887513,
+            "0.75": 0.0021812439138282594,
+            "0.9": 0.010232060028418094,
+            "0.99": 0.153512888493832,
+            "0.999": 0.8329932730174974,
+            "1": 0.987379205442306
+          },
+          "media": 0.008799909564199274,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 510
+        },
+        "alternativa": {
+          "cuantiles": {
+            "0": 2.078371722604104e-06,
+            "0.01": 1.5671443990601543e-05,
+            "0.1": 5.033519874443692e-05,
+            "0.25": 9.85256079961134e-05,
+            "0.5": 0.00024509287678386706,
+            "0.75": 0.0009111797373534882,
+            "0.9": 0.0047312394771189155,
+            "0.99": 0.06969114475750283,
+            "0.999": 0.35861823066867865,
+            "1": 0.8161179132913855
+          },
+          "media": 0.0037662285272051866,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 58
+        }
+      },
+      "coincidencia": {
+        "interseccion": 3008,
+        "solo_recomendacion": 351,
+        "solo_alternativa": 887,
+        "jaccard": 0.708431,
+        "correlacion_de_rangos": 0.968949
+      },
+      "estado_calidad": "sin_alertas",
+      "anomalias": {
+        "clientes_sin_historia": 4165,
+        "lag_fila_distinto_calendario": 14,
+        "columnas_100_nulas": [],
+        "columnas_observados_en_cero": [],
+        "columnas_constantes_no_nulas": [],
+        "cambio_tasa_nulos": [],
+        "reglas": [
+          "clientes_sin_historia",
+          "estrategia_provisional",
+          "lag_fila_distinto_calendario"
+        ]
+      },
+      "historia_leida": "201901-201912 (12 meses)",
+      "tiempos_internos": {
+        "recepcion_s": 0.2,
+        "validacion_s": 17.7,
+        "perfil_s": 3.4,
+        "features_s": 30.9,
+        "verificacion_features_s": 0.1,
+        "carga_modelos_s": 1.8,
+        "inferencia_binario_ce02_20s_s": 127.1,
+        "inferencia_multiclase_p1_ce02_10s_s": 193.2,
+        "lectura_y_conversion_s": 10.0,
+        "estrategias_s": 0.2,
+        "escritura_s": 3.5,
+        "total_hasta_publicacion_s": 390.4
+      },
+      "total_interno_desde_entrada_s": 390.6,
+      "memoria": {
+        "rss_mb": 273.4,
+        "pico_working_set_mb": 2824.1,
+        "pico_commit_privado_mb": 4026.1
+      },
+      "reconciliacion": "nada",
+      "recuperado": false,
+      "intentos": [
+        {
+          "codigo": 0,
+          "pared_s": 395.3,
+          "falla_inyectada": null,
+          "maquina": {
+            "antes": {
+              "momento": "2026-11-25T19:02:36",
+              "frecuencia_mhz": 1201,
+              "frecuencia_max_mhz": 2803,
+              "carga_cpu_pct": 29.7,
+              "ram_libre_gb": 2.41,
+              "enchufada": true,
+              "bateria_pct": 100,
+              "plan_energia": "Equilibrado",
+              "procesos": 425
+            },
+            "despues": {
+              "momento": "2026-11-25T19:09:12",
+              "frecuencia_mhz": 1201,
+              "frecuencia_max_mhz": 2803,
+              "carga_cpu_pct": 87.5,
+              "ram_libre_gb": 2.0,
+              "enchufada": true,
+              "bateria_pct": 100,
+              "plan_energia": "Equilibrado",
+              "procesos": 431
+            }
+          }
+        }
+      ],
+      "tiempo_total_s": 395.3,
+      "arranque_y_cierre_s": 4.7
+    },
+    {
+      "mes": 202002,
+      "ok": true,
+      "checks": {
+        "completado": true,
+        "integridad_sha256": true,
+        "salida_cabecera_exacta": true,
+        "salida_clientes_igual_entrada": true,
+        "features_decisiones_historia_igual_entrada": true,
+        "salida_probabilidades_en_0_1": true,
+        "salida_es_la_recomendacion": true,
+        "decisiones_dos_estrategias": true,
+        "historia_inicial_mas_completados_sin_huecos": true,
+        "lee_solo_entrada_historia_previa_y_modelos": true,
+        "reporte_una_fila_por_completado": true,
+        "retrospectiva_segun_meses_recibidos": true
+      },
+      "clientes": 146184,
+      "envios": {
+        "recomendacion": 3436,
+        "alternativa": 3984
+      },
+      "probabilidad_minima_enviada": {
+        "recomendacion_provisional": 0.07833867823592394,
+        "alternativa": 0.029079835180632944
+      },
+      "distribucion": {
+        "recomendacion_provisional": {
+          "cuantiles": {
+            "0": 9.368327831583866e-06,
+            "0.01": 5.7061994209946596e-05,
+            "0.1": 0.00016990267259587061,
+            "0.25": 0.00031926458446538346,
+            "0.5": 0.0007751523959936747,
+            "0.75": 0.0027425630530659812,
+            "0.9": 0.012766364150416987,
+            "0.99": 0.17257053543757364,
+            "0.999": 0.8638924821231676,
+            "1": 0.9793292252663646
+          },
+          "media": 0.009971937717223493,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 559
+        },
+        "alternativa": {
+          "cuantiles": {
+            "0": 1.8573976575012562e-06,
+            "0.01": 1.6560604898351583e-05,
+            "0.1": 5.765867624762098e-05,
+            "0.25": 0.00011317219870806085,
+            "0.5": 0.00027744710490195003,
+            "0.75": 0.0010242081119223676,
+            "0.9": 0.005208096545655209,
+            "0.99": 0.07195395554663932,
+            "0.999": 0.3379757640915722,
+            "1": 0.8535508040563112
+          },
+          "media": 0.003972113351282159,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 53
+        }
+      },
+      "coincidencia": {
+        "interseccion": 3045,
+        "solo_recomendacion": 391,
+        "solo_alternativa": 939,
+        "jaccard": 0.696,
+        "correlacion_de_rangos": 0.967098
+      },
+      "estado_calidad": "con_alertas",
+      "anomalias": {
+        "clientes_sin_historia": 3849,
+        "lag_fila_distinto_calendario": 21,
+        "columnas_100_nulas": [],
+        "columnas_observados_en_cero": [
+          "ccajeros_propios_descuentos",
+          "ctarjeta_master_descuentos",
+          "ctarjeta_visa_descuentos",
+          "mcajeros_propios_descuentos",
+          "mtarjeta_master_descuentos",
+          "mtarjeta_visa_descuentos"
+        ],
+        "columnas_constantes_no_nulas": [],
+        "cambio_tasa_nulos": [],
+        "reglas": [
+          "clientes_sin_historia",
+          "estrategia_provisional",
+          "lag_fila_distinto_calendario",
+          "observados_en_cero"
+        ]
+      },
+      "historia_leida": "201901-202001 (13 meses)",
+      "tiempos_internos": {
+        "recepcion_s": 0.3,
+        "validacion_s": 17.5,
+        "perfil_s": 4.9,
+        "features_s": 39.5,
+        "verificacion_features_s": 0.2,
+        "carga_modelos_s": 2.9,
+        "inferencia_binario_ce02_20s_s": 146.4,
+        "inferencia_multiclase_p1_ce02_10s_s": 234.4,
+        "lectura_y_conversion_s": 14.2,
+        "estrategias_s": 0.2,
+        "escritura_s": 2.2,
+        "total_hasta_publicacion_s": 465.6
+      },
+      "total_interno_desde_entrada_s": 466.3,
+      "memoria": {
+        "rss_mb": 267.0,
+        "pico_working_set_mb": 2642.9,
+        "pico_commit_privado_mb": 4071.2
+      },
+      "reconciliacion": "nada",
+      "recuperado": false,
+      "intentos": [
+        {
+          "codigo": 0,
+          "pared_s": 476.2,
+          "falla_inyectada": null,
+          "maquina": {
+            "antes": {
+              "momento": "2026-11-25T19:09:17",
+              "frecuencia_mhz": 1201,
+              "frecuencia_max_mhz": 2803,
+              "carga_cpu_pct": 82.9,
+              "ram_libre_gb": 1.97,
+              "enchufada": true,
+              "bateria_pct": 100,
+              "plan_energia": "Equilibrado",
+              "procesos": 433
+            },
+            "despues": {
+              "momento": "2026-11-25T19:17:15",
+              "frecuencia_mhz": 1201,
+              "frecuencia_max_mhz": 2803,
+              "carga_cpu_pct": 31.0,
+              "ram_libre_gb": 2.61,
+              "enchufada": true,
+              "bateria_pct": 100,
+              "plan_energia": "Equilibrado",
+              "procesos": 429
+            }
+          }
+        }
+      ],
+      "tiempo_total_s": 476.2,
+      "arranque_y_cierre_s": 9.9
+    },
+    {
+      "mes": 202003,
+      "ok": true,
+      "checks": {
+        "completado": true,
+        "integridad_sha256": true,
+        "salida_cabecera_exacta": true,
+        "salida_clientes_igual_entrada": true,
+        "features_decisiones_historia_igual_entrada": true,
+        "salida_probabilidades_en_0_1": true,
+        "salida_es_la_recomendacion": true,
+        "decisiones_dos_estrategias": true,
+        "historia_inicial_mas_completados_sin_huecos": true,
+        "lee_solo_entrada_historia_previa_y_modelos": true,
+        "reporte_una_fila_por_completado": true,
+        "retrospectiva_segun_meses_recibidos": true
+      },
+      "clientes": 148313,
+      "envios": {
+        "recomendacion": 3486,
+        "alternativa": 4042
+      },
+      "probabilidad_minima_enviada": {
+        "recomendacion_provisional": 0.07137041940220676,
+        "alternativa": 0.030317086144500988
+      },
+      "distribucion": {
+        "recomendacion_provisional": {
+          "cuantiles": {
+            "0": 5.533121247833056e-06,
+            "0.01": 5.162844658516196e-05,
+            "0.1": 0.0001553175405313777,
+            "0.25": 0.00029043168148054686,
+            "0.5": 0.0007114680033627372,
+            "0.75": 0.0025372216892789205,
+            "0.9": 0.012008052816249311,
+            "0.99": 0.16408548985660418,
+            "0.999": 0.8427488529445312,
+            "1": 0.9770791075052218
+          },
+          "media": 0.009433865029725806,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 566
+        },
+        "alternativa": {
+          "cuantiles": {
+            "0": 1.8489959174117473e-06,
+            "0.01": 1.7312186463177485e-05,
+            "0.1": 5.937128089687056e-05,
+            "0.25": 0.00011671811034648309,
+            "0.5": 0.00028528718563612654,
+            "0.75": 0.001054209491754347,
+            "0.9": 0.005497714186639827,
+            "0.99": 0.07639380291931153,
+            "0.999": 0.4067904488629578,
+            "1": 0.8573255011901914
+          },
+          "media": 0.004331387565496113,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 94
+        }
+      },
+      "coincidencia": {
+        "interseccion": 3120,
+        "solo_recomendacion": 366,
+        "solo_alternativa": 922,
+        "jaccard": 0.707804,
+        "correlacion_de_rangos": 0.968278
+      },
+      "estado_calidad": "sin_alertas",
+      "anomalias": {
+        "clientes_sin_historia": 2643,
+        "lag_fila_distinto_calendario": 24,
+        "columnas_100_nulas": [],
+        "columnas_observados_en_cero": [],
+        "columnas_constantes_no_nulas": [],
+        "cambio_tasa_nulos": [],
+        "reglas": [
+          "clientes_sin_historia",
+          "estrategia_provisional",
+          "lag_fila_distinto_calendario"
+        ]
+      },
+      "historia_leida": "201901-202002 (14 meses)",
+      "tiempos_internos": {
+        "recepcion_s": 0.3,
+        "validacion_s": 16.6,
+        "perfil_s": 2.8,
+        "features_s": 24.5,
+        "verificacion_features_s": 0.1,
+        "carga_modelos_s": 1.8,
+        "inferencia_binario_ce02_20s_s": 131.1,
+        "inferencia_multiclase_p1_ce02_10s_s": 207.1,
+        "lectura_y_conversion_s": 13.0,
+        "estrategias_s": 0.4,
+        "escritura_s": 3.6,
+        "total_hasta_publicacion_s": 403.1
+      },
+      "total_interno_desde_entrada_s": null,
+      "memoria": {
+        "rss_mb": 295.0,
+        "pico_working_set_mb": 2758.3,
+        "pico_commit_privado_mb": 4112.1
+      },
+      "reconciliacion": "nada",
+      "recuperado": true,
+      "intentos": [
+        {
+          "codigo": 3,
+          "pared_s": 410.3,
+          "falla_inyectada": "tras_publicacion",
+          "maquina": {
+            "antes": {
+              "momento": "2026-11-25T19:17:18",
+              "frecuencia_mhz": 1201,
+              "frecuencia_max_mhz": 2803,
+              "carga_cpu_pct": 44.0,
+              "ram_libre_gb": 2.57,
+              "enchufada": true,
+              "bateria_pct": 100,
+              "plan_energia": "Equilibrado",
+              "procesos": 429
+            },
+            "despues": {
+              "momento": "2026-11-25T19:24:09",
+              "frecuencia_mhz": 1201,
+              "frecuencia_max_mhz": 2803,
+              "carga_cpu_pct": 23.5,
+              "ram_libre_gb": 2.51,
+              "enchufada": true,
+              "bateria_pct": 100,
+              "plan_energia": "Equilibrado",
+              "procesos": 430
+            }
+          }
+        },
+        {
+          "codigo": 0,
+          "pared_s": 6.4,
+          "falla_inyectada": null,
+          "maquina": {
+            "antes": {
+              "momento": "2026-11-25T19:24:20",
+              "frecuencia_mhz": 1201,
+              "frecuencia_max_mhz": 2803,
+              "carga_cpu_pct": 27.5,
+              "ram_libre_gb": 2.76,
+              "enchufada": true,
+              "bateria_pct": 100,
+              "plan_energia": "Equilibrado",
+              "procesos": 430
+            },
+            "despues": {
+              "momento": "2026-11-25T19:24:27",
+              "frecuencia_mhz": 1201,
+              "frecuencia_max_mhz": 2803,
+              "carga_cpu_pct": 19.5,
+              "ram_libre_gb": 2.74,
+              "enchufada": true,
+              "bateria_pct": 100,
+              "plan_energia": "Equilibrado",
+              "procesos": 429
+            }
+          }
+        }
+      ],
+      "tiempo_total_s": 416.7,
+      "arranque_y_cierre_s": null
+    },
+    {
+      "mes": 202004,
+      "ok": true,
+      "checks": {
+        "completado": true,
+        "integridad_sha256": true,
+        "salida_cabecera_exacta": true,
+        "salida_clientes_igual_entrada": true,
+        "features_decisiones_historia_igual_entrada": true,
+        "salida_probabilidades_en_0_1": true,
+        "salida_es_la_recomendacion": true,
+        "decisiones_dos_estrategias": true,
+        "historia_inicial_mas_completados_sin_huecos": true,
+        "lee_solo_entrada_historia_previa_y_modelos": true,
+        "reporte_una_fila_por_completado": true,
+        "retrospectiva_segun_meses_recibidos": true
+      },
+      "clientes": 148831,
+      "envios": {
+        "recomendacion": 3498,
+        "alternativa": 4056
+      },
+      "probabilidad_minima_enviada": {
+        "recomendacion_provisional": 0.07946600543447266,
+        "alternativa": 0.029273786747076667
+      },
+      "distribucion": {
+        "recomendacion_provisional": {
+          "cuantiles": {
+            "0": 4.879090083714465e-06,
+            "0.01": 5.336756705828839e-05,
+            "0.1": 0.00016426715437882041,
+            "0.25": 0.0003147802805856435,
+            "0.5": 0.0007885732223587901,
+            "0.75": 0.0028162852505408923,
+            "0.9": 0.01326963499810364,
+            "0.99": 0.1994412354962244,
+            "0.999": 0.8363861209407614,
+            "1": 0.9665516346250891
+          },
+          "media": 0.010460979509826223,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 660
+        },
+        "alternativa": {
+          "cuantiles": {
+            "0": 1.3125846572837578e-06,
+            "0.01": 1.6587801628053148e-05,
+            "0.1": 5.621953419939888e-05,
+            "0.25": 0.00011254659379006024,
+            "0.5": 0.000288205648507496,
+            "0.75": 0.0010748166143255459,
+            "0.9": 0.00552587974644111,
+            "0.99": 0.08458799236757795,
+            "0.999": 0.3375132106012061,
+            "1": 0.6403752244788206
+          },
+          "media": 0.0041880135369224795,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 18
+        }
+      },
+      "coincidencia": {
+        "interseccion": 3165,
+        "solo_recomendacion": 333,
+        "solo_alternativa": 891,
+        "jaccard": 0.721121,
+        "correlacion_de_rangos": 0.969219
+      },
+      "estado_calidad": "sin_alertas",
+      "anomalias": {
+        "clientes_sin_historia": 727,
+        "lag_fila_distinto_calendario": 14,
+        "columnas_100_nulas": [],
+        "columnas_observados_en_cero": [],
+        "columnas_constantes_no_nulas": [],
+        "cambio_tasa_nulos": [],
+        "reglas": [
+          "clientes_sin_historia",
+          "estrategia_provisional",
+          "lag_fila_distinto_calendario"
+        ]
+      },
+      "historia_leida": "201901-202003 (15 meses)",
+      "tiempos_internos": {
+        "recepcion_s": 0.3,
+        "validacion_s": 16.2,
+        "perfil_s": 2.8,
+        "features_s": 22.7,
+        "verificacion_features_s": 0.1,
+        "carga_modelos_s": 1.9,
+        "inferencia_binario_ce02_20s_s": 127.8,
+        "inferencia_multiclase_p1_ce02_10s_s": 202.1,
+        "lectura_y_conversion_s": 10.0,
+        "estrategias_s": 0.2,
+        "escritura_s": 2.1,
+        "total_hasta_publicacion_s": 387.6
+      },
+      "total_interno_desde_entrada_s": 389.5,
+      "memoria": {
+        "rss_mb": 322.1,
+        "pico_working_set_mb": 3335.0,
+        "pico_commit_privado_mb": 4130.7
+      },
+      "reconciliacion": "nada",
+      "recuperado": false,
+      "intentos": [
+        {
+          "codigo": 0,
+          "pared_s": 395.1,
+          "falla_inyectada": null,
+          "maquina": {
+            "antes": {
+              "momento": "2026-11-25T19:24:41",
+              "frecuencia_mhz": 1201,
+              "frecuencia_max_mhz": 2803,
+              "carga_cpu_pct": 47.5,
+              "ram_libre_gb": 2.65,
+              "enchufada": true,
+              "bateria_pct": 100,
+              "plan_energia": "Equilibrado",
+              "procesos": 433
+            },
+            "despues": {
+              "momento": "2026-11-25T19:31:17",
+              "frecuencia_mhz": 1201,
+              "frecuencia_max_mhz": 2803,
+              "carga_cpu_pct": 21.3,
+              "ram_libre_gb": 3.1,
+              "enchufada": true,
+              "bateria_pct": 100,
+              "plan_energia": "Equilibrado",
+              "procesos": 425
+            }
+          }
+        }
+      ],
+      "tiempo_total_s": 395.1,
+      "arranque_y_cierre_s": 5.6
+    },
+    {
+      "mes": 202005,
+      "ok": true,
+      "checks": {
+        "completado": true,
+        "integridad_sha256": true,
+        "salida_cabecera_exacta": true,
+        "salida_clientes_igual_entrada": true,
+        "features_decisiones_historia_igual_entrada": true,
+        "salida_probabilidades_en_0_1": true,
+        "salida_es_la_recomendacion": true,
+        "decisiones_dos_estrategias": true,
+        "historia_inicial_mas_completados_sin_huecos": true,
+        "lee_solo_entrada_historia_previa_y_modelos": true,
+        "reporte_una_fila_por_completado": true,
+        "retrospectiva_segun_meses_recibidos": true
+      },
+      "clientes": 150267,
+      "envios": {
+        "recomendacion": 3532,
+        "alternativa": 4095
+      },
+      "probabilidad_minima_enviada": {
+        "recomendacion_provisional": 0.08033953789248759,
+        "alternativa": 0.03300796071178813
+      },
+      "distribucion": {
+        "recomendacion_provisional": {
+          "cuantiles": {
+            "0": 7.06975775435353e-06,
+            "0.01": 4.977616416765416e-05,
+            "0.1": 0.00016188650209465538,
+            "0.25": 0.000313676589150935,
+            "0.5": 0.0007877404055295564,
+            "0.75": 0.0028945523497233977,
+            "0.9": 0.014125417923685185,
+            "0.99": 0.18360575184386868,
+            "0.999": 0.8101161563145557,
+            "1": 0.967673707655113
+          },
+          "media": 0.010150061197840234,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 534
+        },
+        "alternativa": {
+          "cuantiles": {
+            "0": 1.702267273277579e-06,
+            "0.01": 1.4865048339832355e-05,
+            "0.1": 5.71028628995023e-05,
+            "0.25": 0.00011742218286363759,
+            "0.5": 0.00030095887556037316,
+            "0.75": 0.0011709606104121223,
+            "0.9": 0.006308398669120005,
+            "0.99": 0.08427957567158613,
+            "0.999": 0.277254741043054,
+            "1": 0.7344642288459854
+          },
+          "media": 0.004268708508943972,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 5
+        }
+      },
+      "coincidencia": {
+        "interseccion": 3139,
+        "solo_recomendacion": 393,
+        "solo_alternativa": 956,
+        "jaccard": 0.699421,
+        "correlacion_de_rangos": 0.967831
+      },
+      "estado_calidad": "sin_alertas",
+      "anomalias": {
+        "clientes_sin_historia": 1826,
+        "lag_fila_distinto_calendario": 13,
+        "columnas_100_nulas": [],
+        "columnas_observados_en_cero": [],
+        "columnas_constantes_no_nulas": [],
+        "cambio_tasa_nulos": [],
+        "reglas": [
+          "clientes_sin_historia",
+          "estrategia_provisional",
+          "lag_fila_distinto_calendario"
+        ]
+      },
+      "historia_leida": "201901-202004 (16 meses)",
+      "tiempos_internos": {
+        "recepcion_s": 0.2,
+        "validacion_s": 12.4,
+        "perfil_s": 2.3,
+        "features_s": 22.5,
+        "verificacion_features_s": 0.1,
+        "carga_modelos_s": 2.2,
+        "inferencia_binario_ce02_20s_s": 105.7,
+        "inferencia_multiclase_p1_ce02_10s_s": 171.1,
+        "lectura_y_conversion_s": 9.1,
+        "estrategias_s": 0.2,
+        "escritura_s": 2.4,
+        "total_hasta_publicacion_s": 329.9
+      },
+      "total_interno_desde_entrada_s": 332.3,
+      "memoria": {
+        "rss_mb": 320.6,
+        "pico_working_set_mb": 3384.8,
+        "pico_commit_privado_mb": 4161.0
+      },
+      "reconciliacion": "nada",
+      "recuperado": false,
+      "intentos": [
+        {
+          "codigo": 0,
+          "pared_s": 346.9,
+          "falla_inyectada": null,
+          "maquina": {
+            "antes": {
+              "momento": "2026-11-25T19:31:20",
+              "frecuencia_mhz": 1201,
+              "frecuencia_max_mhz": 2803,
+              "carga_cpu_pct": 51.3,
+              "ram_libre_gb": 3.08,
+              "enchufada": true,
+              "bateria_pct": 100,
+              "plan_energia": "Equilibrado",
+              "procesos": 425
+            },
+            "despues": {
+              "momento": "2026-11-25T19:37:08",
+              "frecuencia_mhz": 1201,
+              "frecuencia_max_mhz": 2803,
+              "carga_cpu_pct": 21.5,
+              "ram_libre_gb": 4.19,
+              "enchufada": true,
+              "bateria_pct": 100,
+              "plan_energia": "Equilibrado",
+              "procesos": 425
+            }
+          }
+        }
+      ],
+      "tiempo_total_s": 346.9,
+      "arranque_y_cierre_s": 14.6
+    },
+    {
+      "mes": 202006,
+      "ok": true,
+      "checks": {
+        "completado": true,
+        "integridad_sha256": true,
+        "salida_cabecera_exacta": true,
+        "salida_clientes_igual_entrada": true,
+        "features_decisiones_historia_igual_entrada": true,
+        "salida_probabilidades_en_0_1": true,
+        "salida_es_la_recomendacion": true,
+        "decisiones_dos_estrategias": true,
+        "historia_inicial_mas_completados_sin_huecos": true,
+        "lee_solo_entrada_historia_previa_y_modelos": true,
+        "reporte_una_fila_por_completado": true,
+        "retrospectiva_segun_meses_recibidos": true
+      },
+      "clientes": 152712,
+      "envios": {
+        "recomendacion": 3589,
+        "alternativa": 4162
+      },
+      "probabilidad_minima_enviada": {
+        "recomendacion_provisional": 0.19675659381079352,
+        "alternativa": 0.05498725463405083
+      },
+      "distribucion": {
+        "recomendacion_provisional": {
+          "cuantiles": {
+            "0": 9.034627030816807e-05,
+            "0.01": 0.000590442562914892,
+            "0.1": 0.001604146941375306,
+            "0.25": 0.0030208222526626593,
+            "0.5": 0.008088914188129995,
+            "0.75": 0.03237674150290175,
+            "0.9": 0.08077261846983039,
+            "0.99": 0.32201673928201885,
+            "0.999": 0.8093002523229833,
+            "1": 0.9808081398345758
+          },
+          "media": 0.0314911318862752,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 680
+        },
+        "alternativa": {
+          "cuantiles": {
+            "0": 1.2998206451831416e-05,
+            "0.01": 0.0001345232288475366,
+            "0.1": 0.00043324826032901167,
+            "0.25": 0.0008167213730078509,
+            "0.5": 0.0021153769154825227,
+            "0.75": 0.008663119609463926,
+            "0.9": 0.02311185672208011,
+            "0.99": 0.10502317654006313,
+            "0.999": 0.36866433258487324,
+            "1": 0.8035161227583089
+          },
+          "media": 0.009515490969756615,
+          "exactamente_0": 0,
+          "exactamente_1": 0,
+          "mayor_0_5": 59
+        }
+      },
+      "coincidencia": {
+        "interseccion": 2506,
+        "solo_recomendacion": 1083,
+        "solo_alternativa": 1656,
+        "jaccard": 0.477788,
+        "correlacion_de_rangos": 0.942857
+      },
+      "estado_calidad": "con_alertas",
+      "anomalias": {
+        "clientes_sin_historia": 2957,
+        "lag_fila_distinto_calendario": 24,
+        "columnas_100_nulas": [],
+        "columnas_observados_en_cero": [
+          "active_quarter",
+          "catm_trx",
+          "catm_trx_other",
+          "ccajas_consultas",
+          "ccajas_depositos",
+          "ccajas_extracciones",
+          "ccajas_otras",
+          "ccajas_transacciones",
+          "ccajeros_propios_descuentos",
+          "ccallcenter_transacciones",
+          "ccheques_depositados",
+          "ccheques_depositados_rechazados",
+          "ccheques_emitidos",
+          "ccheques_emitidos_rechazados",
+          "ccomisiones_otras",
+          "cextraccion_autoservicio",
+          "chomebanking_transacciones",
+          "cmobile_app_trx",
+          "ctarjeta_debito_transacciones",
+          "ctarjeta_master_descuentos",
+          "ctarjeta_master_transacciones",
+          "ctarjeta_visa_descuentos",
+          "ctarjeta_visa_transacciones",
+          "internet",
+          "mactivos_margen",
+          "matm",
+          "matm_other",
+          "mautoservicio",
+          "mcajeros_propios_descuentos",
+          "mcheques_depositados",
+          "mcheques_depositados_rechazados",
+          "mcheques_emitidos",
+          "mcheques_emitidos_rechazados",
+          "mcomisiones",
+          "mcomisiones_otras",
+          "mcuentas_saldo",
+          "mextraccion_autoservicio",
+          "mpasivos_margen",
+          "mrentabilidad",
+          "mrentabilidad_annual",
+          "mtarjeta_master_consumo",
+          "mtarjeta_master_descuentos",
+          "mtarjeta_visa_consumo",
+          "mtarjeta_visa_descuentos",
+          "tcallcenter",
+          "thomebanking",
+          "tmobile_app"
+        ],
+        "columnas_constantes_no_nulas": [],
+        "cambio_tasa_nulos": [],
+        "reglas": [
+          "clientes_sin_historia",
+          "estrategia_provisional",
+          "lag_fila_distinto_calendario",
+          "observados_en_cero"
+        ]
+      },
+      "historia_leida": "201901-202005 (17 meses)",
+      "tiempos_internos": {
+        "recepcion_s": 0.2,
+        "validacion_s": 13.7,
+        "perfil_s": 2.2,
+        "features_s": 24.6,
+        "verificacion_features_s": 0.1,
+        "carga_modelos_s": 1.8,
+        "inferencia_binario_ce02_20s_s": 121.2,
+        "inferencia_multiclase_p1_ce02_10s_s": 187.0,
+        "lectura_y_conversion_s": 10.7,
+        "estrategias_s": 0.2,
+        "escritura_s": 3.2,
+        "total_hasta_publicacion_s": 366.8
+      },
+      "total_interno_desde_entrada_s": 369.3,
+      "memoria": {
+        "rss_mb": 318.6,
+        "pico_working_set_mb": 3425.9,
+        "pico_commit_privado_mb": 4204.6
+      },
+      "reconciliacion": "nada",
+      "recuperado": false,
+      "intentos": [
+        {
+          "codigo": 0,
+          "pared_s": 375.0,
+          "falla_inyectada": null,
+          "maquina": {
+            "antes": {
+              "momento": "2026-11-25T19:37:12",
+              "frecuencia_mhz": 1201,
+              "frecuencia_max_mhz": 2803,
+              "carga_cpu_pct": 16.9,
+              "ram_libre_gb": 4.19,
+              "enchufada": true,
+              "bateria_pct": 100,
+              "plan_energia": "Equilibrado",
+              "procesos": 425
+            },
+            "despues": {
+              "momento": "2026-11-25T19:43:28",
+              "frecuencia_mhz": 1201,
+              "frecuencia_max_mhz": 2803,
+              "carga_cpu_pct": 50.1,
+              "ram_libre_gb": 2.81,
+              "enchufada": true,
+              "bateria_pct": 100,
+              "plan_energia": "Equilibrado",
+              "procesos": 431
+            }
+          }
+        }
+      ],
+      "tiempo_total_s": 375.0,
+      "arranque_y_cierre_s": 5.7
+    }
+  ],
+  "preparacion": {
+    "pared_s": 58.6,
+    "interno_s": 52.7,
+    "historia": {
+      "desde": 201901,
+      "hasta": 201912,
+      "meses": 12,
+      "proximo_mes": 202001,
+      "checks": {
+        "empieza_en_201901": true,
+        "termina_en_hasta": true,
+        "meses_consecutivos_sin_huecos": true,
+        "nombre_igual_contenido": true,
+        "un_foto_mes_por_archivo": true,
+        "mismo_esquema_en_todos": true
+      }
+    },
+    "catalogo": {
+      "nombre": "ce02_b20m10",
+      "origen": "catalogo/estrategias_ce02_b20m10.json",
+      "target_version": 2,
+      "archivo": "modelos/estrategias.json",
+      "sha256": "e0dd81917bdd4fe673794b9cad13d56b5e0c84363abbd7539af697652fed4eaa",
+      "estrategias": [
+        "binario_ce02_20s",
+        "multiclase_p1_ce02_10s"
+      ]
+    },
+    "incluye": "copia y verificación de modelos y catálogo; historia inicial desde el Parquet de 2019 controlada contra la auditoría de filas; validación de cobertura"
+  },
+  "ejecucion": "ejecuciones/entornos/secuencia_ce02_b20m10_202001_202006_20261125T190118",
+  "reintento": {
+    "mes": 202003,
+    "a_muere_tras_publicar": {
+      "codigo": 3,
+      "pared_s": 410.3,
+      "falla_inyectada": "tras_publicacion",
+      "maquina": {
+        "antes": {
+          "momento": "2026-11-25T19:17:18",
+          "frecuencia_mhz": 1201,
+          "frecuencia_max_mhz": 2803,
+          "carga_cpu_pct": 44.0,
+          "ram_libre_gb": 2.57,
+          "enchufada": true,
+          "bateria_pct": 100,
+          "plan_energia": "Equilibrado",
+          "procesos": 429
+        },
+        "despues": {
+          "momento": "2026-11-25T19:24:09",
+          "frecuencia_mhz": 1201,
+          "frecuencia_max_mhz": 2803,
+          "carga_cpu_pct": 23.5,
+          "ram_libre_gb": 2.51,
+          "enchufada": true,
+          "bateria_pct": 100,
+          "plan_energia": "Equilibrado",
+          "procesos": 430
+        }
+      },
+      "esperado": 3,
+      "publicado": {
+        "salida": true,
+        "historia": true,
+        "diagnostico": true
+      },
+      "estado": "en_curso",
+      "candado_huerfano": true,
+      "reporte_sin_el_mes": true,
+      "ok": true
+    },
+    "b_mes_siguiente_rechazado": {
+      "codigo": 4,
+      "pared_s": 5.1,
+      "falla_inyectada": null,
+      "maquina": {
+        "antes": {
+          "momento": "2026-11-25T19:24:11",
+          "frecuencia_mhz": 1201,
+          "frecuencia_max_mhz": 2803,
+          "carga_cpu_pct": 35.5,
+          "ram_libre_gb": 2.57,
+          "enchufada": true,
+          "bateria_pct": 100,
+          "plan_energia": "Equilibrado",
+          "procesos": 432
+        },
+        "despues": {
+          "momento": "2026-11-25T19:24:17",
+          "frecuencia_mhz": 1201,
+          "frecuencia_max_mhz": 2803,
+          "carga_cpu_pct": 27.8,
+          "ram_libre_gb": 2.71,
+          "enchufada": true,
+          "bateria_pct": 100,
+          "plan_energia": "Equilibrado",
+          "procesos": 430
+        }
+      },
+      "mes": 202004,
+      "esperado": 4,
+      "cambios": [],
+      "motivo": "meses previos procesados sin estado completado: [202003]; reintentá esos meses primero",
+      "ok": true
+    },
+    "c_reintento_recupera": {
+      "codigo": 0,
+      "pared_s": 6.4,
+      "falla_inyectada": null,
+      "maquina": {
+        "antes": {
+          "momento": "2026-11-25T19:24:20",
+          "frecuencia_mhz": 1201,
+          "frecuencia_max_mhz": 2803,
+          "carga_cpu_pct": 27.5,
+          "ram_libre_gb": 2.76,
+          "enchufada": true,
+          "bateria_pct": 100,
+          "plan_energia": "Equilibrado",
+          "procesos": 430
+        },
+        "despues": {
+          "momento": "2026-11-25T19:24:27",
+          "frecuencia_mhz": 1201,
+          "frecuencia_max_mhz": 2803,
+          "carga_cpu_pct": 19.5,
+          "ram_libre_gb": 2.74,
+          "enchufada": true,
+          "bateria_pct": 100,
+          "plan_energia": "Equilibrado",
+          "procesos": 429
+        }
+      },
+      "esperado": 0,
+      "estado": "completado",
+      "recuperado": true,
+      "sin_recalcular": true,
+      "intentos": [
+        "fallido",
+        "completado"
+      ],
+      "ok": true
+    },
+    "d_repetir_rechazado": {
+      "codigo": 4,
+      "pared_s": 5.0,
+      "falla_inyectada": null,
+      "maquina": {
+        "antes": {
+          "momento": "2026-11-25T19:24:30",
+          "frecuencia_mhz": 1201,
+          "frecuencia_max_mhz": 2803,
+          "carga_cpu_pct": 41.3,
+          "ram_libre_gb": 2.66,
+          "enchufada": true,
+          "bateria_pct": 100,
+          "plan_energia": "Equilibrado",
+          "procesos": 429
+        },
+        "despues": {
+          "momento": "2026-11-25T19:24:36",
+          "frecuencia_mhz": 1201,
+          "frecuencia_max_mhz": 2803,
+          "carga_cpu_pct": 31.2,
+          "ram_libre_gb": 2.66,
+          "enchufada": true,
+          "bateria_pct": 100,
+          "plan_energia": "Equilibrado",
+          "procesos": 429
+        }
+      },
+      "esperado": 4,
+      "cambios": [],
+      "ok": true
+    },
+    "ok": true
+  },
+  "retrospectiva": {
+    "202001": {
+      "version": 2,
+      "mes": 202001,
+      "regla": {
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
+        "BAJA+2": "presente en t+1 y ausente en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "horizonte": "la clase definitiva necesita t+1 y t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
+        "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
+      },
+      "disponibilidad": {
+        "estado": "completa",
+        "requiere": [
+          202002,
+          202003
+        ],
+        "falta": []
+      },
+      "uso": "monitoreo retrospectivo; no modifica modelos, cortes ni salidas (R1)",
+      "clases": {
+        "clientes": 142929,
+        "BAJA+1": 606,
+        "BAJA+2": 521,
+        "CONTINUA": 141802,
+        "ausentes_en_t1_que_vuelven_en_t2": 2,
+        "definitivas": true
+      },
+      "estrategias": [
+        {
+          "id": "binario_ce02_20s",
+          "rol": "recomendacion_provisional",
+          "score": "P(BAJA+1∪BAJA+2)",
+          "envios": 3359,
+          "baja1_enviados": 434,
+          "baja2_enviados": 320,
+          "precision_baja2": 0.095266,
+          "recall_baja2": 0.614203,
+          "ganancia": 259627500,
+          "auc_baja2": 0.938076,
+          "ganancia_maxima_ex_post": 267327500,
+          "envios_ganancia_maxima_ex_post": 4239,
+          "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"
+        },
+        {
+          "id": "multiclase_p1_ce02_10s",
+          "rol": "alternativa",
+          "score": "P(BAJA+2)",
+          "envios": 3895,
+          "baja1_enviados": 409,
+          "baja2_enviados": 332,
+          "precision_baja2": 0.085237,
+          "recall_baja2": 0.637236,
+          "ganancia": 258087500,
+          "auc_baja2": 0.936861,
+          "ganancia_maxima_ex_post": 262845000,
+          "envios_ganancia_maxima_ex_post": 4322,
+          "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"
+        }
+      ],
+      "diferencia_ganancia_recomendacion_menos_alternativa": 1540000
+    },
+    "202002": {
+      "version": 2,
+      "mes": 202002,
+      "regla": {
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
+        "BAJA+2": "presente en t+1 y ausente en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "horizonte": "la clase definitiva necesita t+1 y t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
+        "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
+      },
+      "disponibilidad": {
+        "estado": "completa",
+        "requiere": [
+          202003,
+          202004
+        ],
+        "falta": []
+      },
+      "uso": "monitoreo retrospectivo; no modifica modelos, cortes ni salidas (R1)",
+      "clases": {
+        "clientes": 146184,
+        "BAJA+1": 524,
+        "BAJA+2": 213,
+        "CONTINUA": 145447,
+        "ausentes_en_t1_que_vuelven_en_t2": 0,
+        "definitivas": true
+      },
+      "estrategias": [
+        {
+          "id": "binario_ce02_20s",
+          "rol": "recomendacion_provisional",
+          "score": "P(BAJA+1∪BAJA+2)",
+          "envios": 3436,
+          "baja1_enviados": 388,
+          "baja2_enviados": 120,
+          "precision_baja2": 0.034924,
+          "recall_baja2": 0.56338,
+          "ganancia": 37510000,
+          "auc_baja2": 0.949809,
+          "ganancia_maxima_ex_post": 56072500,
+          "envios_ganancia_maxima_ex_post": 1401,
+          "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"
+        },
+        {
+          "id": "multiclase_p1_ce02_10s",
+          "rol": "alternativa",
+          "score": "P(BAJA+2)",
+          "envios": 3984,
+          "baja1_enviados": 344,
+          "baja2_enviados": 129,
+          "precision_baja2": 0.03238,
+          "recall_baja2": 0.605634,
+          "ganancia": 32340000,
+          "auc_baja2": 0.94777,
+          "ganancia_maxima_ex_post": 54147500,
+          "envios_ganancia_maxima_ex_post": 1271,
+          "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"
+        }
+      ],
+      "diferencia_ganancia_recomendacion_menos_alternativa": 5170000
+    },
+    "202003": {
+      "version": 2,
+      "mes": 202003,
+      "regla": {
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
+        "BAJA+2": "presente en t+1 y ausente en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "horizonte": "la clase definitiva necesita t+1 y t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
+        "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
+      },
+      "disponibilidad": {
+        "estado": "completa",
+        "requiere": [
+          202004,
+          202005
+        ],
+        "falta": []
+      },
+      "uso": "monitoreo retrospectivo; no modifica modelos, cortes ni salidas (R1)",
+      "clases": {
+        "clientes": 148313,
+        "BAJA+1": 213,
+        "BAJA+2": 398,
+        "CONTINUA": 147702,
+        "ausentes_en_t1_que_vuelven_en_t2": 0,
+        "definitivas": true
+      },
+      "estrategias": [
+        {
+          "id": "binario_ce02_20s",
+          "rol": "recomendacion_provisional",
+          "score": "P(BAJA+1∪BAJA+2)",
+          "envios": 3486,
+          "baja1_enviados": 155,
+          "baja2_enviados": 242,
+          "precision_baja2": 0.069421,
+          "recall_baja2": 0.60804,
+          "ganancia": 170335000,
+          "auc_baja2": 0.942799,
+          "ganancia_maxima_ex_post": 170610000,
+          "envios_ganancia_maxima_ex_post": 3476,
+          "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"
+        },
+        {
+          "id": "multiclase_p1_ce02_10s",
+          "rol": "alternativa",
+          "score": "P(BAJA+2)",
+          "envios": 4042,
+          "baja1_enviados": 146,
+          "baja2_enviados": 244,
+          "precision_baja2": 0.060366,
+          "recall_baja2": 0.613065,
+          "ganancia": 157245000,
+          "auc_baja2": 0.9402,
+          "ganancia_maxima_ex_post": 157520000,
+          "envios_ganancia_maxima_ex_post": 4032,
+          "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"
+        }
+      ],
+      "diferencia_ganancia_recomendacion_menos_alternativa": 13090000
+    },
+    "202004": {
+      "version": 2,
+      "mes": 202004,
+      "regla": {
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
+        "BAJA+2": "presente en t+1 y ausente en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "horizonte": "la clase definitiva necesita t+1 y t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
+        "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
+      },
+      "disponibilidad": {
+        "estado": "completa",
+        "requiere": [
+          202005,
+          202006
+        ],
+        "falta": []
+      },
+      "uso": "monitoreo retrospectivo; no modifica modelos, cortes ni salidas (R1)",
+      "clases": {
+        "clientes": 148831,
+        "BAJA+1": 398,
+        "BAJA+2": 524,
+        "CONTINUA": 147909,
+        "ausentes_en_t1_que_vuelven_en_t2": 1,
+        "definitivas": true
+      },
+      "estrategias": [
+        {
+          "id": "binario_ce02_20s",
+          "rol": "recomendacion_provisional",
+          "score": "P(BAJA+1∪BAJA+2)",
+          "envios": 3498,
+          "baja1_enviados": 251,
+          "baja2_enviados": 248,
+          "precision_baja2": 0.070898,
+          "recall_baja2": 0.473282,
+          "ganancia": 176605000,
+          "auc_baja2": 0.929246,
+          "ganancia_maxima_ex_post": 191950000,
+          "envios_ganancia_maxima_ex_post": 4500,
+          "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"
+        },
+        {
+          "id": "multiclase_p1_ce02_10s",
+          "rol": "alternativa",
+          "score": "P(BAJA+2)",
+          "envios": 4056,
+          "baja1_enviados": 245,
+          "baja2_enviados": 265,
+          "precision_baja2": 0.065335,
+          "recall_baja2": 0.505725,
+          "ganancia": 179960000,
+          "auc_baja2": 0.927938,
+          "ganancia_maxima_ex_post": 185075000,
+          "envios_ganancia_maxima_ex_post": 4630,
+          "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"
+        }
+      ],
+      "diferencia_ganancia_recomendacion_menos_alternativa": -3355000
+    },
+    "202005": {
+      "version": 2,
+      "mes": 202005,
+      "regla": {
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
+        "BAJA+2": "presente en t+1 y ausente en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "horizonte": "la clase definitiva necesita t+1 y t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
+        "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
+      },
+      "disponibilidad": {
+        "estado": "parcial",
+        "requiere": [
+          202006,
+          202007
+        ],
+        "falta": [
+          "202007"
+        ]
+      },
+      "uso": "monitoreo retrospectivo; no modifica modelos, cortes ni salidas (R1)",
+      "clases": {
+        "clientes": 150267,
+        "definitivas": false
+      },
+      "provisional": {
+        "ausentes_en_t1": 527,
+        "nota": "BAJA+1 provisional: pasan a CONTINUA si vuelven en t+2; los presentes en t+1 pueden ser BAJA+2 o CONTINUA. Ninguna clase es definitiva hasta recibir t+2."
+      },
+      "estrategias": [
+        {
+          "id": "binario_ce02_20s",
+          "rol": "recomendacion_provisional",
+          "score": "P(BAJA+1∪BAJA+2)",
+          "envios": 3532,
+          "provisional_ausentes_en_t1_enviados": 295
+        },
+        {
+          "id": "multiclase_p1_ce02_10s",
+          "rol": "alternativa",
+          "score": "P(BAJA+2)",
+          "envios": 4095,
+          "provisional_ausentes_en_t1_enviados": 294
+        }
+      ]
+    },
+    "202006": {
+      "version": 2,
+      "mes": 202006,
+      "regla": {
+        "CONTINUA": "presente en t+2 (aunque falte en t+1)",
+        "BAJA+2": "presente en t+1 y ausente en t+2",
+        "BAJA+1": "ausente en t+1 y ausente en t+2",
+        "horizonte": "la clase definitiva necesita t+1 y t+2",
+        "verificacion": "igual a las etiquetas oficiales de competencia 01 (experimento_sampling/03b, 0 diferencias)",
+        "fuente": "presencia de numero_de_cliente en historia/foto_mes=<t+1|t+2>.parquet (meses recibidos)"
+      },
+      "disponibilidad": {
+        "estado": "pendiente",
+        "requiere": [
+          202007,
+          202008
+        ],
+        "falta": [
+          "202007",
+          "202008"
+        ]
+      },
+      "uso": "monitoreo retrospectivo; no modifica modelos, cortes ni salidas (R1)"
+    }
+  },
+  "fin": "2026-11-25T19:43:32",
+  "ok": true
+}

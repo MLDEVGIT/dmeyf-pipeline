@@ -61,6 +61,40 @@ class TestCatalogoCE02(unittest.TestCase):
         self.assertIn("nota_tamano", b["multiclass"]["corte"])
 
 
+class TestCorteMulticlase10CA02(unittest.TestCase):
+    """§ 17: el 2,725 % del multiclase de ce02_b20m10 está respaldado por el ensamble de 10 (semillas 0–9) en 2019."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.r = leer(RAIZ / "resultados" / "ca02_corte_multiclase_10.json")
+        cls.b20m10 = leer(K.archivo("ce02_b20m10"))
+
+    def test_corte_del_catalogo_es_el_evaluado(self):
+        m = next(e for e in self.b20m10["estrategias"] if e["objetivo"] == "multiclass")
+        self.assertEqual(m["corte"]["fraccion"], self.r["corte_evaluado"])
+        self.assertEqual(self.r["fuente"]["indices"], list(range(10)))
+
+    def test_dentro_del_conjunto_equivalente_de_10(self):
+        f = self.r["corte_evaluado"]
+        self.assertTrue(self.r["respaldado"])
+        self.assertTrue(any(a <= f <= b for a, b in self.r["conjunto_equivalente_10"]["tramos"]))
+        self.assertLessEqual(self.r["peor_arrepentimiento"]["corte_evaluado"],
+                             self.r["conjunto_equivalente_10"]["umbral_peor_arrepentimiento"])
+
+    def test_reproduce_lo_registrado_por_ce02(self):
+        self.assertTrue(all(self.r["consistencia_con_ce02"].values()))
+
+
+class TestCondicionesMaquina(unittest.TestCase):
+    def test_condiciones_registra_lo_necesario(self):
+        from pipeline_competencia02.correr_meses import condiciones
+        c = condiciones()
+        if c.get("disponible") is False:
+            self.skipTest("psutil no instalado")
+        for k in ("frecuencia_mhz", "carga_cpu_pct", "ram_libre_gb", "enchufada", "plan_energia"):
+            self.assertIn(k, c)
+
+
 class TestSeleccionCA01(unittest.TestCase):
     def test_seleccion_igual_a_la_estrategia_del_pipeline(self):
         from experimentos.ca01_separar_efectos import seleccion
