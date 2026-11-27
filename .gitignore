@@ -49,3 +49,6 @@ __pycache__/
 # Sistema
 .DS_Store
 Thumbs.db
+
+# Antecedentes de la Primera Competencia (matriz y fichas de repos): se versionan
+!docs/antecedentes/**/*.csv
