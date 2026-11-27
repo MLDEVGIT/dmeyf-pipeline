@@ -391,8 +391,11 @@ usa etiquetas.
 - **El tratamiento cambia mucho la selección.** Con L, el binario enviaría a otros 2.266 de sus
   4.429 clientes.
 - **Ganancia sin medir.** No se sabe cuál variante gana más: en 202006 hace falta 202007 y 202008.
-- **Decisión.** Elegir el tratamiento corresponde a E06, con la inyección del patrón en meses de
-  2019 (R1). Hasta entonces el pipeline advierte y no trata.
+- **Decisión.** E06 (`PLAN_PRUEBAS.md` § 19–20) inyectó el patrón en 2019 con `ce02_b20m10` fijo.
+  Ni N ni L cumplieron el criterio fijado de antemano, así que el pipeline sigue advirtiendo y no trata.
+  - L recupera 30–40 M en el mes corrupto.
+  - Pierde 3,3 M y 6,6 M en la propagación y con tres meses seguidos.
+  - La ganancia de 202006 sigue pendiente.
 
 ## Target consistente (TC01) y secuencia con el catálogo `tc01`
 
@@ -558,10 +561,11 @@ guardadas:
      completa. Lo decide el grupo; `ACTIVO` sigue en `tc01`.
    - **Mientras tanto,** `tc01` (4,475 %) es el catálogo activo, según el protocolo, y `e01` (2,9 %)
      sigue disponible con `--catalogo e01`. Qué usar en vivo lo decide el grupo.
-1. **E06, tratamiento de columnas en cero.** Con 202006 se dimensiona: el 16–17 % de la importancia
-   está afectada y la selección cambia en más de la mitad de los clientes según el tratamiento. Hay que
-   decidir con 2019 entre advertir, N y L, y medir los falsos positivos de la detección. En 2019
-   aparecen 201905 y 201910 y, en el ensayo, 202002.
+1. **E06, tratamiento de columnas en cero: ejecutada** (`PLAN_PRUEBAS.md` § 19–20).
+   - **Detector `cero_anomalo`** (columna en 0 cuando la historia hacía esperar ≥ 30 valores distintos
+     de 0): sin falsas alarmas en 2019; marca 201904, 201905, 202002 y 202006.
+   - **Ningún tratamiento cumple:** se conserva advertir. Un tratamiento distinto, como una variante
+     de L, sería un experimento nuevo, registrado antes de calcular. Lo decide el grupo.
 2. **Corte y prevalencia.** 202002 mostró que la fracción fija puede enviar cuatro veces más que el
    máximo ex post. Cualquier alternativa, como un umbral de probabilidad calibrada, se evalúa con 2019.
 3. **Tiempo en la máquina del vivo (T12).** En la máquina de Martín, 172–194 s por mes con `tc01` y

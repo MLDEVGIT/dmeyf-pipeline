@@ -1,0 +1,540 @@
+{
+  "criterio": {
+    "esperados_min": 30.0,
+    "meses_referencia": 3,
+    "antiguedad_max": 2
+  },
+  "meses": {
+    "201902": {
+      "detectadas": [],
+      "no_detectadas": []
+    },
+    "201903": {
+      "detectadas": [],
+      "no_detectadas": []
+    },
+    "201904": {
+      "detectadas": [
+        {
+          "columna": "ctarjeta_visa_debitos_automaticos",
+          "observados": 126116,
+          "mes_referencia": 201903,
+          "fraccion_no_cero_referencia": 0.666659,
+          "esperados_no_cero": 84076.3
+        },
+        {
+          "columna": "mttarjeta_visa_debitos_automaticos",
+          "observados": 126116,
+          "mes_referencia": 201903,
+          "fraccion_no_cero_referencia": 0.666659,
+          "esperados_no_cero": 84076.3
+        }
+      ],
+      "no_detectadas": []
+    },
+    "201905": {
+      "detectadas": [
+        {
+          "columna": "mrentabilidad",
+          "observados": 126763,
+          "mes_referencia": 201904,
+          "fraccion_no_cero_referencia": 0.997796,
+          "esperados_no_cero": 126483.6
+        },
+        {
+          "columna": "mrentabilidad_annual",
+          "observados": 126763,
+          "mes_referencia": 201904,
+          "fraccion_no_cero_referencia": 0.998081,
+          "esperados_no_cero": 126519.8
+        },
+        {
+          "columna": "mcomisiones",
+          "observados": 126763,
+          "mes_referencia": 201904,
+          "fraccion_no_cero_referencia": 0.973405,
+          "esperados_no_cero": 123391.8
+        },
+        {
+          "columna": "mactivos_margen",
+          "observados": 126763,
+          "mes_referencia": 201904,
+          "fraccion_no_cero_referencia": 0.959125,
+          "esperados_no_cero": 121581.6
+        },
+        {
+          "columna": "mpasivos_margen",
+          "observados": 126763,
+          "mes_referencia": 201904,
+          "fraccion_no_cero_referencia": 0.987932,
+          "esperados_no_cero": 125233.2
+        },
+        {
+          "columna": "ccomisiones_otras",
+          "observados": 126763,
+          "mes_referencia": 201904,
+          "fraccion_no_cero_referencia": 0.973413,
+          "esperados_no_cero": 123392.8
+        },
+        {
+          "columna": "mcomisiones_otras",
+          "observados": 126763,
+          "mes_referencia": 201904,
+          "fraccion_no_cero_referencia": 0.973405,
+          "esperados_no_cero": 123391.8
+        }
+      ],
+      "no_detectadas": []
+    },
+    "201906": {
+      "detectadas": [],
+      "no_detectadas": []
+    },
+    "201907": {
+      "detectadas": [],
+      "no_detectadas": []
+    },
+    "201908": {
+      "detectadas": [],
+      "no_detectadas": []
+    },
+    "201909": {
+      "detectadas": [],
+      "no_detectadas": []
+    }
+  },
+  "poca_actividad": {
+    "201908": {
+      "columnas": [
+        "Master_madelantodolares"
+      ],
+      "detectadas": [],
+      "no_detectadas": [
+        {
+          "columna": "Master_madelantodolares",
+          "observados": 53674,
+          "mes_referencia": 201907,
+          "fraccion_no_cero_referencia": 0.000335,
+          "esperados_no_cero": 18.0,
+          "motivo": "E < 30"
+        }
+      ]
+    },
+    "201909": {
+      "columnas": [
+        "Master_madelantodolares"
+      ],
+      "detectadas": [],
+      "no_detectadas": [
+        {
+          "columna": "Master_madelantodolares",
+          "observados": 53247,
+          "mes_referencia": 201908,
+          "fraccion_no_cero_referencia": 0.000373,
+          "esperados_no_cero": 19.8,
+          "motivo": "E < 30"
+        }
+      ]
+    }
+  },
+  "2020": {
+    "202001": {
+      "detectadas": [],
+      "no_detectadas": []
+    },
+    "202002": {
+      "detectadas": [
+        {
+          "columna": "ccajeros_propios_descuentos",
+          "observados": 146184,
+          "mes_referencia": 202001,
+          "fraccion_no_cero_referencia": 0.043168,
+          "esperados_no_cero": 6310.5
+        },
+        {
+          "columna": "mcajeros_propios_descuentos",
+          "observados": 146184,
+          "mes_referencia": 202001,
+          "fraccion_no_cero_referencia": 0.040279,
+          "esperados_no_cero": 5888.1
+        },
+        {
+          "columna": "ctarjeta_visa_descuentos",
+          "observados": 146184,
+          "mes_referencia": 202001,
+          "fraccion_no_cero_referencia": 0.147143,
+          "esperados_no_cero": 21510.0
+        },
+        {
+          "columna": "mtarjeta_visa_descuentos",
+          "observados": 146184,
+          "mes_referencia": 202001,
+          "fraccion_no_cero_referencia": 0.060635,
+          "esperados_no_cero": 8863.9
+        },
+        {
+          "columna": "ctarjeta_master_descuentos",
+          "observados": 146184,
+          "mes_referencia": 202001,
+          "fraccion_no_cero_referencia": 0.037389,
+          "esperados_no_cero": 5465.7
+        },
+        {
+          "columna": "mtarjeta_master_descuentos",
+          "observados": 146184,
+          "mes_referencia": 202001,
+          "fraccion_no_cero_referencia": 0.012101,
+          "esperados_no_cero": 1769.0
+        }
+      ],
+      "no_detectadas": []
+    },
+    "202003": {
+      "detectadas": [],
+      "no_detectadas": []
+    },
+    "202004": {
+      "detectadas": [],
+      "no_detectadas": []
+    },
+    "202005": {
+      "detectadas": [],
+      "no_detectadas": []
+    },
+    "202006": {
+      "detectadas": [
+        {
+          "columna": "active_quarter",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.981293,
+          "esperados_no_cero": 149855.3
+        },
+        {
+          "columna": "internet",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.925286,
+          "esperados_no_cero": 141302.3
+        },
+        {
+          "columna": "mrentabilidad",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.996513,
+          "esperados_no_cero": 152179.5
+        },
+        {
+          "columna": "mrentabilidad_annual",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.997158,
+          "esperados_no_cero": 152278.1
+        },
+        {
+          "columna": "mcomisiones",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.965049,
+          "esperados_no_cero": 147374.5
+        },
+        {
+          "columna": "mactivos_margen",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.947014,
+          "esperados_no_cero": 144620.4
+        },
+        {
+          "columna": "mpasivos_margen",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.982092,
+          "esperados_no_cero": 149977.2
+        },
+        {
+          "columna": "mcuentas_saldo",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.992067,
+          "esperados_no_cero": 151500.6
+        },
+        {
+          "columna": "ctarjeta_debito_transacciones",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.621713,
+          "esperados_no_cero": 94943.1
+        },
+        {
+          "columna": "mautoservicio",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.621713,
+          "esperados_no_cero": 94943.1
+        },
+        {
+          "columna": "ctarjeta_visa_transacciones",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.835739,
+          "esperados_no_cero": 127627.4
+        },
+        {
+          "columna": "mtarjeta_visa_consumo",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.835739,
+          "esperados_no_cero": 127627.4
+        },
+        {
+          "columna": "ctarjeta_master_transacciones",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.327464,
+          "esperados_no_cero": 50007.6
+        },
+        {
+          "columna": "mtarjeta_master_consumo",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.327464,
+          "esperados_no_cero": 50007.6
+        },
+        {
+          "columna": "ccajeros_propios_descuentos",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.021721,
+          "esperados_no_cero": 3317.1
+        },
+        {
+          "columna": "mcajeros_propios_descuentos",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.021582,
+          "esperados_no_cero": 3295.8
+        },
+        {
+          "columna": "ctarjeta_visa_descuentos",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.04685,
+          "esperados_no_cero": 7154.5
+        },
+        {
+          "columna": "mtarjeta_visa_descuentos",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.034353,
+          "esperados_no_cero": 5246.0
+        },
+        {
+          "columna": "ctarjeta_master_descuentos",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.035191,
+          "esperados_no_cero": 5374.0
+        },
+        {
+          "columna": "mtarjeta_master_descuentos",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.007765,
+          "esperados_no_cero": 1185.8
+        },
+        {
+          "columna": "ccomisiones_otras",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.965062,
+          "esperados_no_cero": 147376.6
+        },
+        {
+          "columna": "mcomisiones_otras",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.965049,
+          "esperados_no_cero": 147374.5
+        },
+        {
+          "columna": "cextraccion_autoservicio",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.443298,
+          "esperados_no_cero": 67696.9
+        },
+        {
+          "columna": "mextraccion_autoservicio",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.443298,
+          "esperados_no_cero": 67696.9
+        },
+        {
+          "columna": "ccheques_depositados",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.034612,
+          "esperados_no_cero": 5285.6
+        },
+        {
+          "columna": "mcheques_depositados",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.034612,
+          "esperados_no_cero": 5285.6
+        },
+        {
+          "columna": "ccheques_emitidos",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.026353,
+          "esperados_no_cero": 4024.4
+        },
+        {
+          "columna": "mcheques_emitidos",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.026353,
+          "esperados_no_cero": 4024.4
+        },
+        {
+          "columna": "ccheques_depositados_rechazados",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.004066,
+          "esperados_no_cero": 620.9
+        },
+        {
+          "columna": "mcheques_depositados_rechazados",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.004066,
+          "esperados_no_cero": 620.9
+        },
+        {
+          "columna": "ccheques_emitidos_rechazados",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.00366,
+          "esperados_no_cero": 558.9
+        },
+        {
+          "columna": "mcheques_emitidos_rechazados",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.00366,
+          "esperados_no_cero": 558.9
+        },
+        {
+          "columna": "tcallcenter",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.117344,
+          "esperados_no_cero": 17919.9
+        },
+        {
+          "columna": "ccallcenter_transacciones",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.117344,
+          "esperados_no_cero": 17919.9
+        },
+        {
+          "columna": "thomebanking",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.783339,
+          "esperados_no_cero": 119625.3
+        },
+        {
+          "columna": "chomebanking_transacciones",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.829863,
+          "esperados_no_cero": 126730.0
+        },
+        {
+          "columna": "ccajas_transacciones",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.087318,
+          "esperados_no_cero": 13334.5
+        },
+        {
+          "columna": "ccajas_consultas",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.03921,
+          "esperados_no_cero": 5987.9
+        },
+        {
+          "columna": "ccajas_depositos",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.010827,
+          "esperados_no_cero": 1653.5
+        },
+        {
+          "columna": "ccajas_extracciones",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.069217,
+          "esperados_no_cero": 10570.2
+        },
+        {
+          "columna": "ccajas_otras",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.008026,
+          "esperados_no_cero": 1225.6
+        },
+        {
+          "columna": "catm_trx",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.354502,
+          "esperados_no_cero": 54136.8
+        },
+        {
+          "columna": "matm",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.354502,
+          "esperados_no_cero": 54136.8
+        },
+        {
+          "columna": "catm_trx_other",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.178509,
+          "esperados_no_cero": 27260.5
+        },
+        {
+          "columna": "matm_other",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.178509,
+          "esperados_no_cero": 27260.5
+        },
+        {
+          "columna": "tmobile_app",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.62158,
+          "esperados_no_cero": 94922.8
+        },
+        {
+          "columna": "cmobile_app_trx",
+          "observados": 152712,
+          "mes_referencia": 202005,
+          "fraccion_no_cero_referencia": 0.612996,
+          "esperados_no_cero": 93611.8
+        }
+      ],
+      "no_detectadas": []
+    }
+  },
+  "2020_fuente": "ejecuciones/entornos/secuencia_ce02_b20m10_202001_202006_20261125T190118/historia"
+}

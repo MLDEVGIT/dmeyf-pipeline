@@ -32,7 +32,12 @@ Recibe el CSV crudo de un mes, sin targets, y produce `churn_<yyyymm>.csv` con
 > - **202006** llega con 47 columnas en cero: los scores se corren hacia arriba y la coincidencia entre
 >   estrategias baja a 0,46. Hoy el pipeline advierte y no trata.
 >
-> Pendientes: criterio de corte robusto con 2019, tratamiento de columnas en cero (E06), corte y prevalencia,
+> E06 (`docs/PLAN_PRUEBAS.md` § 19–20) simuló en 2019 columnas que llegan en 0 y comparó advertir, faltantes y
+> último valor con `ce02_b20m10` fijo. El detector no dio falsas alarmas y el último valor recuperó la mayor parte de
+> la pérdida en el mes afectado, pero perdió más de 2 BAJA+2 en dos escenarios; por la regla fijada se conserva
+> advertir.
+>
+> Pendientes: criterio de corte robusto con 2019, corte y prevalencia,
 > modelos optimizados, lags por calendario (E05), interpretación de la probabilidad con la cátedra, y la
 > actualización del target en el repo grupal de sampling.
 > Brechas y orden: [docs/TAREAS.md](docs/TAREAS.md). Consigna: [docs/CONSIGNA.md](docs/CONSIGNA.md).
@@ -74,6 +79,7 @@ python scripts/medir_tiempos_catalogos.py --mes 202001 --catalogos tc01 ce02 ce0
 python -m experimentos.ca01_separar_efectos --tc01 <carpeta tc01> --candidato <carpeta ce02>                 # ensamble × corte
 python -m experimentos.ca02_b20m10 corte                                                                     # 2,725 % con semillas 0–9 (2019)
 python -m experimentos.ca02_b20m10 identidad --ce02 <carpeta ce02> --b20m10 <carpeta ce02_b20m10>           # contra ce02 guardado
+python -m experimentos.e06_columnas_anomalas [--trabajo ejecuciones/e06/<marca>]                            # E06, 2019 (horas; reanudable)
 
 # 3. verificaciones independientes y diagnóstico de columnas en cero
 python scripts/analizar_columnas_en_cero.py --ejecucion ejecuciones/entornos/ensayo_X --mes 202006 --salida <json>
@@ -140,7 +146,7 @@ se conservan porque `mensual.py` reutiliza su validación, su candado y su publi
 | `scripts/` | `verificar_salida.py` (chequeo independiente de un `churn_<yyyymm>.csv`), `verificar_scores.py` (scores contra los modelos originales) `probar_reintentos.py` (fallas y reintentos) y `analizar_columnas_en_cero.py` (diagnóstico de 202006). |
 | `evaluacion/` | Ganancia (premio bruto, costo, neta; `docs/GANANCIA.md`), curvas, corte por fracción con arrepentimiento mínimo, **definición única del target** (`target.py`), y particiones temporales que **bloquean por código** la lectura de etiquetas fuera de lo permitido. |
 | `experimentos/` | Pruebas incrementales del `docs/PLAN_PRUEBAS.md`: `e01_binario_vs_multiclase.py`, `e02_peso_baja1.py`, `t01_tiempo_inferencia.py`, `tc01_target_2019.py`, `tc01_target_corregido.py`, `ce01_estabilidad_corte.py`, `ce02_composicion.py`, `ce02_entrenar.py`, `ce02_analisis.py`, `ca01_separar_efectos.py`. Salidas completas en `ejecuciones/` (no versionado). |
-| `resultados/` | Resúmenes versionados de cada experimento, sin datos por cliente (`e02_peso_baja1.json`, `i01_ensayo_202001.json`, `i02_secuencia_202001_202006.json`, `i02_columnas_en_cero_202006.json`, `i03_correccion_target_retrospectivo.json`, `tc01_target_2019_v2.json`, `tc01_target_corregido.json`, `i04_secuencia_tc01_202001_202006.json`, `i05_comparacion_secuencias_e01_tc01.json`, `ce01_estabilidad_corte.json`, `ce02_composicion.json`, `ce02_ensambles_20.json`, `i06_secuencia_ce02_202001_202006.json`, `i07_comparacion_secuencias_tc01_ce02.json`, `ca01_separacion_efectos.json`, `ca01_tiempos_catalogos_202001.json`, `ca01_verificacion_scores.json`, `ca02_corte_multiclase_10.json`, `i08_secuencia_ce02_b20m10_202001_202006.json`, `i09_comparacion_secuencias_ce02_b20m10.json`, `ca02_identidad_con_ce02.json`, `ca02_verificacion_scores.json`). Figuras en `docs/figuras/`. |
+| `resultados/` | Resúmenes versionados de cada experimento, sin datos por cliente (`e02_peso_baja1.json`, `i01_ensayo_202001.json`, `i02_secuencia_202001_202006.json`, `i02_columnas_en_cero_202006.json`, `i03_correccion_target_retrospectivo.json`, `tc01_target_2019_v2.json`, `tc01_target_corregido.json`, `i04_secuencia_tc01_202001_202006.json`, `i05_comparacion_secuencias_e01_tc01.json`, `ce01_estabilidad_corte.json`, `ce02_composicion.json`, `ce02_ensambles_20.json`, `i06_secuencia_ce02_202001_202006.json`, `i07_comparacion_secuencias_tc01_ce02.json`, `ca01_separacion_efectos.json`, `ca01_tiempos_catalogos_202001.json`, `ca01_verificacion_scores.json`, `ca02_corte_multiclase_10.json`, `i08_secuencia_ce02_b20m10_202001_202006.json`, `i09_comparacion_secuencias_ce02_b20m10.json`, `ca02_identidad_con_ce02.json`, `ca02_verificacion_scores.json`, `e06_deteccion.json`, `e06_simulacion_2019.json`). Figuras en `docs/figuras/`. |
 | `pruebas/` | Pruebas unitarias de `evaluacion/` y del pipeline mensual (`python -m unittest discover -s pruebas -t .`). |
 | `entrenamiento/legado/` | Scripts que produjeron el modelo diagnóstico (copiados sin cambios; todavía usan rutas fijas). |
 | `referencia/01_filas_por_mes.csv` | Conteo de filas por mes de 2019 (sin datos de clientes), usado por `preparar_insumos`. |

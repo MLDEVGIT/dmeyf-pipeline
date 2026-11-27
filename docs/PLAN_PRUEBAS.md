@@ -99,7 +99,7 @@ usa sola porque sesgaría la clase.
 |---|---|---|
 | **Detección** | Regla objetiva sobre el mes que llega, sin etiquetas: columna 100 % nula; todos los observados en 0; constante no nula; cambio > 20 pp en la tasa de nulos (`politica_incidentes.json`). A agregar: PSI por variable contra la referencia de 2019, con NaN como bin aparte. | Implementada, menos PSI |
 | **Alerta** | Incidente en `reporte.json` y `reporte_acumulado.csv` con variable, regla y acción. `estado_calidad = con_alertas`. No bloquea. | Implementada |
-| **Tratamiento** | Cambiar el dato antes de calcular features. **Hoy no hay ninguno**: el score usa el dato tal como llega. | No implementado |
+| **Tratamiento** | Cambiar el dato antes de calcular features. **No se aplica ninguno**: el score usa el dato tal como llega. E06 (§ 19–20) evaluó N y L en 2019 y ninguno cumplió el criterio fijado | Evaluado, no adoptado |
 
 **Sustitución automática por faltante (NA): no se adopta sin prueba.**
 - *A favor:* LightGBM trata NA como faltante con una dirección aprendida. Un 0 por falla de carga se
@@ -109,7 +109,7 @@ usa sola porque sesgaría la clase.
   esa variable, NA alteró más la selección que el 0. Además, el valor sustituido entra en la
   historia y cambia los lags del mes siguiente.
 
-**Prueba E06** (tras E01, sobre el modelo ganador; meses de desarrollo):
+**Prueba E06** (diseño original; el protocolo vigente, ampliado, está en el § 19):
 
 | Variante | Qué se hace con las columnas detectadas en el mes |
 |---|---|
@@ -146,7 +146,7 @@ Cada paso cambia **una** cosa respecto del de referencia. Todos comparten:
 | E03 | Escalado monetario por mes, antes de lags: crudo (= E01), rank con cero fijo, división por la mediana mensual | Objetivo elegido en E01 | Pendiente; requiere cambiar `features.py` en entrenamiento **y** producción |
 | E04 | Combinación por rangos de binario y multiclase | Predicciones guardadas de E01, sin reentrenar | Pendiente; costo bajo |
 | E05 | Lags por calendario con indicador de disponibilidad contra lags por fila | El mejor de E01–E04 | Pendiente |
-| E06 | Tratamiento de anomalías (§ 3) | Modelo elegido | Pendiente |
+| E06 | Tratamiento de anomalías (§ 3; protocolo ampliado en § 19) | `ce02_b20m10` fijo | **Ejecutada** (§ 20): N y L no cumplen el criterio; se conserva advertir |
 | T01 | Tiempo de inferencia con modelos representativos | Modelos de E01 | **Ejecutada** (§ 6) |
 | F01 | Evaluación final en 201910, protocolo congelado (§ 2) | Todo lo anterior | Al final, una vez |
 
@@ -1697,3 +1697,303 @@ envíos, Jaccard 1 y la misma ganancia retrospectiva, 644,1 M en 202001–202004
 
 **Limitaciones:** 2020 es exploratorio; las ganancias retrospectivas son de 4 meses; los tiempos son de
 una laptop con carga variable y no se trasladan a GCP.
+
+## 19. E06 — detección y tratamiento de columnas anómalas (protocolo, escrito antes de calcular)
+
+Rama `martin/e06-columnas-anomalas`. Amplía el diseño del § 3, que queda como antecedente.
+- **Scripts:**
+  - `pipeline_competencia02/tratamiento.py`: detector y tratamientos, los mismos para la simulación y
+    para el pipeline;
+  - `experimentos/e06_columnas_anomalas.py`: simulación en 2019.
+- **Catálogo de trabajo:** `ce02_b20m10`, pasado explícitamente, con modelos y cortes fijos: binario de
+  20 semillas en 2,35 % (salida oficial) y multiclase de 10 en 2,725 %. No se reentrena nada.
+  `catalogo.ACTIVO` sigue en `tc01`.
+
+**Origen del problema.** Se identificó en el ensayo exploratorio de 2020 (§ 3, `INTEGRACION.md`):
+- en 202006 llegaron 47 columnas con todos los observados en 0, y en 202002 llegaron 6;
+- el pipeline advierte y no trata, así que esos 0 entran al score del mes y a la historia, y de ahí a
+  los lags y deltas de los meses siguientes.
+
+La política se elige **sólo con 2019**. 202006 se usa después, sólo para describir el efecto de la
+política ya definida. No se elige por normalización de scores ni por coincidencia entre modelos. Su
+ganancia queda pendiente hasta tener 202007 y 202008.
+
+**Lo que muestra el crudo de 2019, sin etiquetas** (revisado antes de fijar la regla; 201910 no se
+lee):
+- **No hay ceros legítimos a nivel de columna.** Las únicas columnas con todos los observados en 0 son:
+  - **201904:** las 2 de débitos automáticos de Visa, que eran distintas de 0 en el 67 % de los
+    observados el mes anterior;
+  - **201905:** 7 columnas de rentabilidad, comisiones y márgenes, que eran distintas de 0 en el
+    96–99,8 % de los observados.
+
+  Las dos vuelven al nivel normal el mes siguiente: son incidentes reales de carga y sirven como
+  positivos reales del detector.
+- **Los ceros legítimos están dentro de las columnas.** Hay columnas dispersas, como cheques
+  rechazados, adelantos en dólares o payroll2, con entre 15 y 900 valores distintos de 0 por mes.
+- **Las columnas 100 % nulas** de 201901–201906 (`tmobile_app`, `cmobile_app_trx`) son estructurales y
+  no entran en E06.
+
+### 1. Regla de detección `cero_anomalo`
+
+Sólo usa el mes recibido y su historia disponible; no usa etiquetas. Una columna *c* se detecta en el
+mes *t* si se cumplen las tres condiciones:
+1. En *t* tiene al menos un valor observado (no nulo) y todos los observados valen 0.
+2. Existe un **mes de referencia** *r*: el más reciente de la historia, entre *t*−1 y *t*−3, en el que
+   *c* tiene al menos un observado distinto de 0. Si *t*−1 también fue anómalo, la referencia es
+   *t*−2 o *t*−3, así que las anomalías consecutivas se siguen detectando.
+3. La cantidad **esperada** de valores distintos de 0 es **E = observados en *t* × fracción distinta de
+   0 en *r* ≥ 30**.
+   - Si nada hubiera cambiado, la probabilidad de ver todos en 0 es de alrededor de e^−E, menor que
+     10^−13 con E ≥ 30.
+   - Columnas con poca actividad, como la de adelantos en dólares (E ≈ 15–20), o sin actividad en los
+     últimos 3 meses, no se detectan: un 0 en todas puede ser legítimo.
+
+Fuera de esta regla:
+- las reglas existentes (`observados_en_cero`, `columna_100_nula`, `constante_no_nula`,
+  `cambio_tasa_nulos`) siguen advirtiendo como hasta ahora;
+- **no se detectan corrupciones parciales**, por ejemplo una columna en 0 sólo para algunos clientes.
+
+### 2. Tratamientos
+
+Se aplican sólo a las columnas detectadas, **antes de calcular las features**. La historia guarda el
+mes **tratado**, así que los lags y deltas de *t*+1 y *t*+2 heredan el tratamiento.
+
+| Tratamiento | Qué se hace con la columna detectada en *t* |
+|---|---|
+| **A, advertir** (vigente) | nada: se usa el valor recibido; incidente y alerta, como hoy |
+| **N, faltantes** | todos los valores pasan a NULL |
+| **L, último valor válido** | cada valor observado pasa al último valor válido del cliente |
+
+**Definición de L:**
+- **Último valor válido:** el del mes más reciente *m* con *t* − *m* ≤ **2 meses calendario**, en el
+  que el cliente fue observado, la columna no fue tratada en *m* y el valor no es nulo.
+- **Antigüedad máxima de 2 meses:** la de los dos lags de las features. Así un valor imputado no se
+  arrastra más allá de *t*−2.
+- **Sin valor válido:** NULL. Le pasa a los clientes nuevos, a los que no tienen observaciones en *t*−1
+  ni en *t*−2, y a los que tienen tres meses consecutivos tratados.
+- **Valores nulos de origen:** siguen nulos, porque no hay evidencia de que estén corruptos.
+- **Historia inicial:** no se trata retroactivamente; por ejemplo, 201905 queda como llegó.
+
+### 3. Escenarios simulados en 2019
+
+**Corrupción inyectada:** todos los valores observados de un conjunto de columnas pasan a 0, y los
+nulos se conservan. Es el patrón de 202002 y 202006.
+
+| Conjunto | Columnas | Por qué |
+|---|---|---|
+| **C47** | las 47 de 202006 | el caso que motivó E06 |
+| **C7** | las 7 de 201905 | el patrón real de 2019 |
+| **C6** | las 6 de descuentos de 202002 | dispersas y de poca importancia |
+
+**Meses inyectados y meses evaluados.** Sólo se evalúan 201908 y 201909, los meses de desarrollo;
+201907 se inyecta pero no se evalúa, y octubre sigue bloqueado.
+
+| Escenario | Meses inyectados | Evaluado en | Qué prueba |
+|---|---|---|---|
+| S1 | 201909 | 201909 | anomalía en el mes |
+| S2 | 201908 | 201908 y 201909 | el mes y su propagación a lag1 y delta1 en el mes siguiente |
+| S3 | 201907 | 201908 y 201909 | propagación a lag1 y delta1, y a lag2 y delta2 |
+| S4 | 201908 y 201909 | 201908 y 201909 | anomalías consecutivas |
+| S5 | 201907, 201908 y 201909 | 201909 | tres consecutivas: L llega a su antigüedad máxima |
+
+- C47 corre en S1–S5, C7 en S1 y S2, y C6 en S1.
+- **Referencia O:** sin corrupción, por el mismo camino de código. Sus features deben ser idénticas a
+  las de `features_2019/` (control de la simulación) y el detector no debe marcar nada en 201907–201909.
+
+**Ceros legítimos y falsas alarmas del detector:**
+- **Meses reales 201902–201909:** el detector debe marcar sólo los incidentes de 201904 y 201905. Toda
+  otra detección cuenta como falsa alarma, sobre todas las combinaciones de columna y mes.
+- **Columnas de poca actividad:** en 201908 y 201909, todas las columnas activas con E < 30 se pasan a
+  0. El detector no debe marcarlas.
+- **Ceros legítimos dentro de las columnas:** en C47 la mayoría de los valores son 0 legítimos. L los
+  repone con el valor del cliente (0 si lo era) y N los pierde.
+- **2020, sólo descriptivo:** qué marcaría el detector en 202001–202006.
+
+### 4. Medidas
+
+Por escenario, mes evaluado, tratamiento y estrategia, con los cortes fijos:
+- envíos, BAJA+2 enviados y ganancia (target versión 2);
+- pérdida contra O, y la parte que recupera cada tratamiento respecto de A;
+- cambio de selección contra O: Jaccard, clientes que entran y que salen;
+- AUC de BAJA+2.
+
+Además se registra:
+- columnas detectadas y no detectadas, con su E;
+- cantidad de valores imputados según su antigüedad, puestos en NULL y sin historia;
+- tiempo de detección y tratamiento por mes y pico de memoria del proceso.
+
+### 5. Criterio de adopción (fijado ahora)
+
+N o L se adoptan sólo si cumplen todo lo siguiente:
+1. **Detector:**
+   - ninguna falsa alarma en 201902–201909;
+   - no marca ninguna columna de poca actividad;
+   - detecta todas las columnas inyectadas con E ≥ 30;
+   - no marca nada en O.
+2. **Salida oficial (binario), en C47 y C7:**
+   - en cada combinación de escenario y mes, G_T ≥ G_A − 2,2 M, una tolerancia de 2 BAJA+2;
+   - la suma de G_T − G_A sobre esas combinaciones es > 0.
+3. **Alternativa (multiclase):** la suma de G_T − G_A sobre las mismas combinaciones es ≥ 0.
+4. **C6:** ninguna combinación con G_T < G_A − 2,2 M en el binario.
+5. **Costo:**
+   - detección y tratamiento ≤ 30 s por mes en esta máquina, con ≤ 1 GB más de pico;
+   - una vez integrado, el mes completo respeta los 900 s de la consigna.
+
+Si cumplen los dos, se elige el de mayor suma en el binario. Si la diferencia es ≤ 2,2 M, se elige N,
+que no depende de la historia. **Si ninguno cumple, se conserva A, la política de alerta,** y se
+documenta.
+
+### 6. Conservación del crudo, del dato tratado y de la trazabilidad (en el pipeline)
+
+- **Crudo:**
+  - `input/<mes>.csv` no se toca; su sha256 ya está en `reporte.json`;
+  - además, `diagnosticos/<mes>/crudo_columnas_tratadas_<mes>.parquet` guarda el cliente y los
+    valores recibidos de las columnas tratadas.
+- **Tratado:** `historia/foto_mes=<mes>.parquet`, la base de las features del mes y de los lags de los
+  dos meses siguientes; `features_<mes>.parquet` como siempre.
+- **Trazabilidad:** `diagnosticos/<mes>/tratamiento.json`. Lo lee el tratamiento L de los meses
+  siguientes para saber qué columnas fueron tratadas.
+  - Registra la regla, los parámetros y el método; por columna, observados, mes de referencia,
+    fracción distinta de 0 y E.
+  - Registra los conteos: imputados según su antigüedad, puestos en NULL y nulos de origen.
+  - Registra los sha256 del crudo, del parquet de columnas crudas y de la historia tratada.
+  - En `reporte.json` hay un resumen, con el incidente `tratamiento_aplicado`.
+- **Activación:** configurable por ejecución. El valor por defecto sigue siendo A.
+- **En la simulación,** los mismos objetos quedan en `ejecuciones/e06/<marca>/`, que no se versiona;
+  los resúmenes van a `resultados/e06_*.json`.
+
+**Si un tratamiento se adopta:** se integra en forma configurable y se repite la secuencia
+202001–202006 con `ce02_b20m10` y el tratamiento, con reintento en 202003, para verificar el tiempo
+mensual completo y la trazabilidad. Esa secuencia también describe 202006.
+
+## 20. Resultados de E06
+
+**Archivos:**
+- `resultados/e06_simulacion_2019.json`: celdas, controles, detector, criterio y medición de tiempos;
+- `resultados/e06_deteccion.json`: detector sobre los meses reales de 2019, las columnas de poca
+  actividad y 2020;
+- trabajo en `ejecuciones/e06/20261125T211705/`, que no se versiona.
+
+**Catálogo:** `ce02_b20m10` fijo, con binario en 2,35 % y multiclase en 2,725 %. `catalogo.ACTIVO` sigue
+en `tc01`.
+
+**Datos:** crudo de 201901–201909 y target versión 2 de 201908–201909. 201910 no se leyó.
+
+> **Resultado: ningún tratamiento cumple el criterio del § 19. Se conserva A, la política de alerta.**
+> El tratamiento no se integra en el pipeline. `pipeline_competencia02/tratamiento.py` queda probado
+> para un experimento futuro, pero ninguna ejecución mensual lo llama.
+
+### 1. Controles de la simulación
+
+| Control | Resultado |
+|---|---|
+| Features de O recalculadas desde el crudo con `features.sql_mes` = `features_2019/` (201908 y 201909, todas las filas y las 760 features) | ✓ |
+| Ensamble de O = promedio de las predicciones guardadas por CE02 (semillas 0–19 del binario y 0–9 del multiclase), bit a bit | ✓ |
+| En los meses sin inyección el detector no marca nada, así que los tratamientos no cambian nada | ✓ |
+
+### 2. Detector `cero_anomalo`
+
+| Prueba | Resultado |
+|---|---|
+| Meses reales 201902–201909 | Detecta sólo los incidentes reales: **201904** (2 columnas de débitos automáticos de Visa, E ≈ 84.000) y **201905** (7 de rentabilidad, comisiones y márgenes, E ≈ 122.000–127.000). **Ninguna falsa alarma** en las 152 columnas de los 8 meses |
+| Ceros legítimos por poca actividad: columnas activas con E < 30 pasadas a 0 en 201908 y 201909 (`Master_madelantodolares`, E = 18 y 20) | no detectadas ✓ |
+| Columnas inyectadas con E ≥ 30, en todos los escenarios | todas detectadas ✓ (incluidas las anomalías consecutivas, con referencia en *t*−2 o *t*−3) |
+| Columnas inyectadas sin referencia | `tmobile_app` y `cmobile_app_trx` empiezan a tener datos en 201907 (antes eran 100 % nulas): inyectadas en 201907, o en tres meses seguidos, no tienen referencia y la regla no las evalúa. Quedan fuera del criterio por definición. **Limitación:** una columna nueva que falla en sus primeros meses no se detecta |
+| 2020, descriptivo | 202002: las 6 de descuentos (E = 1.769–21.510); 202006: las 47 (E = 559–152.278). Ningún otro mes |
+
+### 3. Ganancia por escenario (millones; cortes fijos)
+
+Referencia O sin corrupción: binario 200,8 M en 201908 y 251,5 M en 201909; multiclase 210,3 M y 254,2 M.
+
+| Conjunto · escenario | Mes evaluado | Binario: A / N / L | Multiclase: A / N / L | Jaccard del binario con O: A / N / L |
+|---|---|---|---|---|
+| C47 · S1 (201909) | 201909 | 216,3 / 198,7 / **246,0** | 232,2 / 231,1 / **248,7** | 0,45 / 0,40 / 0,77 |
+| C47 · S2 (201908) | 201908 | 162,3 / 146,9 / **201,9** | 190,5 / 189,4 / **208,1** | 0,47 / 0,41 / 0,77 |
+| C47 · S2 (201908) | 201909, propagación | 252,6 / 252,6 / 253,7 | 256,4 / 252,0 / 253,1 | 0,91 / 0,81 / 0,94 |
+| C47 · S3 (201907) | 201908, propagación a lag1 | 200,8 / 194,2 / **197,5** | 210,3 / 207,0 / 208,1 | 0,91 / 0,81 / 0,93 |
+| C47 · S3 (201907) | 201909, propagación a lag2 | 244,9 / 249,3 / 251,5 | 255,3 / 243,2 / 252,0 | 0,74 / 0,70 / 0,90 |
+| C47 · S4 (201908 y 201909) | 201908 | 162,3 / 146,9 / **201,9** | 190,5 / 189,4 / **208,1** | 0,47 / 0,41 / 0,77 |
+| C47 · S4 (201908 y 201909) | 201909 | 206,4 / 183,3 / **229,5** | 238,8 / 221,2 / 233,3 | 0,45 / 0,34 / 0,70 |
+| C47 · S5 (201907–201909) | 201909 | 202,0 / 196,5 / **195,4** | 231,1 / 212,4 / 231,1 | 0,47 / 0,37 / 0,39 |
+| C7 · S1 (201909) | 201909 | 242,7 / 246,0 / 246,0 | 250,9 / 243,2 / 254,2 | 0,91 / 0,89 / 0,94 |
+| C7 · S2 (201908) | 201908 | 198,6 / 205,2 / 200,8 | 202,6 / 211,4 / 212,5 | 0,92 / 0,91 / 0,95 |
+| C7 · S2 (201908) | 201909, propagación | 253,7 / 255,9 / 252,6 | 255,3 / 254,2 / 257,5 | 0,96 / 0,95 / 0,97 |
+| C6 · S1 (201909) | 201909 | 250,4 / 254,8 / 251,5 | 254,2 / 257,5 / 254,2 | 1,00 / 0,96 / 1,00 |
+
+- **El daño de la corrupción está en el mes afectado.**
+  - Con A, el binario pierde 35–50 M frente a O cuando las 47 columnas llegan en 0 en el mes evaluado.
+  - La propagación al mes siguiente casi no pierde: −6,6 M a lag2 y 0 a +1,1 M a lag1.
+  - C7 y C6 mueven ±9 M o menos.
+- **L recupera la mayor parte cuando el mes evaluado es el corrupto:** +29,7 M en S1, +39,6 M en S2 y
+  +23,1 M en S4. El AUC sube de 0,889–0,894 a 0,904–0,905, contra 0,909–0,910 de O.
+- **L pierde en dos situaciones:**
+  - **Propagación donde A no pierde:** C47 · S3 en 201908, −3,3 M.
+  - **Tres meses seguidos tratados:** C47 · S5 en 201909, −6,6 M. Ahí L llega a su antigüedad máxima y
+    deja la columna en NULL, como N.
+- **N es peor que A en casi todo C47:** hasta −23,1 M. Los modelos no vieron esas columnas vacías en
+  entrenamiento.
+
+**Celdas tratadas por L** (C47, mes inyectado):
+- el 98 % de los valores se imputa con *t*−1 y el 1,7–1,9 % queda en NULL, por 2.147–2.514 clientes sin
+  observaciones en *t*−1 ni *t*−2;
+- con dos meses seguidos se imputa con *t*−2 (96 %);
+- con tres, todo queda en NULL.
+
+### 4. Tiempo y memoria
+
+**Detección y tratamiento por mes**, medidos aparte, sin features ni inferencia, con la máquina
+despierta (2 repeticiones de los 8 escenarios):
+
+| Tratamiento | Mediana (s) | Máximo (s) |
+|---|---|---|
+| A | 2,5 | 7,9 |
+| N | 4,8 | 9,2 |
+| L | 4,5 | 7,7 |
+
+- **Pico de working set del proceso de medición:** 1,2 GB, con DuckDB limitado a 4 GB.
+- **Los tiempos medidos dentro de las celdas no sirven para el criterio:**
+  - una celda incluye una suspensión de la máquina (24.579 s);
+  - otras corrieron con la laptop cargada: la inferencia tardó 2,5 veces lo normal y L llegó a 39 s.
+
+  Se informan en el JSON, pero el criterio usa la medición aparte. La elección no depende de esto: L
+  falla por ganancia.
+- **Costo total de la simulación:** 35 celdas de 3–9 minutos, dominadas por la inferencia de los 30
+  modelos.
+
+### 5. Criterio del § 19
+
+| Condición | N | L |
+|---|---|---|
+| 1. Detector | ✓ | ✓ |
+| 2a. Binario: en cada combinación de C47 y C7, G_T ≥ G_A − 2,2 M | ✗ (peor: −23,1 M) | **✗** (C47 · S3 201908: −3,3 M; C47 · S5 201909: −6,6 M) |
+| 2b. Binario: suma de G_T − G_A > 0 | ✗ (−67,1 M) | ✓ (+134,2 M) |
+| 3. Multiclase: suma ≥ 0 | ✗ (−59,4 M) | ✓ (+52,8 M) |
+| 4. C6 sin pérdida mayor a 2,2 M | ✓ (+4,4 M) | ✓ (+1,1 M) |
+| 5. Costo ≤ 30 s por mes | ✓ (9,2 s) | ✓ (7,7 s) |
+| **Cumple** | **no** | **no** |
+
+**Decisión:**
+- **Se conserva A:** detectar y alertar sin cambiar el dato. Es lo que el § 3 y el § 19 fijaron para el
+  caso en que ningún tratamiento cumpla.
+- **El tratamiento sigue siendo una decisión humana registrada.**
+- **No se integra** el tratamiento al pipeline, ni se mide el mes completo con él.
+
+**202006, sólo descriptivo.**
+- Con la política definida (A), lo publicado no cambia: es la corrida de CA02. El detector marcaría
+  las 47 columnas, las mismas que ya informa la alerta `observados_en_cero`.
+- La ganancia de 202006 sigue pendiente de las etiquetas de 202007 y 202008.
+
+**Lectura** (no cambia la decisión):
+- **L es el único tratamiento con beneficio claro** cuando la columna corrupta está en el mes evaluado:
+  suma +134 M en el binario.
+- **Su riesgo está en dos lugares:** la propagación, donde A casi no pierde, y las anomalías largas,
+  donde termina en NULL.
+- **Una variante,** por ejemplo L sólo para el mes y no para la historia, o con otro tratamiento al
+  agotar la antigüedad, sería un experimento nuevo. Habría que registrarlo antes de calcular y no
+  podría evaluarse con estas mismas celdas como si fueran independientes. Lo decide el grupo.
+
+**Limitaciones:**
+- la corrupción simulada es sólo el patrón "toda la columna en 0"; no hay corrupciones parciales;
+- son dos meses de desarrollo y una sola realización por escenario;
+- los modelos se entrenaron con 201905, que trae el incidente real;
+- 202006 no tiene ganancia medible todavía.
