@@ -49,7 +49,7 @@ de `C:\dev\DMEyF`: `modelo.txt` (399 KB), `predictores.json` (760 predictores),
 
 ## Ideas de terceros (propuestas, todavía no implementadas)
 
-Relevamiento del 24-nov-2026 (`RELEVAMIENTO.md` § 2). Ninguno de estos repos tiene
+Relevamiento del 24-nov-2026 (`RELEVAMIENTO.md` § 2); todos estos repos están en la matriz de los 66 (`docs/antecedentes/competencia-1/postmortem_vercel/`). Ninguno de estos repos tiene
 licencia salvo el indicado: **no se copia código**, se reimplementa la idea y se cita acá
 con repo, commit y archivo. Al implementar una idea, agregar el archivo nuestro donde quedó.
 
@@ -66,5 +66,5 @@ con repo, commit y archivo. Al implementar una idea, agregar el archivo nuestro 
 | Percentil con signo para montos con drift; tabla de columnas rotas | emavaldez/primeracompetencia | ec1fa75 | `codigo/modelos/tips_ale_bolano_fe.py` (`PERCENTIL_CERO_FIJO`, `ROTAS`) | ninguna | — |
 | Multiclase con BAJA+1 a peso 0,5 | emavaldez/primeracompetencia | ec1fa75 | ídem (`PESO_BAJA1`) | ninguna | — |
 | Pseudoetiquetas para meses sin clase | nicobaranek/dmeyf-competencia-01 | 88ed240 | `codigo/motor.R:255-266` | ninguna | — |
-| Decisión con semillas pareadas y Wilcoxon | ezequielabregu/DMEyF_competencia_1 | bc9f2a9 | ver ficha en `RELEVAMIENTO.md` Anexo A | ninguna | — |
+| Decisión con semillas pareadas y Wilcoxon | ezequielabregu/DMEyF_competencia_1 | bc9f2a9 | ficha en `docs/antecedentes/competencia-1/postmortem_vercel/fichas.csv` | ninguna | — |
 | Corte como proporción de la cartera | montagnaflor/DMEyF-Competencia-01 | c9a71f6 | notebook, celda 37 | ninguna | — |
