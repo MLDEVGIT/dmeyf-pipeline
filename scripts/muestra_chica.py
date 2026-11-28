@@ -1,10 +1,12 @@
 """Muestra chica del dataset para correr las pruebas, el ensayo y la fábrica en una notebook con el mismo código.
 
-Toma del crudo del curso (RUTAS.crudo, ordenado por foto_mes) las líneas de 201901–202003 de una fracción fija de
+Toma del crudo del curso (RUTAS.crudo, ordenado por foto_mes) las líneas de 201901–202004 de una fracción fija de
 clientes, copiadas byte a byte (sin reescribir valores), y deja una carpeta de datos con la misma forma que la
 real:
 
-  <destino>/competencia_02/competencia_02_crudo.csv.gz   201901–202003, solo los clientes de la muestra
+  <destino>/competencia_02/competencia_02_crudo.csv.gz   201901–202004, solo los clientes de la muestra
+                                                         (el ensayo es 202001–202003; 202004 es el mes posterior
+                                                         que preparar_insumos exige ver para probar el corte)
   <destino>/referencia_filas_por_mes.csv                 filas por mes de 2019 (como referencia/01_filas_por_mes.csv)
   <destino>/config.toml                                  rutas de la muestra
   <destino>/muestra.json                                 regla, conteos y sha256
@@ -33,7 +35,7 @@ RAIZ = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RAIZ))
 from pipeline_competencia02.config import RUTAS, mostrar  # noqa: E402
 
-HASTA = 202003
+HASTA = 202004
 KNUTH = 2654435761
 
 
@@ -50,7 +52,7 @@ def sha256(p: Path) -> str:
 
 
 def main(argv=None) -> int:
-    ap = argparse.ArgumentParser(description="Muestra chica del crudo (201901–202003).")
+    ap = argparse.ArgumentParser(description="Muestra chica del crudo (201901–202004).")
     ap.add_argument("--destino", type=Path, required=True)
     ap.add_argument("--denominador", type=int, default=20, help="1 de cada N clientes (por defecto 20, 5 %%)")
     a = ap.parse_args(argv)
@@ -58,7 +60,7 @@ def main(argv=None) -> int:
     crudo = destino / "competencia_02" / "competencia_02_crudo.csv.gz"
     if crudo.exists():
         raise SystemExit(f"{crudo} ya existe; no se sobrescribe")
-    crudo.parent.mkdir(parents=True)
+    crudo.parent.mkdir(parents=True, exist_ok=True)
     t0 = time.perf_counter()
     filas, clientes, ultimo = Counter(), {}, 0
     tmp = crudo.with_name(crudo.name + ".tmp")
