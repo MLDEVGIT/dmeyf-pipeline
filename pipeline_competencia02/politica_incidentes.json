@@ -1,8 +1,12 @@
 {
-  "version": 2,
+  "version": 3,
   "nota": "Acciones ante incidentes de la ejecución mensual. 'rechazar' corta la ejecución sin publicar nada (estado fallido). 'advertir' registra el incidente y sigue: no cambia el score, las features ni la selección. Ninguna advertencia se interpreta como error ni como garantía de calidad.",
   "umbrales": {
-    "cambio_tasa_nulos": 0.2
+    "cambio_tasa_nulos": 0.2,
+    "cero_anomalo": {
+      "esperados_min": 30,
+      "meses_referencia": 3
+    }
   },
   "reglas": {
     "columnas_faltantes": {
@@ -74,6 +78,11 @@
       "tipo": "calidad_datos",
       "accion": "advertir",
       "criterio": "al menos un valor no nulo y todos los no nulos valen 0"
+    },
+    "cero_anomalo": {
+      "tipo": "calidad_datos",
+      "accion": "advertir",
+      "criterio": "todos los observados en 0 cuando el mes de referencia (el más reciente con algún valor distinto de 0 entre t-1 y t-3) hacía esperar al menos umbrales.cero_anomalo.esperados_min valores distintos de 0 (E06, docs/PLAN_PRUEBAS.md § 19). Se conserva el dato recibido: no cambia features, score ni selección"
     },
     "constante_no_nula": {
       "tipo": "calidad_datos",

@@ -51,7 +51,9 @@ import pandas as pd
 import psutil
 
 from . import incidentes as I
+from . import reporte_html as H
 from . import retrospectiva as R
+from . import tratamiento as T
 from .ejecutar_mes import (EXIT_DUPLICADO, EXIT_FALLA, HILOS, VECTORES_POR_BLOQUE, Entorno, adquirir, anterior,
                            cerrar, distribucion, escribir_atomico, escribir_csv, memoria, perfil_mes, publicar,
                            sha256, validar_entrada)
@@ -59,6 +61,7 @@ from .estrategias import FraccionClientes
 from .features import KEYS, crear_prev, nombres, q, sql_mes
 
 log = logging.getLogger("pipeline_competencia02.mensual")
+ULTIMO_HTML: dict = {"segundos": None, "error": None}  # medición del último reporte HTML generado
 ROL_OFICIAL = "recomendacion_provisional"
 ROL_ALTERNATIVA = "alternativa"
 
@@ -112,6 +115,33 @@ def cargar_estrategias(env: Entorno) -> tuple[dict, list[dict]]:
                                                    nota=f"{e['candidato']}; corte de {e['corte']['fuente']}")})
     out.sort(key=lambda e: e["rol"] != ROL_OFICIAL)  # la recomendación primero
     return cat, out
+
+
+# --------------------------------------------------------------------------
+# Detección de columnas anómalas (E06): sólo alerta, el dato recibido se conserva
+def detectar_cero_anomalo(con, hist: list[str], mes: int, categorias: dict, pol: I.Politica) -> dict:
+    """Regla cero_anomalo (tratamiento.detectar) sobre las columnas con todos los observados en 0.
+
+    Sólo usa el mes recibido y la historia de la ejecución (t-1 a t-3). Registra un incidente de tipo calidad_datos
+    con acción advertir: no cambia features, score ni selección. Sin candidatas no lee la historia.
+    """
+    u = pol.umbrales.get("cero_anomalo", {})
+    params = {**T.PARAMS, **{k: u[k] for k in ("esperados_min", "meses_referencia") if k in u}}
+    candidatas = list(categorias.get("observados_en_cero", []))
+    out = {"regla": "cero_anomalo", "parametros": params, "candidatas": len(candidatas), "detectadas": [],
+           "no_detectadas": [], "tratamiento": "ninguno: se conserva el dato recibido (política advertir; E06)"}
+    if not candidatas:
+        return out
+    por_mes = {int(Path(h).stem.split("=")[1]): h for h in hist}
+    perfil_hist = {m: T.perfil(con, f"read_parquet('{por_mes[m]}')", candidatas)
+                   for m in (T.mes_menos(mes, k) for k in range(1, params["meses_referencia"] + 1)) if m in por_mes}
+    det = T.detectar(T.perfil(con, "actual", candidatas), perfil_hist, mes, params)
+    out.update(det)
+    if det["detectadas"]:
+        pol.registrar("cero_anomalo", [d["columna"] for d in det["detectadas"]],
+                      {d["columna"]: {"esperados_no_cero": d["esperados_no_cero"], "mes_referencia": d["mes_referencia"]}
+                       for d in det["detectadas"]})
+    return out
 
 
 # --------------------------------------------------------------------------
@@ -243,6 +273,8 @@ def fila_reporte(env: Entorno, mes: int, est: dict, retro: dict | None = None) -
             "reglas_activadas": ";".join(f"{i['regla']}:{i['accion']}:{len(i['variables']) or 1}" for i in rep["incidentes"]),
             "columnas_100_nulas": len(cat.get("nula_100", [])), "columnas_observados_en_cero": len(cat.get("observados_en_cero", [])),
             "columnas_constantes_no_nulas": len(cat.get("constante_no_nula", [])),
+            "columnas_cero_anomalo": (len(rep["deteccion_cero_anomalo"]["detectadas"])
+                                      if "deteccion_cero_anomalo" in rep else "no_evaluado"),
             "celdas_faltantes": rep["faltantes"]["celdas"]}
     for pref, x in (("rec", rec), ("alt", alt)):
         d = x["distribucion"]
@@ -316,6 +348,14 @@ def regenerar_reporte(env: Entorno) -> Path:
         w.writeheader()
         w.writerows(filas)
     os.replace(tmp, destino)
+    # Reporte HTML de seguimiento: derivado de lo publicado, como el CSV. Si falla, la salida y el CSV no cambian.
+    t = time.perf_counter()
+    try:
+        H.generar(env.raiz)
+        ULTIMO_HTML["segundos"], ULTIMO_HTML["error"] = round(time.perf_counter() - t, 2), None
+    except Exception as e:  # noqa: BLE001
+        ULTIMO_HTML["segundos"], ULTIMO_HTML["error"] = round(time.perf_counter() - t, 2), repr(e)
+        log.warning("No se pudo generar el reporte HTML: %r", e)
     return destino
 
 
@@ -448,6 +488,9 @@ def main(argv: list[str] | None = None) -> int:
         rep["faltantes"], rep["categorias_columnas"] = perfil_mes(con, "actual", cols, hist[-1], n, pol)
         pol.cortar_si_rechazo()
         tiempos["perfil_s"] = round(time.perf_counter() - t, 1)
+        t = time.perf_counter()
+        rep["deteccion_cero_anomalo"] = detectar_cero_anomalo(con, hist, mes, rep["categorias_columnas"], pol)
+        tiempos["deteccion_cero_anomalo_s"] = round(time.perf_counter() - t, 2)
         log.info("[validación] %s", rep["validacion"])
 
         # 2. Features del mes, con la definición del entrenamiento
@@ -569,9 +612,15 @@ def main(argv: list[str] | None = None) -> int:
         regenerar_reporte(env)
         tiempos["publicacion_y_reporte_s"] = round(time.perf_counter() - t, 1)
         est["total_desde_entrada_s"] = round(time.perf_counter() - t0, 1)
-        est["tiempos_finales"] = {"publicacion_y_reporte_s": tiempos["publicacion_y_reporte_s"]}
+        est["tiempos_finales"] = {"publicacion_y_reporte_s": tiempos["publicacion_y_reporte_s"],
+                                  "reporte_html_s": ULTIMO_HTML["segundos"], "reporte_html_error": ULTIMO_HTML["error"]}
         escribir_atomico(reg / "meses" / f"{mes}.json", est)
-        regenerar_reporte(env)  # incorpora el tiempo total al reporte acumulado
+        t = time.perf_counter()
+        regenerar_reporte(env)  # incorpora el tiempo total al reporte acumulado (y al HTML)
+        # esta segunda regeneración queda fuera de total_desde_entrada_s: se registra aparte
+        est["tiempos_finales"]["regeneracion_final_s"] = round(time.perf_counter() - t, 2)
+        est["tiempos_finales"]["reporte_html_final_s"] = ULTIMO_HTML["segundos"]
+        escribir_atomico(reg / "meses" / f"{mes}.json", est)
         codigo = 0
     except Exception as e:  # noqa: BLE001
         rep["estado"] = "fallido"

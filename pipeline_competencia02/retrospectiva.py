@@ -79,6 +79,17 @@ def presentes(con, archivo: Path) -> np.ndarray:
         "numero_de_cliente"].astype(np.int64)
 
 
+PUNTOS_CURVA = 160
+
+
+def puntos_curva(g: np.ndarray, marcas: list[int]) -> dict:
+    """Curva de ganancia submuestreada para el reporte: hasta 4 veces el mayor de los envíos marcados (corte y máximo
+    ex post), con PUNTOS_CURVA puntos parejos más los marcados exactos. Ganancia en pesos, envíos desde 1."""
+    tope = min(len(g), max(4 * max(marcas), 2000))
+    ks = np.unique(np.concatenate([np.linspace(1, tope, PUNTOS_CURVA).round().astype(int), np.array(marcas)]))
+    return {"envios": ks.tolist(), "ganancia": [int(g[k - 1]) for k in ks]}
+
+
 def calcular(raiz: Path, mes: int, estrategias: list[dict]) -> dict:
     """estrategias: [{'id', 'rol', 'score_corto'}] del reporte del mes, la recomendación primero."""
     disp = disponibilidad(raiz / "historia", mes)
@@ -128,6 +139,7 @@ def calcular(raiz: Path, mes: int, estrategias: list[dict]) -> dict:
                       "ganancia": int(PREMIO_BRUTO * tp - COSTO_ENVIO * k),
                       "auc_baja2": round(auc(p, baja2), 6) if auc(p, baja2) is not None else None,
                       "ganancia_maxima_ex_post": int(g[kmax - 1]), "envios_ganancia_maxima_ex_post": kmax,
+                      "curva": puntos_curva(g, [k, kmax]),
                       "nota_ex_post": "máximo de la curva con la etiqueta ya conocida: referencia, no usable para decidir"})
         out["estrategias"].append(r)
     if en2 is not None and len(out["estrategias"]) == 2:
@@ -146,7 +158,8 @@ def actualizar(raiz: Path, meses_completados: list[int]) -> dict:
         disp = disponibilidad(raiz / "historia", mes)
         if archivo.exists():
             previo = json.loads(archivo.read_text(encoding="utf-8"))
-            if previo.get("version") == VERSION and previo["disponibilidad"] == disp:
+            con_curvas = disp["estado"] != "completa" or all("curva" in e for e in previo.get("estrategias", []))
+            if previo.get("version") == VERSION and previo["disponibilidad"] == disp and con_curvas:
                 estados[mes] = disp["estado"]
                 continue
         rep = json.loads((raiz / "diagnosticos" / str(mes) / "reporte.json").read_text(encoding="utf-8"))

@@ -563,7 +563,10 @@ guardadas:
      sigue disponible con `--catalogo e01`. Qué usar en vivo lo decide el grupo.
 1. **E06, tratamiento de columnas en cero: ejecutada** (`PLAN_PRUEBAS.md` § 19–20).
    - **Detector `cero_anomalo`** (columna en 0 cuando la historia hacía esperar ≥ 30 valores distintos
-     de 0): sin falsas alarmas en 2019; marca 201904, 201905, 202002 y 202006.
+     de 0): en 2019 marca sólo 201904 y 201905, y en 2020 marca 202002 y 202006.
+     - La tasa de falsas alarmas no está estimada: 2019 no tiene columnas legítimamente en 0
+       (`PLAN_PRUEBAS.md` § 20).
+     - Está conectado al circuito mensual como alerta (`cero_anomalo`) y conserva el dato recibido.
    - **Ningún tratamiento cumple:** se conserva advertir. Un tratamiento distinto, como una variante
      de L, sería un experimento nuevo, registrado antes de calcular. Lo decide el grupo.
 2. **Corte y prevalencia.** 202002 mostró que la fracción fija puede enviar cuatro veces más que el
