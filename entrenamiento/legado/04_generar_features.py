@@ -43,17 +43,18 @@ import duckdb
 import numpy as np
 import psutil
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
+from pipeline_competencia02.config import RUTAS, mostrar  # noqa: E402
 from pipeline_competencia02.features import KEYS, SUFIJOS, crear_prev, nombres, q, sql_mes  # noqa: E402
 
-DATA_DIR = ROOT / "data" / "competencia_02"
-SRC = DATA_DIR / "competencia_02_2019.parquet"
-TARGET = DATA_DIR / "competencia_02_2019_target.parquet"
-DST = DATA_DIR / "competencia_02_2019_features"
+SRC = RUTAS.historico_2019
+TARGET = RUTAS.target_2019
+DST = RUTAS.features_2019
+DATA_DIR = DST.parent
 TMP = DATA_DIR / f"{DST.name}.tmp-{os.getpid()}"
 DUCK_TMP = DATA_DIR / f".duckdb_tmp-{os.getpid()}"
-OUT = ROOT / "experimento_sampling" / "reportes" / "04_features_resumen.json"
+OUT = RUTAS.datos / "reportes" / "04_features_resumen.json"
 
 TARGET_NAMES = {"clase_ternaria", "clase_binaria", "horizonte_completo"}
 N_ORIGINALES = 152
@@ -287,7 +288,7 @@ def publicar(carpeta: Path, intentos: int = 30, espera_s: float = 2.0) -> int:
     """Renombra `carpeta` a DST. Reintenta si otro proceso (p. ej. el antivirus) tiene un archivo abierto."""
     for i in range(1, intentos + 1):
         if DST.exists():
-            raise RuntimeError(f"{DST.relative_to(ROOT)} ya existe; no se sobrescribe")
+            raise RuntimeError(f"{mostrar(DST)} ya existe; no se sobrescribe")
         try:
             os.rename(carpeta, DST)
             return i
@@ -309,23 +310,24 @@ def main(argv: list[str] | None = None) -> int:
     t0 = time.perf_counter()
     proc = psutil.Process()
     rep = {"modo": "validar_existente" if recuperar else "generar", "definicion": DEFINICION,
-           "carpeta": carpeta.relative_to(ROOT).as_posix(), "memoria_mb": {"inicio": mb(proc)}}
+           "carpeta": mostrar(carpeta), "memoria_mb": {"inicio": mb(proc)}}
 
     # 1. Fórmulas sobre datos sintéticos
     t = time.perf_counter()
     rep["prueba_sintetica"] = prueba_sintetica()
     print(f"[prueba sintética] ok={rep['prueba_sintetica']['ok']} {rep['prueba_sintetica']}", flush=True)
     if not rep["prueba_sintetica"]["ok"]:
+        OUT.parent.mkdir(parents=True, exist_ok=True)
         OUT.write_text(json.dumps(rep, indent=2, ensure_ascii=False), encoding="utf-8")
         return 2
     rep["tiempo_prueba_s"] = round(time.perf_counter() - t, 1)
 
     if DST.exists():
-        print(f"ERROR: {DST.relative_to(ROOT)} ya existe; no se sobrescribe.")
+        print(f"ERROR: {mostrar(DST)} ya existe; no se sobrescribe.")
         return 1
     if recuperar:
         if carpeta.parent != DATA_DIR or not carpeta.name.startswith(f"{DST.name}.tmp-") or not carpeta.is_dir():
-            print(f"ERROR: {carpeta} no es una carpeta temporal de 04 en {DATA_DIR.relative_to(ROOT)}.")
+            print(f"ERROR: {carpeta} no es una carpeta temporal de 04 en {mostrar(DATA_DIR)}.")
             return 1
         if (carpeta / "manifiesto.json").exists():
             print("ERROR: la carpeta ya tiene manifiesto.json; no se sobrescribe.")
@@ -333,7 +335,7 @@ def main(argv: list[str] | None = None) -> int:
     else:
         TMP.mkdir()
     src_stat = (SRC.stat().st_size, SRC.stat().st_mtime_ns)
-    rep["origen"] = {"archivo": SRC.relative_to(ROOT).as_posix(), "bytes": src_stat[0],
+    rep["origen"] = {"archivo": mostrar(SRC), "bytes": src_stat[0],
                      "modificado": time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(SRC.stat().st_mtime))}
     DUCK_TMP.mkdir()
     con = duckdb.connect()
@@ -385,10 +387,10 @@ def main(argv: list[str] | None = None) -> int:
 
         if rep["ok"]:
             manifest = {"claves": KEYS, "predictores": pred, "etiquetas": TARGET.name,
-                        "definicion": DEFINICION, "origen": SRC.relative_to(ROOT).as_posix(),
+                        "definicion": DEFINICION, "origen": mostrar(SRC),
                         "archivos": {m: {"filas": v["filas_leidas"], "huella_xor": v["huella_xor"]}
                                      for m, v in rep["lectura_completa"].items()},
-                        "validacion": OUT.relative_to(ROOT).as_posix()}
+                        "validacion": mostrar(OUT)}
             if recuperar:
                 manifest["nota"] = (f"generado por la corrida {carpeta.name.rsplit('-', 1)[1]}, que se cortó antes de "
                                     "validar; validado y publicado sin recalcular (--validar-existente). Los metadatos "
@@ -396,15 +398,15 @@ def main(argv: list[str] | None = None) -> int:
             (carpeta / "manifiesto.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False), encoding="utf-8")
             try:
                 rep["intentos_rename"] = publicar(carpeta)
-                rep["publicado"] = DST.relative_to(ROOT).as_posix()
+                rep["publicado"] = mostrar(DST)
                 rep["tamano_mb"] = round(sum(p.stat().st_size for p in DST.iterdir()) / 2**20, 1)
             except Exception as e:  # noqa: BLE001
                 rep["publicado"] = False
                 rep["error_publicacion"] = repr(e)
-                rep["temporal_conservado"] = carpeta.relative_to(ROOT).as_posix()
+                rep["temporal_conservado"] = mostrar(carpeta)
         else:
             rep["publicado"] = False
-            rep["temporal_conservado"] = carpeta.relative_to(ROOT).as_posix()
+            rep["temporal_conservado"] = mostrar(carpeta)
     finally:
         try:
             con.close()
@@ -414,6 +416,7 @@ def main(argv: list[str] | None = None) -> int:
         rep["recursos"] = {"tiempo_total_s": round(time.perf_counter() - t0, 1),
                            "rss_final_mb": mb(proc),
                            "pico_working_set_so_mb": round(getattr(proc.memory_info(), "peak_wset", 0) / 2**20, 1)}
+        OUT.parent.mkdir(parents=True, exist_ok=True)
         OUT.write_text(json.dumps(rep, indent=2, ensure_ascii=False), encoding="utf-8")
 
     print("\n== Checks ==")
@@ -425,7 +428,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Publicado: {rep.get('publicado')} | tamaño {rep.get('tamano_mb')} MB | {rep.get('error_publicacion', '')}")
     print(f"Tiempos: generación {rep.get('tiempo_generacion_s')}s, lectura {rep.get('tiempo_lectura_completa_s')}s, "
           f"verificación {rep.get('tiempo_verificacion_s')}s | memoria {rep['memoria_mb']} | {rep['recursos']}")
-    print(f"Reporte: {OUT.relative_to(ROOT).as_posix()}")
+    print(f"Reporte: {mostrar(OUT)}")
     if not rep.get("ok"):
         return 2
     return 0 if rep.get("publicado") else 3

@@ -1,7 +1,10 @@
-"""Convierte competencia_02_2019.csv.gz a Parquet y verifica la equivalencia.
+"""Arma la historia de 2019 en Parquet desde competencia_02_crudo.csv.gz y verifica la equivalencia.
+
+Del crudo del curso (201901–202108) toma solo las filas de 201901–201912: ningún mes posterior entra en la historia
+de la fábrica. Las rutas salen de pipeline_competencia02/config.py (`crudo` -> `historico_2019`).
 
 Pasos:
-  1. Esquema: lee el CSV como texto (duckdb, en streaming) y tipa cada columna
+  1. Esquema: lee el CSV como texto (duckdb, en streaming), solo las filas de 2019, y tipa cada columna
      como BIGINT si todos sus valores no vacíos son enteros literales
      (regex, sin redondeos) o como DOUBLE en caso contrario. Nunca float32.
   2. Conversión: COPY en streaming a un archivo temporal, con el esquema fijo,
@@ -14,7 +17,7 @@ Pasos:
      Nunca sobrescribe un archivo existente.
 
 Uso:
-    .venv/Scripts/python.exe experimento_sampling/02_convertir_parquet.py
+    python entrenamiento/legado/02_convertir_parquet.py
 """
 from __future__ import annotations
 
@@ -31,15 +34,19 @@ import numpy as np
 import pandas as pd
 import psutil
 
-ROOT = Path(__file__).resolve().parents[1]
-DATA_DIR = ROOT / "data" / "competencia_02"
-SRC = DATA_DIR / "competencia_02_2019.csv.gz"
-DST = DATA_DIR / "competencia_02_2019.parquet"
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+from pipeline_competencia02.config import RUTAS, mostrar  # noqa: E402
+
+SRC = RUTAS.crudo
+DST = RUTAS.historico_2019
+DATA_DIR = DST.parent
 TMP = DATA_DIR / f"{DST.name}.tmp-{os.getpid()}"
 DUCK_TMP = DATA_DIR / f".duckdb_tmp-{os.getpid()}"
-OUT_DIR = ROOT / "experimento_sampling" / "reportes"
+OUT_DIR = RUTAS.datos / "reportes"
 REPORT = OUT_DIR / "02_conversion_parquet.json"
 
+DESDE, HASTA = 201901, 201912   # solo 2019 (CONSIGNA R1)
 EXPECTED_ROWS = 1_563_565
 EXPECTED_NCOLS = 154
 EXPECTED_MONTHS = [201901 + i for i in range(12)]
@@ -53,9 +60,18 @@ def q(name: str) -> str:
     return '"' + name.replace('"', '""') + '"'
 
 
+FILTRO_2019 = f"try_cast(foto_mes AS BIGINT) BETWEEN {DESDE} AND {HASTA}"
+
+
 def varchar_spec(columns: list[str]) -> str:
     """Todas las columnas como texto: el tipado lo decide el esquema, no duckdb."""
     return "{" + ", ".join(f"'{c}': 'VARCHAR'" for c in columns) + "}"
+
+
+def filas_referencia() -> dict[int, int]:
+    """Filas por mes de 2019 auditadas (referencia/01_filas_por_mes.csv)."""
+    ref = pd.read_csv(RUTAS.auditoria_2019)
+    return {int(m): int(f) for m, f in zip(ref["foto_mes"], ref["filas"])}
 
 
 def posix(p: Path) -> str:
@@ -106,7 +122,7 @@ def inferir_esquema(con, columns: list[str]) -> tuple[dict, dict]:
         ]
     row = con.execute(
         f"SELECT count(*) AS n, {', '.join(exprs)} FROM read_csv(?, header=true, "
-        f"nullstr='', auto_detect=false, columns={varchar_spec(columns)})",
+        f"nullstr='', auto_detect=false, columns={varchar_spec(columns)}) WHERE {FILTRO_2019}",
         [posix(SRC)],
     ).fetchone()
     names = [d[0] for d in con.description]
@@ -137,7 +153,7 @@ def convertir(con, columns: list[str], schema: dict):
     select = ", ".join(f"{cast(c)} AS {q(c)}" for c in columns)
     con.execute(
         f"COPY (SELECT {select} FROM read_csv(?, header=true, nullstr='', auto_detect=false, "
-        f"columns={varchar_spec(columns)})) TO '{posix(TMP)}' "
+        f"columns={varchar_spec(columns)}) WHERE {FILTRO_2019}) TO '{posix(TMP)}' "
         f"(FORMAT parquet, COMPRESSION zstd, ROW_GROUP_SIZE {CHUNK_ROWS})",
         [posix(SRC)],
     )
@@ -172,9 +188,14 @@ def verificar(con, columns: list[str], schema: dict, rec: Recursos) -> dict:
     csv_months, csv_nulls = Counter(), Counter()
     celdas = 0
     diff_vals, diff_nulls = Counter(), Counter()
+    filas_leidas = 0
     for i, chunk in enumerate(reader):
         tb = time.perf_counter()
+        filas_leidas += len(chunk)
+        chunk = chunk[chunk["foto_mes"].between(DESDE, HASTA)].reset_index(drop=True)
         n = len(chunk)
+        if n == 0:
+            continue
         if chunk.columns.tolist() != columns:
             err.append(f"bloque {i}: columnas del CSV distintas")
         pq = con.execute(
@@ -208,7 +229,8 @@ def verificar(con, columns: list[str], schema: dict, rec: Recursos) -> dict:
         offset += n
         del chunk, pq
         rec.sample()
-        print(f"  verificación bloque {i}: {offset:>9,} filas | {time.perf_counter() - tb:5.1f}s",
+        print(f"  verificación bloque {i}: {offset:>9,} filas de 2019 de {filas_leidas:,} leídas | "
+              f"{time.perf_counter() - tb:5.1f}s",
               flush=True)
 
     if diff_vals:
@@ -243,6 +265,7 @@ def verificar(con, columns: list[str], schema: dict, rec: Recursos) -> dict:
         "meses_esperados": sorted(pq_months) == EXPECTED_MONTHS,
         "filas_por_mes_igual_csv": {int(m): int(v) for m, v in pq_months.items()}
                                    == {int(m): int(v) for m, v in csv_months.items()},
+        "filas_por_mes_igual_referencia": res["filas_por_mes"] == filas_referencia(),
         "claves_sin_nulos": k[0] == 0,
         "claves_sin_duplicados": k[1] == 0,
         "valores_identicos": not diff_vals,
@@ -256,11 +279,12 @@ def verificar(con, columns: list[str], schema: dict, rec: Recursos) -> dict:
 def main() -> int:
     rec = Recursos()
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
     if not SRC.exists():
-        print(f"ERROR: no existe {SRC.relative_to(ROOT)}")
+        print(f"ERROR: no existe {mostrar(SRC)}")
         return 1
     if DST.exists():
-        print(f"ERROR: {DST.relative_to(ROOT)} ya existe; no se sobrescribe. Borralo a mano para regenerarlo.")
+        print(f"ERROR: {mostrar(DST)} ya existe; no se sobrescribe. Borralo a mano para regenerarlo.")
         return 1
 
     DUCK_TMP.mkdir()
@@ -271,8 +295,8 @@ def main() -> int:
     con.execute("SET preserve_insertion_order = true")
 
     report = {
-        "origen": SRC.relative_to(ROOT).as_posix(),
-        "destino": DST.relative_to(ROOT).as_posix(),
+        "origen": mostrar(SRC),
+        "destino": mostrar(DST),
         "motor": f"duckdb {duckdb.__version__} (escritura) / pandas {pd.__version__} (relectura CSV)",
         "compresion": "zstd",
         "row_group_size": CHUNK_ROWS,
@@ -316,12 +340,12 @@ def main() -> int:
             status = 0
         else:
             report["publicado"] = False
-            report["temporal_conservado"] = TMP.relative_to(ROOT).as_posix()
+            report["temporal_conservado"] = mostrar(TMP)
     except Exception as e:  # noqa: BLE001
         report["error"] = f"{type(e).__name__}: {e}"
         report["publicado"] = False
         if TMP.exists():
-            report["temporal_conservado"] = TMP.relative_to(ROOT).as_posix()
+            report["temporal_conservado"] = mostrar(TMP)
         print(f"ERROR: {report['error']}")
     finally:
         try:
@@ -347,7 +371,7 @@ def main() -> int:
     r = report["recursos"]
     print(f"Tiempo total {r['tiempo_total_s']}s {r['tiempo_por_fase_s']} | RSS pico "
           f"{r['rss_pico_muestreado_mb']:,.0f} MB | pico SO {r['pico_working_set_so_mb']} MB")
-    print(f"Reporte: {REPORT.relative_to(ROOT).as_posix()}")
+    print(f"Reporte: {mostrar(REPORT)}")
     return status
 
 

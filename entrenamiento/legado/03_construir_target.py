@@ -39,12 +39,15 @@ import duckdb
 import numpy as np
 import psutil
 
-ROOT = Path(__file__).resolve().parents[1]
-DATA_DIR = ROOT / "data" / "competencia_02"
-SRC = DATA_DIR / "competencia_02_2019.parquet"
-DST = DATA_DIR / "competencia_02_2019_target.parquet"
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+from pipeline_competencia02.config import RUTAS, mostrar  # noqa: E402
+
+SRC = RUTAS.historico_2019
+DST = RUTAS.target_2019
+DATA_DIR = DST.parent
 TMP = DATA_DIR / f"{DST.name}.tmp-{os.getpid()}"
-OUT = ROOT / "experimento_sampling" / "reportes" / "03_target_resumen.json"
+OUT = RUTAS.datos / "reportes" / "03_target_resumen.json"
 
 EXPECTED_MONTHS = [201901 + i for i in range(12)]
 ULTIMO_COMPLETO = 201910
@@ -145,10 +148,10 @@ def main() -> int:
     t0 = time.perf_counter()
     proc = psutil.Process()
     if not SRC.exists():
-        print(f"ERROR: no existe {SRC.relative_to(ROOT)}")
+        print(f"ERROR: no existe {mostrar(SRC)}")
         return 1
     if DST.exists():
-        print(f"ERROR: {DST.relative_to(ROOT)} ya existe; no se sobrescribe.")
+        print(f"ERROR: {mostrar(DST)} ya existe; no se sobrescribe.")
         return 1
     src_stat = SRC.stat()
 
@@ -235,8 +238,8 @@ def main() -> int:
         GROUP BY 1 ORDER BY 1""").fetchall())
 
     report = {
-        "origen": SRC.relative_to(ROOT).as_posix(),
-        "destino": DST.relative_to(ROOT).as_posix(),
+        "origen": mostrar(SRC),
+        "destino": mostrar(DST),
         "columnas": ["numero_de_cliente", "foto_mes", "clase_ternaria", "clase_binaria", "horizonte_completo"],
         "regla": {
             "BAJA+1": "presente en t y ausente en t+1",
@@ -279,7 +282,8 @@ def main() -> int:
         report["tamano_mb"] = round(DST.stat().st_size / 2**20, 2)
     else:
         report["publicado"] = False
-        report["temporal_conservado"] = TMP.relative_to(ROOT).as_posix()
+        report["temporal_conservado"] = mostrar(TMP)
+    OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
 
     print("== Checks ==")
@@ -291,7 +295,7 @@ def main() -> int:
     print(json.dumps(report["distribucion_validacion_201908"], indent=2))
     print(f"Ausente t+1 / presente t+2 (etiquetados BAJA+1): {report['ausente_t1_presente_t2_etiquetados_baja1']}")
     print(f"\nPublicado: {report['publicado']} | {report['recursos']}")
-    print(f"Reporte: {OUT.relative_to(ROOT).as_posix()}")
+    print(f"Reporte: {mostrar(OUT)}")
     return 0 if ok else 2
 
 
