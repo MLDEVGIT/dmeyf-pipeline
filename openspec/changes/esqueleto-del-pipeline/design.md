@@ -195,6 +195,8 @@ recibiendo la carpeta (`--ejecucion`); el entorno y el esquema salen de ese arch
 por integrante y por cuenta de servicio, y permisos sobre cada esquema. Los nombres de entorno usan guion bajo
 (`pruebas_<usuario>`, `medicion_<n>`) para ser nombres de esquema válidos sin comillas.
 
+**Driver.** pg8000 (Python puro) en los dos casos: directo al Postgres local por `DMEYF_PG_URL`, y a Cloud SQL con `cloud-sql-python-connector`, que solo admite pg8000 con identidad de Google; además da `COPY` para la exportación y `LISTEN`/`NOTIFY` para el tablero. Todo en `pipeline_competencia02/registro.py`.
+
 Las migraciones son archivos SQL numerados, solo hacia adelante, que se aplican igual en Cloud SQL y en el Postgres
 local, que también es el de las pruebas automáticas. Cada esquema guarda qué migraciones tiene aplicadas, la corrida se
 niega a correr contra un esquema de otra versión, y antes de migrar se exporta. Las horas se guardan con zona y el
@@ -330,6 +332,8 @@ hiperparámetros y los cortes que el repo ya tiene versionados. El entrenamiento
 `deterministic=True`), así que el sha256 de cada modelo nuevo se compara con el del manifiesto del equipo: si coincide,
 es el mismo modelo; si no (otra versión, otro sistema, otros hilos), se comparan las métricas de 201908 y 201909 con
 las de `resultados/` y la diferencia queda anotada.
+
+La fábrica es `python -m entrenamiento.fabrica --catalogo <nombre>`: deja en `RUTAS.modelos` los modelos y un `estrategias_<nombre>.json` con sus sha256, que `preparar_ejecucion --catalogo <ruta>` acepta tal cual aunque no coincidan con los del equipo. La cadena desde el crudo es `entrenamiento/legado/02`, `03`, `04` y `experimentos.tc01_target_2019`. Para la notebook, `scripts/muestra_chica.py` arma una carpeta de datos con la misma forma (5 % de los clientes) y todo corre con `DMEYF_CONFIG` apuntando a ella.
 
 *Por qué:* un pipeline que solo corre con archivos que alguien tiene guardados no es reproducible. Generarlos es la
 prueba de que la fábrica funciona, y una VM nueva queda lista bajando el catálogo del bucket. Las VMs
