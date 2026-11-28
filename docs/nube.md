@@ -36,4 +36,4 @@ Una fila por tanda: qué se corrió, cuánto duró y el gasto que muestra la fac
 
 | Fecha | Tanda | Recursos | Horas | Gasto (US$) | Saldo después (US$) | Quién |
 | --- | --- | --- | --- | --- | --- | --- |
-| | | | | | | |
+| 28-nov-2026 | Base del registro: API de Cloud SQL habilitada e instancia `dmeyf-registro` creada (tarea 2.2) | Cloud SQL POSTGRES_17, `db-f1-micro`, 10 GB SSD, `northamerica-northeast2-c`; base `dmeyf` | siempre encendida desde el 28-nov | se anota al día siguiente | | Agustina |
