@@ -71,6 +71,12 @@ def siguiente(m: int) -> int:
     return a * 100 + mm + 1 if mm < 12 else (a + 1) * 100 + 1
 
 
+def versiones() -> dict:
+    """Versiones del software que produce el mes (se muestran en el tablero de seguimiento)."""
+    return {"python": sys.version.split()[0], "lightgbm": lgb.__version__, "duckdb": duckdb.__version__,
+            "numpy": np.__version__, "pandas": pd.__version__}
+
+
 def falla_dura(punto: str):
     """Sólo para pruebas: simula que el proceso muere (sin limpiar ni cerrar el estado)."""
     if os.environ.get("PIPELINE_C02_FALLA") == punto:
@@ -409,7 +415,8 @@ def main(argv: list[str] | None = None) -> int:
     entrada = env.raiz / "input" / f"{mes}.csv"
     rep = {"ejecucion": ejecucion, "mes": mes, "inicio": time.strftime("%Y-%m-%dT%H:%M:%S"), "pid": os.getpid(),
            "entorno": env.cfg["nombre"], "entrada": {"archivo": entrada.relative_to(env.raiz).as_posix()},
-           "politica_incidentes": pol.resumen(), "reloj": "desde antes de copiar la entrada" if a.copiar_desde else
+           "politica_incidentes": pol.resumen(), "versiones": versiones(),
+           "reloj": "desde antes de copiar la entrada" if a.copiar_desde else
            "desde el inicio del proceso (entrada ya presente en input/)"}
 
     # 0. Recepción: input/<mes>.csv
