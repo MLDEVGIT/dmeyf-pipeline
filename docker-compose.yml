@@ -1,0 +1,27 @@
+# Postgres local para las pruebas del registro y para el plan B (diseño, decisión 5).
+# La misma versión mayor que la instancia de Cloud SQL (scripts/nube_crear.sh: POSTGRES_17).
+#
+#   docker compose up -d        # levanta la base en localhost:5433
+#   docker compose down         # la apaga (los datos quedan en el volumen)
+#   docker compose down -v      # la apaga y borra los datos
+#
+# Las pruebas y el pipeline la usan con DMEYF_PG_URL=postgresql://dmeyf:dmeyf@localhost:5433/dmeyf
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: dmeyf
+      POSTGRES_PASSWORD: dmeyf     # solo local; en Cloud SQL se entra con identidad de Google
+      POSTGRES_DB: dmeyf
+      TZ: UTC
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - pg_dmeyf:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dmeyf -d dmeyf"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+volumes:
+  pg_dmeyf:
