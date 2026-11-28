@@ -40,6 +40,21 @@ Recibe el CSV crudo de un mes, sin targets, y produce `churn_<yyyymm>.csv` con
 
 ## Puesta en marcha
 
+Python 3.12 en los tres sistemas. Se verifica con `python -m unittest discover -s pruebas -t .`.
+
+macOS y Linux (bash). En la Mac, LightGBM necesita además `brew install libomp`; en Linux, `python3.12` y
+`python3.12-venv` del sistema (o de pyenv):
+
+```bash
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+cp config.ejemplo.toml config.toml           # y editar las rutas
+.venv/bin/python -m pipeline_competencia02.config   # muestra qué rutas resolvió y si existen
+.venv/bin/python -m unittest discover -s pruebas -t .
+```
+
+Windows (PowerShell):
+
 ```powershell
 py -3.12 -m venv .venv
 .venv/Scripts/python.exe -m pip install -r requirements.txt
@@ -148,12 +163,14 @@ se conservan porque `mensual.py` reutiliza su validación, su candado y su publi
 
 ## Forma de trabajo
 
-Igual que en el experimento de sampling: `main` protegida, una rama por tarea
-(`<nombre>/<tema>`), PR con revisión de otro integrante. Las decisiones de modelo,
-hiperparámetros y corte se toman **sólo con datos de 201901–201912** (consigna, R1); los
-meses 202001–202006 son ensayos operativos, no se usan para decidir. Cada decisión se
-registra con su fuente en `docs/`. La publicación en GitHub queda pendiente de acordar la
-cuenta propietaria.
+Plan en OpenSpec (`openspec/`, `openspec list`): cada cambio se trabaja en una rama con su nombre (por ejemplo
+`esqueleto-del-pipeline`), sin push hasta terminarlo, y entra a `main` con un PR al cerrarlo; las pruebas tienen que
+pasar antes de cada commit y corren en cada PR. Nada de commits directos a `main`.
+
+Las decisiones de modelo, hiperparámetros y corte se toman **sólo con datos de 201901–201912** (consigna, R1); los
+meses 202001–202006 son ensayos operativos, no se usan para decidir. Cada decisión se registra con su fuente en
+`docs/`. El repo es **público**: nada del dataset, ni modelos, ni credenciales, ni `config.toml`. Las reglas completas
+están en `CLAUDE.md`.
 
 ## Procedencia
 
