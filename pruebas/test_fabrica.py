@@ -90,3 +90,31 @@ class TestFabrica(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestCandadoDeMeses(unittest.TestCase):
+    def test_mes_de_2020_en_la_configuracion_corta_antes_de_entrenar(self):
+        from unittest import mock
+        with mock.patch.object(F, "cargar_entrenamiento") as cargar, mock.patch.object(F, "entrenar") as entrenar, \
+                tempfile.TemporaryDirectory() as d:
+            with self.assertRaises(F.MesNoPermitido):
+                F.main(["--catalogo", "tc01", "--modelos", d, "--meses", "201905", "202001"])
+            cargar.assert_not_called()
+            entrenar.assert_not_called()
+            self.assertEqual(list(Path(d).iterdir()), [])
+
+    def test_carga_tambien_rechaza(self):
+        with self.assertRaises(F.MesNoPermitido):
+            F.cargar_entrenamiento(["a"], (201912, 202003))
+
+    def test_meses_de_2019_pasan(self):
+        self.assertEqual(F.comprobar_meses([201903, 201912]), (201903, 201912))
+
+    def test_clase_de_201910_solo_en_la_evaluacion_final(self):
+        import duckdb
+        from evaluacion import particiones as P
+        con = duckdb.connect()
+        with self.assertRaises(PermissionError):
+            P.leer_target(con, "no_importa.parquet", [201910])
+        with self.assertRaises(PermissionError):
+            F.cargar_entrenamiento(["a"], (201906, 201910))

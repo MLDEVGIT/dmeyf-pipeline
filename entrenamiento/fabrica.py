@@ -46,6 +46,20 @@ from pipeline_competencia02.config import RUTAS, mostrar
 CLASES = {"CONTINUA": 0, "BAJA+1": 1, "BAJA+2": 2}
 BUCKET = os.environ.get("DMEYF_BUCKET", "gs://agustinarazanov_buckito2026")
 LOTE = 100
+ULTIMO_MES_PERMITIDO = 201912   # CONSIGNA R1: estrategias y modelos solo con 201901–201912
+
+
+class MesNoPermitido(ValueError):
+    pass
+
+
+def comprobar_meses(meses) -> tuple[int, ...]:
+    """Candado de la fábrica: ningún mes posterior a 201912 entra al entrenamiento. Corre antes de leer nada."""
+    meses = tuple(int(m) for m in meses)
+    fuera = [m for m in meses if m > ULTIMO_MES_PERMITIDO]
+    if fuera:
+        raise MesNoPermitido(f"meses posteriores a {ULTIMO_MES_PERMITIDO} en la configuración: {fuera}")
+    return meses
 
 
 def sha256(p: Path) -> str:
@@ -56,14 +70,14 @@ def sha256(p: Path) -> str:
     return h.hexdigest()
 
 
-def cargar_entrenamiento(predictores: list[str]) -> tuple[np.ndarray, np.ndarray]:
-    """X (float64, NULL -> NaN) y clase (0, 1, 2) de 201903–201906, ordenados por mes y cliente, como en E01/TC01."""
-    meses = P.ENTRENAMIENTO
+def cargar_entrenamiento(predictores: list[str], meses=P.ENTRENAMIENTO) -> tuple[np.ndarray, np.ndarray]:
+    """X (float64, NULL -> NaN) y clase (0, 1, 2) de los meses (201903–201906), ordenados por mes y cliente."""
+    meses = comprobar_meses(meses)
     feats = ", ".join(f"'{(RUTAS.features_2019 / f'features_{m}.parquet').as_posix()}'" for m in meses)
     con = duckdb.connect()
     try:
+        tgt = P.leer_target(con, RUTAS.target_2019_v2.as_posix(), meses).df()  # control de meses: antes de leer
         con.execute(f"CREATE TEMP VIEW f AS SELECT * FROM read_parquet([{feats}])")
-        tgt = P.leer_target(con, RUTAS.target_2019_v2.as_posix(), meses).df()  # control de meses permitidos
         con.register("tgt_df", tgt)
         con.execute("CREATE TEMP TABLE j AS SELECT f.numero_de_cliente, f.foto_mes, tgt_df.clase_ternaria, "
                     "row_number() OVER (ORDER BY f.foto_mes, f.numero_de_cliente) - 1 AS fila "
@@ -167,32 +181,38 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--catalogo", choices=sorted(K.CATALOGOS), required=True)
     ap.add_argument("--hilos", type=int, default=8)
     ap.add_argument("--modelos", type=Path, default=RUTAS.modelos, help="carpeta de los modelos (RUTAS.modelos)")
+    ap.add_argument("--meses", type=int, nargs="+", default=list(P.ENTRENAMIENTO),
+                    help="meses de entrenamiento (por defecto 201903–201906; nunca posteriores a 201912)")
     ap.add_argument("--subir", action="store_true", help=f"copiar la carpeta a {BUCKET}/catalogo/<nombre>/")
     a = ap.parse_args(argv)
+    meses = comprobar_meses(a.meses)  # antes de leer ningún dato
     cat = K.cargar(K.archivo(a.catalogo))
     if cat.get("target_version") != 2:
         raise SystemExit(f"{a.catalogo}: la fábrica entrena con el target versión 2")
+    # tc01 no guarda el target en su catálogo: es el del resumen versionado de experimentos/tc01_target_2019
+    sha_target = (cat.get("target") or {}).get("sha256") or json.loads(
+        (K.RAIZ / "resultados" / "tc01_target_2019_v2.json").read_text(encoding="utf-8"))["salida"]["sha256"]
     predictores = [c for c, _ in json.loads(K.PREDICTORES.read_text(encoding="utf-8"))["predictores"]]
     destino = a.modelos.resolve()
     destino.mkdir(parents=True, exist_ok=True)
     renglones = plan(cat)
     t0 = time.perf_counter()
     rep = {"catalogo": a.catalogo, "inicio": time.strftime("%Y-%m-%dT%H:%M:%S"), "modelos": len(renglones),
-           "destino": mostrar(destino), "hilos": a.hilos,
+           "destino": mostrar(destino), "hilos": a.hilos, "meses": list(meses),
            "entradas": {"features_2019": mostrar(RUTAS.features_2019),
                         "target_2019_v2": {"archivo": mostrar(RUTAS.target_2019_v2),
                                            "sha256": sha256(RUTAS.target_2019_v2),
-                                           "sha256_equipo": cat["target"]["sha256"]}},
+                                           "sha256_equipo": sha_target}},
            "maquina": {"plataforma": platform.platform(), "python": platform.python_version(),
                        "lightgbm": lgb.__version__, "duckdb": duckdb.__version__, "numpy": np.__version__,
                        "cpu": os.cpu_count()}}
-    if rep["entradas"]["target_2019_v2"]["sha256"] != cat["target"]["sha256"]:
+    if rep["entradas"]["target_2019_v2"]["sha256"] != sha_target:
         raise SystemExit("el target versión 2 no es el del catálogo; rehacerlo con experimentos.tc01_target_2019")
     faltan = sum(not (destino / r["archivo"]).exists() for r in renglones)
     print(f"{a.catalogo}: {len(renglones)} modelos, {faltan} por entrenar, en {destino}", flush=True)
     if faltan:
         t = time.perf_counter()
-        X, clase = cargar_entrenamiento(predictores)
+        X, clase = cargar_entrenamiento(predictores, meses)
         rep["carga_s"] = round(time.perf_counter() - t, 1)
         rep["clases_train"] = {k: int((clase == v).sum()) for k, v in CLASES.items()}
     else:
