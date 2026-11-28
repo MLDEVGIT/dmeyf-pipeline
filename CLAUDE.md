@@ -22,7 +22,8 @@ Git: remoto `origin` = `MLDEVGIT/dmeyf-pipeline` en GitHub, **público**.
 
 ## Reglas de trabajo
 
-- **Commits directos a `main`, sin PR** (nadie los revisa); las pruebas tienen que pasar antes de cada push.
+- **Cada cambio de OpenSpec en su rama** (con el nombre del cambio), **sin push hasta terminarlo**, y un **PR a
+  `main`** al cerrarlo. Nada de commits directos a `main`. Las pruebas tienen que pasar antes de cada commit.
 - **Operable por cualquiera de los tres integrantes, solo.** Nada depende de la máquina, las credenciales ni la
   memoria de una persona: un comando para levantar el entorno, un comando para procesar un mes, README que alcance.
 - **El examen es individual, sin conexión y sin LLM**, con preguntas sobre cada parte del código y cada decisión.
@@ -33,7 +34,7 @@ Git: remoto `origin` = `MLDEVGIT/dmeyf-pipeline` en GitHub, **público**.
 - Decir **validación** y **test** por su nombre, con el mes.
 - **Salidas largas a archivo, nunca al chat.** Lo repetido va a scripts. Las corridas pesadas las hace la VM.
 - **Commitear sin pedir permiso** al cerrar una tarea, con mensaje descriptivo y sin `Co-Authored-By` ni pie de
-  Claude; **pushear siempre** después.
+  Claude.
 - **El repo es público**: nada del dataset, ni modelos, ni credenciales, ni `config.toml`.
 - **Zulip**: no escribir, mandar ni redactar mensajes; el archivo (`../zulip/`) se lee solo cuando Agustina lo pide.
 - **VMs a pedido** (STANDARD, no spot), `n2-highmem-8`, de a 4 por proyecto (cuota de 32 vCPU); borrar al terminar.

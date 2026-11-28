@@ -73,7 +73,8 @@ Ninguna: no hay specs archivadas todavía.
 ## Impact
 
 - **Código**: se trabaja sobre `pipeline_competencia02/`, `evaluacion/`, `experimentos/` y `pruebas/` del repo del
-  equipo, con commits directos a `main` y las pruebas corriendo en cada push (sin PR: nadie los revisa). `mensual.py` se reordena en etapas y
+  equipo, en la rama `esqueleto-del-pipeline`, que entra a `main` con un PR al terminar el cambio; las pruebas corren
+  en cada PR y en cada push a `main`. `mensual.py` se reordena en etapas y
   `ejecutar_mes.py` y `entorno.py`, el pipeline anterior de un solo modelo, se retiran. `docs/antecedentes/competencia-1/codigo/` sigue
   siendo solo referencia.
 - **Dependencias**: las de su `requirements.txt` (Python 3.12, LightGBM, DuckDB, pandas, scikit-learn), con versiones

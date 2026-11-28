@@ -5,11 +5,11 @@ bajan del curso y los modelos se generan desde cero (grupo 3).
 
 ## 1. Adopción del repo del equipo
 
-- [ ] 1.1 Llevar al repo del equipo, con commits directos a `main`, `docs/antecedentes/competencia-1/`, `openspec/` con todos sus cambios y `.claude/`. Verificar: `openspec list` en el clon del equipo muestra los siete cambios y `main` de GitHub tiene los commits
+- [x] 1.1 Llevar al repo del equipo, en la rama `esqueleto-del-pipeline`, `docs/antecedentes/competencia-1/`, `openspec/` con todos sus cambios y `.claude/`. Verificar: `openspec list` en el clon del equipo muestra los siete cambios y la rama tiene el commit
 - [ ] 1.2 Fusionar las dos consignas en `docs/CONSIGNA.md`: los cuatro criterios de evaluación, el formato de entrada y salida, las fechas y las dudas abiertas de `docs/consigna.md`, conservando la tabla de fuentes y la contradicción de 201912 del equipo. Verificar: el archivo ya no dice «Falta transcribir» y la corrida en clase figura el 10-dic, el mismo encuentro que el examen
 - [ ] 1.3 Reconciliar el relevamiento del equipo (46 repos) con la matriz de 66 fichas: `docs/RELEVAMIENTO.md` apunta a los antecedentes y no los repite. Verificar: cada repo de `PROCEDENCIA.md` § Ideas de terceros está en la matriz
 - [ ] 1.4 Agregar al README la puesta en marcha en bash (macOS y Linux) junto a la de PowerShell, con Python 3.12 y `brew install libomp` en la Mac. Verificar: en la Mac y en una VM, una instalación limpia termina y `python -m unittest discover -s pruebas -t .` pasa
-- [ ] 1.5 Dejar escrita la forma de trabajo en el `CLAUDE.md` y el README del repo del equipo: commits directos a `main`, sin PR (nadie los revisa), con las pruebas corriendo en cada push; llevar el resto de las reglas de `CLAUDE.md`; el repo sigue público (sin datos, modelos ni credenciales); archivar `agustinarazanov/dmeyf-competencia-2` con el README apuntando al nuevo. Verificar: el repo viejo figura archivado en GitHub y el README del equipo ya no pide rama y PR
+- [ ] 1.5 Dejar escrita la forma de trabajo en el `CLAUDE.md` y el README del repo del equipo: cada cambio en su rama, sin push hasta terminarlo, y un PR a `main` al cerrarlo, con las pruebas corriendo en cada PR; llevar el resto de las reglas de `CLAUDE.md`; el repo sigue público (sin datos, modelos ni credenciales); archivar `agustinarazanov/dmeyf-competencia-2` con el README apuntando al nuevo. Verificar: el repo viejo figura archivado en GitHub y el README y el `CLAUDE.md` del equipo describen la rama y el PR
 - [ ] 1.6 Reemplazar el plan de `docs/TAREAS.md` por una nota que apunta a los cambios de OpenSpec, conservando la tabla de brechas como historia. Verificar: cada brecha abierta (B4, B8, B10, B11, B13) nombra el cambio que la cubre
 
 ## 2. Nube y entorno
@@ -73,7 +73,7 @@ bajan del curso y los modelos se generan desde cero (grupo 3).
 - [ ] 6.6 Pruebas de archivos que se rechazan: archivo que falta, vacío, de otro mes, con clientes repetidos, con una columna de más, de menos o en otro orden, y con una columna que no es numérica. Verificar: en cada caso la corrida termina con un mensaje que dice qué encontró, no publica nada y el mes se puede procesar después con el archivo correcto
 - [ ] 6.7 Pruebas de operación: mes ya procesado, mes fuera de orden, dos corridas a la vez, catálogo con un modelo alterado (sha256 distinto), variables que no coinciden con el catálogo, disco sin la historia del mes anterior. Verificar: una prueba por caso, cada una con rechazo o error claro y sin publicación
 - [ ] 6.8 Prueba de punta a punta: tres meses seguidos de la muestra chica, por el comando real, contra la línea de base. Verificar: las tres salidas tienen los sha256 guardados y las tablas del registro tienen las corridas, etapas y eventos esperados
-- [ ] 6.9 Correr todas las pruebas con un solo comando y en cada push a `main` (GitHub Actions del repo, con Postgres como servicio). Verificar: un commit con una prueba rota deja `main` marcado en rojo
+- [ ] 6.9 Correr todas las pruebas con un solo comando, en cada PR y en cada push a `main` (GitHub Actions del repo, con Postgres como servicio). Verificar: un PR con una prueba rota queda marcado en rojo
 - [ ] 6.10 Prueba de que las partes se reemplazan: un catálogo con tres estrategias, y una etapa cambiada por otra de mentira, corren sin modificar ninguna otra etapa. Verificar: las dos pruebas pasan y el reporte muestra las tres estrategias
 - [ ] 6.11 Control de tiempo: una prueba que procesa un mes completo en la VM y falla si pasa de 450 s; comparación del mes 6 contra el mes 1 del ensayo para ver que el tiempo no crece con la historia; un evento de aviso cuando una corrida real cruza el margen. Verificar: los tres quedan en `docs/tiempos.md` y el aviso aparece en el tablero al bajar el margen a propósito
 - [ ] 6.12 Prueba de humo del camino real después de cada despliegue: conexión por identidad de Google desde la VM, una corrida de la muestra chica contra Cloud SQL en un esquema de prueba, y el tablero de Cloud Run respondiendo y recibiendo sus eventos. Verificar: un comando la corre de punta a punta y devuelve 0
@@ -120,6 +120,8 @@ bajan del curso y los modelos se generan desde cero (grupo 3).
 - [ ] 10.6 Llevar al tutor las dudas abiertas del diseño, incluido que el corte se revisó después de mirar la ganancia de 2020. Verificar: cada duda de `docs/CONSIGNA.md` tiene respuesta con su fuente o sigue marcada como abierta
 - [ ] 10.7 Preparar el video del 13-dic: guion con el recorrido del pipeline, el tablero y las decisiones, sobre el entorno `produccion` después de la clase. Verificar: el video está entregado a Michelina Porto
 - [ ] 10.8 Etiquetar en git la versión de la clase y hacer que `produccion` se niegue a correr con cambios sin commitear o desde un commit sin etiqueta; crear y probar la VM de la clase el día anterior y dejarla apagada. Verificar: pruebas de los dos rechazos; la VM encendida procesa un mes de la muestra sin acceso a GitHub ni a PyPI
+- [ ] 10.9 Abrir el PR de la rama `esqueleto-del-pipeline` a `main` con el resumen del cambio. Verificar: el PR existe en GitHub con las pruebas en verde
+
 ## Workflow follow-up
 
 - Archivar el cambio cuando el ensayo general esté hecho y las specs coincidan con lo implementado.
