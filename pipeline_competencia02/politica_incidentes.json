@@ -1,8 +1,14 @@
 {
-  "version": 2,
+  "version": 3,
   "nota": "Acciones ante incidentes de la ejecución mensual. 'rechazar' corta la ejecución sin publicar nada (estado fallido). 'advertir' registra el incidente y sigue: no cambia el score, las features ni la selección. Ninguna advertencia se interpreta como error ni como garantía de calidad.",
   "umbrales": {
     "cambio_tasa_nulos": 0.2
+  },
+  "calidad": {
+    "nota": "Detección de variables rotas contra la propia historia (calidad.py). Calibrado solo con 201901–201912: scripts/calibrar_calidad.py -> resultados/c01_calidad_2019.json.",
+    "casi_todo": 0.999,
+    "mediana_max": 0.95,
+    "salto": 0.3
   },
   "reglas": {
     "columnas_faltantes": {
@@ -119,6 +125,11 @@
       "tipo": "informativo",
       "accion": "advertir",
       "criterio": "había piezas publicadas del mes sin estado completado y sin integridad verificable: se mueven a cuarentena y el mes se recalcula"
+    },
+    "variable_rota": {
+      "tipo": "calidad_datos",
+      "accion": "advertir",
+      "criterio": "la proporción de ceros o de faltantes del mes supera calidad.casi_todo con mediana histórica menor que calidad.mediana_max, o sube más que calidad.salto respecto de la mediana de los meses anteriores (calidad.py)"
     }
   }
 }
