@@ -1895,11 +1895,47 @@ en `tc01`.
 
 | Prueba | Resultado |
 |---|---|
-| Meses reales 201902–201909 | Detecta sólo los incidentes reales: **201904** (2 columnas de débitos automáticos de Visa, E ≈ 84.000) y **201905** (7 de rentabilidad, comisiones y márgenes, E ≈ 122.000–127.000). **Ninguna falsa alarma** en las 152 columnas de los 8 meses |
+| Meses reales 201902–201909 | Marca sólo **201904** (2 columnas de débitos automáticos de Visa, E ≈ 84.000) y **201905** (7 de rentabilidad, comisiones y márgenes, E ≈ 122.000–127.000), que se interpretan como incidentes porque vuelven al nivel normal el mes siguiente. No marca ninguna otra columna. **Alcance:** en esos meses no hubo ninguna columna legítimamente en 0 contra la cual medir falsas alarmas (ver abajo) |
 | Ceros legítimos por poca actividad: columnas activas con E < 30 pasadas a 0 en 201908 y 201909 (`Master_madelantodolares`, E = 18 y 20) | no detectadas ✓ |
 | Columnas inyectadas con E ≥ 30, en todos los escenarios | todas detectadas ✓ (incluidas las anomalías consecutivas, con referencia en *t*−2 o *t*−3) |
 | Columnas inyectadas sin referencia | `tmobile_app` y `cmobile_app_trx` empiezan a tener datos en 201907 (antes eran 100 % nulas): inyectadas en 201907, o en tres meses seguidos, no tienen referencia y la regla no las evalúa. Quedan fuera del criterio por definición. **Limitación:** una columna nueva que falla en sus primeros meses no se detecta |
 | 2020, descriptivo | 202002: las 6 de descuentos (E = 1.769–21.510); 202006: las 47 (E = 559–152.278). Ningún otro mes |
+
+**Alcance de la verificación de falsas alarmas** (aclaración posterior, 27-nov):
+- **Qué evalúa la regla:** sólo las columnas con todos los observados en 0. En 201902–201909 las únicas
+  fueron las 9 de 201904 y 201905.
+- **Qué quedó verificado:**
+  - el detector no se dispara en los meses sin columnas enteras en 0;
+  - no marca la columna sintética de poca actividad (`Master_madelantodolares`, 2 meses);
+  - marca todas las columnas inyectadas con E ≥ 30.
+- **Qué no quedó verificado:**
+  - **La tasa de falsas alarmas no está estimada.** No hubo en 2019 un caso real de columna entera en
+    0 que fuera legítima: con productos que dejan de usarse de verdad, la regla podría marcar.
+  - **Que 201904 y 201905 son incidentes** es una inferencia, no una verdad conocida.
+  - **En 2020,** las 6 columnas de descuentos de 202002 podrían ser legítimas, por ejemplo sin
+    descuentos ese mes; no hay forma de saberlo con los datos.
+- **«Ninguna falsa alarma en 2019»** debe leerse con este alcance.
+
+**Reconciliación de la referencia O con CE02** (27-nov): la ganancia de O es idéntica a la de CE02 con
+el mismo ensamble y el mismo corte.
+
+| Estrategia | 201908 | 201909 |
+|---|---|---|
+| Binario, 20 semillas, 2,35 % | 200,83 M (3.097 envíos) | 251,46 M (3.136 envíos) |
+| Multiclase, 10 semillas, 2,725 % | 210,35 M (3.591 envíos) | 254,21 M (3.636 envíos) |
+
+- **Qué se verificó:**
+  - **Modelos:** los scores de O son bit a bit el promedio de las predicciones de CE02, sobre los
+    originales de `ejecuciones/ce02/<marca>/`; E06 usa las copias del catálogo.
+  - **Cortes:** la fracción del catálogo y el redondeo hacia arriba de `envios`.
+  - **Etiquetas:** los BAJA+2 de CE02 (543 y 615) coinciden cliente a cliente con el target versión 2.
+  - **Datos:** las features de O coinciden con `features_2019/`.
+- **Por qué los números de `resultados/ce02_ensambles_20.json` son distintos:**
+  - el binario de 20 que figura en `anidados.20.por_mes` está en su corte minimax, de 3,675 %:
+    203,42 M y 252,34 M;
+  - además se informa la ganancia suavizada.
+
+  No es una diferencia de datos ni de modelos.
 
 ### 3. Ganancia por escenario (millones; cortes fijos)
 
@@ -1997,3 +2033,119 @@ despierta (2 repeticiones de los 8 escenarios):
 - son dos meses de desarrollo y una sola realización por escenario;
 - los modelos se entrenaron con 201905, que trae el incidente real;
 - 202006 no tiene ganancia medible todavía.
+
+## 21. Reporte de seguimiento y detector en el circuito mensual
+
+Rama `martin/reporte-seguimiento`, 27-nov. Pruebas locales con `ce02_b20m10`, pasado explícitamente;
+`catalogo.ACTIVO` sigue en `tc01`.
+
+### 1. Antes del reporte
+
+- **Ganancias de referencia de E06 y CE02:** coinciden exactamente. Se verificaron modelos, cortes,
+  etiquetas y datos (§ 20). Los números distintos de `ce02_ensambles_20.json` corresponden a otro
+  corte, el minimax de 3,675 %, y a la ganancia suavizada.
+- **Falsas alarmas:** la afirmación del § 20 se ajustó al alcance verificado. La tasa de falsas alarmas
+  no está estimada, porque 2019 no tiene columnas legítimamente en 0.
+- **Detector de E06:** no estaba conectado al circuito mensual; `tratamiento.py` sólo lo usaba la
+  simulación. Ahora sí lo está, como **alerta**:
+  - **Regla:** `cero_anomalo` en `politica_incidentes.json` (versión 3), de tipo `calidad_datos` y
+    acción `advertir`, con `umbrales.cero_anomalo` (E ≥ 30 y referencia entre *t*−1 y *t*−3).
+  - **Dónde corre:** `mensual.detectar_cero_anomalo`, después del perfil del mes y antes de las
+    features.
+  - **Qué no cambia:** el dato recibido, las features, el score, la selección ni la historia.
+  - **Qué registra:** `reporte.json` → `deteccion_cero_anomalo`, con las columnas, E y el mes de
+    referencia, y el incidente `cero_anomalo`; en el CSV acumulado, la columna
+    `columnas_cero_anomalo`.
+  - **Costo:** sin columnas candidatas, es decir sin columnas enteras en 0, no lee la historia.
+- **Perfil del mes:** registra además los ceros por columna (`faltantes.ceros`), para la evolución de
+  ceros del reporte.
+- **Retrospectiva:** guarda los puntos de la curva de ganancia de cada estrategia (`curva`: 160 puntos,
+  más el corte y el máximo ex post). Recalcula los meses completos que todavía no la tenían.
+
+### 2. Reporte HTML
+
+`<ejecución>/registro/reporte_seguimiento.html`, generado por `pipeline_competencia02/reporte_html.py`.
+
+**Cuándo se genera.** Dentro de `mensual.regenerar_reporte`, el mismo paso que reescribe
+`reporte_acumulado.csv`:
+- al completar un mes;
+- al recuperarlo después de un fallo;
+- con `--solo-reporte`.
+
+Se escribe en un temporal y se reemplaza entero. Si falla, se registra el error y la salida, la historia
+y el CSV no cambian.
+
+**A mano:** `python -m pipeline_competencia02.reporte_html --ejecucion <carpeta> --abrir`.
+
+**Autocontenido.** No tiene scripts ni recursos externos: CSS y SVG van en línea, así que abre sin
+conexión. Se adapta a modo claro y oscuro, y a un celular de 390 px sin desplazamiento horizontal.
+
+**Contenido:**
+1. **Resumen:** meses procesados, tiempo máximo, meses con alertas y meses con etiquetas completas.
+2. **Catálogo y modelos:** id, score, corte, semillas y sha256 de cada modelo; versión de la política.
+3. **Meses procesados:** estado, recuperado, intentos, calidad, clientes y estado de las etiquetas.
+4. **Tiempo por mes y por etapa:** barras apiladas, con el límite de 900 s y el margen interno de 450 s
+   marcados, y una tabla.
+5. **Clientes, clientes nuevos e historia disponible.**
+6. **Calidad de datos:**
+   - un recuadro por mes con alertas (202002 y 202006), con reglas, alcance y la decisión de conservar
+     los datos;
+   - la evolución de ceros y faltantes;
+   - una tabla por regla.
+7. **Distribución de scores:** mediana y percentil 99 en escala logarítmica; el cambio contra el mes
+   anterior; el significado de cada score.
+8. **Envíos y coincidencia entre estrategias.**
+9. **Etiquetas y ganancia:**
+   - el estado de las etiquetas por mes, completa, parcial o pendiente;
+   - las métricas pendientes se muestran como «pendiente», nunca como 0;
+   - la ganancia, los BAJA+2 enviados, el AUC y el máximo ex post;
+   - las curvas de ganancia de los meses completos.
+10. **Importes:** 1.100.000 y 27.500, de la competencia 01, con su confirmación pendiente para la
+    competencia 02; definiciones y límites.
+
+**Gráficos:** colores validados con `validate_palette` en los dos modos. Como en modo claro tres colores
+quedan por debajo de 3:1, cada gráfico tiene su tabla y su leyenda.
+
+### 3. Verificación
+
+| Prueba | Resultado |
+|---|---|
+| Secuencia guardada de CA02 (copia `reporte_copia_secuencia_ce02_b20m10_…`, `--solo-reporte`) | genera los 6 meses; los meses anteriores a esta rama muestran «no evaluada» o «no registrado» en lo que no tenían |
+| **Secuencia nueva por el punto de entrada normal** (`secuencia_reporte_ce02_b20m10_202001_202006_20261127T205026`, `correr_meses` → `mensual` mes a mes, con reintento en 202003): todas las comprobaciones de siempre más `reporte_html_con_todos_los_completados` | ✓ en los 6 meses, incluido 202003, recuperado tras el fallo provocado |
+| Detector en la secuencia | 202002: 6 columnas (E = 1.769–21.510, referencia 202001); 202006: 47 (E = 559–152.278, referencia 202005); ningún otro mes. El dato no cambia: `output/churn_<mes>.csv` e `historia/foto_mes=<mes>.parquet` son byte a byte iguales a los de CA02 en los 6 meses |
+| Revisión visual (Chrome sin interfaz: escritorio en modo oscuro y claro, y 390 px en un marco) | se corrigieron escalas que no cubrían el máximo, rótulos superpuestos, marcas de eje no redondas y desbordes en celular |
+| Pruebas | `pruebas/test_reporte.py`: HTML autocontenido, pendiente distinto de 0, alertas, límites e importes; detector en el circuito sin cambiar el dato; puntos de la curva |
+
+### 4. Costo añadido al tiempo mensual
+
+| Parte | Costo medido en la secuencia |
+|---|---|
+| Detector `cero_anomalo` | 0 s en los meses sin candidatas; 0,09 s en 202002 y 1,02 s en 202006 |
+| Generación del HTML | 0,02–0,05 s, dos veces por mes (la segunda incorpora el tiempo total) |
+| Curvas en la retrospectiva | dentro de la regeneración del reporte: 0,09–0,51 s en total |
+| **Total** | **≤ 1,7 s por mes (< 0,5 %)** |
+
+**Tiempo mensual de la secuencia,** con arranque: 282,7, 321,1, 327,8 (320,0 + 7,8), 293,1, 297,2 y
+390,7 s. Cumple el límite de 900 s y el margen interno de 450 s en los 6 meses.
+- La máquina estaba menos cargada que en CA02 (347–476 s).
+- La diferencia entre las dos corridas es carga de la máquina, no el reporte.
+
+### 5. Pendientes para migrar a GCP
+
+- **Rutas:** `config.toml` o variables `DMEYF_*` para datos, insumos, modelos y entornos.
+  - Conviene que la carpeta de ejecución esté en el **disco local de la VM**: la publicación usa
+    `os.replace` y renombres de carpetas, que no son atómicos sobre un bucket montado.
+  - El bucket sirve para copiar las entradas y para respaldar `output/`, `registro/` y el HTML.
+- **Modelos:** subir las copias de `RUTAS.modelos` (`ce02_b20m10`: 30 archivos). El catálogo verifica su
+  sha256 al preparar la ejecución.
+- **Versiones:** fijar Python, LightGBM, DuckDB y numpy iguales a las locales, y repetir en la VM la
+  verificación de scores bit a bit (`scripts/verificar_scores.py`).
+- **Hilos:** `HILOS = 4` está fijo; revisarlo según las vCPU de la VM.
+- **Medición en la VM (T12):**
+  - `scripts/medir_tiempos_catalogos.py` y una secuencia completa con reintento;
+  - el reporte HTML muestra el tiempo por etapa contra 900 s y 450 s.
+- **Diferencias de sistema operativo:**
+  - las condiciones de máquina en Linux no tienen plan de energía, y la batería da `None`;
+  - evitar la suspensión es sólo de Windows; en la VM, correr bajo `tmux` o `nohup`.
+- **Ver el reporte:** abrirlo localmente después de copiarlo desde la VM o el bucket. Es un solo
+  archivo y no necesita servidor ni conexión.

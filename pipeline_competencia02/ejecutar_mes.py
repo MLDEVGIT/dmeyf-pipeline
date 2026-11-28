@@ -261,8 +261,11 @@ def perfil_mes(con, tabla: str, cols: list[str], hist_ultimo: str, n: int, pol: 
     if cambio:
         pol.registrar("cambio_tasa_nulos", sorted(cambio), {"umbral": umbral, "cambio": cambio})
     pol.calidad_evaluada = True
+    ceros = {c: int(stats[4 * i + 1]) for i, c in enumerate(cols)}
     faltantes = {"celdas": sum(nulos.values()), "columnas_con_faltantes": sum(1 for v in nulos.values() if v),
-                 "por_columna": {c: v for c, v in nulos.items() if v}}
+                 "por_columna": {c: v for c, v in nulos.items() if v},
+                 "ceros": {"celdas": sum(ceros.values()), "celdas_observadas": sum(nn.values()),
+                           "por_columna": {c: v for c, v in ceros.items() if v}}}
     return faltantes, {k: sorted(v) for k, v in categorias.items()}
 
 

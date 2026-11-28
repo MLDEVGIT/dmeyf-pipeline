@@ -160,6 +160,19 @@ def completados(env: Path) -> list[int]:
                   if leer_json(p).get("estado") == "completado")
 
 
+def html_meses(env: Path) -> list[int] | None:
+    """Meses que lista registro/reporte_seguimiento.html (atributo data-meses del body)."""
+    p = env / "registro" / "reporte_seguimiento.html"
+    if not p.exists():
+        return None
+    texto = p.read_text(encoding="utf-8")
+    i = texto.find('data-meses="')
+    if i < 0:
+        return None
+    valor = texto[i + 12:texto.find('"', i + 12)]
+    return [int(m) for m in valor.split(",") if m]
+
+
 def clientes_parquet(con, p: Path) -> np.ndarray:
     return np.sort(con.execute(f"SELECT numero_de_cliente FROM read_parquet('{p.as_posix()}')").fetchnumpy()[
         "numero_de_cliente"].astype(np.int64))
@@ -244,6 +257,7 @@ def comprobar(env: Path, mes: int, inicial: set[int]) -> dict:
         and int(filas_por_mes[mes]["rec_envios"]) == estr[REC]["envios"]
         and int(filas_por_mes[mes]["alt_envios"]) == estr[ALT]["envios"],
         "retrospectiva_segun_meses_recibidos": all(retro_ok.values()),
+        "reporte_html_con_todos_los_completados": html_meses(env) == comp,
     }
     cat_col = rep.get("categorias_columnas", {})
     return {
