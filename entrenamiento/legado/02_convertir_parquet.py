@@ -47,7 +47,6 @@ OUT_DIR = RUTAS.datos / "reportes"
 REPORT = OUT_DIR / "02_conversion_parquet.json"
 
 DESDE, HASTA = 201901, 201912   # solo 2019 (CONSIGNA R1)
-EXPECTED_ROWS = 1_563_565
 EXPECTED_NCOLS = 154
 EXPECTED_MONTHS = [201901 + i for i in range(12)]
 KEYS = ["numero_de_cliente", "foto_mes"]
@@ -260,7 +259,7 @@ def verificar(con, columns: list[str], schema: dict, rec: Recursos) -> dict:
     checks = {
         "columnas_y_orden": pq_names == columns and len(columns) == EXPECTED_NCOLS,
         "tipos_esperados": not bad_types,
-        "filas_csv_1563565": offset == EXPECTED_ROWS,
+        "filas_igual_referencia_total": offset == sum(filas_referencia().values()),
         "filas_parquet_igual_csv": n_pq == offset,
         "meses_esperados": sorted(pq_months) == EXPECTED_MONTHS,
         "filas_por_mes_igual_csv": {int(m): int(v) for m, v in pq_months.items()}

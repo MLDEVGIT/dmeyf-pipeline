@@ -6,3 +6,5 @@ pandas==3.0.5
 psutil==7.2.2
 scikit-learn==1.9.0   # AUC en experimentos/
 # Solo para el entrenamiento legado y pruebas de robustez: scipy
+pg8000==1.31.6                               # registro de corridas (Postgres local y Cloud SQL)
+cloud-sql-python-connector[pg8000]==1.24.1   # Cloud SQL con identidad de Google

@@ -339,7 +339,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--hasta", type=int, required=True)
     ap.add_argument("--reintento-en", type=int, help="mes intermedio en el que se provoca y se prueba un reintento")
     ap.add_argument("--resumen", type=Path, help="copia del resumen, además de <ejecución>/pruebas/")
-    ap.add_argument("--catalogo", choices=sorted(K.CATALOGOS), default=K.ACTIVO, help="sólo con --nueva")
+    ap.add_argument("--catalogo", default=K.ACTIVO,
+                    help="sólo con --nueva: nombre del catálogo o ruta de uno fabricado (.json)")
     a = ap.parse_args(argv)
     meses = meses_entre(a.desde, a.hasta)
     if a.reintento_en and a.reintento_en not in meses[:-1]:

@@ -20,7 +20,9 @@ Salida, en RUTAS.modelos (o --modelos):
   fabrica_<nombre>.json                           modelo por modelo: sha256 obtenido y del equipo, tiempo, versiones
 Con --subir, la carpeta se copia a gs://<bucket>/catalogo/<nombre>/ (gcloud storage rsync).
 
-Uso: python -m entrenamiento.fabrica --catalogo ce02 [--hilos 8] [--modelos DIR] [--subir]
+Con la muestra chica (DMEYF_CONFIG=<muestra>/config.toml), --muestra: el target es otro y los modelos también.
+
+Uso: python -m entrenamiento.fabrica --catalogo ce02 [--hilos 8] [--modelos DIR] [--subir] [--muestra]
 """
 from __future__ import annotations
 
@@ -183,6 +185,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--modelos", type=Path, default=RUTAS.modelos, help="carpeta de los modelos (RUTAS.modelos)")
     ap.add_argument("--meses", type=int, nargs="+", default=list(P.ENTRENAMIENTO),
                     help="meses de entrenamiento (por defecto 201903–201906; nunca posteriores a 201912)")
+    ap.add_argument("--muestra", action="store_true",
+                    help="datos de prueba (scripts/muestra_chica.py): no se exige el target del catálogo")
     ap.add_argument("--subir", action="store_true", help=f"copiar la carpeta a {BUCKET}/catalogo/<nombre>/")
     a = ap.parse_args(argv)
     meses = comprobar_meses(a.meses)  # antes de leer ningún dato
@@ -206,7 +210,8 @@ def main(argv: list[str] | None = None) -> int:
            "maquina": {"plataforma": platform.platform(), "python": platform.python_version(),
                        "lightgbm": lgb.__version__, "duckdb": duckdb.__version__, "numpy": np.__version__,
                        "cpu": os.cpu_count()}}
-    if rep["entradas"]["target_2019_v2"]["sha256"] != sha_target:
+    rep["muestra"] = a.muestra
+    if rep["entradas"]["target_2019_v2"]["sha256"] != sha_target and not a.muestra:
         raise SystemExit("el target versión 2 no es el del catálogo; rehacerlo con experimentos.tc01_target_2019")
     faltan = sum(not (destino / r["archivo"]).exists() for r in renglones)
     print(f"{a.catalogo}: {len(renglones)} modelos, {faltan} por entrenar, en {destino}", flush=True)

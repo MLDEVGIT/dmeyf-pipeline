@@ -10,7 +10,8 @@ ni el target versión 1 ni las features (tarea 3.2 de esqueleto-del-pipeline).
 Comprobaciones (todas deben dar verdadero; si no, no se publica nada):
   1. las dos implementaciones de la regla coinciden fila a fila: SQL (sql_etiquetas) y numpy (etiquetar);
   2. cobertura: las mismas claves que la historia en cada mes etiquetado, sin clase nula;
-  3. si existe el resumen versionado (resultados/tc01_target_2019_v2.json), los conteos por mes y clase son iguales;
+  3. si la población es la del resumen versionado (resultados/tc01_target_2019_v2.json: mismas filas por mes), los
+     conteos por mes y clase son iguales;
   4. solo con --comparar-v1 (necesita RUTAS.target_2019, regla versión 1, leído con particiones.leer_target):
      BAJA+2 idéntico fila a fila; el único cambio posible es BAJA+1 -> CONTINUA; y los que cambian son exactamente los
      clientes ausentes en t+1 y presentes en t+2, contados aparte.
@@ -136,7 +137,11 @@ def main(argv: list[str] | None = None) -> int:
     # 3. contra el resumen versionado
     if RESUMEN.exists():
         versionado = json.loads(RESUMEN.read_text(encoding="utf-8"))
-        checks["conteo_igual_al_resumen_versionado"] = versionado["conteo_v2"] == rep["conteo_v2"]
+        # solo si es la misma población (mismas filas por mes); con la muestra chica los conteos son otros
+        def totales(c):
+            return {m: sum(v.values()) for m, v in c.items()}
+        if totales(versionado["conteo_v2"]) == totales(rep["conteo_v2"]):
+            checks["conteo_igual_al_resumen_versionado"] = versionado["conteo_v2"] == rep["conteo_v2"]
     if not all(checks.values()):
         print(json.dumps(rep, indent=1, ensure_ascii=False))
         raise SystemExit(f"comprobaciones fallidas: {[k for k, v in checks.items() if not v]}")
