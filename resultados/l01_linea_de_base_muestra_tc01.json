@@ -1,0 +1,16 @@
+{
+ "fecha": "2026-11-28T19:14:15+00:00",
+ "ejecucion": "muestra_tc01",
+ "catalogo": {
+  "origen": "pipeline_competencia02/modelos/estrategias_tc01.json",
+  "sha256": "05e7a51fb0997666b1603e52b047c0069700a61a165a8bef6e65877795420b62"
+ },
+ "sha256": {
+  "output/churn_202001.csv": "372f9e06ee6bf19486bc5a1481cd63fb82dac74599f770ef872724ab497d16ad",
+  "output/churn_202002.csv": "67fecba11a3c0647ab05197570916954e573d6cce02f0a1dba8b59b30ec5274f",
+  "output/churn_202003.csv": "46e9f70800b122491702518241d9c54139b6f172de90f4d66d8eb84b3c0a7af4",
+  "diagnosticos/202001/decisiones_202001.csv": "6ba9a6a79875ee31e9e376b7d0f1a9566b3c2cb571d9f18748bbcf9046101e48",
+  "diagnosticos/202002/decisiones_202002.csv": "bc0546bbc0e34c9e24e73ad2d42f4ad6fc01c436826a3fd23354964772be174a",
+  "diagnosticos/202003/decisiones_202003.csv": "b276150c889d27dcc673bc8f57303410db28e119cff05b7624a1bcc45b888994"
+ }
+}
