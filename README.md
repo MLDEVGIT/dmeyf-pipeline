@@ -82,8 +82,9 @@ python -m experimentos.ca02_b20m10 corte                                        
 python -m experimentos.ca02_b20m10 identidad --ce02 <carpeta ce02> --b20m10 <carpeta ce02_b20m10>           # contra ce02 guardado
 python -m experimentos.e06_columnas_anomalas [--trabajo ejecuciones/e06/<marca>]                            # E06, 2019 (horas; reanudable)
 
-# 2c. reporte HTML de seguimiento: se regenera solo con cada mes publicado o recuperado, en
-#     <ejecución>/registro/reporte_seguimiento.html (autocontenido, se abre sin conexión). A mano:
+# 2c. tablero de seguimiento (pestañas Negocio, Modelo y datos, Operación, con filtros): se regenera solo con cada
+#     mes publicado o recuperado, en <ejecución>/registro/reporte_seguimiento.html; se abre sin conexión
+#     (docs/PLAN_PRUEBAS.md § 22). A mano:
 python -m pipeline_competencia02.reporte_html --ejecucion ejecuciones/entornos/vivo_X --abrir
 python -m pipeline_competencia02.mensual --ejecucion ejecuciones/entornos/vivo_X --solo-reporte   # CSV + HTML
 

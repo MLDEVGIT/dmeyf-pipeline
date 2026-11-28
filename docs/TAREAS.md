@@ -52,7 +52,7 @@ Detalle en `INTEGRACION.md`.
 | B5 dos modelos | **Resuelta en forma provisional**: binario y multiclase de E01, sin optimizar |
 | B6 recomendación por cliente | **Provisional**: binario; el multiclase queda como alternativa en el reporte |
 | B7 cortes con 2019 | **Resuelta**: fracción por estrategia, de E01 (201908–201909) |
-| B8 reporte acumulativo | **Resuelta**: una fila por mes, derivada; métricas con target completadas a posteriori (`retrospectiva.py`). Además, reporte HTML de seguimiento autocontenido que se regenera con cada mes (`registro/reporte_seguimiento.html`, `PLAN_PRUEBAS.md` § 21). Falta el drift contra 2019 (PSI) |
+| B8 reporte acumulativo | **Resuelta**: una fila por mes, derivada; métricas con target completadas a posteriori (`retrospectiva.py`). Además, tablero HTML de seguimiento interactivo y autocontenido que se regenera con cada mes (`registro/reporte_seguimiento.html`, `PLAN_PRUEBAS.md` § 21–22). Falta el drift contra 2019 (PSI) |
 | B9 historia para el vivo | **Resuelta** y ensayada en secuencia 202001–202006: la historia crece sólo con los meses recibidos |
 | Reintentos consistentes | **Resuelta** y probada aislada (`scripts/probar_reintentos.py`) y dentro de la secuencia (202003; el mes siguiente se rechaza hasta reconciliar) |
 | B10 anomalías | 202006 diagnosticado (`resultados/i02_columnas_en_cero_202006.json`). **E06 ejecutada** (`PLAN_PRUEBAS.md` § 19–20): detector: en 2019 sólo marca los incidentes de 201904 y 201905 (tasa de falsas alarmas sin estimar), integrado como alerta `cero_anomalo`; N y L no cumplen el criterio (L pierde > 2 BAJA+2 en la propagación y con tres meses seguidos), así que el pipeline sigue advirtiendo sin tratar |

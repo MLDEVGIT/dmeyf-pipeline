@@ -66,11 +66,14 @@ def ejecucion_falsa(raiz: Path):
 
 
 class TestReporteHTML(unittest.TestCase):
+    """El generador (datos + HTML); la lógica y el dibujo del tablero se prueban en test_tablero.py."""
+
     @classmethod
     def setUpClass(cls):
         cls.tmp = tempfile.TemporaryDirectory()
         raiz = Path(cls.tmp.name)
         ejecucion_falsa(raiz)
+        cls.d = H.datos(raiz)
         cls.p = H.generar(raiz)
         cls.html = cls.p.read_text(encoding="utf-8")
 
@@ -84,22 +87,35 @@ class TestReporteHTML(unittest.TestCase):
 
     def test_autocontenido_sin_red(self):
         self.assertIsNone(re.search(r'(src|href)\s*=\s*"(https?:)?//', self.html))
-        self.assertNotIn("<script", self.html)
+        self.assertIsNone(re.search(r"<script[^>]*\ssrc=", self.html))
+        self.assertNotIn("<link", self.html)
         self.assertNotIn("@import", self.html)
+        self.assertNotIn("fetch(", self.html)
+
+    def test_datos_incrustados_son_los_generados(self):
+        js = re.search(r'<script id="datos" type="application/json">(.*?)</script>', self.html, re.S).group(1)
+        self.assertEqual(json.loads(js.replace("<\\/", "</"))["meses"], json.loads(json.dumps(self.d["meses"])))
 
     def test_limites_importes_y_scores(self):
-        for t in ("límite 900 s", "margen interno 450 s", "1.100.000", "27.500", "BAJA+1 ∪ BAJA+2", "probabilidad de BAJA+2",
-                  "confirmación para la competencia 02 está pendiente"):
-            self.assertIn(t, self.html)
+        self.assertEqual((self.d["limites"]["limite_s"], self.d["limites"]["margen_s"]), (900, 450))
+        self.assertEqual((self.d["importes"]["premio"], self.d["importes"]["costo"]), (1_100_000, 27_500))
+        self.assertIn("pendiente", self.d["importes"]["estado_c02"])
+        sc = {e["rol"]: e["score"] for e in self.d["catalogo"]["estrategias"]}
+        self.assertEqual(sc, {"recomendacion_provisional": "P(BAJA+1 ∪ BAJA+2)", "alternativa": "P(BAJA+2)"})
 
     def test_pendiente_no_es_cero(self):
-        self.assertIn("pendiente: faltan 2020-03, 2020-04", self.html)
-        self.assertIn("2,6 M", self.html)  # ganancia del mes completo
+        m1, m2 = self.d["meses"]
+        self.assertEqual(m1["target"]["estado"], "completa")
+        self.assertEqual(m1["estr"]["recomendacion_provisional"]["retro"]["ganancia"], 2_640_000)
+        self.assertEqual(m2["target"], {"estado": "pendiente", "falta": [202003, 202004]})
+        self.assertIsNone(m2["estr"]["recomendacion_provisional"]["retro"])
 
-    def test_alerta_con_alcance_y_decision(self):
-        self.assertIn("2020-02: datos con alertas", self.html)
-        self.assertIn("se conservan los datos recibidos", self.html)
-        self.assertIn("⚠ sobre el margen interno", self.html)  # 470 s
+    def test_alertas_y_tiempos(self):
+        m2 = self.d["meses"][1]
+        self.assertEqual({a["regla"] for a in m2["alertas"]}, {"cero_anomalo", "observados_en_cero"})
+        self.assertEqual(m2["deteccion"]["detectadas"][0]["columna"], "x")
+        self.assertEqual(m2["total_s"], 470.0)
+        self.assertAlmostEqual(sum(v or 0 for v in m2["etapas"].values()), 470.0, places=1)
 
 
 class TestDetectorEnElCircuito(unittest.TestCase):

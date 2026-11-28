@@ -2149,3 +2149,72 @@ quedan por debajo de 3:1, cada gráfico tiene su tabla y su leyenda.
   - evitar la suspensión es sólo de Windows; en la VM, correr bajo `tmux` o `nohup`.
 - **Ver el reporte:** abrirlo localmente después de copiarlo desde la VM o el bucket. Es un solo
   archivo y no necesita servidor ni conexión.
+
+## 22. Tablero de seguimiento interactivo
+
+Rama `martin/dashboard-seguimiento`. Reemplaza el reporte estático del § 21 por un tablero, en el mismo
+archivo y con la misma integración: `<ejecución>/registro/reporte_seguimiento.html`, regenerado por
+`mensual.regenerar_reporte` al publicar, al recuperar y con `--solo-reporte`.
+
+**Cómo está armado:**
+- **`reporte_html.py`:** arma un JSON sólo con los datos registrados y lo incrusta en el HTML.
+- **`tablero/logica.js`:** selección, agregación, reglas de pendientes y formato; sin DOM, probado con
+  Node.
+- **`tablero/interfaz.js`:** pestañas, filtros y gráficos SVG.
+- **`tablero/tablero.css`:** estilos con modo claro y oscuro.
+- **Sin conexión:** JS y CSS van en línea, sin recursos externos.
+- **Estado en la URL:** el de los filtros queda en el fragmento, por ejemplo
+  `#v=negocio&m=202001,202002&e=binario&t=completa&c=202001`.
+
+**Vistas** (pestañas en el mismo archivo):
+
+| Vista | Contenido |
+|---|---|
+| **Negocio** | tarjetas de envíos, BAJA+2 capturadas, ganancia acumulada y costo, por estrategia; evolución con selector de métrica (ganancia, BAJA+2, envíos, costo, precisión, AUC, máximo ex post, ganancia / máximo); tabla con la diferencia entre estrategias; curva de ganancia del mes elegido; disponibilidad de etiquetas |
+| **Modelo y datos** | scores con selector de estadístico y escala logarítmica, con el significado de cada score; cuantiles del mes; ceros y faltantes por variable, con selector de variable y mapa de alertas; clientes nuevos e historia; coincidencia entre estrategias; indicadores de deriva con su definición |
+| **Operación** | meses completados, tiempo máximo, meses sobre 450 s o 900 s, intentos y rechazos; tiempo por etapa con etapas seleccionables y las líneas de 900 s (continua) y 450 s (punteada); memoria; versiones de catálogo, política, regla del target, software y modelos |
+
+**Filtros compartidos:** meses, estrategia (ambas, binario o multiclase) y estado del target (completa,
+parcial o pendiente), más el botón «Restablecer filtros». El catálogo de la ejecución se ve en el
+encabezado, con su detalle desplegable.
+
+**Reglas de agregación y pendientes:**
+- **Al sumar meses** sólo se suman métricas aditivas: envíos, costo, BAJA+2 capturadas y ganancia.
+- **La ganancia acumulada** es la suma de las campañas mensuales con target completo y se rotula así.
+- **Los meses sin target** no suman: quedan «pendiente» o «parcial», nunca 0, al filtrar y al agregar
+  meses.
+- **AUC, precisión, cuantiles, coincidencia, tiempos y memoria** se muestran por mes: no hay promedios.
+- **Dato faltante:** lo que una ejecución no registró, por ejemplo ceros, detector o versiones en meses
+  anteriores, se muestra como «no disponible».
+
+**Visible en todas las vistas:**
+- **Importes:** 1.100.000 y 27.500, de la competencia 01, con la confirmación para C02 pendiente.
+- **Alertas de datos:** las de 202002 y 202006, con la decisión de conservar el dato.
+- **Por vista:** en Negocio, los meses sin target; en Operación, los meses sobre los límites y los
+  reintentos.
+
+**Indicadores de deriva disponibles**, contra el mes procesado anterior:
+- **Δ nulos:** mayor cambio de la tasa de faltantes de una variable, y cuántas variables superan 20 pp.
+- **Δ ceros:** lo mismo con el % de ceros entre observados, sólo para variables con al menos 1.000
+  observados en los dos meses.
+- **Mediana del score:** cociente contra el mes anterior.
+- **Columnas en 0 inesperadas:** las de `cero_anomalo`.
+- **PSI contra 2019:** no implementado; se muestra como «no disponible».
+
+**Registro nuevo:** `reporte.json` → `versiones` (Python, LightGBM, DuckDB, numpy y pandas), para la vista
+de Operación.
+
+**Verificación:**
+
+| Prueba | Resultado |
+|---|---|
+| Lógica (Node, `pruebas/test_tablero.py`): filtros combinados, combinación sin meses, selección vacía, sumas sólo aditivas y sólo con target, meses sin target siguen pendientes, AUC por mes, agregar un mes, estado en la URL, formato | ✓ 8 pruebas |
+| Dibujo (Chrome sin interfaz sobre `file://`): Negocio, Negocio con target pendiente, selección vacía, Modelo con filtro de estrategia, Operación | ✓ 5 pruebas |
+| Apertura sin conexión: Chrome con la red bloqueada (proxy y DNS inválidos) | ✓ se dibuja |
+| Corrida anterior al registro de ceros, detector y versiones (copia de CA02) | ✓ las tres vistas; lo faltante figura «no disponible» |
+| Actualización mensual por el punto de entrada normal: copia de la secuencia sin 202006, `mensual --mes 202006 --copiar-desde` | ✓ 6 meses; 202004 pasa de parcial a completa, 202005 parcial, 202006 pendiente; salida idéntica a la original |
+| Revisión visual: escritorio en modo claro y oscuro, y celular de 390 px | ajustados el tamaño de texto, los rótulos, el mapa de alertas con desplazamiento y el indicador de ceros |
+
+**Costo de generación:**
+- 0,07–0,13 s fuera del proceso, para 6 meses y un archivo de 149 KB;
+- dentro del mes, 0,06 s más 0,05 s, con la regeneración final.
