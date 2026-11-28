@@ -1,6 +1,25 @@
-# Brechas, orden de implementación y tareas
+# Brechas (historia)
 
-Actualizado el 24-nov-2026. Requisitos R1–R8 y fuentes en [CONSIGNA.md](CONSIGNA.md).
+**El plan ya no vive acá.** Desde el 28-nov-2026 el plan del equipo son los cambios de OpenSpec (`openspec list`):
+`esqueleto-del-pipeline` (en curso, con sus tareas en `openspec/changes/esqueleto-del-pipeline/tasks.md`) y los que
+siguen, cada uno con su propuesta en `openspec/changes/`. El orden de implementación y el reparto que había acá
+(T1–T13) se retiraron; lo que seguía pendiente quedó en esas tareas. Este archivo conserva, como historia, la
+corrección del plan del 24-nov y la tabla de brechas con su avance, y dice qué cambio cubre cada brecha abierta.
+Requisitos R1–R9 y fuentes en [CONSIGNA.md](CONSIGNA.md).
+
+## Brechas abiertas y el cambio que las cubre
+
+| Brecha | Cambio | Dónde |
+|---|---|---|
+| B4 entrenamiento offline con 2019 | `esqueleto-del-pipeline` | grupo 3, fábrica desde cero: historia, target y catálogo desde el dataset del curso, con el candado de meses (3.7) |
+| B8 reporte acumulativo (falta el drift contra 2019) | `esqueleto-del-pipeline` | PSI por variable en `control_calidad` (7.2) y tablas agregadas, tablero y `reporte/index.html` (grupo 8) |
+| B10 mes faltante o datos anómalos | `esqueleto-del-pipeline` | grupo 7, calidad de datos: detección y tratamiento de variables rotas elegido con 2019. Los lags por calendario van en `variables-de-tendencia-y-evento` y un modelo para meses con muchas rotas en `modelo-de-respaldo` |
+| B11 reentrenamiento mensual | `reajuste-mensual` | la estrategia que se reentrena cada mes con las clases que maduran |
+| B13 criterios de evaluación | `esqueleto-del-pipeline` | transcriptos en `CONSIGNA.md` § Evaluación (1.2); calidad de scores → vista de estrategias (8.6), exploración → los cambios de estrategias nuevas, medición → reporte y tablero (grupo 8), industrialización → etapas, registro, pruebas y recorrido por integrante (grupos 4, 5, 6 y 10.3) |
+
+Las provisionales (B5, B6, B7: dos modelos sin optimizar, recomendación y cortes) se revisan en
+`busqueda-de-hiperparametros` y `estrategias-del-podio`; el catálogo de la clase se congela en
+`esqueleto-del-pipeline` (7.7).
 
 ## Corrección del plan anterior
 
@@ -59,36 +78,3 @@ Detalle en `INTEGRACION.md`.
 | Target consistente | **Resuelta en este repo** (`martin/target-consistente`): regla única `evaluacion/target.py`, target 2019 regenerado, candidatos reentrenados (TC01), catálogo `tc01` activo y secuencia repetida. Falta coordinar el repo de sampling |
 | Corte del binario `tc01` | **Candidato ensayado, falta decidir la activación**. CE02 (2019): ensambles de 20 y cortes de 2,35 % / 2,725 %. CA01: el catálogo `ce02` pasa las verificaciones en 202001–202006, pero tarda 432–730 s por mes en esta laptop. CA02: `ce02_b20m10` (corte multiclase respaldado con las semillas 0–9 en 2019) pasa las verificaciones en 202001–202006 y tarda 347–476 s por mes (900 s cumplido; 450 s excedido sólo en 202002). Es el catálogo de trabajo local; falta medir en GCP y que el grupo decida |
 | B11, B13 | Sin cambios |
-
-## Orden de implementación propuesto
-
-1. **Contrato de entrada/salida y reloj (B1, B2, B3).** Es barato y lo necesitan todos los ensayos. Se puede probar con el modelo diagnóstico.
-2. **Historia continua y política de faltantes (B9, B10).** Sin esto no se puede correr 202007.
-3. **Entrenamiento offline reproducible con 2019 (B4).** Particiones de `PLAN_PRUEBAS.md` § 1 (`evaluacion/particiones.py`); 201911–201912 quedan para cuando se aclare.
-4. **Cortes y recomendación con 2019 (B7, B6).** Reemplazan los cortes diagnósticos.
-5. **Segundo modelo (B5),** sobre la misma infraestructura.
-6. **Reporte acumulativo completo (B8)** y mapeo a los criterios de evaluación (B13).
-7. **Ensayo operativo 202001–202006** de punta a punta, cronometrado en la máquina del vivo.
-8. **Reentrenamiento mensual (B11),** sólo si sobra tiempo y está justificado.
-
-Entre 1 y 3 hay que resolver en Zulip: el target de 201912, el alcance de la observación sobre meses posteriores y la transcripción de F1 y R8.
-
-## Reparto — propuesta para acordar entre Martín, Agustina y José
-
-> **Propuesta, no acordada.** Se reasigna en la próxima reunión.
-
-| # | Tarea | Brechas | Propuesta | Entregable |
-|---|---|---|---|---|
-| T1 | Transcribir F1 y los criterios de R8 con el id del mensaje; preguntar en Zulip por el target de 201912 y el alcance de la observación de clase | — | quien tenga la sesión de Zulip | `CONSIGNA.md` sin pendientes |
-| T2 | Acordar la cuenta propietaria en GitHub, publicar y proteger `main` | — | grupo | remoto y regla de rama |
-| T3 | Comando único `input/` → `output/` con reloj de punta a punta | B1–B3 | Martín | comando y prueba con 202001 |
-| T4 | Historia continua y política ante mes faltante o anómalo | B9, B10 | Martín | entorno listo hasta 202006 y prueba |
-| T5 | `entrenar.py` offline con config, ventanas de 2019 y control de fechas | B4, B12 | José | modelo con hash, fuera del repo |
-| T6 | Curva de ganancia y corte en 2019; regla de recomendación | B6, B7 | Agustina | estrategia nueva en `estrategias.py` |
-| T7 | Segundo modelo (Optuna según 208135, o ideas de C01: lags de calendario, multiclase, ensamble por rangos) | B5 | Agustina + Martín | artefactos y comparación en 2019 |
-| T8 | Reporte acumulativo y mapeo a criterios | B8, B13 | José | reporte con 6 meses de ensayo |
-| T9 | Reconciliar el relevamiento de C01 (46 repos hallados en GitHub, `RELEVAMIENTO.md` § 2) con los enlaces de Zulip; relevar los que falten | — | quien tenga Zulip | inventario con id de mensaje |
-| T10 | Simulacro cronometrado de 3 meses seguidos, desde un clon limpio, en la máquina del vivo | todas | los tres, antes del 3-dic | checklist del día |
-| T11 | Pruebas incrementales E03–E06 (`PLAN_PRUEBAS.md` § 4; E01 y E02 ejecutadas, referencia: binario), desarrollo en 201908–201909; congelar protocolo y correr F01 en 201910 una vez | B4–B7, B10 | Agustina + José | resultados en `PLAN_PRUEBAS.md` y tag `protocolo-final` |
-| T12 | Repetir T01 en la máquina del vivo y fijar el tope de árboles × semillas (`PLAN_PRUEBAS.md` § 6) | B3 | Martín | tope por estrategia |
-| T13 | Confirmar con la cátedra los importes de ganancia de C02 (`GANANCIA.md`) | — | quien tenga Zulip | fuente registrada |

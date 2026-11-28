@@ -11,7 +11,7 @@ El plan es el cambio de OpenSpec `esqueleto-del-pipeline`; los cambios siguiente
 - `entrenamiento/legado/`, `evaluacion/` (target, ganancia, particiones), `experimentos/` (sobre 2019),
   `resultados/` (lo que dejó cada experimento), `referencia/`, `scripts/` (verificaciones y mediciones).
 - `pruebas/`: `python -m unittest discover -s pruebas -t .`
-- `docs/`: `CONSIGNA.md`, `TAREAS.md`, `PLAN_PRUEBAS.md`, `INTEGRACION.md`, `GANANCIA.md`, `PROCEDENCIA.md`,
+- `docs/`: `CONSIGNA.md`, `TAREAS.md` (brechas, como historia; el plan es OpenSpec), `PLAN_PRUEBAS.md`, `INTEGRACION.md`, `GANANCIA.md`, `PROCEDENCIA.md`,
   `RELEVAMIENTO.md`.
 - `docs/antecedentes/competencia-1/`: postmortem (`lecciones_competencia_1.md`), `backlog.md`, `podio.md` (las fichas
   de los tres primeros), `optuna_y_lightgbm.md`, la matriz y las fichas de los 66 repos (`postmortem_vercel/`) y

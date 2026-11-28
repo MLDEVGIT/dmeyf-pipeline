@@ -10,7 +10,7 @@ bajan del curso y los modelos se generan desde cero (grupo 3).
 - [x] 1.3 Reconciliar el relevamiento del equipo (46 repos) con la matriz de 66 fichas: `docs/RELEVAMIENTO.md` apunta a los antecedentes y no los repite. Verificar: cada repo de `PROCEDENCIA.md` § Ideas de terceros está en la matriz
 - [ ] 1.4 Agregar al README la puesta en marcha en bash (macOS y Linux) junto a la de PowerShell, con Python 3.12 y `brew install libomp` en la Mac. Verificar: en la Mac y en una VM, una instalación limpia termina y `python -m unittest discover -s pruebas -t .` pasa
 - [ ] 1.5 Dejar escrita la forma de trabajo en el `CLAUDE.md` y el README del repo del equipo: cada cambio en su rama, sin push hasta terminarlo, y un PR a `main` al cerrarlo, con las pruebas corriendo en cada PR; llevar el resto de las reglas de `CLAUDE.md`; el repo sigue público (sin datos, modelos ni credenciales); archivar `agustinarazanov/dmeyf-competencia-2` con el README apuntando al nuevo. Verificar: el repo viejo figura archivado en GitHub y el README y el `CLAUDE.md` del equipo describen la rama y el PR
-- [ ] 1.6 Reemplazar el plan de `docs/TAREAS.md` por una nota que apunta a los cambios de OpenSpec, conservando la tabla de brechas como historia. Verificar: cada brecha abierta (B4, B8, B10, B11, B13) nombra el cambio que la cubre
+- [x] 1.6 Reemplazar el plan de `docs/TAREAS.md` por una nota que apunta a los cambios de OpenSpec, conservando la tabla de brechas como historia. Verificar: cada brecha abierta (B4, B8, B10, B11, B13) nombra el cambio que la cubre
 
 ## 2. Nube y entorno
 

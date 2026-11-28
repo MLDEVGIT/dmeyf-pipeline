@@ -35,7 +35,7 @@ Recibe el CSV crudo de un mes, sin targets, y produce `churn_<yyyymm>.csv` con
 > Pendientes: criterio de corte robusto con 2019, tratamiento de columnas en cero (E06), corte y prevalencia,
 > modelos optimizados, lags por calendario (E05), interpretación de la probabilidad con la cátedra, y la
 > actualización del target en el repo grupal de sampling.
-> Brechas y orden: [docs/TAREAS.md](docs/TAREAS.md). Consigna: [docs/CONSIGNA.md](docs/CONSIGNA.md).
+> Plan: los cambios de OpenSpec (`openspec list`); brechas como historia en [docs/TAREAS.md](docs/TAREAS.md). Consigna: [docs/CONSIGNA.md](docs/CONSIGNA.md).
 > Pruebas E01, E02 y T01: [docs/PLAN_PRUEBAS.md](docs/PLAN_PRUEBAS.md). Ganancia: [docs/GANANCIA.md](docs/GANANCIA.md).
 
 ## Puesta en marcha
