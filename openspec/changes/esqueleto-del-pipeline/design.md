@@ -2,7 +2,7 @@
 
 ## Context
 
-Motivación y alcance en `proposal.md`; la consigna, en `docs/consigna.md`. Lo que condiciona el diseño:
+Motivación y alcance en `proposal.md`; la consigna, en `docs/CONSIGNA.md`. Lo que condiciona el diseño:
 
 - **15 minutos por mes** en una `n2-highmem-8`; la consigna recomienda la nube con entornos estándar.
 - **La corrida en clase y el examen son el mismo encuentro, el 10-dic**: mientras corren los meses, cada integrante

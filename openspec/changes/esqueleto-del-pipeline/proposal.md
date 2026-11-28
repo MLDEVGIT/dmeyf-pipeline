@@ -3,7 +3,7 @@
 ## Why
 
 La Segunda Competencia (comisión lunes) evalúa un pipeline que recibe un mes crudo, entrega scores y actualiza un
-reporte en menos de 15 minutos, operado en clase frente al tutor (ver `docs/consigna.md`). El equipo ya tiene ese
+reporte en menos de 15 minutos, operado en clase frente al tutor (ver `docs/CONSIGNA.md`). El equipo ya tiene ese
 pipeline funcionando en `MLDEVGIT/dmeyf-pipeline` (Martín, 24/25-nov): dos estrategias, la secuencia 202001–202006
 corrida y verificada, reintentos probados. Este cambio adopta ese repo como el único del equipo y cierra lo que le
 falta para la clase y el examen: que lo opere cualquiera de los tres en la nube, que trate las variables rotas, y que
