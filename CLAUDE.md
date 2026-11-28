@@ -22,8 +22,10 @@ Git: remoto `origin` = `MLDEVGIT/dmeyf-pipeline` en GitHub, **público**.
 
 ## Reglas de trabajo
 
-- **Cada cambio de OpenSpec en su rama** (con el nombre del cambio), **sin push hasta terminarlo**, y un **PR a
-  `main`** al cerrarlo. Nada de commits directos a `main`. Las pruebas tienen que pasar antes de cada commit.
+- **Cada cambio de OpenSpec en su rama** (con el nombre del cambio) y un **PR a `main`** al cerrarlo. La rama se
+  pushea recién cuando hace falta en GitHub (una VM que la clona, las pruebas de GitHub Actions, otro integrante);
+  desde ahí, cada commit se pushea. Nunca commits ni push directos a `main`. Las pruebas tienen que pasar antes de
+  cada commit.
 - **Operable por cualquiera de los tres integrantes, solo.** Nada depende de la máquina, las credenciales ni la
   memoria de una persona: un comando para levantar el entorno, un comando para procesar un mes, README que alcance.
 - **El examen es individual, sin conexión y sin LLM**, con preguntas sobre cada parte del código y cada decisión.

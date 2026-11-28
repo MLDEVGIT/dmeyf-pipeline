@@ -164,7 +164,8 @@ se conservan porque `mensual.py` reutiliza su validación, su candado y su publi
 ## Forma de trabajo
 
 Plan en OpenSpec (`openspec/`, `openspec list`): cada cambio se trabaja en una rama con su nombre (por ejemplo
-`esqueleto-del-pipeline`), sin push hasta terminarlo, y entra a `main` con un PR al cerrarlo; las pruebas tienen que
+`esqueleto-del-pipeline`), que se sube a GitHub recién cuando hace falta ahí (una VM, las pruebas, otro integrante)
+y entra a `main` con un PR al cerrarlo; las pruebas tienen que
 pasar antes de cada commit y corren en cada PR. Nada de commits directos a `main`.
 
 Las decisiones de modelo, hiperparámetros y corte se toman **sólo con datos de 201901–201912** (consigna, R1); los
