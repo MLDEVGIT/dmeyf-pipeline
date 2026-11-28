@@ -67,6 +67,30 @@ if ! gc sql databases describe dmeyf --instance="$INSTANCIA" >/dev/null 2>&1; th
   gc sql databases create dmeyf --instance="$INSTANCIA"
 fi
 
+echo "== Cuenta de servicio de las VMs (bucket de datos y base, nada más)"
+# Las VMs no corren con la cuenta por defecto del proyecto (que es editora de todo): con esta, una VM lee y
+# escribe el bucket y se conecta a la base con su identidad, pero no puede crear ni borrar recursos.
+BUCKET="${DMEYF_BUCKET:-gs://agustinarazanov_buckito2026}"
+CUENTA_VM="dmeyf-vm@${PROYECTO}.iam.gserviceaccount.com"
+gc services enable compute.googleapis.com iap.googleapis.com
+if ! gc iam service-accounts describe "$CUENTA_VM" >/dev/null 2>&1; then
+  gc iam service-accounts create dmeyf-vm --display-name="VMs de trabajo de dmeyf-pipeline"
+fi
+# Una cuenta recién creada tarda unos segundos en existir para IAM: cada permiso se reintenta.
+reintentar() { for i in 1 2 3 4 5 6; do "$@" >/dev/null && return 0; sleep 10; done; "$@"; }
+for ROL in roles/cloudsql.client roles/cloudsql.instanceUser roles/logging.logWriter; do
+  reintentar gc projects add-iam-policy-binding "$PROYECTO" --member="serviceAccount:$CUENTA_VM" --role="$ROL" \
+    --condition=None
+done
+gc storage buckets add-iam-policy-binding "$BUCKET" --member="serviceAccount:$CUENTA_VM" \
+  --role=roles/storage.objectAdmin >/dev/null
+# Usuario de base de la cuenta (Cloud SQL lo nombra sin «.gserviceaccount.com»); sus permisos sobre los esquemas
+# los da la tarea de roles de la base (operador, lector, tablero).
+USUARIO_VM="${CUENTA_VM%.gserviceaccount.com}"
+if ! gc sql users list --instance="$INSTANCIA" --format="value(name)" | grep -qx "$USUARIO_VM"; then
+  gc sql users create "$USUARIO_VM" --instance="$INSTANCIA" --type=cloud_iam_service_account
+fi
+
 echo "== Estado"
 gc sql instances describe "$INSTANCIA" --format="yaml(
   state, databaseVersion, region, settings.tier,
