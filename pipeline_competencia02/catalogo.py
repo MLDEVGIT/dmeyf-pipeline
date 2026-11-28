@@ -136,6 +136,9 @@ def corte_ce02(resumen: dict, brazo: str, spec: dict) -> dict:
 
 
 def archivo(nombre: str | None = None) -> Path:
+    """Catálogo versionado por nombre, o la ruta de un catálogo fabricado (entrenamiento.fabrica)."""
+    if nombre and nombre.endswith(".json"):
+        return Path(nombre).expanduser().resolve()
     return CATALOGOS[nombre or ACTIVO]["archivo"]
 
 

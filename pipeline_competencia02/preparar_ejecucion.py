@@ -37,7 +37,7 @@ import duckdb
 
 from . import catalogo as K
 from . import incidentes as I
-from .config import RAIZ, RUTAS, mostrar
+from .config import RUTAS, mostrar
 from .ejecutar_mes import Entorno, sha256, validar_entrada
 
 DESDE = 201901
@@ -160,7 +160,7 @@ def crear(nombre: str, hasta: int, catalogo: str | None = None) -> Path:
     esquema = [[c, t] for c, t, *_ in con.execute(
         f"DESCRIBE SELECT * FROM read_parquet('{RUTAS.historico_2019.as_posix()}')").fetchall()]
     cfg = {"nombre": nombre, "tipo": "mensual_dos_estrategias", "creado": time.strftime("%Y-%m-%dT%H:%M:%S"),
-           "esquema_crudo": esquema, "catalogo": {"nombre": catalogo, "origen": K.archivo(catalogo).relative_to(RAIZ).as_posix(),
+           "esquema_crudo": esquema, "catalogo": {"nombre": catalogo, "origen": mostrar(K.archivo(catalogo)),
                                                   "target_version": cat.get("target_version", 1),
                                                   "archivo": "modelos/estrategias.json",
                                                   "sha256": sha256(env / "modelos" / "estrategias.json"),
@@ -183,7 +183,8 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Crea una carpeta de ejecución para el pipeline mensual.")
     ap.add_argument("--nombre", required=True)
     ap.add_argument("--hasta", type=int, required=True, help="último foto_mes de historia (el anterior al primero a procesar)")
-    ap.add_argument("--catalogo", choices=sorted(K.CATALOGOS), default=K.ACTIVO)
+    ap.add_argument("--catalogo", default=K.ACTIVO,
+                    help=f"nombre ({', '.join(sorted(K.CATALOGOS))}) o ruta de un catálogo fabricado (.json)")
     a = ap.parse_args(argv)
     env = crear(a.nombre, a.hasta, a.catalogo)
     cfg = json.loads((env / "entorno.json").read_text(encoding="utf-8"))
