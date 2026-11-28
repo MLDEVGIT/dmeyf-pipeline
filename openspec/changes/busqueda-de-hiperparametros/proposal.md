@@ -23,6 +23,22 @@ encarar después: solo necesita la fábrica reproducible (grupo 3 de `esqueleto-
   la búsqueda (backlog, prioridad 2).
 - Comparación contra el catálogo vigente con semillas pareadas, y el corte vuelto a derivar con el procedimiento de
   `PLAN_PRUEBAS.md` (los cortes dependen del modelo).
+- **Evidencia de los experimentos del lunes (nov-2026; hipótesis, no hechos):**
+  - autoresearch (validación 201908, contra el modelo vigente de cada corrida): lo que sumó fue elegir con
+    **validación interna** (entrenar hasta 201904, validar en 201906), sobre todo la cantidad de árboles (377 → 700:
+    +2,55 M; 600: +1,36 M). En contra: la búsqueda al azar de una corrida (Ema abierto, 49 configuraciones) dio mediana
+    0 y llegó a −12,75 M; elegir todos los hiperparámetros de nuevo con validación interna, −2,69 M; `dart`, −5,73 M;
+    mitad de `learning_rate` con el doble de árboles, −1,85 M. Más árboles elegidos con validación interna sumaron;
+    bajar el `learning_rate` a ciegas, no.
+  - Grupo Hiperparámetros (test 201910): `learning_rate` terminó siempre cerca del mínimo de la ventana (nuestra
+    lectura: la ventana podría tener que bajar más) y `num_leaves` casi no movió el AUC; la búsqueda de 200 pruebas más
+    rápida tardó casi 4 horas en una PC.
+  - Meses: un tutor (Daniel Ramírez) resumió +5 M entrenando con seis meses, y el profesor lo llamó «una conclusión
+    equivocada» y pidió discutirlo en la clase del 30-nov-2026. Ampliar el entrenamiento se decide después de esa
+    clase.
+- **Registro de la mejora**: la búsqueda y el aumento de rondas se miden por separado (primero rondas con los
+  hiperparámetros vigentes, después la búsqueda) y cada uno es una fila del registro común de mejoras
+  (`docs/MEJORAS.md`, definido en `peso-de-baja1`), se adopte o no.
 - El catálogo nuevo tiene que entrar en el tiempo: más rondas multiplican la inferencia, que ya es el 80 % del mes.
 - Cómputo: hasta 4 VMs `n2-highmem-8` a la vez; el costo se anota en `docs/nube.md`.
 

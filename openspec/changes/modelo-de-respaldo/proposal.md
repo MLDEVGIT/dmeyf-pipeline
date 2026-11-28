@@ -14,6 +14,9 @@ corrieron hacia arriba. Un respaldo de verdad no puede depender de lo que se rom
   que alguna vez llegaron rotas** (rentabilidad, comisiones, márgenes, contadores de transacciones).
 - La regla de degradación apunta a este modelo; el límite que la dispara se calibra con 2019.
 - El reporte muestra, en los meses degradados, qué habría recomendado la estrategia normal.
+- **Registro de la mejora**: el respaldo se mide en dos situaciones, meses sanos y meses con variables rotas inyectadas,
+  y cada una es una fila del registro común de mejoras (`docs/MEJORAS.md`, definido en `peso-de-baja1`): lo que pierde
+  en meses sanos y lo que salva en los rotos. La de meses rotos queda con `sumable = no`.
 - Relacionado: «un modelo por profundidad de historia» (`estrategias-del-podio`) resuelve el caso del cliente sin
   historia con la misma idea; conviene decidir los dos juntos.
 

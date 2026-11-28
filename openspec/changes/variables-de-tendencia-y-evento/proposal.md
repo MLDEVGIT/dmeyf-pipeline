@@ -22,6 +22,23 @@ la primera versión.
   producción repetida, y el tratamiento de variables rotas aplicado antes: una ventana de 6 meses hereda un mes roto
   durante 6 meses.
 - Las ventanas largas cambian cuánta historia lee la corrida y cuánto tarda: medirlo en la VM.
+- **Evidencia de los experimentos del lunes (nov-2026; hipótesis, no hechos).** En autoresearch (validación 201908,
+  contra el modelo vigente de cada corrida), casi todo lo agregado empeoró (5 de 160 pruebas se mantuvieron):
+  - En contra: promedio, máximo y mínimo de 3 meses −4,75 M; lag 3 y medias móviles −1,19 a −2,93 M; combinar dos
+    bloques que solos daban poco −9,05 M. Las ventanas de **nivel** (promedio, mínimo, máximo) pasan a la cola; las de
+    **variabilidad** (desvío, coeficiente de variación) siguen como candidatas por lo que sigue.
+  - A favor: cambio relativo contra 1 y 2 meses antes, (x − x₋ₖ) / (|x₋ₖ| + 1), +2,95 M; coeficiente de variación de 3
+    meses de los montos +2,76 M; cuántas veces subió contra 1 y 2 meses antes +2,68 M; desvío de 3 meses de los montos
+    +1,71 M; 23 razones del mismo mes (sumas Visa + Master, saldo/límite, consumo/límite, pagado/saldo, totales de
+    productos) +3,22 M. Se suman como candidatas junto a la tendencia.
+  - Sacar variables en masa empeoró (mediana −5,96 M en 242 recortes; sacar las de más PSI −2,99 M); solo funcionó,
+    en una corrida, quedarse con las que acumulan el 95 % de la importancia calculada con validación interna (+2,36 M)
+    o el 99 % (+1,35 M). Los canaritos
+    se miden, no se asumen.
+  - Features Históricos: una historia curada de 30 variables elegida por importancia; el grupo dejó pendiente volver a
+    elegirla en cada reentrenamiento. Es la variante del «lag 2 selectivo».
+- **Registro de la mejora**: cada familia se agrega y se mide por separado, en orden, y cada una es una fila del
+  registro común de mejoras (`docs/MEJORAS.md`, definido en `peso-de-baja1`), se adopte o no.
 
 ## Capabilities
 

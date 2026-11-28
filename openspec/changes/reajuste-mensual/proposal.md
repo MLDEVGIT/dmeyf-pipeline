@@ -19,6 +19,9 @@ de exploración.
   semillas) y la ensaya sobre 2019 midiendo el tiempo en la VM; en producción no se busca nada.
 - En el catálogo entra como una tercera estrategia, alternativa; pasa a recomendada solo con evidencia de 2019
   (simulando la llegada de los meses dentro de 2019).
+- **Registro de la mejora**: la comparación simulada en 2019 contra la estática es una fila del registro común de
+  mejoras (`docs/MEJORAS.md`, definido en `peso-de-baja1`), con el tiempo de reentrenamiento medido en la VM y
+  `sumable = no` (es una simulación, no el catálogo con un cambio más).
 - Antes de implementarla hay que medir cuánto tarda entrenar una semilla con la ventana elegida en una `n2-highmem-8`:
   es la condición para que el cambio exista.
 

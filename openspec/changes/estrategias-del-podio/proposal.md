@@ -26,6 +26,22 @@ Candidatas, a elegir una o dos y medir con 2019 contra el catálogo vigente, con
 
 Cada estrategia nueva tiene que entrar en el tiempo de la corrida y traer su política de corte.
 
+**Evidencia de los experimentos del lunes (nov-2026; hipótesis, no hechos).** En autoresearch, en validación 201908
+contra el modelo vigente de cada corrida:
+
+- Cambiar la función objetivo nunca se mantuvo: multiclase −5,83 a −7,48 M contra el binario, lambdarank −10,53 M, un
+  modelo general más uno condicional entrenado solo con bajas −9,05 M. Pesa contra la «multiclase con segunda etapa» y
+  contra mantener el multiclase como alternativa (ver `peso-de-baja1`).
+- Forzar el balance siempre empeoró: CONTINUA 5:1 −33,68 M, quedarse con el 20 % de CONTINUA −8,09 M. Pesa contra el
+  submuestreo de CONTINUA por semilla salvo que se compense con peso (Sampling_1: todas las bajas y parte de CONTINUA
+  con peso no perdió).
+- Más semillas del mismo modelo nunca subieron agosto (reducen varianza, no suben la media); sí sumaron ensambles de
+  modelos **distintos** entre sí (media geométrica de un modelo solo-BAJA+2 y uno como el baseline, +1,19 M; promedio
+  de percentiles de 5 modelos con distinta ventana, variables, pesos e hiperparámetros, +1,02 M).
+
+**Registro de la mejora**: cada estrategia medida es una fila del registro común de mejoras (`docs/MEJORAS.md`,
+definido en `peso-de-baja1`), se adopte o no.
+
 ## Capabilities
 
 ### New Capabilities
